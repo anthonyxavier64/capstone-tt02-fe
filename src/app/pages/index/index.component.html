@@ -1,0 +1,33 @@
+<div fxLayout fxShow fxHide.lt-md class="left-section" #leftSection>
+  <div *ngIf="leftSection.style.display !== 'none'">
+    <span style="font-size: 40px">LOGO</span>
+    <p></p>
+  </div>
+</div>
+
+<div fxLayout fxShow fxHide.lt-md class="right-section" #rightSection>
+  <mat-card style="width: 100%" *ngIf="rightSection.style.display !== 'none'">
+    <mat-card-content fxLayout="column" fxLayoutGap="3%">
+      <input type="text" placeholder="Email address" [(ngModel)]="email" pInputText />
+      <input type="password" placeholder="Password" [(ngModel)]="password" pInputText />
+      <button mat-flat-button color="accent" (click)="handleLogin()">Login</button>
+      <button mat-button>Forgotten password?</button>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div fxLayout fxHide fxShow.lt-md class="tablet-mode" #tabletMode>
+  <div
+    fxLayout="column"
+    fxLayoutGap="3%"
+    style="text-align: center; width: 100%"
+    *ngIf="tabletMode.style.display !== 'none'">
+    <div style="font-size: 40px">LOGO</div>
+    <mat-card fxLayout="column" fxLayoutGap="3%">
+      <input type="text" placeholder="Email address" [(ngModel)]="email" pInputText />
+      <input type="password" placeholder="Password" [(ngModel)]="password" pInputText />
+      <button mat-flat-button color="accent" (click)="handleLogin()">Login</button>
+      <button mat-button>Forgotten password?</button>
+    </mat-card>
+  </div>
+</div>

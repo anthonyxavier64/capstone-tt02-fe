@@ -1,0 +1,15 @@
+.left-section {
+    float: left;
+    width: 60%;
+    padding: 10% 0 10% 20%; 
+}
+
+.right-section {
+    float: right;
+    width: 40%;
+    padding: 10% 10% 10% 0;
+}
+
+.tablet-mode {
+    padding: 10% 30% 20% 30%;
+}
