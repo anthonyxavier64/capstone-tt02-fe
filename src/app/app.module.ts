@@ -10,11 +10,18 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from './core/material.module';
 import { IndexComponent } from './pages/index/index.component';
 import { PrimeNgModule } from './core/primeng.module';
+import { HomeComponent } from './pages/home/home.component';
+import { JwtModule } from "@auth0/angular-jwt";
+import { TOKEN_KEY } from './config';
 
+export function tokenGetter() {
+  return localStorage.getItem(TOKEN_KEY);
+}
 @NgModule({
   declarations: [
     AppComponent,
-    IndexComponent
+    IndexComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -26,6 +33,12 @@ import { PrimeNgModule } from './core/primeng.module';
     ReactiveFormsModule,
     MaterialModule,
     PrimeNgModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ['localhost:3000']
+      }
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

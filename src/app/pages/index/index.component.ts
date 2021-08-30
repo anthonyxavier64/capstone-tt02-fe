@@ -1,4 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/user/auth.service';
 
 @Component({
@@ -10,7 +11,7 @@ export class IndexComponent implements OnInit, AfterViewInit {
   email: string;
   password: string;
 
-  constructor(private cdRef: ChangeDetectorRef, private auth: AuthService) {
+  constructor(private cdRef: ChangeDetectorRef, private auth: AuthService, private router: Router) {
     this.email = '';
     this.password = '';
   }
@@ -25,7 +26,8 @@ export class IndexComponent implements OnInit, AfterViewInit {
   handleLogin() {
     this.auth.login(this.email, this.password).then(
       response => {
-        console.log(response);
+        localStorage.setItem('currentUser', JSON.stringify(response));
+        this.router.navigateByUrl('/home');
       },
       error => {
         console.log(error);

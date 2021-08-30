@@ -4,13 +4,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { handleError } from '../services-util';
 import { User } from 'src/app/models/user';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { TOKEN_KEY, RESET_TOKEN_KEY } from 'src/app/config';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
 };
-
-const TOKEN_KEY = 'access'; 
-const RESET_TOKEN_KEY = 'reset';
 
 @Injectable({
   providedIn: 'root',
@@ -18,28 +17,21 @@ const RESET_TOKEN_KEY = 'reset';
 export class AuthService {
   baseUrl: string = '/api/user';
 
-  isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
   token = '';
   reset = '';
 
-  constructor(private httpClient: HttpClient) {
-    this.loadToken();
-  }
+  constructor(
+    private httpClient: HttpClient,
+    private jwtHelper: JwtHelperService
+  ) {}
 
-  loadToken() {
-    const storedToken = localStorage.getItem(TOKEN_KEY);
-    
-    if (storedToken) {
-      this.token = storedToken;
-      const storedResetToken = localStorage.getItem(RESET_TOKEN_KEY);
-      
-      if (storedResetToken) {
-        this.reset = storedResetToken;
-        this.isAuthenticated.next(true);
-      }
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem(TOKEN_KEY);
+
+    if (token) {
+      return !this.jwtHelper.isTokenExpired(token);
     } else {
-      this.isAuthenticated.next(false);
+      return false;
     }
   }
 
@@ -56,16 +48,13 @@ export class AuthService {
           this.token = newToken;
           this.reset = newResetToken;
 
-          this.isAuthenticated.next(true);
-
           resolve(response['user']);
         },
         (error) => {
-          this.isAuthenticated.next(false);
           resolve(false);
         }
-      )
-    })
+      );
+    });
   }
 
   getUserAndTokens(email: string, password: string): Observable<any> {
