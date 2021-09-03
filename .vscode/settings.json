@@ -1,0 +1,6 @@
+{
+  "editor.formatOnSave": true,
+  "sort-imports.default-sort-style": "module-scoped",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true
+}
