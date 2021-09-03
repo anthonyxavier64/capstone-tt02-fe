@@ -1,11 +1,14 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { handleError } from '../services-util';
+import { RESET_TOKEN_KEY, TOKEN_KEY } from 'src/app/config';
 import { User } from 'src/app/models/user';
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { TOKEN_KEY, RESET_TOKEN_KEY } from 'src/app/config';
+
+import {environment} from '../../../environments/environment.dev'
+import { handleError } from '../services-util';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -15,7 +18,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class AuthService {
-  baseUrl: string = '/api/user';
+  baseUrl: string = `${environment.API_REST_URL}/user`
 
   token = '';
   reset = '';

@@ -76,8 +76,7 @@
               "browserTarget": "Capstone-tt02-fe:build:production"
             },
             "development": {
-              "browserTarget": "Capstone-tt02-fe:build:development",
-              "proxyConfig": "proxy.conf.json"
+              "browserTarget": "Capstone-tt02-fe:build:development"
             }
           },
           "defaultConfiguration": "development"
