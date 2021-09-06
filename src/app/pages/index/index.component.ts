@@ -1,6 +1,7 @@
+import { AuthService } from 'src/app/services/user/auth.service';
+
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/user/auth.service';
 
 @Component({
   selector: 'app-index',
