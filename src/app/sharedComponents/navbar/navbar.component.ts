@@ -16,4 +16,8 @@ export class NavbarComponent implements OnInit {
   openOnMouseOver() {
     this.clickHoverMenuTrigger.openMenu();
   }
+
+  onCompanyLogoClick() {
+    this.router.navigateByUrl('/admin');
+  }
 }
