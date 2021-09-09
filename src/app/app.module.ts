@@ -18,6 +18,7 @@ import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDet
 import { AdminEmployeeManagementComponent } from './pages/admin/employeeManagement/adminEmployeeManagement.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
 import { IndexComponent } from './pages/index/index.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
 
 export function tokenGetter() {
@@ -33,6 +34,7 @@ export function tokenGetter() {
     AdminEmployeeManagementComponent,
     AdminWfoManagementComponent,
     AdminAnnouncementManagementComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

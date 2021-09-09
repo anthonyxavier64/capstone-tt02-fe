@@ -7,6 +7,7 @@ import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDet
 import { AdminEmployeeManagementComponent } from './pages/admin/employeeManagement/adminEmployeeManagement.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
 import { IndexComponent } from './pages/index/index.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
@@ -28,6 +29,7 @@ const routes: Routes = [
     path: 'adminAnnouncementManagement',
     component: AdminAnnouncementManagementComponent,
   },
+  { path: 'profile', component: ProfileComponent },
 ];
 
 @NgModule({
