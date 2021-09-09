@@ -20,4 +20,8 @@ export class NavbarComponent implements OnInit {
   onCompanyLogoClick() {
     this.router.navigateByUrl('/admin');
   }
+
+  onProfileLogoClick() {
+    this.router.navigateByUrl('/profile');
+  }
 }
