@@ -1,6 +1,7 @@
 # CapstoneTt02Fe
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.0.
 
 ## Development server
@@ -30,7 +31,7 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 - Commits can now be done through 
   ```git cz```
-- More Info : [a Commitizen Repo](https://github.com/commitizen/cz-cli)
+- More Info : [Commitizen Repo](https://github.com/commitizen/cz-cli)
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

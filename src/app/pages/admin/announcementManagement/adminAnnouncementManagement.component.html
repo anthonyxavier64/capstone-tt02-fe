@@ -5,8 +5,8 @@
     fxLayoutAlign="space-between center"
   >
     <div class="leftNavbar">
-      <button mat-fab color="basic">
-        <mat-icon>home</mat-icon>
+      <button class="homeButton" mat-fab color="basic">
+        <mat-icon class="homeIcon">home</mat-icon>
       </button>
       <button class="navbarItem" mat-button>Dashboard</button>
       <button class="navbarItem" mat-icon-button [matMenuTriggerFor]="workMenu"
@@ -35,7 +35,7 @@
       <button class="navbarItem" mat-button>My Employees</button>
     </div>
       <!-- for table maybe can have a burger menu -->
-    <div class="rightNavbar" fxLayout="row" fxLayoutGap="1%">
+    <div class="rightNavbar" >
         <button mat-button>
           <img class="notificationIcon" src="../../../assets/images/notificationIcon.png">
         </button>
@@ -44,8 +44,10 @@
   </div>
 
   <div style="font-size:25px;">
-      Welcome [Username].
+      Welcome [Username], what would you like to do today?
   </div>
+
+
 
   <!-- generate number of cards to show -->
 </div>
