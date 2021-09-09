@@ -12,14 +12,14 @@ import { AppComponent } from './app.component';
 import { TOKEN_KEY } from './config';
 import { MaterialModule } from './core/material.module';
 import { PrimeNgModule } from './core/primeng.module';
-import { HomeComponent } from './pages/home/home.component';
+import { AdminComponent } from './pages/admin/admin.component';
 import { IndexComponent } from './pages/index/index.component';
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
 }
 @NgModule({
-  declarations: [AppComponent, IndexComponent, HomeComponent],
+  declarations: [AppComponent, IndexComponent, AdminComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
