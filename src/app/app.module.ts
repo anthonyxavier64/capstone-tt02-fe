@@ -18,6 +18,7 @@ import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDet
 import { AdminEmployeeManagementComponent } from './pages/admin/employeeManagement/adminEmployeeManagement.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
 import { IndexComponent } from './pages/index/index.component';
+import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -25,6 +26,7 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
+    NavbarComponent,
     IndexComponent,
     AdminComponent,
     AdminCompanyDetailsManagementComponent,
