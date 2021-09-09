@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-admin-wfoManagement',
   templateUrl: './adminWfoManagement.component.html',
   styleUrls: ['./adminWfoManagement.component.css'],
 })
