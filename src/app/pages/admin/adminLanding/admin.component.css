@@ -1,3 +1,4 @@
+/****** Navbar ******/
 .navbar {
   padding-left: 2%;
   padding-right: 2%;
@@ -12,8 +13,18 @@
 }
 
 .profileIcon {
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
+}
+
+.homeButton {
+  height: 40px;
+  width: 40px;
+  align-self: center;
+}
+
+.homeIcon {
+  align-self: center;
 }
 
 .navbarItem {
@@ -77,4 +88,43 @@
   color: #003764;
   font-family: Source Sans Pro;
   margin-left: 10%;
+}
+
+/****** Path Selector ******/
+.pathSelector {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.firstRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.secondRow {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.pathItem {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 166, 135, 0.2);
+  width: 420px;
+  height: 260px;
+}
+
+.itemTitle {
+  color: #003764;
+  font-family: Source Sans Pro;
+  opacity: 1;
+}
+
+.itemLogo {
+  align-self: flex-end;
 }

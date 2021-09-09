@@ -1,0 +1,91 @@
+/****** Navbar ******/
+.navbar {
+  padding-left: 2%;
+  padding-right: 2%;
+  height: 15%;
+  background-color: #c1e7e3;
+  border-radius: 15px;
+}
+
+.notificationIcon {
+  height: 30px;
+  width: 23.36;
+}
+
+.profileIcon {
+  height: 40px;
+  width: 40px;
+}
+
+.homeButton {
+  height: 40px;
+  width: 40px;
+  align-self: center;
+}
+
+.homeIcon {
+  align-self: center;
+}
+
+.navbarItem {
+  color: #003764;
+  font-family: Source Sans Pro;
+}
+
+::ng-deep .workDropList {
+  background-color: #c9e3e8;
+  width: 500px;
+}
+
+.workDropListHeader {
+  color: #003764;
+  font-family: Source Sans Pro;
+  margin-left: 10%;
+}
+
+.headerDivider {
+  width: 100%;
+  height: 1px;
+  background-color: #e5e5e5;
+  border: none;
+}
+
+.itemDivider {
+  width: 90%;
+  height: 1px;
+  margin-left: -5%;
+  background-color: #e5e5e5;
+  border: none;
+}
+
+.workDropListItem {
+  display: flex;
+  flex-direction: row;
+}
+
+.goalIcon {
+  width: 40px;
+  height: 40px;
+  margin-top: 2%;
+  margin-left: 2%;
+}
+
+.taskIcon {
+  width: 40px;
+  height: 40px;
+  margin-top: 1%;
+  margin-left: 2%;
+}
+
+.arrowIcon {
+  width: 20px;
+  height: 20px;
+  align-self: center;
+  margin-left: 130px;
+}
+
+.workDropListItemText {
+  color: #003764;
+  font-family: Source Sans Pro;
+  margin-left: 10%;
+}

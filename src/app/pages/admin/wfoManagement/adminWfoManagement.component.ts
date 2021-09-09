@@ -3,10 +3,10 @@ import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css'],
+  templateUrl: './adminWfoManagement.component.html',
+  styleUrls: ['./adminWfoManagement.component.css'],
 })
-export class AdminComponent implements OnInit {
+export class AdminWfoManagementComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}

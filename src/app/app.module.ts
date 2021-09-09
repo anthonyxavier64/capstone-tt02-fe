@@ -12,14 +12,26 @@ import { AppComponent } from './app.component';
 import { TOKEN_KEY } from './config';
 import { MaterialModule } from './core/material.module';
 import { PrimeNgModule } from './core/primeng.module';
-import { AdminComponent } from './pages/admin/admin.component';
+import { AdminComponent } from './pages/admin/adminLanding/admin.component';
+import { AdminAnnouncementManagementComponent } from './pages/admin/announcementManagement/adminAnnouncementManagement.component';
+import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDetailsManagement/adminCompanyDetailsManagement.component';
+import { AdminEmployeeManagementComponent } from './pages/admin/employeeManagement/adminEmployeeManagement.component';
+import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
 import { IndexComponent } from './pages/index/index.component';
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
 }
 @NgModule({
-  declarations: [AppComponent, IndexComponent, AdminComponent],
+  declarations: [
+    AppComponent,
+    IndexComponent,
+    AdminComponent,
+    AdminCompanyDetailsManagementComponent,
+    AdminEmployeeManagementComponent,
+    AdminWfoManagementComponent,
+    AdminAnnouncementManagementComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
