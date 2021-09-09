@@ -14,9 +14,20 @@
         Work
       </button>
 
-      <mat-menu #workMenu="matMenu">
-        <button mat-menu-item>Goals</button>
-        <button mat-menu-item>Tasks</button>
+      <mat-menu class="workDropList" #workMenu="matMenu">
+        <h3 class="workDropListHeader">Work</h3>
+        <hr class="headerDivider">
+        <button class="workDropListItem" mat-menu-item>
+          <img class ="goalIcon" src="../../../assets/images/goalIcon.png">
+          <p class="workDropListItemText">Goals</p>
+          <img class="arrowIcon" src="../../../assets/images/arrowIcon.png">
+        </button>
+        <hr class="itemDivider">
+        <button class="workDropListItem" mat-menu-item>
+          <img class="taskIcon" src="../../../assets/images/taskIcon.png">
+          <p class="workDropListItemText">Tasks</p>
+          <img class="arrowIcon" src="../../../assets/images/arrowIcon.png">
+        </button>
       </mat-menu>
 
       <button class="navbarItem" mat-button>Calendar</button>

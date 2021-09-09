@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "commit": "cz"
   },
   "private": true,
   "dependencies": {
@@ -22,6 +23,7 @@
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
     "@auth0/angular-jwt": "^5.0.2",
+    "npm-font-source-sans-pro": "^1.0.2",
     "primeflex": "^3.0.1",
     "primeicons": "^4.1.0",
     "primeng": "^12.1.0",
