@@ -1,0 +1,21 @@
+.navbar {
+  padding-left: 2%;
+  padding-right: 2%;
+  height: 15%;
+  background-color: #c1e7e3;
+  border-radius: 15px;
+}
+
+.notificationIcon {
+  height: 30px;
+  width: 23.36;
+}
+
+.profileIcon {
+  height: 50px;
+  width: 50px;
+}
+
+.navbarItem {
+  color: #003764;
+}
