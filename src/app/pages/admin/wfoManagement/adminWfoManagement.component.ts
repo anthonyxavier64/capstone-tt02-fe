@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -10,7 +11,7 @@ export class AdminWfoManagementComponent implements OnInit {
   officeQuotaSelectBtn: String;
   altWorkTeamsSelection: String;
   officeQuotaSelection: String;
-  constructor() {
+  constructor(private _location: Location) {
     this.altWorkTeamSelectBtn = 'selectButton';
     this.officeQuotaSelectBtn = 'selectButton';
     this.altWorkTeamsSelection = 'wfoSelection';
@@ -18,6 +19,10 @@ export class AdminWfoManagementComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  onBackClick() {
+    this._location.back();
+  }
 
   onAltWorkTeamSelectClick() {
     this.altWorkTeamSelectBtn = 'selectedButton';
