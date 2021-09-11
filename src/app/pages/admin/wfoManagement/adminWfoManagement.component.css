@@ -1,0 +1,85 @@
+.firstRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.wfoSelection {
+  display: flex;
+  flex-direction: column;
+  background-color: #faf9f6;
+  width: 610px;
+  height: 680px;
+  margin-bottom: 40px;
+  align-content: center;
+  align-items: center;
+}
+
+.selectedWfoSelection {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffede7;
+  width: 610px;
+  height: 680px;
+  margin-bottom: 40px;
+  align-content: center;
+  align-items: center;
+}
+
+.itemTitle {
+  color: #003764;
+  font-family: Source Sans Pro;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 40px;
+  margin-top: 8%;
+}
+
+.itemContentSection {
+  margin-top: 50px;
+}
+
+.itemText {
+  color: #003764;
+  font-family: Source Sans Pro;
+  font-weight: lighter;
+  font-size: 28px;
+  line-height: 30px;
+}
+
+.selectionButtonRow {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10%;
+  justify-content: space-around;
+}
+
+.configureButton {
+  background-color: #ffffff;
+  color: rgba(0, 55, 100, 0.8);
+  font-size: 20px;
+  height: 55px;
+  width: 154px;
+  border-radius: 7px;
+  margin-right: 6%;
+}
+
+.selectButton {
+  background-color: rgba(255, 166, 135, 0.5);
+  color: rgba(0, 55, 100, 0.8);
+  font-size: 20px;
+  height: 55px;
+  width: 154px;
+  border-radius: 7px;
+  margin-left: 6%;
+}
+
+.selectedButton {
+  background-color: rgba(229, 229, 229, 0.5);
+  color: rgba(0, 55, 100, 0.5);
+  font-size: 20px;
+  height: 55px;
+  width: 154px;
+  border-radius: 7px;
+  margin-left: 6%;
+}

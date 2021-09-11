@@ -101,6 +101,7 @@ export function tokenGetter() {
     MatIconModule,
     MatMenuModule,
     MatCardModule,
+    MatButtonModule,
     PrimeNgModule,
     TableModule,
     InputTextareaModule,

@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-admin-wfoManagement',
@@ -7,12 +6,30 @@ import { MatMenuTrigger } from '@angular/material/menu';
   styleUrls: ['./adminWfoManagement.component.css'],
 })
 export class AdminWfoManagementComponent implements OnInit {
-  constructor() {}
+  altWorkTeamSelectBtn: String;
+  officeQuotaSelectBtn: String;
+  altWorkTeamsSelection: String;
+  officeQuotaSelection: String;
+  constructor() {
+    this.altWorkTeamSelectBtn = 'selectButton';
+    this.officeQuotaSelectBtn = 'selectButton';
+    this.altWorkTeamsSelection = 'wfoSelection';
+    this.officeQuotaSelection = 'wfoSelection';
+  }
 
   ngOnInit(): void {}
-  @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
 
-  openOnMouseOver() {
-    this.clickHoverMenuTrigger.openMenu();
+  onAltWorkTeamSelectClick() {
+    this.altWorkTeamSelectBtn = 'selectedButton';
+    this.altWorkTeamsSelection = 'selectedWfoSelection';
+    this.officeQuotaSelectBtn = 'selectButton';
+    this.officeQuotaSelection = 'wfoSelection';
+  }
+
+  onOfficeQuotaSelectClick() {
+    this.officeQuotaSelectBtn = 'selectedButton';
+    this.officeQuotaSelection = 'selectedWfoSelection';
+    this.altWorkTeamSelectBtn = 'selectButton';
+    this.altWorkTeamsSelection = 'wfoSelection';
   }
 }
