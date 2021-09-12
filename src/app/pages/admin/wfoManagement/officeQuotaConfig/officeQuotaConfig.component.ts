@@ -1,17 +1,36 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-
+import { FormBuilder } from '@angular/forms';
 @Component({
   selector: 'app-admin-office-quota-config',
   templateUrl: './officeQuotaConfig.component.html',
   styleUrls: ['./officeQuotaConfig.component.css'],
 })
 export class OfficeQuotaConfigComponent implements OnInit {
-  constructor(private _location: Location) {}
+  employeeCounterValue: number | null;
+
+  constructor(private _location: Location, private fb: FormBuilder) {
+    var cachedMaxEmployees = localStorage.getItem(
+      'officeQuotaConfigMaxEmployees'
+    );
+    console.log(cachedMaxEmployees);
+    if (cachedMaxEmployees !== null) {
+      this.employeeCounterValue = JSON.parse(cachedMaxEmployees);
+    } else {
+      this.employeeCounterValue = 0;
+    }
+  }
 
   ngOnInit(): void {}
 
   onBackClick() {
     this._location.back();
+  }
+
+  submit(value: any) {
+    localStorage.setItem(
+      'officeQuotaConfigMaxEmployees',
+      JSON.stringify(this.employeeCounterValue)
+    );
   }
 }

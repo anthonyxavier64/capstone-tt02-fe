@@ -1,0 +1,9 @@
+<div role="numberInputGroup">
+  <button class="buttonDown" (click)="decrement()">
+    <img src="../../../../assets/images/arrow-down.png" />
+  </button>
+  <input class="numberInput" value="{{ num }}" (keyup)="onKey($event)" />
+  <button class="buttonUp" (click)="increment()">
+    <img src="../../../../assets/images/arrow-up.png" />
+  </button>
+</div>

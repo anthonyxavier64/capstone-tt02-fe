@@ -1,0 +1,34 @@
+.numberInputGroup {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.buttonDown {
+  border-radius: 5px 1px 1px 5px;
+  border-collapse: separate;
+  border-color: rgba(0, 55, 100, 0.2);
+  border-width: 2px 0px 2px 2px inset;
+  background-color: #FAF9F6;
+  width: 38px;
+  height: 38px;
+}
+
+.numberInput {
+  height: 38px;
+  width: 83px;
+  fill: #FFFFFF;
+  border-color:rgba(0, 55, 100, 0.2);
+  font-family: 'Source Sans Pro';
+  text-align: center;
+}
+
+.buttonUp {
+  border-radius: 1px 5px 5px 1px;
+  border-collapse: separate;
+  border-color: rgba(0, 55, 100, 0.2);
+  border-width: 2px 2px 2px 0px inset;
+  background-color: #FAF9F6;
+  width: 38px;
+  height: 38px;
+}

@@ -15,8 +15,17 @@
   </div>
 
   <div>
-    <ng-form>
-      
-    </ng-form>
+    <form #form="ngForm" (ngSubmit)="submit(form.value)">
+      <div mat-form-field>
+        <label>Number of Employees Allowed in Office Per Day: </label>
+        <p>This is the ngModel Value: {{ employeeCounterValue }}</p>
+        <form-number-input
+          name="numberOfEmployees"
+          [(ngModel)]="employeeCounterValue"
+        ></form-number-input>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+    <!-- <pre>{{ form.value | json }}</pre> -->
   </div>
 </div>
