@@ -1,0 +1,55 @@
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.dialogTitle {
+  align-self: center;
+  font-size: 28px;
+  font-family: 'Source Sans Pro';
+  font-weight: bolder;
+  color: #FF0000;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.dialogContent {
+  color: #003764;
+  text-align: center;
+  font-size: 24px;
+  font-family: 'Source Sans Pro';
+  font-weight: normal;
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.closeButton {
+  background-color: rgba(255, 166, 135, 0.5);
+  color: rgba(0, 55, 100, 0.8);
+  font-family: 'Source Sans Pro';
+  font-size: 24px;
+  height: 45px;
+  width: 130px;
+  border-radius: 10px;
+  border: 0px;
+  align-self: center;
+  margin-top: 3%;
+  box-sizing: border-box;
+  white-space: nowrap;
+  vertical-align: baseline;
+  text-align: center;
+  line-height: 36px;
+  padding: 0 16px;
+  overflow: visible;
+
+  box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}

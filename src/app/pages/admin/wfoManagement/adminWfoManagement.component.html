@@ -1,75 +1,101 @@
-<div fxLayout="column" fxLayoutGap="3%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
+<div
+  fxLayout="column"
+  fxLayoutGap="3%"
+  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+>
   <app-navbar></app-navbar>
 
   <div class="headerBackButton">
     <div class="headerText">
-        Select your company's Work From Office arrangement:
+      Select your company's Work From Office arrangement:
     </div>
     <div>
-      <button mat-button class="backButton" (click)="onBackClick()">Back</button>
+      <button mat-button class="backButton" (click)="onBackClick()">
+        Back
+      </button>
     </div>
   </div>
 
   <div class="firstRow">
     <mat-card [ngClass]="[officeQuotaSelection]">
-      <mat-card-title >
+      <mat-card-title>
         <h2 class="itemTitle">Office Quotas</h2>
       </mat-card-title>
       <mat-card-content class="itemContentSection">
         <ul class="itemText">
+          <li>Limit number of employees in the office<br />per day</li>
+          <br />
+          <li>Limit number of work from office days for<br />each employee</li>
+          <br />
           <li>
-            Limit number of employees in the office<br>per day
+            Allow employees to self-declare their work<br />from office days
+            from Calendar
           </li>
-          <br>
+          <br />
           <li>
-            Limit number of work from office days for<br>each employee
-          </li>
-          <br>
-          <li>
-            Allow employees to self-declare their work<br>from office days from Calendar
-          </li>
-          <br>
-          <li>
-            Suitable for companies who requires a<br>flexible hybrid working arrangement
+            Suitable for companies who requires a<br />flexible hybrid working
+            arrangement
           </li>
         </ul>
       </mat-card-content>
       <mat-card-content class="selectionButtonRow">
-        <button mat-button class="configureButton">Configure</button>
-        <button mat-button [ngClass]="[officeQuotaSelectBtn]" (click)="onOfficeQuotaSelectClick()">Select</button>
+        <button
+          mat-button
+          class="configureButton"
+          (click)="onConfigureOfficeQuotaClick()"
+        >
+          Configure
+        </button>
+        <button
+          mat-button
+          [ngClass]="[officeQuotaSelectBtn]"
+          [disabled]="isOfficeQuotaSelectBtnClicked"
+          (click)="onOfficeQuotaSelectClick()"
+        >
+          Select
+        </button>
       </mat-card-content>
     </mat-card>
 
     <mat-card [ngClass]="[altWorkTeamsSelection]">
-      <mat-card-title >
+      <mat-card-title>
         <h2 class="itemTitle">Alternate Work Teams</h2>
       </mat-card-title>
       <mat-card-content class="itemContentSection">
         <ul class="itemText">
           <li>
-            Assign employees into 2 teams working on<br>rotational shifts
+            Assign employees into 2 teams working on<br />rotational shifts
           </li>
-          <br>
+          <br />
+          <li>Schedule fixed work from office days for<br />each team</li>
+          <br />
+          <li>Set period of rotation for each team</li>
+          <br />
           <li>
-            Schedule fixed work from office days for<br>each team
-          </li>
-          <br>
-          <li>
-            Set period of rotation for each team
-          </li>
-          <br>
-          <li>
-            Suitable for companies who requires<br>higher control over hybrid working<br>arrangement
+            Suitable for companies who requires<br />higher control over hybrid
+            working<br />arrangement
           </li>
         </ul>
       </mat-card-content>
       <mat-card-content class="selectionButtonRow">
-        <button mat-button class="configureButton">Configure</button>
-        <button mat-button [ngClass]="[altWorkTeamSelectBtn]" (click)="onAltWorkTeamSelectClick()">Select</button>
+        <button
+          mat-button
+          (click)="onConfigureAlternativeWorkTeamsClick()"
+          class="configureButton"
+        >
+          Configure
+        </button>
+        <button
+          mat-button
+          [ngClass]="[altWorkTeamSelectBtn]"
+          [disabled]="isAltWorkTeamSelectBtnClicked"
+          (click)="onAltWorkTeamSelectClick()"
+        >
+          Select
+        </button>
       </mat-card-content>
     </mat-card>
   </div>
-
 
   <!-- generate number of cards to show -->
 </div>
