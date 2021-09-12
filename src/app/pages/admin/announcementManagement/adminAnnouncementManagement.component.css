@@ -1,4 +1,5 @@
 .card {
+<<<<<<< HEAD
   position: relative;
 	top: 0;
 	opacity: 1;
@@ -47,12 +48,30 @@
 	max-width: 450px;
 	margin-left: 15px;
   background-color: rgb(252, 125, 111);
+=======
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 166, 135, 0.2);
+  width: 600px;
+  height: 400px;
+}
+
+.covidcard {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(252, 125, 111);
+  width: 600px;
+  height: 400px;
+>>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
 }
 
 .fontmanagement {
   color: #003764;
   font-family: Source Sans Pro;
   opacity: 1;
+<<<<<<< HEAD
 }
 
 .main-wrapper {
@@ -98,4 +117,6 @@
 
 .mat-icon-button.mat-blue {
 	color: #003764;
+=======
+>>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
 }

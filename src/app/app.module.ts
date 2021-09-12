@@ -20,7 +20,11 @@ import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWf
 import { IndexComponent } from './pages/index/index.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
+<<<<<<< HEAD
 import { EditAnnouncementComponent } from './pages/admin/edit-announcement/edit-announcement.component';
+=======
+import { EditAnnouncementComponent } from './admin/edit-announcement/edit-announcement.component';
+>>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
 import { DeleteAnnouncementComponent } from './pages/admin/delete-announcement/delete-announcement.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 
