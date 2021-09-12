@@ -1,0 +1,45 @@
+.card {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 166, 135, 0.2);
+  width: 600px;
+  height: 400px;
+}
+
+.fontmanagement {
+  color: #003764;
+  font-family: Source Sans Pro;
+  opacity: 1;
+}
+
+.main-wrapper {
+	height: 100%;
+}
+
+.main-wrapper .example-form {
+	min-width: 100%;
+	max-width: 300px;
+	width: 100%;
+}
+
+.main-wrapper .example-full-width,
+.main-wrapper .btn-block {
+	width: 100%;
+}
+
+.main-wrapper mat-card-header {
+	text-align: center;
+	width: 100%;
+	display: block;
+	font-weight: 700;
+}
+
+.main-wrapper mat-card-header mat-card-title {
+	font-size: 30px;
+	margin: 0;
+}
+
+.main-wrapper .mat-card {
+	padding: 45px 70px 55px;
+}

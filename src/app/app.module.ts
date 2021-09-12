@@ -20,6 +20,9 @@ import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWf
 import { IndexComponent } from './pages/index/index.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
+import { EditAnnouncementComponent } from './admin/edit-announcement/edit-announcement.component';
+import { DeleteAnnouncementComponent } from './pages/admin/delete-announcement/delete-announcement.component';
+import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -35,6 +38,9 @@ export function tokenGetter() {
     AdminWfoManagementComponent,
     AdminAnnouncementManagementComponent,
     ProfileComponent,
+    EditAnnouncementComponent,
+    DeleteAnnouncementComponent,
+    ViewAnnouncementComponent,
   ],
   imports: [
     BrowserModule,
