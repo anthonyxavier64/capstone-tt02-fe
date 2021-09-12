@@ -1,0 +1,23 @@
+.card {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 166, 135, 0.2);
+  width: 600px;
+  height: 400px;
+}
+
+.covidcard {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(252, 125, 111);
+  width: 600px;
+  height: 400px;
+}
+
+.fontmanagement {
+  color: #003764;
+  font-family: Source Sans Pro;
+  opacity: 1;
+}
