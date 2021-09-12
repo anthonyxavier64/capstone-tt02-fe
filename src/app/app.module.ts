@@ -39,6 +39,8 @@ import { AdminEmployeeManagementComponent } from './pages/admin/employeeManageme
 import { DeleteEmployeeDialogComponent } from './pages/admin/employeeManagement/delete-employee-dialog/delete-employee-dialog.component';
 import { EditEmployeeDialogComponent } from './pages/admin/employeeManagement/edit-employee-dialog/edit-employee-dialog.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
+import { AlternateWorkTeamsConfigComponent } from './pages/admin/wfoManagement/alternateWorkTeamsConfig/alternateWorkTeamsConfig.component';
+import { OfficeQuotaConfigComponent } from './pages/admin/wfoManagement/officeQuotaConfig/officeQuotaConfig.component';
 import { IndexComponent } from './pages/index/index.component';
 import { LoginComponent } from './pages/index/login/login.component';
 import { CompanyDetailsDialogComponent } from './pages/index/sign-up/company-details-dialog/company-details-dialog.component';
@@ -64,6 +66,8 @@ export function tokenGetter() {
     OfficeSpaceConfigComponent,
     AdminEmployeeManagementComponent,
     AdminWfoManagementComponent,
+    OfficeQuotaConfigComponent,
+    AlternateWorkTeamsConfigComponent,
     AdminAnnouncementManagementComponent,
     ProfileComponent,
     EditAnnouncementComponent,

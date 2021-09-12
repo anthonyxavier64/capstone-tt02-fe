@@ -2,6 +2,7 @@ import { BooleanInput } from '@angular/cdk/coercion';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-wfoManagement',
@@ -18,7 +19,11 @@ export class AdminWfoManagementComponent implements OnInit {
   isOfficeQuotaConfigured: Boolean;
   isAlternateWorkTeamConfigured: Boolean;
 
-  constructor(private _location: Location, private dialog: MatDialog) {
+  constructor(
+    private _location: Location,
+    private dialog: MatDialog,
+    private router: Router
+  ) {
     this.altWorkTeamSelectBtn = 'selectButton';
     this.officeQuotaSelectBtn = 'selectButton';
     this.altWorkTeamsSelection = 'wfoSelection';
@@ -36,7 +41,7 @@ export class AdminWfoManagementComponent implements OnInit {
   }
 
   onAltWorkTeamSelectClick() {
-    if (this.isAlternateWorkTeamConfigured) {
+    if (localStorage.getItem('isAlternateWorkTeamConfigured') === 'true') {
       this.isAltWorkTeamSelectBtnClicked = true;
       this.isOfficeQuotaSelectBtnClicked = false;
       this.altWorkTeamSelectBtn = 'selectedButton';
@@ -52,7 +57,7 @@ export class AdminWfoManagementComponent implements OnInit {
   }
 
   onOfficeQuotaSelectClick() {
-    if (this.isOfficeQuotaConfigured) {
+    if (localStorage.getItem('isOfficeQuotaConfigured') === 'true') {
       this.isOfficeQuotaSelectBtnClicked = true;
       this.isAltWorkTeamSelectBtnClicked = false;
       this.officeQuotaSelectBtn = 'selectedButton';
@@ -69,10 +74,21 @@ export class AdminWfoManagementComponent implements OnInit {
 
   onConfigureOfficeQuotaClick() {
     this.isOfficeQuotaConfigured = true;
+
+    localStorage.setItem(
+      'isOfficeQuotaConfigured',
+      JSON.stringify(this.isOfficeQuotaConfigured)
+    );
+    this.router.navigateByUrl('/officeQuotaConfig');
   }
 
   onConfigureAlternativeWorkTeamsClick() {
     this.isAlternateWorkTeamConfigured = true;
+    localStorage.setItem(
+      'isAlternateWorkTeamConfigured',
+      JSON.stringify(this.isAlternateWorkTeamConfigured)
+    );
+    this.router.navigateByUrl('/alternateWorkTeamsConfig');
   }
 }
 
