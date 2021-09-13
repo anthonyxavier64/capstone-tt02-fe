@@ -2,13 +2,8 @@ import { AnnouncementType } from "../models/announcement-type";
 
 export class Announcement {
   announcementId: number | undefined;
-<<<<<<< HEAD
   title: string | undefined;
   description: string | undefined;
-=======
-  title: String | undefined;
-  description: String | undefined;
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
   date: Date | undefined;
   announcementType: AnnouncementType | undefined;
 

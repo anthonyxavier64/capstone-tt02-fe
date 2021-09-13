@@ -2,7 +2,6 @@
   <app-navbar></app-navbar>
   <div style="font-size:25px;">
     Welcome [Username], manage all of your announcements here:
-<<<<<<< HEAD
   </div>
   <br />
   <div>
@@ -61,90 +60,20 @@
         </mat-card>
       </div>
     </mat-expansion-panel>
-=======
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
   </div>
   <br />
-  <div>
-    <mat-card class="card">
-      <mat-card-header>
-        <mat-card-title class="fontmanagement"><b>Create Announcement</b></mat-card-title>
-      </mat-card-header>
-      <form #createAnnouncementForm="ngForm" (ngSubmit)="create(createAnnouncementForm)">
-        <mat-card-content>
-          <mat-form-field>
-            <mat-label>Announcement Title:</mat-label>
-            <input matInput id="title" name="title" type="text" #title="ngModel" [(ngModel)]="announcement.title"
-              required="true" />
-            <mat-error *ngIf="title.invalid && (title.dirty || title.touched || submitted)">
-              <div *ngIf="title.errors != null && title.errors.required">
-                Announcement Title is required.
-              </div>
-            </mat-error>
-          </mat-form-field>
-          <br />
-          <mat-form-field>
-            <mat-label>Announcement Description:</mat-label>
-            <textarea matInput id="description" name="description" #description="ngModel"
-              [(ngModel)]="announcement.description"></textarea>
-            <mat-error *ngIf="description.invalid && (description.dirty || description.touched || submitted)">
-              <div *ngIf="description.errors != null && description.errors.required">
-                Announcement Description is required.
-              </div>
-            </mat-error>
-          </mat-form-field>
-          <br />
-          <mat-form-field>
-            <mat-label>Announcement Type:</mat-label>
-            <mat-select id="announcementType" name="announcementType" [(ngModel)]="announcementType">
-              <mat-option value="COVID_RELATED">COVID-19 Related</mat-option>
-              <mat-option value="GENERAL">General</mat-option>
-            </mat-select>
-          </mat-form-field>
 
-<<<<<<< HEAD
   <div>
     <h2 class="fontmanagement"><b>Announcements</b></h2>
     <mat-tab-group>
       <mat-tab label="Covid-19 Related">
         <br />
         <mat-card *ngFor="let cannouncement of covidAnnouncements" class="covidcard">
-=======
-        </mat-card-content>
-
-        <button mat-stroked-button color="primary" (click)="clear()">Clear</button>&nbsp;
-        <button mat-stroked-button color="primary" type="submit">Submit</button>&nbsp;
-      </form>
-      <div *ngIf="resultSuccess == true" style="color:blue;">
-        {{message}}
-      </div>
-      <div *ngIf="resultError == true" style="color:red;">
-        {{message}}
-      </div>
-    </mat-card>
-  </div>
-
-  <div>
-    <h3 class="fontmanagement"><b>Announcements</b></h3>
-    <mat-tab-group>
-      <mat-tab label="Covid-19 Related">
-        <mat-card class="covidcard">
-          <mat-card-header>
-            <mat-card-title>COVID-19 Announcement</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <h4>Posted On: 09-09-2021</h4>
-            <p>Description: testing</p>
-          </mat-card-content>
-        </mat-card>
-        <mat-card *ngFor="let cannouncement of covidAnnouncements" class="card">
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
           <mat-card-header>
             <mat-card-title>{{cannouncement.title}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <h4>Posted On: {{cannouncement.date}}</h4>
-<<<<<<< HEAD
           </mat-card-content>
           <mat-card-actions style="text-align: right;">
             <button mat-icon-button color="blue" (click)="viewAnnouncement(cannouncement)">
@@ -162,35 +91,11 @@
       <mat-tab label="General">
         <br />
         <mat-card *ngFor="let gannouncement of generalAnnouncements" class="viewcard">
-=======
-            <p>Description: {{cannouncement.description}}</p>
-          </mat-card-content>
-          <button mat-stroked-button color="primary" (click)="viewAnnouncement(cannouncement)">View More</button>
-          <button mat-stroked-button color="primary"
-            routerLink="/editAnnouncement/{{cannouncement.announcementId}}">Edit</button>
-          <button mat-stroked-button color="primary"
-            (click)="deleteAnnouncement(cannouncement.announcementId)">Delete</button>
-        </mat-card>
-      </mat-tab>
-      <mat-tab label="General">
-        <mat-card class="card">
-          <mat-card-header>
-            <mat-card-title>General Announcement</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <h4>Posted On: 09-09-2021</h4>
-            <p>Description: testing</p>
-          </mat-card-content>
-          <button mat-stroked-button color="primary" class="btn-block">View More</button>
-        </mat-card>
-        <mat-card *ngFor="let gannouncement of generalAnnouncements" class="card">
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
           <mat-card-header>
             <mat-card-title>{{gannouncement.title}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <h4>Posted On: {{gannouncement.date}}</h4>
-<<<<<<< HEAD
           </mat-card-content>
           <mat-card-actions style="text-align: right;">
             <button mat-icon-button color="blue" (click)="viewAnnouncement(gannouncement)">
@@ -203,15 +108,6 @@
               <mat-icon>delete</mat-icon>
             </button>
           </mat-card-actions>
-=======
-            <p>Description: {{gannouncement.description}}</p>
-          </mat-card-content>
-          <button mat-stroked-button color="primary" (click)="viewAnnouncement(gannouncement)">View More</button>
-          <button mat-stroked-button color="primary"
-            routerLink="/editAnnouncement/{{gannouncement.announcementId}}">Edit</button>
-          <button mat-stroked-button color="primary"
-            (click)="deleteAnnouncement(gannouncement.announcementId)">Delete</button>
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
         </mat-card>
       </mat-tab>
     </mat-tab-group>
