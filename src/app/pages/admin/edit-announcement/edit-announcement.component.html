@@ -1,5 +1,4 @@
 <div class="main-wrapper" fxLayout="column" fxLayoutGap="3%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
-<<<<<<< HEAD
   <h1 mat-dialog-title><b class="fontmanagement">Edit Announcement</b></h1>
 
   <div mat-dialog-content>
@@ -12,18 +11,6 @@
         <mat-form-field class="example-full-width">
           <mat-label>Title</mat-label>
           <input matInput id="title" name="title" #title="ngModel" type="text" [(ngModel)]="titleToUpdate"
-=======
-  <app-navbar></app-navbar>
-  <mat-card class="card">
-    <mat-card-header>
-      <mat-card-title class="fontmanagement"><b>Edit Announcement</b></mat-card-title>
-    </mat-card-header>
-    <form class="example-form" #updateAnnouncementForm="ngForm" (ngSubmit)="update(updateAnnouncementForm)">
-      <mat-card-content>
-        <mat-form-field class="example-full-width">
-          <mat-label>Title</mat-label>
-          <input matInput id="title" name="title" #title="ngModel" type="text" [(ngModel)]="announcementToUpdate.title"
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
             required="true" />
         </mat-form-field>
         <mat-error *ngIf="title.invalid && (title.dirty || title.touched || submitted)" class="errorText">
@@ -31,24 +18,16 @@
             Announcement Title is required.
           </div>
         </mat-error>
-<<<<<<< HEAD
       </div>
 
       <div>
         <mat-form-field>
           <mat-label>Announcement Type:</mat-label>
           <mat-select id="announcementType" name="announcementType" [(ngModel)]="announcementType" required="true">
-=======
-
-        <mat-form-field>
-          <mat-label>Announcement Type:</mat-label>
-          <mat-select id="announcementType" name="announcementType" [(ngModel)]="announcementType">
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
             <mat-option value="COVID_RELATED">COVID-19 Related</mat-option>
             <mat-option value="GENERAL">General</mat-option>
           </mat-select>
         </mat-form-field>
-<<<<<<< HEAD
       </div>
 
       <div>
@@ -56,20 +35,12 @@
           <mat-label>Description</mat-label>
           <textarea matInput id="description" name="description" #description="ngModel"
             [(ngModel)]="descriptionToUpdate" required="true"></textarea>
-=======
-
-        <mat-form-field class="example-full-width">
-          <mat-label>Description</mat-label>
-          <textarea matInput id="description" name="description" #description="ngModel"
-            [(ngModel)]="announcementToUpdate.description"></textarea>
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
         </mat-form-field>
         <mat-error *ngIf="description.invalid && (description.dirty || description.touched || submitted)">
           <div *ngIf="description.errors != null && description.errors.required">
             Announcement Description is required.
           </div>
         </mat-error>
-<<<<<<< HEAD
       </div>
       <div mat-dialog-actions>
         <button mat-raised-button color="blue" type="submit" [mat-dialog-close]="true">Save</button>
@@ -134,20 +105,4 @@
     </mat-card>
   </div>
 -->
-=======
-
-      </mat-card-content>
-      <button mat-stroked-button color="primary" class="btn-block"
-        routerLink="/adminAnnouncementManagement">Back</button>
-      <button mat-stroked-button color="primary" class="btn-block" *ngIf="resultSuccess == false"
-        type="submit">Update</button>
-    </form>
-    <div *ngIf="resultSuccess == true" style="color:blue;">
-      {{message}}
-    </div>
-    <div *ngIf="resultError == true" style="color:red;">
-      {{message}}
-    </div>
-  </mat-card>
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
 </div>

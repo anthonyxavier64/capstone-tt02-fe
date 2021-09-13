@@ -4,15 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { EditAnnouncementComponent } from '../edit-announcement/edit-announcement.component';
 import { MatDialog } from '@angular/material/dialog';
-<<<<<<< HEAD
-=======
-
-import { Announcement } from '../../../models/announcement';
-import { AnnouncementService } from '../../../services/announcement/announcement.service';
-import { AnnouncementType } from '../../../models/announcement-type';
-import { DeleteAnnouncementComponent } from '../delete-announcement/delete-announcement.component';
-import { ViewAnnouncementComponent } from '../../view-announcement/view-announcement.component';
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
 
 import { Announcement } from '../../../models/announcement';
 import { AnnouncementService } from '../../../services/announcement/announcement.service';
@@ -28,15 +19,9 @@ let counter: number = 1;
 })
 export class AdminAnnouncementManagementComponent implements OnInit {
   submitted: boolean;
-<<<<<<< HEAD
   newAnnouncement: Announcement;
   announcementToUpdate: Announcement;
   announcementType: string | undefined;
-=======
-  announcement: Announcement;
-  announcementToUpdate: Announcement;
-  announcementType: String | undefined;
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
 
   covidAnnouncements: Announcement[];
   generalAnnouncements: Announcement[];
@@ -45,28 +30,20 @@ export class AdminAnnouncementManagementComponent implements OnInit {
   resultError: boolean;
   message: string | undefined;
 
-<<<<<<< HEAD
   panelOpenState: boolean;
 
-=======
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
   constructor(private announcementService: AnnouncementService,
     private matDialog: MatDialog,
     private router: Router,
     private activatedRoute: ActivatedRoute,) {
     this.submitted = false;
-<<<<<<< HEAD
     this.newAnnouncement = new Announcement();
-=======
-    this.announcement = new Announcement();
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
     this.announcementToUpdate = new Announcement();
     this.covidAnnouncements = new Array();
     this.generalAnnouncements = new Array();
 
     this.resultSuccess = false;
     this.resultError = false;
-<<<<<<< HEAD
     this.panelOpenState = false;
   }
 
@@ -79,11 +56,6 @@ export class AdminAnnouncementManagementComponent implements OnInit {
     //}
 
     /*
-=======
-  }
-
-  ngOnInit(): void {
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
     this.announcementService.getCovidAnnouncements().subscribe(
       response => {
         this.covidAnnouncements = response;
@@ -101,10 +73,7 @@ export class AdminAnnouncementManagementComponent implements OnInit {
         console.log('********** AdminAnnouncementManagementComponent.ts: ' + error);
       }
     );
-<<<<<<< HEAD
     */
-=======
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
   }
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
 
@@ -114,11 +83,7 @@ export class AdminAnnouncementManagementComponent implements OnInit {
 
   clear() {
     this.submitted = false;
-<<<<<<< HEAD
     this.newAnnouncement = new Announcement();
-=======
-    this.announcement = new Announcement();
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
   }
 
   create(createAnnouncementForm: NgForm) {
@@ -131,7 +96,6 @@ export class AdminAnnouncementManagementComponent implements OnInit {
       console.log('********** AdminAnnouncementManagementComponent.ts: ERROR **********');
     }
 
-<<<<<<< HEAD
     if (this.announcementType == 'COVID_RELATED') {
 
       this.covidAnnouncements.push(this.newAnnouncement);
@@ -159,15 +123,6 @@ export class AdminAnnouncementManagementComponent implements OnInit {
     this.newAnnouncement = new Announcement();
     /*
     this.announcementService.createAnnouncement(this.announcement.title, this.announcement.description, this.announcement.announcementType).subscribe(
-=======
-    if (this.announcementType = 'COVID-19 Related') {
-      this.announcement.announcementType = AnnouncementType.COVID_RELATED;
-    }
-    this.announcement.announcementType = AnnouncementType.GENERAL;
-    this.announcement.date = new Date();
-
-    this.announcementService.createAnnouncement(this.announcement).subscribe(
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
       response => {
         let newAnnouncementId: number = response;
         this.resultSuccess = true;
@@ -182,7 +137,6 @@ export class AdminAnnouncementManagementComponent implements OnInit {
         console.log(`********** AdminAnnouncementManagementComponent.ts: ${error}`);
       }
     );
-<<<<<<< HEAD
     */
   }
 
@@ -195,19 +149,6 @@ export class AdminAnnouncementManagementComponent implements OnInit {
       }
     });
     viewDialog.afterClosed().subscribe(result => {
-=======
-  }
-
-  viewAnnouncement(announcement?: Announcement) {
-    const confirmDialog = this.matDialog.open(ViewAnnouncementComponent, {
-      data: {
-        title: announcement?.title != null ? announcement.title : "Announcement",
-        date: announcement?.date != null ? announcement.date : new Date(),
-        description: announcement?.description != null ? announcement.description : "Description",
-      }
-    });
-    confirmDialog.afterClosed().subscribe(result => {
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
       if (result === false) {
         return;
       }
@@ -226,7 +167,6 @@ export class AdminAnnouncementManagementComponent implements OnInit {
 
   editAnnouncement(announcement?: Announcement) {
     //this.announcementToUpdate = this.announcementService.getAnnouncement(parseInt(announcementId));
-<<<<<<< HEAD
     console.log(announcement);
     const editDialog = this.matDialog.open(EditAnnouncementComponent, {
       width: '400px',
@@ -236,18 +176,10 @@ export class AdminAnnouncementManagementComponent implements OnInit {
         date: announcement?.date,
         typeOfAnnouncement: announcement?.announcementType,
         description: announcement?.description
-=======
-    const editDialog = this.matDialog.open(EditAnnouncementComponent, {
-      data: {
-        title: announcement?.title != null ? announcement.title : "Announcement",
-        date: announcement?.date != null ? announcement.date : new Date(),
-        description: announcement?.description != null ? announcement.description : "Description",
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
       }
     });
 
     editDialog.afterClosed().subscribe(result => {
-<<<<<<< HEAD
       if (result == false) {
         return;
       }
@@ -290,13 +222,6 @@ export class AdminAnnouncementManagementComponent implements OnInit {
       }
       this.announcementService.updateAnnouncement(announcementToUpdate?.announcementId,
         announcementToUpdate?.title, announcementToUpdate?.description, announcementToUpdate.announcementType ).subscribe(
-=======
-      if (result === false) {
-        return;
-      }
-
-      this.announcementService.updateAnnouncement(announcement?.announcementId).subscribe(
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
         response => {
           this.router.navigate(['/adminAnnouncementManagement']);
         },
@@ -306,18 +231,11 @@ export class AdminAnnouncementManagementComponent implements OnInit {
           console.log('********** AdminAnnouncementManagementComponent.ts: ' + error);
         }
       );
-<<<<<<< HEAD
       */
     });
   }
 
   deleteAnnouncement(announcement: Announcement) {
-=======
-    });
-  }
-
-  deleteAnnouncement(announcementId?: number) {
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
     const confirmDialog = this.matDialog.open(DeleteAnnouncementComponent, {
       data: {
         title: 'Delete Announcement Confirmation',
@@ -328,7 +246,6 @@ export class AdminAnnouncementManagementComponent implements OnInit {
       if (result === false) {
         return;
       }
-<<<<<<< HEAD
 
       if (announcement.announcementType == AnnouncementType.COVID_RELATED) {
         var announcementIndex = this.covidAnnouncements.findIndex(existing => { existing === announcement });
@@ -342,11 +259,6 @@ export class AdminAnnouncementManagementComponent implements OnInit {
       }
 
       /*
-=======
-      if (announcementId == null) {
-        return;
-      }
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
       this.announcementService.deleteAnnouncement(announcementId).subscribe(
         response => {
           this.router.navigate(['/adminAnnouncementManagement']);
@@ -357,10 +269,7 @@ export class AdminAnnouncementManagementComponent implements OnInit {
           console.log('********** AdminAnnouncementManagementComponent.ts: ' + error);
         }
       );
-<<<<<<< HEAD
       */
-=======
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
     });
   }
 }

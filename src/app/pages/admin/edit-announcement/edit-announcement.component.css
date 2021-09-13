@@ -1,5 +1,4 @@
 .card {
-<<<<<<< HEAD
   position: relative;
 	top: 0;
 	opacity: 1;
@@ -14,14 +13,6 @@
 	max-width: 800px;
 	margin-left: 15px;
   background-color: rgba(255, 166, 135, 0.2);
-=======
-  align-self: center;
-  display: flex;
-  flex-direction: column;
-  background-color: rgba(255, 166, 135, 0.2);
-  width: 600px;
-  height: 400px;
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
 }
 
 .fontmanagement {
@@ -60,7 +51,6 @@
 .main-wrapper .mat-card {
 	padding: 45px 70px 55px;
 }
-<<<<<<< HEAD
 
 .main-wrapper .mat-stroked-button {
 	border: 1px solid currentColor;
@@ -81,5 +71,3 @@
 .mat-raised-button.mat-blue {
 	color: #003764;
 }
-=======
->>>>>>> e7ee119 ([Announcement CRUD]created files for announcement model,added create and view ops under announcement management, created view edit & delete announcement components)
