@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -49,7 +50,6 @@ import { TierInfoDialogComponent } from './pages/index/sign-up/tier-info-dialog/
 import { ChangePasswordComponent } from './pages/profile/change-password/change-password.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
-import { NumberInputComponent } from './sharedComponents/formInputFields/numberInputs/number-input.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
 import { AdminGuideComponent } from './pages/admin/adminLanding/admin-guide/admin-guide.component';
 
@@ -60,7 +60,6 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
     NavbarComponent,
-    NumberInputComponent,
     IndexComponent,
     LoginComponent,
     AdminComponent,
@@ -109,6 +108,8 @@ export function tokenGetter() {
     MatCardModule,
     MatButtonModule,
     MatDialogModule,
+    MatSelectModule,
+    MatAutocompleteModule,
     PrimeNgModule,
     TableModule,
     InputTextareaModule,

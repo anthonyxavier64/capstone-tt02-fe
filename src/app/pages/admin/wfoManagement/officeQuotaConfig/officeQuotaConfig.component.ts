@@ -7,7 +7,11 @@ import { FormBuilder } from '@angular/forms';
   styleUrls: ['./officeQuotaConfig.component.css'],
 })
 export class OfficeQuotaConfigComponent implements OnInit {
-  employeeCounterValue: number | null;
+  employeeCounterValue: number;
+  allEmployees: string[];
+  selectedEmployee: String;
+  wfoDaysLimit: number;
+  exceptionDaysLimit: number;
 
   constructor(private _location: Location, private fb: FormBuilder) {
     var cachedMaxEmployees = localStorage.getItem(
@@ -19,6 +23,17 @@ export class OfficeQuotaConfigComponent implements OnInit {
     } else {
       this.employeeCounterValue = 0;
     }
+    this.allEmployees = [
+      'Nick',
+      'Bob',
+      'Sam',
+      'Tom',
+      'Alice',
+      'Beatrice',
+      'Barbara',
+    ];
+    this.wfoDaysLimit = 8;
+    this.exceptionDaysLimit = 2;
   }
 
   ngOnInit(): void {}

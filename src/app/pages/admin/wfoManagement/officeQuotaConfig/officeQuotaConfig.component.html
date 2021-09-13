@@ -15,17 +15,83 @@
   </div>
 
   <div>
-    <form #form="ngForm" (ngSubmit)="submit(form.value)">
-      <div mat-form-field>
-        <label>Number of Employees Allowed in Office Per Day: </label>
-        <p>This is the ngModel Value: {{ employeeCounterValue }}</p>
-        <form-number-input
-          name="numberOfEmployees"
-          [(ngModel)]="employeeCounterValue"
-        ></form-number-input>
+    <ng-form class="officeQuotaForm">
+      <div class="formGroup">
+        <label class="labelText" for="employeesAllowed"
+          >Number of employees allowed in office per day:</label
+        >
+        <input
+          matInput
+          class="numberInput"
+          name="employeesAllowed"
+          type="number"
+          [max]="31"
+          [min]="0"
+          [placeholder]="employeeCounterValue"
+        />
       </div>
-      <button type="submit">Submit</button>
-    </form>
-    <!-- <pre>{{ form.value | json }}</pre> -->
+      <div class="formGroup">
+        <label class="labelText" for="wfoDaysAllowed"
+          >Number of days each employee is allowed to work from office per
+          month:</label
+        >
+        <input
+          matInput
+          class="numberInput"
+          name="wfoDaysAllowed"
+          type="number"
+          [max]="31"
+          [min]="0"
+          [placeholder]="wfoDaysLimit"
+        />
+      </div>
+      <div class="formGroupException">
+        <label class="labelText" style="margin-top: 1%">Exceptions: </label>
+        <div class="nameButtonRows">
+          <div class="formGroupException">
+            <mat-form-field style="margin-left: 3%">
+              <mat-label for="employeeExceptions">Choose Employee </mat-label>
+              <mat-select
+                [(ngModel)]="selectedEmployee"
+                name="employeeExceptions"
+                appearance="fill"
+              >
+                <mat-option
+                  *ngFor="let employee of allEmployees"
+                  [value]="employee"
+                >
+                  {{ employee }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <p class="labelText" style="margin-left: 5%; margin-top: 3.5%">=</p>
+            <input
+              matInput
+              class="numberInput"
+              name="exceptionDaysLimit"
+              type="number"
+              [max]="31"
+              [min]="0"
+              [placeholder]="exceptionDaysLimit"
+            />
+            <p class="labelText" style="margin-left: 5%; margin-top: 3.5%">
+              days
+            </p>
+            <button mat-flat-button style="margin-left: 5%; opacity: 0.7">
+              <img src="../../../../../assets/images/cross.png" />
+            </button>
+          </div>
+          <div>
+            <button mat-flat-button class="addExceptionBtn">
+              <div style="float: left" class="btnText">Add Exception...</div>
+              <div style="float: inline-end; text-align: right" class="btnText">
+                +
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+      <button mat-button class="saveBtn">Save</button>
+    </ng-form>
   </div>
 </div>
