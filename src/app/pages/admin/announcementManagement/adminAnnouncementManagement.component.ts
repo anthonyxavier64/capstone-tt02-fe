@@ -29,6 +29,8 @@ export class AdminAnnouncementManagementComponent implements OnInit {
   resultError: boolean;
   message: string | undefined;
 
+  panelOpenState: boolean;
+
   constructor(private announcementService: AnnouncementService,
     private matDialog: MatDialog,
     private router: Router,
@@ -41,6 +43,7 @@ export class AdminAnnouncementManagementComponent implements OnInit {
 
     this.resultSuccess = false;
     this.resultError = false;
+    this.panelOpenState = false;
   }
 
   ngOnInit(): void {

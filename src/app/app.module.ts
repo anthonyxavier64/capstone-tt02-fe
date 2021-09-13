@@ -20,7 +20,7 @@ import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWf
 import { IndexComponent } from './pages/index/index.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
-import { EditAnnouncementComponent } from './admin/edit-announcement/edit-announcement.component';
+import { EditAnnouncementComponent } from './pages/admin/edit-announcement/edit-announcement.component';
 import { DeleteAnnouncementComponent } from './pages/admin/delete-announcement/delete-announcement.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 
@@ -64,4 +64,4 @@ export function tokenGetter() {
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

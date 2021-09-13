@@ -8,6 +8,7 @@ import { AdminEmployeeManagementComponent } from './pages/admin/employeeManageme
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
 import { IndexComponent } from './pages/index/index.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { EditAnnouncementComponent } from './pages/admin/edit-announcement/edit-announcement.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
@@ -29,6 +30,10 @@ const routes: Routes = [
     path: 'adminAnnouncementManagement',
     component: AdminAnnouncementManagementComponent,
   },
+  {
+    path: 'adminAnnouncementManagement/edit/:announcementId',
+    component: EditAnnouncementComponent,
+  },
   { path: 'profile', component: ProfileComponent },
 ];
 
@@ -36,4 +41,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
