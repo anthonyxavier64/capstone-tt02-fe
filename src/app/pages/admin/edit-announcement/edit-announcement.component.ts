@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
 import { Announcement } from 'src/app/models/announcement';
+import { AnnouncementType } from '../../../models/announcement-type';
 import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
 //import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -16,6 +17,7 @@ export class EditAnnouncementComponent implements OnInit {
   submitted: boolean;
   announcementId: string | null;
   announcementToUpdate: Announcement;
+  announcementType: String | undefined;
   retrieveAnnouncementError: boolean;
 
   resultSuccess: boolean;
@@ -60,6 +62,12 @@ export class EditAnnouncementComponent implements OnInit {
       this.resultSuccess = false;
       return;
     }
+
+    if (this.announcementType = 'COVID-19 Related') {
+      this.announcementToUpdate.announcementType = AnnouncementType.COVID_RELATED;
+    }
+    this.announcementToUpdate.announcementType = AnnouncementType.GENERAL;
+    this.announcementToUpdate.date = new Date();
 
     this.announcementService.updateAnnouncement(this.announcementToUpdate.announcementId, this.announcementToUpdate).subscribe(
       response => {
