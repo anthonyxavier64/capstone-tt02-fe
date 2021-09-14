@@ -1,17 +1,17 @@
-import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthGuard } from './guards/auth.guard';
-import { AdminComponent } from './pages/admin/adminLanding/admin.component';
 import { AdminAnnouncementManagementComponent } from './pages/admin/announcementManagement/adminAnnouncementManagement.component';
 import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDetailsManagement/adminCompanyDetailsManagement.component';
-import { EditAnnouncementComponent } from './pages/admin/edit-announcement/edit-announcement.component';
+import { AdminComponent } from './pages/admin/adminLanding/admin.component';
 import { AdminEmployeeManagementComponent } from './pages/admin/employeeManagement/adminEmployeeManagement.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
+import { AuthGuard } from './guards/auth.guard';
+import { EditAnnouncementComponent } from './pages/admin/edit-announcement/edit-announcement.component';
 import { IndexComponent } from './pages/index/index.component';
 import { LoginComponent } from './pages/index/login/login.component';
-import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
+import { NgModule } from '@angular/core';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
@@ -46,4 +46,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
