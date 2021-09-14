@@ -1,13 +1,13 @@
-import { User } from 'src/app/models/user';
-import { AuthService } from 'src/app/services/user/auth.service';
-
 import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
   OnInit,
 } from '@angular/core';
+
+import { AuthService } from 'src/app/services/user/auth.service';
 import { Router } from '@angular/router';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-index',
@@ -36,8 +36,7 @@ export class IndexComponent implements OnInit, AfterViewInit {
     this.router.navigateByUrl('/login');
   }
 
-  handleLoginPopup() {
-  }
+  handleLoginPopup() {}
   onSignUpClick() {
     this.router.navigateByUrl('/signUp');
   }

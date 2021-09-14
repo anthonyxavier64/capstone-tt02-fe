@@ -1,18 +1,16 @@
-//import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
-
-import { User } from 'src/app/models/user';
-import { DepartmentService } from 'src/app/services/department/department.service';
-import { UserService } from 'src/app/services/user/user.service';
-
-import { DataSource } from '@angular/cdk/collections';
-import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 
-import { firebaseStorage } from '../../../../firebase/firebase';
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
+import { DepartmentService } from 'src/app/services/department/department.service';
+import { Location } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
+import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/user/user.service';
+import { firebaseStorage } from '../../../../firebase/firebase';
 
 @Component({
   selector: 'app-admin-employeeManagement',
@@ -21,6 +19,7 @@ import { DepartmentPartOfComponent } from '../dialogs/department-part-of/departm
 })
 export class AdminEmployeeManagementComponent implements OnInit {
   user: User;
+
   currNewUserEmail: String;
   currNewUserPosition: String;
   currNewUserFullName: String;
@@ -36,6 +35,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
   allUsers: any;
 
   csvDownloadUrl: string;
+
   constructor(
     private _location: Location,
     private userService: UserService,
@@ -117,7 +117,6 @@ export class AdminEmployeeManagementComponent implements OnInit {
     deptPartOfDialogRef.afterClosed().subscribe((result) => {
       this.partOfDepartments = result;
     });
-    // How to attach departments to user?
   }
 
   downloadCSVTemplate() {
@@ -166,6 +165,15 @@ export class AdminEmployeeManagementComponent implements OnInit {
 
     console.log(JSON.stringify(user));
 
-    this.userService.createNewUser(user);
+    let newUserId = null;
+    this.userService.createNewUser(user).subscribe((response) => {
+      newUserId = response.user.userId;
+      console.log(newUserId);
+      if (!newUserId) {
+      } else {
+        console.log('send email');
+        this.userService.sendVerificationEmail(newUserId);
+      }
+    });
   }
 }
