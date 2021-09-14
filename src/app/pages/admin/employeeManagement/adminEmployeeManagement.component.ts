@@ -1,4 +1,6 @@
+import { User } from 'src/app/models/user';
 import { DepartmentService } from 'src/app/services/department/department.service';
+import { GetAllEmployeesService } from 'src/app/services/user/get-all-employees.service';
 //import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -16,7 +18,7 @@ import { DepartmentPartOfComponent } from '../dialogs/department-part-of/departm
   styleUrls: ['./adminEmployeeManagement.component.css'],
 })
 export class AdminEmployeeManagementComponent implements OnInit {
-  user;
+  user: User;
 
   currNewUserEmail: String;
   currNewUserPosition: String;
