@@ -7,7 +7,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -66,6 +68,8 @@ export function tokenGetter() {
     MatSelectModule,
     MatIconModule,
     MatMenuModule,
+    MatPaginatorModule,
+    MatTableModule,
     PrimeNgModule,
     DropdownModule,
     JwtModule.forRoot({
