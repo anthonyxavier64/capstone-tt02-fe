@@ -69,21 +69,22 @@ export class EditAnnouncementComponent implements OnInit {
     this.announcementToUpdate.announcementType = AnnouncementType.GENERAL;
     this.announcementToUpdate.date = new Date();
 
-    this.announcementService.updateAnnouncement(this.announcementToUpdate.announcementId, this.announcementToUpdate).subscribe(
-      response => {
-        this.resultSuccess = true;
-        this.resultError = false;
-        this.message = "Announcement updated successfully";
-        this.router.navigate(['/adminAnnouncementManagement']);
-      },
-      error => {
-        this.resultError = true;
-        this.resultSuccess = false;
-        this.message = `An error has occurred while updating the announcement: ${error}`;
+    this.announcementService.updateAnnouncement(this.announcementToUpdate.announcementId,
+      this.announcementToUpdate.title, this.announcementToUpdate.description, this.announcementToUpdate.announcementType).subscribe(
+        response => {
+          this.resultSuccess = true;
+          this.resultError = false;
+          this.message = "Announcement updated successfully";
+          this.router.navigate(['/adminAnnouncementManagement']);
+        },
+        error => {
+          this.resultError = true;
+          this.resultSuccess = false;
+          this.message = `An error has occurred while updating the announcement: ${error}`;
 
-        console.log(`********** EditAnnouncementComponent.ts: ${error}`);
-      }
-    );
+          console.log(`********** EditAnnouncementComponent.ts: ${error}`);
+        }
+      );
 
   }
 

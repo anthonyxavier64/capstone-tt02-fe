@@ -112,9 +112,9 @@ export class AdminAnnouncementManagementComponent implements OnInit {
   viewAnnouncement(announcement?: Announcement) {
     const confirmDialog = this.matDialog.open(ViewAnnouncementComponent, {
       data: {
-        title: announcement?.title != null ? announcement.title : "Announcement",
-        date: announcement?.date != null ? announcement.date : new Date(),
-        description: announcement?.description != null ? announcement.description : "Description",
+        title: announcement?.title,
+        date: announcement?.date,
+        description: announcement?.description,
       }
     });
     confirmDialog.afterClosed().subscribe(result => {
@@ -149,7 +149,9 @@ export class AdminAnnouncementManagementComponent implements OnInit {
         return;
       }
 
-      this.announcementService.updateAnnouncement(announcement?.announcementId).subscribe(
+      /*
+      this.announcementService.updateAnnouncement(announcement?.announcementId,
+        announcement?.title, announcement?.description, announcement.announcementType ).subscribe(
         response => {
           this.router.navigate(['/adminAnnouncementManagement']);
         },
@@ -159,6 +161,7 @@ export class AdminAnnouncementManagementComponent implements OnInit {
           console.log('********** AdminAnnouncementManagementComponent.ts: ' + error);
         }
       );
+      */
     });
   }
 
