@@ -1,52 +1,56 @@
 <div class="main-wrapper" fxLayout="column" fxLayoutGap="3%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
   <app-navbar></app-navbar>
-  <mat-card class="card">
-    <mat-card-header>
-      <mat-card-title class="fontmanagement"><b>Edit Announcement</b></mat-card-title>
-    </mat-card-header>
-    <form class="example-form" #updateAnnouncementForm="ngForm" (ngSubmit)="update(updateAnnouncementForm)">
-      <mat-card-content>
-        <mat-form-field class="example-full-width">
-          <mat-label>Title</mat-label>
-          <input matInput id="title" name="title" #title="ngModel" type="text" [(ngModel)]="announcementToUpdate.title"
-            required="true" />
-        </mat-form-field>
-        <mat-error *ngIf="title.invalid && (title.dirty || title.touched || submitted)" class="errorText">
-          <div *ngIf="title.errors != null && title.errors.required">
-            Announcement Title is required.
-          </div>
-        </mat-error>
 
-        <mat-form-field>
-          <mat-label>Announcement Type:</mat-label>
-          <mat-select id="announcementType" name="announcementType" [(ngModel)]="announcementType">
-            <mat-option value="COVID_RELATED">COVID-19 Related</mat-option>
-            <mat-option value="GENERAL">General</mat-option>
-          </mat-select>
-        </mat-form-field>
+  <div fxLayoutAlign="center center">
+    <mat-card class="card">
+      <mat-card-header>
+        <mat-card-title class="fontmanagement"><b>Edit Announcement</b></mat-card-title>
+      </mat-card-header>
+      <form class="example-form" #updateAnnouncementForm="ngForm" (ngSubmit)="update(updateAnnouncementForm)">
+        <mat-card-content>
+          <mat-form-field class="example-full-width">
+            <mat-label>Title</mat-label>
+            <input matInput id="title" name="title" #title="ngModel" type="text"
+              [(ngModel)]="announcementToUpdate.title" required="true" />
+          </mat-form-field>
+          <mat-error *ngIf="title.invalid && (title.dirty || title.touched || submitted)" class="errorText">
+            <div *ngIf="title.errors != null && title.errors.required">
+              Announcement Title is required.
+            </div>
+          </mat-error>
 
-        <mat-form-field class="example-full-width">
-          <mat-label>Description</mat-label>
-          <textarea matInput id="description" name="description" #description="ngModel"
-            [(ngModel)]="announcementToUpdate.description"></textarea>
-        </mat-form-field>
-        <mat-error *ngIf="description.invalid && (description.dirty || description.touched || submitted)">
-          <div *ngIf="description.errors != null && description.errors.required">
-            Announcement Description is required.
-          </div>
-        </mat-error>
+          <mat-form-field>
+            <mat-label>Announcement Type:</mat-label>
+            <mat-select id="announcementType" name="announcementType" [(ngModel)]="announcementType" required="true">
+              <mat-option value="COVID_RELATED">COVID-19 Related</mat-option>
+              <mat-option value="GENERAL">General</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-      </mat-card-content>
-      <button mat-stroked-button color="primary" class="btn-block"
-        routerLink="/adminAnnouncementManagement">Back</button>
-      <button mat-stroked-button color="primary" class="btn-block" *ngIf="resultSuccess == false"
-        type="submit">Update</button>
-    </form>
-    <div *ngIf="resultSuccess == true" style="color:blue;">
-      {{message}}
-    </div>
-    <div *ngIf="resultError == true" style="color:red;">
-      {{message}}
-    </div>
-  </mat-card>
+          <mat-form-field class="example-full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput id="description" name="description" #description="ngModel"
+              [(ngModel)]="announcementToUpdate.description" required="true"></textarea>
+          </mat-form-field>
+          <mat-error *ngIf="description.invalid && (description.dirty || description.touched || submitted)">
+            <div *ngIf="description.errors != null && description.errors.required">
+              Announcement Description is required.
+            </div>
+          </mat-error>
+        </mat-card-content>
+
+        <button mat-stroked-button color="blue" class="btn-block"
+          routerLink="/adminAnnouncementManagement">Back</button>
+        <button mat-stroked-button color="blue" class="btn-block" *ngIf="resultSuccess == false"
+          type="submit">Update</button>
+      </form>
+      <div *ngIf="resultSuccess == true" style="color:blue;">
+        {{message}}
+      </div>
+      <div *ngIf="resultError == true" style="color:red;">
+        {{message}}
+      </div>
+    </mat-card>
+  </div>
+
 </div>

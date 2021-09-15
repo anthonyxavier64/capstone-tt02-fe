@@ -2,8 +2,8 @@ import { AnnouncementType } from "../models/announcement-type";
 
 export class Announcement {
   announcementId: number | undefined;
-  title: String | undefined;
-  description: String | undefined;
+  title: string | undefined;
+  description: string | undefined;
   date: Date | undefined;
   announcementType: AnnouncementType | undefined;
 
