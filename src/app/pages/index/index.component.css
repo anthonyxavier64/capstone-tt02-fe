@@ -1,7 +1,16 @@
 .left-section {
     float: left;
     width: 60%;
-    padding: 10% 0 10% 20%; 
+    padding: 10% 0 10% 20%;
+    display: flex;
+    flex-direction: row;
+}
+
+.logo {
+  width: 700px;
+  height: 380px;
+  margin-left: -20%;
+  margin-top: -10%;
 }
 
 .right-section {
@@ -13,3 +22,4 @@
 .tablet-mode {
     padding: 10% 30% 20% 30%;
 }
+
