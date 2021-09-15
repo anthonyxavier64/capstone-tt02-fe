@@ -53,8 +53,8 @@ export class AnnouncementService {
       );
   }
 
-  updateAnnouncement(announcementId: number | undefined, announcement?: Announcement): Observable<any> {
-    return this.httpClient.put(`${this.baseUrl}/update-announcement/${announcementId}`, announcement, httpOptions);
+  updateAnnouncement(announcementId: number | undefined, title: string | undefined, description: string | undefined, announcementType: AnnouncementType): Observable<any> {
+    return this.httpClient.put(`${this.baseUrl}/update-announcement/${announcementId}`, { title, description, announcementType }, httpOptions);
   }
 
   deleteAnnouncement(announcementId: any): Observable<any> {
