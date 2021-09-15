@@ -7,6 +7,7 @@ import { Announcement } from '../../models/announcement';
 import { AuthService } from '../../services/user/auth.service';
 
 import { environment } from '../../../environments/environment.dev';
+import { AnnouncementType } from 'src/app/models/announcement-type';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -45,10 +46,11 @@ export class AnnouncementService {
     );
   }
 
-  createAnnouncement(announcement?: Announcement): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/create-announcement`, announcement, httpOptions).pipe(
-      catchError(this.handleError)
-    );
+  createAnnouncement(title: string | undefined, description: string | undefined, announcementType: AnnouncementType): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/create-announcement`,
+      { title, description, announcementType }, httpOptions).pipe(
+        catchError(this.handleError)
+      );
   }
 
   updateAnnouncement(announcementId: number | undefined, announcement?: Announcement): Observable<any> {

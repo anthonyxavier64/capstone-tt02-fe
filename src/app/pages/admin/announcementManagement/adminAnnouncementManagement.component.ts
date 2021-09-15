@@ -20,7 +20,7 @@ export class AdminAnnouncementManagementComponent implements OnInit {
   submitted: boolean;
   announcement: Announcement;
   announcementToUpdate: Announcement;
-  announcementType: String | undefined;
+  announcementType: string | undefined;
 
   covidAnnouncements: Announcement[];
   generalAnnouncements: Announcement[];
@@ -92,7 +92,7 @@ export class AdminAnnouncementManagementComponent implements OnInit {
     this.announcement.announcementType = AnnouncementType.GENERAL;
     this.announcement.date = new Date();
 
-    this.announcementService.createAnnouncement(this.announcement).subscribe(
+    this.announcementService.createAnnouncement(this.announcement.title, this.announcement.description, this.announcement.announcementType).subscribe(
       response => {
         let newAnnouncementId: number = response;
         this.resultSuccess = true;
