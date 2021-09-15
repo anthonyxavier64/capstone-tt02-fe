@@ -15,4 +15,4 @@ EXPOSE 4200
 
 RUN apk del python make g++
 
-CMD ["ng","serve","--host", "0.0.0.0", "--disable-host-check"]
+CMD ["ng","serve","--host", "0.0.0.0", "--poll", "500"]
