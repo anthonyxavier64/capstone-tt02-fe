@@ -1,8 +1,59 @@
 <div fxLayout="column" fxLayoutGap="3%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
-  <app-navbar></app-navbar>
 
   <div style="font-size:25px;">
-      Welcome [Username], what would you like to do today?
+    Company Details
   </div>
-  <!-- generate number of cards to show -->
+
+  <div class="right">
+    <button class="backButton" mat-button (click)="onBackButtonClick()">Back</button>
+  </div>
+
+  <mat-card class="companyDetails">
+    <mat-card-title class="itemTitle">Company Name</mat-card-title>
+    <mat-card-content class="companySettings">
+      <div class="left">
+        <p>
+          <h4>Company ID</h4>
+          <br> {{company.companyId}} 
+        <p>
+          <h4>Company Email</h4>
+          <br> {{company.email}}
+        <p>
+          <h4>Contact Number</h4>
+          <br> {{company.contactNumber}}
+        <p>
+          <h4>Number of employees</h4>
+          <br> {{company.companySize}}
+        <button class="editCompanyDetails" mat-button (click)="onEditCompanyDetailsClick()">Edit Details</button>
+      </div>
+      <div class="right">
+        <div class="officeSpace">
+          <p>
+            <h4>Office Name</h4>
+            <br> {{company.name}}
+          <p>
+            <h4>Office Address</h4>
+            <br> {{company.officeAddress}}
+          <p>
+            <h4>Office Opening Hours</h4>
+            <br> {{company.officeOpeningHour}}
+          <p>
+            <h4>Office Capacity</h4>
+            <br> {{company.officeCapacity}}
+          <button class="configureOfficeSpace" mat-button (click)="onConfigureOfficeSpaceClick()">Configure Office
+            Space</button>
+        </div>
+        <div class="subscription">
+          <p>
+            <h4>Subscription Plan</h4>
+            <br> {{company.subscriptionType}}
+          <button class="manageSubscription" mat-button (click)="onManageSubscriptionClick()">Manage
+            Subscription</button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- <app-update-company-details></app-update-company-details> -->
+
 </div>
