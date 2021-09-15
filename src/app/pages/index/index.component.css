@@ -1,15 +1,34 @@
+.wrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10%;
+}
 .left-section {
     float: left;
     width: 60%;
-    padding: 10% 0 10% 20%; 
+    display: flex;
+    flex-direction: row;
 }
-
+.logo {
+  width: 90%;
+  max-height: 380px;
+}
 .right-section {
-    float: right;
     width: 40%;
-    padding: 10% 10% 10% 0;
 }
-
-.tablet-mode {
-    padding: 10% 30% 20% 30%;
+@media only screen and (max-width: 680px) {
+    .wrapper {
+        flex-direction: column;
+    }
+    .left-section {
+        margin-bottom: 20px;
+        width: 100%;
+    }
+    .right-section {
+        width: 100%;
+    }
 }

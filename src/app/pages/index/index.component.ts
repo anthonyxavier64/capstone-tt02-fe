@@ -28,7 +28,7 @@ export class IndexComponent implements OnInit, AfterViewInit {
     this.auth.login(this.email, this.password).then(
       response => {
         localStorage.setItem('currentUser', JSON.stringify(response));
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl('/admin');
       },
       error => {
         console.log(error);
