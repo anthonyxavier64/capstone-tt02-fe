@@ -15,6 +15,14 @@ export class AdminEmployeeManagementComponent implements OnInit {
   currNewUserPosition: String;
   allUsers: User[];
 
+  displayedColumns: string[] = [
+    'Name',
+    'Email',
+    'Employee S/N',
+    'Contact Number',
+    'Date Added',
+  ];
+
   constructor(
     private _location: Location,
     private getAllUsersService: GetAllEmployeesService
