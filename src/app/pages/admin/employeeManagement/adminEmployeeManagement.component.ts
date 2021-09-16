@@ -13,7 +13,7 @@ import { User } from 'src/app/models/user';
 export class AdminEmployeeManagementComponent implements OnInit {
   currNewUserEmail: String;
   currNewUserPosition: String;
-  allUsers: Array<User>;
+  allUsers: User[];
 
   constructor(
     private _location: Location,
@@ -21,9 +21,14 @@ export class AdminEmployeeManagementComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.getAllUsersService.getAllUsers().then((response) => {
-    //   this.allUsers = JSON.parse(response);
-    // });
+    this.getAllUsersService.getAllUsers().subscribe(
+      (response) => {
+        this.allUsers = response;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
 
