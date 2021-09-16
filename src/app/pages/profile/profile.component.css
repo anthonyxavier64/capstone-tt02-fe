@@ -1,0 +1,37 @@
+.page-title {
+  font-size: 25px;
+  color: #003672;
+  font-weight: 400;
+}
+
+.beige-block {
+  background-color: #FAF9F6;
+  border-radius: 25px;
+  padding: 5% 10%;
+  height: auto;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.profile-image {
+    background-color: lightgrey;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 100px;
+    margin-bottom: 3%
+
+}
+
+.profile-btn-wrap, .basic-info-wrap, .covid-info-wrap, .work-info-wrap {
+  margin-bottom: 5%;
+}
+
+.grey-btn {
+  font-family: 'Source Sans Pro', sans-serif;
+  background: rgba(0, 55, 100, 0.15);
+  color: #003672;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+

@@ -1,4 +1,44 @@
-/* You can add global styles to this file, and also import other style files */
+.mat-h2, .mat-title, .mat-typography h1 {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 22px;
+  color: #003672;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.mat-card-title {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #003672;
+}
+
+.mat-h2, .mat-title, .mat-typography h2 {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #003672;
+}
+
+.mat-h2, .mat-title, .mat-typography label {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 18px;
+  color: #003672;
+  font-weight: 600;
+}
+
+.mat-h2, .mat-title, .mat-typography body {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 18px;
+  color: #003672;
+  font-weight: 200;
+  margin: 0;
+}
+
+span {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 18px;
+  color: #003672;
+  font-weight: 200;
+  margin: 0;
+}
+
+

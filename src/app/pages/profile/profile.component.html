@@ -1,11 +1,108 @@
+
+<p-toast></p-toast>
+
 <div fxLayout="column" fxLayoutGap="3%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
   <app-navbar></app-navbar>
 
-  <div style="font-size:25px;">
-      Welcome [Username], what would you like to do today?
+  <div class="page-title">
+    Welcome {{user.fullName}}.
   </div>
 
+  <mat-card class="beige-block">
+    <mat-card-group fxLayoutAlign="center center" fxLayout="column">
+      <mat-card-title> My Profile</mat-card-title>
+      <div mat-card-avatar class="profile-image"></div>
+    </mat-card-group>
 
+    <mat-card-group class="basic-info-wrap" fxLayout="column" fxLayoutGap="2%">
+      <h2 style="text-decoration: underline; align-self: flex-start">Basic Information</h2>
 
-  <!-- generate number of cards to show -->
+      <div fxLayout="row" fxLayoutAlign="flex-start stretch" fxLayoutGap="35%">
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+          <label for="name">Name</label>
+
+          <span>{{user.fullName}}</span>
+          <!-- <span>Test</span> -->
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+          <label for="name">Email</label>
+
+          <span>{{user.email}}</span>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+          <label for="name">Contact</label>
+
+          <span>{{user.contactNumber}}</span>
+        </div>
+
+      </div>
+
+    </mat-card-group>
+
+    <div class="profile-btn-wrap" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5%">
+      <button mat-button class="grey-btn">Change password</button>
+      <button mat-button class="grey-btn">Edit Profile</button>
+    </div>
+
+    <mat-card-group class="covid-info-wrap" fxLayout="column" fxLayoutGap="2%">
+      <h2 style="text-decoration: underline; align-self: flex-start">Covid Related Information</h2>
+
+      <div fxLayout="row" fxLayoutAlign="flex-start stretch" fxLayoutGap="45%">
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+          <label for="name">Vaccination Status</label>
+
+          <span>isVaccinated</span>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+          <label for="name">WFH Productivity Status</label>
+
+          <span>Test</span>
+        </div>
+
+      </div>
+      <div fxLayout="row" fxLayoutAlign="flex-start stretch" fxLayoutGap="45%">
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+          <label for="name">WFO Monthly Cap</label>
+
+          <span>{{user.wfoMonthlyAllocation}}</span>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+          <label for="name">WFO Team</label>
+
+          <span>{{user.alternateWfoTeam}}</span>
+        </div>
+      </div>
+
+    </mat-card-group>
+    <mat-card-group class="work-info-wrap" fxLayout="column" fxLayoutGap="2%">
+      <h2 style="text-decoration: underline; align-self: flex-start">Work Related Information</h2>
+
+      <div fxLayout="row" fxLayoutAlign="flex-start stretch" fxLayoutGap="35%">
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+          <label for="name">Position</label>
+
+          <span>{{user.position}}</span>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+          <label for="name">In-charge of</label>
+
+          <span>{{user.mdept}}</span>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+          <label for="name">Part of</label>
+
+          <span>{{user.dept}}</span>
+        </div>
+
+      </div>
+    </mat-card-group>
+
+  </mat-card>
+
 </div>
