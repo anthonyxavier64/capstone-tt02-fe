@@ -1,6 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { User } from 'src/app/models/user';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment.dev';
 import { handleError } from '../services-util';
@@ -17,19 +19,9 @@ export class GetAllEmployeesService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getAllUsers() {
-    return new Promise(async (resolve) => {
-      this.httpClient
-        .get(this.baseUrl + '/get-all-users', httpOptions)
-        .pipe(catchError(handleError))
-        .subscribe(
-          (response) => {
-            // resolve(response['users']);
-          },
-          (error) => {
-            resolve(false);
-          }
-        );
-    });
+  getAllUsers(): Observable<User[]> {
+    return this.httpClient
+      .get<User[]>(this.baseUrl + '/get-all-users')
+      .pipe(catchError(handleError));
   }
 }
