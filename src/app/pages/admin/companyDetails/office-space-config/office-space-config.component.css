@@ -1,0 +1,156 @@
+.headerText {
+  font-size: 2vw;
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.8);
+}
+
+
+
+.backButton {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-size: 1.2vw;
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.8);
+  height: 3vw;
+  width: 8vw;
+}
+
+
+
+/***** Office Details *****/
+
+.officeDetailsCard {
+  min-width: 70%;
+  max-width: 70%;
+  min-height: 80%;
+  background-color: #FAF9F6;
+  margin-bottom: 4%;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+}
+
+.officeDetailsHeading {
+  font-size: 30px;
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.8);
+  font-weight: bolder;
+  padding-top: 2%
+}
+
+.companyDetailsTbl {
+  align-content: center;
+  align-self: center;
+  border-spacing: 50px 20px;
+}
+
+.text {
+  font-size: 25px;
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.8);
+  text-align: left;
+}
+
+.editBtn {
+  background-color: rgba(255, 166, 135, 0.5);
+  color:rgba(0, 55, 100, 0.8);
+  font-size: 23px;
+  font-weight: lighter;
+  min-height: 3vw;
+  min-width: 8vw;
+  border-radius: 8px;
+}
+
+.saveBtn {
+  font-family: 'Source Sans Pro';
+  font-size: 2.5vw;
+  font-weight: lighter;
+  text-align: center;
+  min-width: 6.5vw;
+  min-height: 3vw;
+  background: rgba(255, 166, 135, 0.5);
+  border-radius: 8px;
+  justify-content: center;
+}
+
+.closeBtn {
+  font-family: 'Source Sans Pro';
+  font-size: 2.5vw;
+  font-weight: lighter;
+  text-align: center;
+  min-width: 6.5vw;
+  min-height: 3vw;
+  background: #E5E5E5;
+  border-radius: 8px;
+  align-content: center;
+}
+
+
+
+
+/***** Room Management *****/
+.roomManagementCard {
+  min-width: 70%;
+  max-width: 70%;
+  min-height: 25vw;
+  background-color: #FAF9F6;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+}
+
+.roomManagementHeading {
+  font-size: 30px;
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.8);
+  font-weight: bolder;
+  padding: 2% 2% 6% 2%;
+}
+
+
+
+.roomItemContainer {
+  padding: 0% 4% 4% 4%;
+}
+
+
+:host ::ng-deep .customContainer.p-dataview-content {
+  background:#FAF9F6;
+}
+
+
+.roomItem {
+  margin: .5em;
+  min-width: 14vw;
+  min-height: 9vw;
+  max-height: 9vw;
+  border: 1px solid rgba(0, 55, 100, 0.3);
+  padding: 2% 2% 2% 2%;
+}
+
+.card {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 55, 100, 0.3);
+  border-radius: 15px;
+  margin-left: 10vw;
+  overflow: auto;
+}
+
+.roomItemText {
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.8);
+}
+
+.addRoomBtn {
+    background-color: rgba(255, 166, 135, 0.5);
+    color:rgba(0, 55, 100, 0.8);
+    font-size: 23px;
+    font-weight: lighter;
+    min-height: 3vw;
+    min-width: 8vw;
+    border-radius: 8px;
+    margin-bottom: 2vw;
+}
+
+
+
+
+
