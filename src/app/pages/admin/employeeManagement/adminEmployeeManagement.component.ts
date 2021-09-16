@@ -37,6 +37,14 @@ export class AdminEmployeeManagementComponent implements OnInit {
   csvDownloadUrl: string;
   allUsers: User[];
 
+  displayedColumns: string[] = [
+    'Name',
+    'Email',
+    'Employee S/N',
+    'Contact Number',
+    'Date Added',
+  ];
+
   constructor(
     private _location: Location,
     private userService: UserService,
