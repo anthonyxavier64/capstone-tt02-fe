@@ -20,6 +20,7 @@ import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWf
 import { IndexComponent } from './pages/index/index.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
+import { UpdateCompanyDetailsDialogComponent } from './companyDetails/update-company-details-dialog/update-company-details-dialog.component';
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -35,6 +36,7 @@ export function tokenGetter() {
     AdminWfoManagementComponent,
     AdminAnnouncementManagementComponent,
     ProfileComponent,
+    UpdateCompanyDetailsDialogComponent,
   ],
   imports: [
     BrowserModule,
