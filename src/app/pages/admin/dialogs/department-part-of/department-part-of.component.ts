@@ -1,8 +1,3 @@
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
 import { Component, OnInit, Inject } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -10,7 +5,6 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 
-import { Department } from 'src/app/models/department.model';
 import { NewDepartmentComponent } from '../new-department/new-department.component';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -21,16 +15,17 @@ import { UserService } from 'src/app/services/user/user.service';
 })
 export class DepartmentPartOfComponent implements OnInit {
   allDepartments: any[];
-  allDepartmentsNames: String[];
   selectedDepartments: any[];
-  test = false;
 
   constructor(
     private UserService: UserService,
     private dialogRef: MatDialogRef<DepartmentPartOfComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.allDepartments = [];
+    this.selectedDepartments = [];
+  }
 
   ngOnInit(): void {
     // Below is the correct code
@@ -52,32 +47,18 @@ export class DepartmentPartOfComponent implements OnInit {
     }
   }
 
-  // Handles the logic of the drag and drop table of Depts
-  drop(event: CdkDragDrop<Department[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    }
-  }
-
   // Returns the department the user is part of to the parent component
   confirmDepartmentPartOf() {
+    console.log(this.data);
     for (let dept of this.allDepartments) {
       if (dept.isSelected == true) {
-        this.selectedDepartments.push(dept);
+        console.log(dept.name);
+        delete dept.isSelected;
+        this.data.partOfDepartments.push(dept);
       }
     }
-    this.dialogRef.close({ departmentsPartOf: this.selectedDepartments });
+    console.log(this.data);
+    this.dialogRef.close(this.data);
   }
 
   openNewDepartmentDialog() {
