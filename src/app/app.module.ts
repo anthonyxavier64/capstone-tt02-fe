@@ -23,6 +23,9 @@ import { NgModule } from '@angular/core';
 import { PrimeNgModule } from './core/primeng.module';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { TOKEN_KEY } from './config';
+import { DepartmentInChargeOfComponent } from './pages/admin/department-in-charge-of/department-in-charge-of.component';
+import { DepartmentPartOfComponent } from './pages/admin/department-part-of/department-part-of.component';
+import { UploadEmployeeCSVComponent } from './pages/admin/upload-employee-csv/upload-employee-csv.component';
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -38,6 +41,9 @@ export function tokenGetter() {
     AdminWfoManagementComponent,
     AdminAnnouncementManagementComponent,
     ProfileComponent,
+    DepartmentInChargeOfComponent,
+    DepartmentPartOfComponent,
+    UploadEmployeeCSVComponent,
   ],
   imports: [
     BrowserModule,
