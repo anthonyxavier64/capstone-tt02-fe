@@ -16,6 +16,7 @@ import { firebaseStorage } from '../../../../firebase/firebase';
   selector: 'app-admin-employeeManagement',
   templateUrl: './adminEmployeeManagement.component.html',
   styleUrls: ['./adminEmployeeManagement.component.css'],
+  providers: [MatDialog],
 })
 export class AdminEmployeeManagementComponent implements OnInit {
   user: User;
