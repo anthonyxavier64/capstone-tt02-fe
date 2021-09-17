@@ -101,15 +101,15 @@ export class IndexComponent implements OnInit, AfterViewInit {
 
         const allDepts = [
           {
-            id: 1,
+            departmentId: 1,
             name: 'HR',
           },
           {
-            id: 2,
+            departmentId: 2,
             name: 'Finance',
           },
           {
-            id: 2,
+            departmentId: 3,
             name: 'ICT',
           },
         ];
