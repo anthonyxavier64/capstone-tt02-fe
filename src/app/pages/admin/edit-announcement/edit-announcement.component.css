@@ -61,3 +61,13 @@
 .mat-stroked-button.mat-blue {
 	color: #003764;
 }
+
+.main-wrapper .mat-raised-button {
+	border: 1px solid currentColor;
+	line-height: 54px;
+	background: rgba(255, 166, 135, 0.1);
+}
+
+.mat-raised-button.mat-blue {
+	color: #003764;
+}
