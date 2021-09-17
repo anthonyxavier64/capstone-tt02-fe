@@ -86,6 +86,8 @@ export function tokenGetter() {
     PrimeNgModule,
     DragDropModule,
     DataViewModule,
+    MatDialogModule,
+    MatCheckboxModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
