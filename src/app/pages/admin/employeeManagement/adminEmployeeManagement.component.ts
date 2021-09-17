@@ -41,27 +41,27 @@ export class AdminEmployeeManagementComponent implements OnInit {
   ngOnInit(): void {
     // Below is the correct code
     this.isLoading = true;
-    // this.userService.getUsers().subscribe(
-    //   (response) => {
-    //     this.allUsers = response;
-    //     console.log(this.allUsers[0].fullName);
-    //     this.isLoading = false;
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //   }
-    // );
+    this.userService.getUsers().subscribe(
+      (response) => {
+        this.allUsers = response.users;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
 
     // Below is for when the DB is unaccessible
-    var deptLocalStorage = localStorage.getItem('allDepts');
-    if (deptLocalStorage != null) {
-      this.allDepartments = JSON.parse(deptLocalStorage);
-    }
-    var userLocalStorage = localStorage.getItem('allUsers');
-    if (userLocalStorage != null) {
-      this.allUsers = JSON.parse(userLocalStorage);
-      this.isLoading = false;
-    }
+
+    // var deptLocalStorage = localStorage.getItem('allDepts');
+    // if (deptLocalStorage != null) {
+    //   this.departments = JSON.parse(deptLocalStorage);
+    // }
+    // var userLocalStorage = localStorage.getItem('allUsers');
+    // if (userLocalStorage != null) {
+    //   this.allUsers = JSON.parse(userLocalStorage);
+    //   this.isLoading = false;
+    // }
   }
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
 
