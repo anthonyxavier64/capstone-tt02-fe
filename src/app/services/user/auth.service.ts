@@ -7,7 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-import {environment} from '../../../environments/environment.dev'
+import { environment } from '../../../environments/environment.dev';
 import { handleError } from '../services-util';
 
 const httpOptions = {
@@ -18,7 +18,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class AuthService {
-  baseUrl: string = `${environment.API_REST_URL}/user`
+  baseUrl: string = `${environment.API_REST_URL}/user`;
 
   token = '';
   reset = '';
