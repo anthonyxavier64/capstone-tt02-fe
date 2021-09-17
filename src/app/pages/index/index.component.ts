@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 
 import { AuthService } from 'src/app/services/user/auth.service';
+import { Department } from 'src/app/models/department.model';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 
@@ -44,7 +45,6 @@ export class IndexComponent implements OnInit, AfterViewInit {
   handleLogin() {
     this.auth.login(this.email, this.password).then(
       (response) => {
-        console.log(response);
         localStorage.setItem('currentUser', JSON.stringify(response));
         this.router.navigateByUrl('/admin');
 

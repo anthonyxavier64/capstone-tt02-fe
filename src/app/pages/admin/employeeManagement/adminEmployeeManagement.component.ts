@@ -57,7 +57,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
     this.isLoading = true;
     this.userService.getUsers().subscribe(
       (response) => {
-        this.allUsers = response.types.users;
+        this.allUsers = response;
         this.isLoading = false;
       },
       (error) => {
@@ -118,6 +118,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
     deptPartOfDialogRef.afterClosed().subscribe((result) => {
       this.partOfDepartments = result;
     });
+    // How to attach departments to user?
   }
 
   downloadCSVTemplate() {
