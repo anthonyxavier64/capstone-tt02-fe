@@ -1,34 +1,32 @@
-.wrapper {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 0 10%;
-}
-.left-section {
-    float: left;
-    width: 60%;
-    display: flex;
-    flex-direction: row;
-}
 .logo {
-  width: 90%;
-  max-height: 380px;
+  max-width: 40vw;
+  max-height: 20vw;
 }
-.right-section {
-    width: 40%;
+
+.indexCard {
+  min-width: 30vw;
+  min-height: 20vw;
+
+  background: #FAF9F6;
+  box-shadow: -4px -4px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 15px;
 }
-@media only screen and (max-width: 680px) {
-    .wrapper {
-        flex-direction: column;
-    }
-    .left-section {
-        margin-bottom: 20px;
-        width: 100%;
-    }
-    .right-section {
-        width: 100%;
-    }
+
+.indexCardText {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 40px;
+  text-align: center;
+
+  color: rgba(0, 55, 100, 0.8);
+}
+
+.indexButton {
+  background-color: rgba(255, 166, 135, 0.2);
+  min-width: 8vw;
+  min-height: 3.5vw;
+  border-radius: 7px;
+  font-family: 'Source Sans Pro';
 }
