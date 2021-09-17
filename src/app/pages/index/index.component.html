@@ -1,36 +1,36 @@
 <div class="wrapper">
-<div
-  fxLayout
-  fxLayoutAlign="center center"
-  fxShow
-  class="left-section"
-  #leftSection
->
-  <div *ngIf="leftSection.style.display !== 'none'">
-    <img class="logo" src="../../../assets/images/flexiworkLogo.png" />
+  <div
+    fxLayout
+    fxLayoutAlign="center center"
+    fxShow
+    class="left-section"
+    #leftSection
+  >
+    <div *ngIf="leftSection.style.display !== 'none'">
+      <img class="logo" src="../../../assets/images/flexiworkLogo.png" />
+    </div>
   </div>
-</div>
 
-<div fxLayout fxShow class="right-section" #rightSection>
-  <mat-card style="width: 100%" *ngIf="rightSection.style.display !== 'none'">
-    <mat-card-content fxLayout="column" fxLayoutGap="3%">
-      <input
-        type="text"
-        placeholder="Email address"
-        [(ngModel)]="email"
-        pInputText
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        [(ngModel)]="password"
-        pInputText
-      />
-      <button mat-flat-button color="accent" (click)="handleLogin()">
-        Login
-      </button>
-      <button mat-button>Forgotten password?</button>
-    </mat-card-content>
-  </mat-card>
-</div>
+  <div fxLayout fxShow class="right-section" #rightSection>
+    <mat-card style="width: 100%" *ngIf="rightSection.style.display !== 'none'">
+      <mat-card-content fxLayout="column" fxLayoutGap="3%">
+        <input
+          type="text"
+          placeholder="Email address"
+          [(ngModel)]="email"
+          pInputText
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          [(ngModel)]="password"
+          pInputText
+        />
+        <button mat-flat-button color="accent" (click)="handleLogin()">
+          Login
+        </button>
+        <button mat-button>Forgotten password?</button>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
