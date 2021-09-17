@@ -1,12 +1,7 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 
 import { Injectable } from '@angular/core';
-import { User } from '../../models/user';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.dev';
 import { handleError } from '../services-util';
