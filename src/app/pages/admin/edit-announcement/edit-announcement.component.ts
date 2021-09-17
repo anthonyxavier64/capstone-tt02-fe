@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
 import { Announcement } from 'src/app/models/announcement';
 import { AnnouncementType } from '../../../models/announcement-type';
 import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
-//import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-announcement',
@@ -15,22 +15,32 @@ import { AnnouncementService } from 'src/app/services/announcement/announcement.
 export class EditAnnouncementComponent implements OnInit {
 
   submitted: boolean;
-  announcementId: string | null;
+  announcementId: number | undefined;
+  titleToUpdate: string | undefined;
+  date: Date | undefined;
+  descriptionToUpdate: string | undefined;
   announcementToUpdate: Announcement;
-  announcementType: String | undefined;
+  announcementType: string | undefined;
   retrieveAnnouncementError: boolean;
 
   resultSuccess: boolean;
   resultError: boolean;
   message: string | undefined;
 
-  //public dialogRef: MatDialogRef<EditAnnouncementComponent>,
-  //@Inject(MAT_DIALOG_DATA) public data: any
-  constructor(private announcementService: AnnouncementService,
+
+  constructor(public dialogRef: MatDialogRef<EditAnnouncementComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private announcementService: AnnouncementService,
     private router: Router,
     private activatedRoute: ActivatedRoute) {
     this.submitted = false;
     this.announcementToUpdate = new Announcement();
+
+    this.announcementId = this.data.id;
+    this.titleToUpdate = this.data.title;
+    this.date = this.data.date;
+    this.announcementType = this.data.typeOfAnnouncement;
+    this.descriptionToUpdate = this.data.description;
 
     this.retrieveAnnouncementError = false;
     this.resultError = false;
@@ -38,6 +48,7 @@ export class EditAnnouncementComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    /*
     this.announcementId = this.activatedRoute.snapshot.paramMap.get('announcementId');
 
     if (this.announcementId == null) {
@@ -52,6 +63,41 @@ export class EditAnnouncementComponent implements OnInit {
         console.log('********** EditAnnouncementComponent.ts: ' + error);
       }
     );
+    */
+  }
+
+  save(updateAnnouncementForm: NgForm) {
+    if (this.announcementId == null) {
+      return;
+    }
+
+    if (updateAnnouncementForm.invalid) {
+      this.resultError = true;
+      this.resultSuccess = false;
+      this.message = "Failed to edit announcement";
+      return;
+    }
+    this.submitted = true;
+    this.resultSuccess = true;
+    this.resultError = false;
+    this.message = "Announcement updated successfully";
+    if (this.announcementType == 'COVID_RELATED') {
+      this.announcementToUpdate.announcementType = AnnouncementType.COVID_RELATED
+    }
+    else {
+      this.announcementToUpdate.announcementType = AnnouncementType.GENERAL;
+    }
+    this.announcementToUpdate.announcementId = this.announcementId;
+    this.announcementToUpdate.date = this.date;
+    this.announcementToUpdate.description = this.descriptionToUpdate;
+    this.announcementToUpdate.title = this.titleToUpdate;
+
+    console.log(this.announcementToUpdate);
+
+
+    localStorage.setItem("updatedAnnouncement", JSON.stringify(this.announcementToUpdate));
+    console.log(localStorage.getItem("updatedAnnouncement"));
+    this.dialogRef.close(this.announcementToUpdate);
   }
 
   update(updateAnnouncementForm: NgForm) {
