@@ -1,39 +1,50 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+
+import { Injectable } from '@angular/core';
 import { User } from '../../models/user';
-import { handleError } from '../services-util';
+import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.dev';
+import { handleError } from '../services-util';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
 };
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-  baseUrl: string = environment.API_REST_URL + "/user";
+  baseUrl: string = environment.API_REST_URL + '/user';
 
-  constructor(private httpClient: HttpClient) {
-  }
+  constructor(private httpClient: HttpClient) {}
 
-  getUsers(): Observable<User[]> {
+  getUsers(): Observable<any[]> {
+    console.log('getUsersService');
+    // this.httpClient
+    //   .get<any>(this.baseUrl + '/get-all-users')
+    //   .pipe(catchError(handleError))
+    //   .subscribe((response) => {
+    //     console.log(response[0].fullName);
+    //   });
     return this.httpClient
-      .get<any>(this.baseUrl + "/get-all-users")
+      .get<any[]>(this.baseUrl + '/get-all-users')
       .pipe(catchError(handleError));
   }
 
   getDepartments(): Observable<any> {
     return this.httpClient
-      .get<any>(this.baseUrl + "/get-departments")
+      .get<any>(this.baseUrl + '/get-departments')
       .pipe(catchError(handleError));
   }
 
   getManagedDepartments(): Observable<any> {
     return this.httpClient
-      .get<any>(this.baseUrl + "/get-managed-departments")
+      .get<any>(this.baseUrl + '/get-managed-departments')
       .pipe(catchError(handleError));
   }
 }

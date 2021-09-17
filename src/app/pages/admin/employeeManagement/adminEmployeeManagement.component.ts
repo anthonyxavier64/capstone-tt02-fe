@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
-import { DepartmentInChargeOfComponent } from '../department-in-charge-of/department-in-charge-of.component';
-import { DepartmentPartOfComponent } from '../department-part-of/department-part-of.component';
+import { DataSource } from '@angular/cdk/collections';
+import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
+import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
 import { Location } from '@angular/common';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { UploadEmployeeCSVComponent } from '../upload-employee-csv/upload-employee-csv.component';
+import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -20,31 +21,42 @@ export class AdminEmployeeManagementComponent implements OnInit {
   currNewUserPosition: String;
   ref: DynamicDialogRef | undefined;
 
-  allUsers: User[];
+  isLoading: boolean = false;
+  sortField: string;
 
-  displayedColumns: string[] = [
-    'Name',
-    'Email',
-    'Employee S/N',
-    'Contact Number',
-    'Date Added',
-  ];
+  departments: any[];
+  allUsers: any[];
 
   constructor(
     private _location: Location,
-    private UserService: UserService,
+    private userService: UserService,
     private dialogService: DialogService
-  ) {}
+  ) {
+    this.sortField = '';
+  }
 
   ngOnInit(): void {
-    this.UserService.getUsers().subscribe(
+    // Below is the correct code
+    this.isLoading = true;
+    this.userService.getUsers().subscribe(
       (response) => {
         this.allUsers = response;
+        console.log(this.allUsers[0].fullName);
+        this.isLoading = false;
       },
       (error) => {
         console.log(error);
       }
     );
+    // var deptLocalStorage = localStorage.getItem('allDepts');
+    // if (deptLocalStorage != null) {
+    //   this.departments = JSON.parse(deptLocalStorage);
+    // }
+    // var userLocalStorage = localStorage.getItem('allUsers');
+    // if (userLocalStorage != null) {
+    //   this.allUsers = JSON.parse(userLocalStorage);
+    //   this.isLoading = false;
+    // }
   }
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
 
@@ -57,25 +69,36 @@ export class AdminEmployeeManagementComponent implements OnInit {
   }
 
   openInChargeOfDialog() {
-    this.ref = this.dialogService.open(DepartmentInChargeOfComponent, {
-      width: '70%',
-      height: '100%',
-    });
+    const deptInChargeOfDialogRef = this.dialogService.open(
+      DepartmentInChargeOfComponent,
+      {
+        width: '50%',
+        height: '50%',
+      }
+    );
+    // How to attach departments to user?
   }
 
   openPartOfDialog() {
+    console.log('PartOfClicked');
     this.ref = this.dialogService.open(DepartmentPartOfComponent, {
-      width: '70%',
-      height: '100%',
+      width: '50%',
+      height: '50%',
     });
+    // How to attach departments to user?
   }
 
   downloadCSVTemplate() {}
 
   openUploadCSVDialog() {
-    this.ref = this.dialogService.open(UploadEmployeeCSVComponent, {
-      width: '70%',
-      height: '100%',
-    });
+    const uploadEmployeeCSVDialogRef = this.dialogService.open(
+      UploadEmployeeCSVComponent,
+      {
+        width: '70%',
+        height: '100%',
+      }
+    );
+
+    uploadEmployeeCSVDialogRef.onClose.subscribe();
   }
 }
