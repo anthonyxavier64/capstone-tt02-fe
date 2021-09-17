@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
@@ -13,26 +12,30 @@ import { UserService } from 'src/app/services/user/user.service';
   selector: 'app-admin-employeeManagement',
   templateUrl: './adminEmployeeManagement.component.html',
   styleUrls: ['./adminEmployeeManagement.component.css'],
-  providers: [DialogService],
 })
 export class AdminEmployeeManagementComponent implements OnInit {
   currNewUserEmail: String;
   currNewUserPosition: String;
-  // ref: DynamicDialogRef | undefined;
 
   isLoading: boolean = false;
   sortField: string;
 
-  departments: any[];
+  partOfDepartments: any[];
+  inChargeOfDepartments: any[];
+
+  allDepartments: any[];
   allUsers: any[];
 
   constructor(
     private _location: Location,
     private userService: UserService,
-    private dialogService: DialogService,
     private dialog: MatDialog
   ) {
     this.sortField = '';
+    this.partOfDepartments = [];
+    this.inChargeOfDepartments = [];
+    this.allDepartments = [];
+    this.allUsers = [];
   }
 
   ngOnInit(): void {
@@ -52,7 +55,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
     // Below is for when the DB is unaccessible
     var deptLocalStorage = localStorage.getItem('allDepts');
     if (deptLocalStorage != null) {
-      this.departments = JSON.parse(deptLocalStorage);
+      this.allDepartments = JSON.parse(deptLocalStorage);
     }
     var userLocalStorage = localStorage.getItem('allUsers');
     if (userLocalStorage != null) {
@@ -84,11 +87,16 @@ export class AdminEmployeeManagementComponent implements OnInit {
   // Currently working on
   openPartOfDialog() {
     console.log('PartOfClicked');
-    let deptPartOfDialogRef = this.dialog.open(DepartmentPartOfComponent, {
+    this.partOfDepartments = [];
+    const deptPartOfDialogRef = this.dialog.open(DepartmentPartOfComponent, {
       width: '50%',
       height: '50%',
+      data: { partOfDepartments: this.partOfDepartments },
     });
-    // How to attach departments to user?
+
+    deptPartOfDialogRef.afterClosed().subscribe((result) => {
+      this.partOfDepartments = result.partOfDepartments;
+    });
   }
 
   downloadCSVTemplate() {}

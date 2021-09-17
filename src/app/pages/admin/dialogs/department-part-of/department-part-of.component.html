@@ -1,5 +1,5 @@
-<mat-radio-button [(ngModel)]="test">Testomg</mat-radio-button>
 <mat-card>
+  <h2>New user is part of:</h2>
   <div *ngFor="let department of allDepartments">
     <mat-checkbox [(ngModel)]="department.isSelected">
       {{ department.name }}
