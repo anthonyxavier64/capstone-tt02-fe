@@ -87,5 +87,16 @@ export class DepartmentPartOfComponent implements OnInit {
         }
       );
     });
+
+    // openNewDepartmentRef.onClose.subscribe(() => {
+    //   this.UserService.getDepartments().subscribe(
+    //     (response) => {
+    //       this.allDepartments = response;
+    //     },
+    //     (error) => {
+    //       console.log(error);
+    //     }
+    //   );
+    // });
   }
 }
