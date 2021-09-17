@@ -21,8 +21,11 @@ import { AdminComponent } from './pages/admin/adminLanding/admin.component';
 import { AdminAnnouncementManagementComponent } from './pages/admin/announcementManagement/adminAnnouncementManagement.component';
 import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDetailsManagement/adminCompanyDetailsManagement.component';
 import { DeleteAnnouncementComponent } from './pages/admin/delete-announcement/delete-announcement.component';
+import { DepartmentInChargeOfComponent } from './pages/admin/department-in-charge-of/department-in-charge-of.component';
+import { DepartmentPartOfComponent } from './pages/admin/department-part-of/department-part-of.component';
 import { EditAnnouncementComponent } from './pages/admin/edit-announcement/edit-announcement.component';
 import { AdminEmployeeManagementComponent } from './pages/admin/employeeManagement/adminEmployeeManagement.component';
+import { UploadEmployeeCSVComponent } from './pages/admin/upload-employee-csv/upload-employee-csv.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
 import { IndexComponent } from './pages/index/index.component';
 import { LoginComponent } from './pages/index/login/login.component';
@@ -52,6 +55,9 @@ export function tokenGetter() {
     ViewAnnouncementComponent,
     SignUpComponent,
     TierInfoDialogComponent,
+    DepartmentInChargeOfComponent,
+    DepartmentPartOfComponent,
+    UploadEmployeeCSVComponent,
   ],
   imports: [
     BrowserModule,
