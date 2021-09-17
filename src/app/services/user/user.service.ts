@@ -1,7 +1,19 @@
+<<<<<<< HEAD
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 
 import { Injectable } from '@angular/core';
+=======
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+
+import { Injectable } from '@angular/core';
+import { User } from '../../models/user';
+>>>>>>> 6f1ba1c... temporary push
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.dev';
 import { handleError } from '../services-util';
