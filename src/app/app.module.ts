@@ -26,6 +26,7 @@ import { AdminEmployeeManagementComponent } from './pages/admin/employeeManageme
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
 import { IndexComponent } from './pages/index/index.component';
 import { LoginComponent } from './pages/index/login/login.component';
+import { CompanyDetailsDialogComponent } from './pages/index/sign-up/company-details-dialog/company-details-dialog.component';
 import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 import { TierInfoDialogComponent } from './pages/index/sign-up/tier-info-dialog/tier-info-dialog.component';
 import { ProfileComponent } from './pages/profile/profile.component';
@@ -52,6 +53,7 @@ export function tokenGetter() {
     ViewAnnouncementComponent,
     SignUpComponent,
     TierInfoDialogComponent,
+    CompanyDetailsDialogComponent,
   ],
   imports: [
     BrowserModule,
