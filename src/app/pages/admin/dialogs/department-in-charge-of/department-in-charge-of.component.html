@@ -1,1 +1,14 @@
-<p>department-in-charge-of works!</p>
+<mat-card>
+  <h2>New user is part of:</h2>
+  <div *ngFor="let department of allDepartments">
+    <mat-checkbox [(ngModel)]="department.isSelected">
+      {{ department.name }}
+    </mat-checkbox>
+  </div>
+</mat-card>
+<div fxLayout="row">
+  <button mat-button (click)="openNewDepartmentDialog()">
+    Add new Department
+  </button>
+  <button mat-button (click)="confirmDepartmentInChargeOf()">Confirm</button>
+</div>

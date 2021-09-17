@@ -1,15 +1,90 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
+
+import { NewDepartmentComponent } from '../new-department/new-department.component';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-department-in-charge-of',
   templateUrl: './department-in-charge-of.component.html',
-  styleUrls: ['./department-in-charge-of.component.css']
+  styleUrls: ['./department-in-charge-of.component.css'],
 })
 export class DepartmentInChargeOfComponent implements OnInit {
+  allDepartments: any[];
+  selectedDepartments: any[];
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(
+    private dialogRef: MatDialogRef<DepartmentInChargeOfComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialog: MatDialog
+  ) {
+    this.allDepartments = [];
+    this.selectedDepartments = [];
   }
 
+  ngOnInit(): void {
+    // Below is the correct code
+    // this.UserService.getDepartments().subscribe(
+    //   (response) => {
+    //     this.allDepartments = response;
+    //   },
+    //   (error) => {
+    //     console.log(error);
+    //   }
+    // );
+
+    var deptLocalStorage = localStorage.getItem('allDepts');
+    if (deptLocalStorage != null) {
+      this.allDepartments = JSON.parse(deptLocalStorage);
+      for (let dept of this.allDepartments) {
+        dept.isSelected = false;
+      }
+    }
+  }
+
+  confirmDepartmentInChargeOf() {
+    console.log(this.data);
+    for (let dept of this.allDepartments) {
+      if (dept.isSelected == true) {
+        console.log(dept.name);
+        delete dept.isSelected;
+        this.data.inChargeOfDepartments.push(dept);
+      }
+    }
+    this.dialogRef.close(this.data);
+  }
+
+  openNewDepartmentDialog() {
+    let newDepartmentDialogRef = this.dialog.open(NewDepartmentComponent, {
+      width: '50%',
+      height: '50%',
+    });
+
+    // Use this if the DB is down
+    // newDepartmentDialogRef.afterClosed().subscribe(() => {
+    //   var deptLocalStorage = localStorage.getItem('allDepts');
+    //   if (deptLocalStorage != null) {
+    //     this.allDepartments = JSON.parse(deptLocalStorage);
+    //     for (let dept of this.allDepartments) {
+    //       dept.isSelected = false;
+    //     }
+    //   }
+    // });
+
+    // Below is the correct code if the DB works
+    // openNewDepartmentRef.onClose.subscribe(() => {
+    //   this.UserService.getDepartments().subscribe(
+    //     (response) => {
+    //       this.allDepartments = response;
+    //     },
+    //     (error) => {
+    //       console.log(error);
+    //     }
+    //   );
+    // });
+  }
 }

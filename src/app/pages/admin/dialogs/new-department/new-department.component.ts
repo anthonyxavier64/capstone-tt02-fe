@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Department } from 'src/app/models/department.model';
 import { DepartmentService } from 'src/app/services/department/department.service';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-new-department',
@@ -14,15 +14,20 @@ export class NewDepartmentComponent implements OnInit {
 
   constructor(
     private departmentService: DepartmentService,
-    public ref: DynamicDialogRef
+    private dialogRef: MatDialogRef<NewDepartmentComponent>
   ) {}
 
   ngOnInit(): void {}
 
   onClickConfirm() {
-    this.departmentService.createNewDepartment(
-      new Department(undefined, this.departmentName)
-    );
-    this.ref.close();
+    // Use this if DB is down
+    // var currentDepts = JSON.parse(localStorage.getItem('allDepts'));
+    // currentDepts
+
+    // Below is if the DB works
+    // this.departmentService.createNewDepartment(
+    //   new Department(undefined, this.departmentName)
+    // );
+    this.dialogRef.close();
   }
 }

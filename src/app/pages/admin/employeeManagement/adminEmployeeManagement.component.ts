@@ -23,8 +23,8 @@ export class AdminEmployeeManagementComponent implements OnInit {
   partOfDepartments: any[];
   inChargeOfDepartments: any[];
 
-  allDepartments: any[];
-  allUsers: any[];
+  allDepartments: any;
+  allUsers: any;
 
   constructor(
     private _location: Location,
@@ -74,19 +74,22 @@ export class AdminEmployeeManagementComponent implements OnInit {
   }
 
   openInChargeOfDialog() {
-    // const deptInChargeOfDialogRef = this.dialogService.open(
-    //   DepartmentInChargeOfComponent,
-    //   {
-    //     width: '50%',
-    //     height: '50%',
-    //   }
-    // );
+    this.inChargeOfDepartments = [];
+    const deptPartOfDialogRef = this.dialog.open(DepartmentPartOfComponent, {
+      width: '50%',
+      height: '50%',
+      data: { inChargeOfDepartments: this.inChargeOfDepartments },
+    });
+
+    deptPartOfDialogRef.afterClosed().subscribe((result) => {
+      this.inChargeOfDepartments = result.inChargeOfDepartments;
+    });
+    console.log(this.inChargeOfDepartments);
     // How to attach departments to user?
   }
 
   // Currently working on
   openPartOfDialog() {
-    console.log('PartOfClicked');
     this.partOfDepartments = [];
     const deptPartOfDialogRef = this.dialog.open(DepartmentPartOfComponent, {
       width: '50%',
@@ -97,6 +100,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
     deptPartOfDialogRef.afterClosed().subscribe((result) => {
       this.partOfDepartments = result.partOfDepartments;
     });
+    console.log(this.partOfDepartments);
   }
 
   downloadCSVTemplate() {}
