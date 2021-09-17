@@ -1,8 +1,8 @@
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Component, OnInit } from '@angular/core';
+
 import { Department } from 'src/app/models/department.model';
 import { DepartmentService } from 'src/app/services/department/department.service';
-
-import { Component, OnInit } from '@angular/core';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({

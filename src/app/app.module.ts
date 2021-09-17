@@ -9,9 +9,11 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { DataViewModule } from 'primeng/dataview';
 import { DeleteAnnouncementComponent } from './pages/admin/delete-announcement/delete-announcement.component';
-import { DepartmentInChargeOfComponent } from './pages/admin/department-in-charge-of/department-in-charge-of.component';
-import { DepartmentPartOfComponent } from './pages/admin/department-part-of/department-part-of.component';
+import { DepartmentInChargeOfComponent } from './pages/admin/dialogs/department-in-charge-of/department-in-charge-of.component';
+import { DepartmentPartOfComponent } from './pages/admin/dialogs/department-part-of/department-part-of.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { DropdownModule } from 'primeng/dropdown';
 import { EditAnnouncementComponent } from './pages/admin/edit-announcement/edit-announcement.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -35,7 +37,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 import { TOKEN_KEY } from './config';
 import { TierInfoDialogComponent } from './pages/index/sign-up/tier-info-dialog/tier-info-dialog.component';
-import { UploadEmployeeCSVComponent } from './pages/admin/upload-employee-csv/upload-employee-csv.component';
+import { UploadEmployeeCSVComponent } from './pages/admin/dialogs/upload-employee-csv/upload-employee-csv.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 
 export function tokenGetter() {
@@ -61,6 +63,7 @@ export function tokenGetter() {
     DepartmentInChargeOfComponent,
     DepartmentPartOfComponent,
     UploadEmployeeCSVComponent,
+    NewDepartmentComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,7 +81,8 @@ export function tokenGetter() {
     MatPaginatorModule,
     MatTableModule,
     PrimeNgModule,
-    DropdownModule,
+    DragDropModule,
+    DataViewModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
