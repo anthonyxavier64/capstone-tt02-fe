@@ -57,7 +57,6 @@ export class DepartmentPartOfComponent implements OnInit {
         this.data.partOfDepartments.push(dept);
       }
     }
-    console.log(this.data);
     this.dialogRef.close(this.data);
   }
 
@@ -67,6 +66,18 @@ export class DepartmentPartOfComponent implements OnInit {
       height: '50%',
     });
 
+    // Use this if the DB is down
+    // newDepartmentDialogRef.afterClosed().subscribe(() => {
+    //   var deptLocalStorage = localStorage.getItem('allDepts');
+    //   if (deptLocalStorage != null) {
+    //     this.allDepartments = JSON.parse(deptLocalStorage);
+    //     for (let dept of this.allDepartments) {
+    //       dept.isSelected = false;
+    //     }
+    //   }
+    // });
+
+    // Below is the correct code if the DB works
     // openNewDepartmentRef.onClose.subscribe(() => {
     //   this.UserService.getDepartments().subscribe(
     //     (response) => {
