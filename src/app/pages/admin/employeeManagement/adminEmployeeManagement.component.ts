@@ -1,6 +1,7 @@
+//import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
+
 import { User } from 'src/app/models/user';
 import { DepartmentService } from 'src/app/services/department/department.service';
-//import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
 import { UserService } from 'src/app/services/user/user.service';
 
 import { Location } from '@angular/common';
@@ -8,8 +9,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
+import { firebaseStorage } from '../../../../firebase/firebase';
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
+import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
 
 @Component({
   selector: 'app-admin-employeeManagement',
@@ -31,17 +34,9 @@ export class AdminEmployeeManagementComponent implements OnInit {
   inChargeOfDepartments: any[];
 
   allDepartments: any;
+  allUsers: any;
 
   csvDownloadUrl: string;
-  allUsers: User[];
-
-  displayedColumns: string[] = [
-    'Name',
-    'Email',
-    'Employee S/N',
-    'Contact Number',
-    'Date Added',
-  ];
 
   constructor(
     private _location: Location,
