@@ -1,0 +1,101 @@
+<div fxLayout="column" fxLayoutAlign="space-around start" fxLayoutGap="5%">
+  <div fxLayout="column" fxLayoutAlign="space-around left" fxLayoutGap="4%">
+    <p class="companyDetailsTitle">Company Details</p>
+    <div fxLayout="column" fxLayoutAlign="space-around left" fxLayoutGap="3%">
+      <label>Company Name</label>
+      <p class="paymentDetailsText">{{ data.companyName }}</p>
+
+      <label>Description</label>
+      <textarea
+        class="companyInput"
+        type="text"
+        [(ngModel)]="data.companyDescription"
+        required
+      ></textarea>
+
+      <label>Number of Employees</label>
+      <input
+        class="companyInput"
+        type="number"
+        [(ngModel)]="data.numEmployees"
+        min="0"
+        required
+      />
+    </div>
+  </div>
+  <div
+    fxLayout="column"
+    fxLayoutAlign="space-around start"
+    fxLayoutGap="4%"
+    style="width: 100%"
+  >
+    <p class="companyDetailsTitle">Payment Details</p>
+    <div
+      fxLayout="column"
+      fxLayoutAlign="space-around left"
+      fxLayoutGap="3%"
+      class="creditCardInfoSection"
+    >
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+          <label>Payment Type: </label>
+          <p class="paymentDetailsText">
+            {{ data.paymentMethod }}
+          </p>
+        </div>
+        <div>
+          <label>Tier Confirmation: </label>
+          <p class="paymentDetailsText">
+            {{ data.subscriptionTier }}
+          </p>
+        </div>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+          <label>Credit Card Number: </label>
+          <input
+            type="text"
+            class="companyInput"
+            [(ngModel)]="data.creditCardNumber"
+            required
+          />
+        </div>
+        <div>
+          <label>CVV: </label>
+          <input
+            type="number"
+            class="companyInput"
+            [(ngModel)]="data.cvv"
+            required
+          />
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+          <label>Cardholder Name: </label>
+          <input
+            type="text"
+            class="companyInput"
+            [(ngModel)]="data.cardHolderName"
+            required
+          />
+        </div>
+        <div style="justify-self: flex-end">
+          <label>Date of Expiry: </label>
+          <input
+            type="date"
+            class="companyInput"
+            [(ngModel)]="data.dateOfExpiry"
+            style="font-family: 'Source Sans Pro'"
+            required
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign=" end" fxLayoutGap="3%">
+    <button mat-button class="btn" (click)="onSignUpClick()">Sign Up</button>
+    <button mat-button class="btn" (click)="onCloseClick()">Close</button>
+  </div>
+</div>
