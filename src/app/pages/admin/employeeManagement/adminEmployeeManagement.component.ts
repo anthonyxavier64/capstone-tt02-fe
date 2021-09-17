@@ -8,7 +8,6 @@ import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
-import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
 import { firebaseStorage } from '../../../../firebase/firebase';
 
@@ -104,9 +103,9 @@ export class AdminEmployeeManagementComponent implements OnInit {
     deptInChargeOfDialogRef.afterClosed().subscribe((result) => {
       this.inChargeOfDepartments = result;
     });
-    // How to attach departments to user?
   }
 
+  // Currently working on
   openPartOfDialog() {
     this.partOfDepartments = [];
     const deptPartOfDialogRef = this.dialog.open(DepartmentPartOfComponent, {
