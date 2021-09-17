@@ -7,7 +7,7 @@
 
       <label>Description</label>
       <textarea
-        class="companyInput"
+        pInputTextarea
         type="text"
         [(ngModel)]="data.companyDescription"
         required
@@ -15,11 +15,11 @@
 
       <label>Number of Employees</label>
       <input
-        class="companyInput"
         type="number"
         [(ngModel)]="data.numEmployees"
         min="0"
         required
+        pInputText
       />
     </div>
   </div>
@@ -56,19 +56,15 @@
           <label>Credit Card Number: </label>
           <input
             type="text"
-            class="companyInput"
             [(ngModel)]="data.creditCardNumber"
             required
+            pInputText
+            autocomplete="cc-csc"
           />
         </div>
         <div>
           <label>CVV: </label>
-          <input
-            type="number"
-            class="companyInput"
-            [(ngModel)]="data.cvv"
-            required
-          />
+          <input type="number" [(ngModel)]="data.cvv" required pInputText />
         </div>
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -76,19 +72,21 @@
           <label>Cardholder Name: </label>
           <input
             type="text"
-            class="companyInput"
             [(ngModel)]="data.cardHolderName"
             required
+            pInputText
+            autocomplete="cc-csc"
           />
         </div>
-        <div style="justify-self: flex-end">
+        <div>
           <label>Date of Expiry: </label>
           <input
             type="date"
-            class="companyInput"
             [(ngModel)]="data.dateOfExpiry"
             style="font-family: 'Source Sans Pro'"
             required
+            pInputText
+            autocomplete="cc-csc"
           />
         </div>
       </div>

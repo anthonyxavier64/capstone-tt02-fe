@@ -10,6 +10,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
 import { DropdownModule } from 'primeng/dropdown';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TOKEN_KEY } from './config';
@@ -61,6 +62,7 @@ export function tokenGetter() {
     MatIconModule,
     MatMenuModule,
     PrimeNgModule,
+    InputTextareaModule,
     DropdownModule,
     JwtModule.forRoot({
       config: {
