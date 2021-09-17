@@ -1,6 +1,5 @@
 import { User } from 'src/app/models/user';
 import { DepartmentService } from 'src/app/services/department/department.service';
-import { GetAllEmployeesService } from 'src/app/services/user/get-all-employees.service';
 //import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -32,7 +31,6 @@ export class AdminEmployeeManagementComponent implements OnInit {
   inChargeOfDepartments: any[];
 
   allDepartments: any;
-  allUsers: any;
 
   csvDownloadUrl: string;
   allUsers: User[];
