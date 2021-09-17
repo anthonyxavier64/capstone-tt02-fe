@@ -1,4 +1,5 @@
 import { DropdownModule } from 'primeng/dropdown';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -69,6 +70,7 @@ export function tokenGetter() {
     MatIconModule,
     MatMenuModule,
     PrimeNgModule,
+    InputTextareaModule,
     DropdownModule,
     JwtModule.forRoot({
       config: {
