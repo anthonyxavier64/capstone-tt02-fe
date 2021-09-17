@@ -65,7 +65,7 @@
   font-size: 2.5vw;
   font-weight: lighter;
   text-align: center;
-  min-width: 6.5vw;
+  min-width: 60%;
   min-height: 3vw;
   background: rgba(255, 166, 135, 0.5);
   border-radius: 8px;
@@ -77,7 +77,7 @@
   font-size: 2.5vw;
   font-weight: lighter;
   text-align: center;
-  min-width: 6.5vw;
+  min-width: 60%;
   min-height: 3vw;
   background: #E5E5E5;
   border-radius: 8px;
@@ -112,8 +112,15 @@
 }
 
 
-:host ::ng-deep .customContainer.p-dataview-content {
+.p-dataview-content .p-dataview .p-component {
   background:#FAF9F6;
+  background-color: #FAF9F6;
+}
+
+.overridePrime {
+  background:#FAF9F6 !important;
+  background-color: #FAF9F6 !important;
+  width: 100%
 }
 
 
@@ -123,14 +130,14 @@
   min-height: 9vw;
   max-height: 9vw;
   border: 1px solid rgba(0, 55, 100, 0.3);
-  padding: 2% 2% 2% 2%;
+  padding: 3% 2% 2% 5%;
 }
 
 .card {
   background: #FFFFFF;
   border: 1px solid rgba(0, 55, 100, 0.3);
   border-radius: 15px;
-  margin-left: 10vw;
+  /* margin-left: 10vw; */
   overflow: auto;
 }
 

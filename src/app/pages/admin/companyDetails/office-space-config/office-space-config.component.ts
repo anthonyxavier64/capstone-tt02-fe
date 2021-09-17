@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-office-space-config',
@@ -12,69 +13,204 @@ export class OfficeSpaceConfigComponent implements OnInit {
   officeName: string;
   officeAddress: string;
   officeOpeningHours: string;
-  officeOpen: string;
-  officeClose: string;
   officeCapacity: number;
 
-  displayEditOfficeDetails: boolean;
+  editRoomIndex: number; //used to search up the item within the array of rooms
 
-  constructor(private _location: Location) {
-    this.officeName = 'Company Name';
-    this.officeAddress = 'Singapore Street Blk Singapore #SG-SG';
-    this.officeOpen = '0800';
-    this.officeClose = '2000';
-    this.officeOpeningHours = this.officeOpen.concat(' - ', this.officeClose);
+  isEditOfficeDetailsOpen: boolean = false;
+  isEditRoomDetailsOpen: boolean = false;
+  isAddRoomOpen: boolean = false;
+
+  constructor(private _location: Location) {}
+
+  ngOnInit(): void {
+    //Office Mock Data
+    var officeName = localStorage.getItem('officeName');
+    if (officeName !== null) {
+      this.officeName = officeName;
+    } else {
+      this.officeName = 'Company Name';
+    }
+
+    var officeAddress = localStorage.getItem('officeAddress');
+    if (officeAddress !== null) {
+      this.officeAddress = officeAddress;
+    } else {
+      this.officeAddress = 'Singapore Street Blk Singapore #SG-SG';
+    }
+
+    var officeOpeningHours = localStorage.getItem('officeOpeningHours');
+    if (officeOpeningHours !== null) {
+      this.officeOpeningHours = officeOpeningHours;
+    } else {
+      this.officeOpeningHours = '08:00 - 17:00';
+    }
+
     this.officeCapacity = 64;
 
-    this.displayEditOfficeDetails = false;
-
-    //mock room data
-    this.rooms = [
-      {
-        roomNumber: '01-01',
-        roomLocation: '1st Floor',
-        roomCapacity: 8,
-      },
-      {
-        roomNumber: '01-02',
-        roomLocation: '1st Floor',
-        roomCapacity: 6,
-      },
-      {
-        roomNumber: '01-03',
-        roomLocation: '1st Floor',
-        roomCapacity: 10,
-      },
-      {
-        roomNumber: '02-01',
-        roomLocation: '2nd Floor',
-        roomCapacity: 8,
-      },
-      {
-        roomNumber: '02-02',
-        roomLocation: '2nd Floor',
-        roomCapacity: 9,
-      },
-    ];
+    //Rooms Mock Data
+    var cachedRooms = localStorage.getItem('rooms');
+    if (cachedRooms !== null) {
+      this.rooms = JSON.parse(cachedRooms);
+    } else {
+      this.rooms = [
+        {
+          roomNumber: '01-01',
+          roomLocation: '1st Floor',
+          roomCapacity: 8,
+        },
+        {
+          roomNumber: '01-02',
+          roomLocation: '1st Floor',
+          roomCapacity: 6,
+        },
+        {
+          roomNumber: '01-03',
+          roomLocation: '1st Floor',
+          roomCapacity: 10,
+        },
+        {
+          roomNumber: '02-01',
+          roomLocation: '2nd Floor',
+          roomCapacity: 8,
+        },
+        {
+          roomNumber: '02-02',
+          roomLocation: '2nd Floor',
+          roomCapacity: 9,
+        },
+      ];
+    }
   }
-
-  ngOnInit(): void {}
 
   onBackClick() {
     this._location.back();
   }
 
   openEditOfficeDetailsDialog() {
-    this.displayEditOfficeDetails = true;
+    this.isEditOfficeDetailsOpen = true;
   }
 
-  saveOfficeDetails() {}
-
-  log() {
-    console.log('I have been clicked!');
+  openEditRoomDetailsDialog(roomItem: {}) {
+    this.isEditRoomDetailsOpen = true;
+    this.editRoomIndex = this.rooms.findIndex((room) => room === roomItem);
   }
 
-  submitOfficeDetailsForm() {
-    console.log(this.officeName);
+  deleteRoom() {
+    if (this.editRoomIndex > -1) {
+      this.rooms.splice(this.editRoomIndex, 1);
+      this.rooms.sort((a, b) => {
+        if (
+          Number(a.roomLocation.substring(0, 1)) >
+          Number(b.roomLocation.substring(0, 1))
+        ) {
+          return 1;
+        } else if (
+          Number(a.roomLocation.substring(0, 1)) <
+          Number(b.roomLocation.substring(0, 1))
+        ) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+      localStorage.setItem('rooms', JSON.stringify(this.rooms));
+      this.isEditRoomDetailsOpen = false;
+      this.ngOnInit();
+    } else {
+      alert('The selected room cannot be deleted!');
+    }
+  }
+
+  openAddRoomDialog() {
+    this.isAddRoomOpen = true;
+  }
+
+  submitOfficeDetailsForm(officeDetailsForm: NgForm) {
+    var officeName = officeDetailsForm.form.controls.officeName.value;
+    localStorage.setItem('officeName', officeName);
+    this.officeName = officeName;
+
+    var officeAddress = officeDetailsForm.form.controls.officeAddress.value;
+    localStorage.setItem('officeAddress', officeAddress);
+    this.officeAddress = officeAddress;
+
+    var opening: string = officeDetailsForm.form.controls.openingHour.value;
+    var closing: string = officeDetailsForm.form.controls.closingHour.value;
+    var openingHours: string = opening.concat(' - ', closing);
+    localStorage.setItem('officeOpeningHours', openingHours);
+    this.officeOpeningHours = openingHours;
+
+    this.isEditOfficeDetailsOpen = false;
+  }
+
+  submitRoomDetailsForm(roomDetailsForm: NgForm) {
+    var roomDetails = roomDetailsForm.form.controls;
+
+    var roomNumber = roomDetails.roomNumber.value;
+    var roomLocation = roomDetails.roomLocation.value;
+    var roomCapacity = roomDetails.roomCapacity.value;
+
+    var updatedRoom = {
+      roomNumber: roomNumber,
+      roomLocation: roomLocation,
+      roomCapacity: roomCapacity,
+    };
+
+    this.rooms[this.editRoomIndex] = updatedRoom;
+
+    this.rooms.sort((a, b) => {
+      if (
+        Number(a.roomLocation.substring(0, 1)) >
+        Number(b.roomLocation.substring(0, 1))
+      ) {
+        return 1;
+      } else if (
+        Number(a.roomLocation.substring(0, 1)) <
+        Number(b.roomLocation.substring(0, 1))
+      ) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
+    localStorage.setItem('rooms', JSON.stringify(this.rooms));
+    this.isEditRoomDetailsOpen = false;
+  }
+
+  submitAddRoomForm(addRoomForm: NgForm) {
+    var roomDetails = addRoomForm.form.controls;
+
+    var roomNumber = roomDetails.roomNumber.value;
+    var roomLocation = roomDetails.roomLocation.value;
+    var roomCapacity = roomDetails.roomCapacity.value;
+
+    var newRoom = {
+      roomNumber: roomNumber,
+      roomLocation: roomLocation,
+      roomCapacity: roomCapacity,
+    };
+
+    this.rooms.push(newRoom);
+    this.rooms.sort((a, b) => {
+      if (
+        Number(a.roomLocation.substring(0, 1)) >
+        Number(b.roomLocation.substring(0, 1))
+      ) {
+        return 1;
+      } else if (
+        Number(a.roomLocation.substring(0, 1)) <
+        Number(b.roomLocation.substring(0, 1))
+      ) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
+    localStorage.setItem('rooms', JSON.stringify(this.rooms));
+    this.isAddRoomOpen = false;
+    this.ngOnInit();
   }
 }
