@@ -6,6 +6,9 @@ import {
 } from '@angular/material/dialog';
 
 import { NewDepartmentComponent } from '../new-department/new-department.component';
+import { UserService } from 'src/app/services/user/user.service';
+
+import { NewDepartmentComponent } from '../new-department/new-department.component';
 import { DepartmentService } from 'src/app/services/department/department.service';
 @Component({
   selector: 'app-department-in-charge-of',
