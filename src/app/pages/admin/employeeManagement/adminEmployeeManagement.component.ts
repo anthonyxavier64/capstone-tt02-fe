@@ -4,12 +4,12 @@ import { User } from 'src/app/models/user';
 import { DepartmentService } from 'src/app/services/department/department.service';
 import { UserService } from 'src/app/services/user/user.service';
 
+import { DataSource } from '@angular/cdk/collections';
 import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
-import { firebaseStorage } from '../../../../firebase/firebase';
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
 import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
@@ -119,6 +119,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
     deptPartOfDialogRef.afterClosed().subscribe((result) => {
       this.partOfDepartments = result;
     });
+    // How to attach departments to user?
   }
 
   downloadCSVTemplate() {
