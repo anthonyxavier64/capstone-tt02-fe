@@ -24,16 +24,9 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getUsers(): Observable<any[]> {
-    console.log('getUsersService');
-    // this.httpClient
-    //   .get<any>(this.baseUrl + '/get-all-users')
-    //   .pipe(catchError(handleError))
-    //   .subscribe((response) => {
-    //     console.log(response[0].fullName);
-    //   });
+  getUsers(): Observable<any> {
     return this.httpClient
-      .get<any[]>(this.baseUrl + '/get-all-users')
+      .get<any>(this.baseUrl + '/get-all-users')
       .pipe(catchError(handleError));
   }
 
