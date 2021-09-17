@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { DepartmentInChargeOfComponent } from './pages/admin/department-in-charge-of/department-in-charge-of.component';
+import { DepartmentPartOfComponent } from './pages/admin/department-part-of/department-part-of.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 import { IndexComponent } from './pages/index/index.component';
@@ -23,6 +25,7 @@ import { NgModule } from '@angular/core';
 import { PrimeNgModule } from './core/primeng.module';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { TOKEN_KEY } from './config';
+import { UploadEmployeeCSVComponent } from './pages/admin/upload-employee-csv/upload-employee-csv.component';
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
