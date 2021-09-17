@@ -1,31 +1,14 @@
-<button mat-button (click)="openNewDepartmentDialog()">
-  Add new Department
-</button>
+<mat-radio-button [(ngModel)]="test">Testomg</mat-radio-button>
 <mat-card>
-  <h2>All Departments</h2>
-
-  <div
-    cdkDropList
-    [cdkDropListData]="allDepartments"
-    (cdkDropListDropped)="drop($event)"
-  >
-    <div *ngFor="let item of allDepartments" cdkDrag>
-      {{ item.name }}
-    </div>
+  <div *ngFor="let department of allDepartments">
+    <mat-checkbox [(ngModel)]="department.isSelected">
+      {{ department.name }}
+    </mat-checkbox>
   </div>
 </mat-card>
-
-<mat-card>
-  <h2>Selected Departments</h2>
-
-  <div
-    cdkDropList
-    [cdkDropListData]="selectedDepartments"
-    (cdkDropListDropped)="drop($event)"
-  >
-    <div class="example-box" *ngFor="let item of selectedDepartments" cdkDrag>
-      {{ item.name }}
-    </div>
-  </div>
-</mat-card>
-<button mat-button (click)="confirmDepartmentPartOf()">Confirm</button>
+<div fxLayout="row">
+  <button mat-button (click)="openNewDepartmentDialog()">
+    Add new Department
+  </button>
+  <button mat-button (click)="confirmDepartmentPartOf()">Confirm</button>
+</div>
