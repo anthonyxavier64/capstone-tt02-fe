@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { GetAllEmployeesService } from 'src/app/services/user/get-all-employees.service';
 import { Location } from '@angular/common';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-admin-employeeManagement',
@@ -23,13 +23,10 @@ export class AdminEmployeeManagementComponent implements OnInit {
     'Date Added',
   ];
 
-  constructor(
-    private _location: Location,
-    private getAllUsersService: GetAllEmployeesService
-  ) {}
+  constructor(private _location: Location, private UserService: UserService) {}
 
   ngOnInit(): void {
-    this.getAllUsersService.getAllUsers().subscribe(
+    this.UserService.getUsers().subscribe(
       (response) => {
         this.allUsers = response;
       },
