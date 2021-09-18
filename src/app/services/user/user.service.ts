@@ -67,13 +67,4 @@ export class UserService {
       .post<any>(this.baseUrl + '/send-verification-email', userId)
       .pipe(catchError(handleError));
   }
-
-  createNewUser(user: any) {
-    return this.httpClient
-      .post<any>(this.baseUrl + '/register', user)
-      .pipe(catchError(handleError))
-      .subscribe((response) => {
-        console.log(response);
-      });
-  }
 }
