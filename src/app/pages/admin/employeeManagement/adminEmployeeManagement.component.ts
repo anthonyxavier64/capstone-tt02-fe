@@ -8,6 +8,7 @@ import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
+import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
 import { firebaseStorage } from '../../../../firebase/firebase';
 
@@ -17,7 +18,7 @@ import { firebaseStorage } from '../../../../firebase/firebase';
   styleUrls: ['./adminEmployeeManagement.component.css'],
 })
 export class AdminEmployeeManagementComponent implements OnInit {
-  user;
+  user: User;
 
   currNewUserEmail: String;
   currNewUserPosition: String;
