@@ -10,94 +10,109 @@
   <div class="page-title">Welcome {{ user.fullName }}.</div>
 
   <mat-card class="beige-block">
-    <mat-card-group fxLayoutAlign="center center" fxLayout="column">
-      <mat-card-title> My Profile</mat-card-title>
-      <div mat-card-avatar class="profile-image"></div>
-    </mat-card-group>
+    <form #updateForm="ngForm" (ngSubmit)="closeProfileEdit(updateForm)">
+      <mat-card-group fxLayoutAlign="center center" fxLayout="column">
+        <mat-card-title> My Profile</mat-card-title>
+        <div mat-card-avatar class="profile-image"></div>
+      </mat-card-group>
 
-    <mat-card-group class="basic-info-wrap" fxLayout="column" fxLayoutGap="2%">
-      <h2 style="text-decoration: underline; align-self: flex-start">
-        Basic Information
-      </h2>
+      <mat-card-group
+        class="basic-info-wrap"
+        fxLayout="column"
+        fxLayoutGap="2%"
+      >
+        <h2 style="text-decoration: underline; align-self: flex-start">
+          Basic Information
+        </h2>
+
+        <div
+          fxLayout="row"
+          fxLayoutAlign="flex-start stretch"
+          [ngClass]="{
+            editProfileDetails: editDetailsMode,
+            viewProfileDetails: !editDetailsMode
+          }"
+        >
+          <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+            <label for="fullName">Name</label>
+
+            <span *ngIf="!editDetailsMode">{{ user.fullName }}</span>
+            <input
+              pInputText
+              ngNativeValidate
+              required
+              *ngIf="editDetailsMode"
+              class="inputField"
+              [ngModel]="user.fullName"
+              name="fullName"
+              id="fullName"
+              #fullName="ngModel"
+            />
+          </div>
+
+          <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+            <label for="email">Email</label>
+
+            <span *ngIf="!editDetailsMode">{{ user.email }}</span>
+            <input
+              pInputText
+              ngNativeValidate
+              required
+              *ngIf="editDetailsMode"
+              class="inputField"
+              [ngModel]="user.email"
+              name="email"
+              id="email"
+              #email="ngModel"
+            />
+          </div>
+
+          <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+            <label for="contactNumber">Contact</label>
+
+            <span *ngIf="!editDetailsMode">{{ user.contactNumber }}</span>
+            <input
+              pInputText
+              ngNativeValidate
+              required
+              *ngIf="editDetailsMode"
+              class="inputField"
+              [ngModel]="user.contactNumber"
+              name="contactNumber"
+              id="contactNumber"
+              #contactNumber="ngModel"
+            />
+          </div>
+        </div>
+      </mat-card-group>
 
       <div
+        class="profile-btn-wrap"
         fxLayout="row"
-        fxLayoutAlign="flex-start stretch"
-        [ngClass]="{
-          editProfileDetails: editDetailsMode,
-          viewProfileDetails: !editDetailsMode
-        }"
+        fxLayoutAlign="center center"
+        fxLayoutGap="5%"
       >
-        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
-          <label for="name">Name</label>
-
-          <span *ngIf="!editDetailsMode">{{ user.fullName }}</span>
-          <input
-            pInputText
-            ngNativeValidate
-            required
-            *ngIf="editDetailsMode"
-            class="inputField"
-            [(ngModel)]="user.fullName"
-          />
-        </div>
-
-        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
-          <label for="name">Email</label>
-
-          <span *ngIf="!editDetailsMode">{{ user.email }}</span>
-          <input
-            pInputText
-            ngNativeValidate
-            required
-            *ngIf="editDetailsMode"
-            class="inputField"
-            [(ngModel)]="user.email"
-          />
-        </div>
-
-        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
-          <label for="name">Contact</label>
-
-          <span *ngIf="!editDetailsMode">{{ user.contactNumber }}</span>
-          <input
-            pInputText
-            ngNativeValidate
-            required
-            *ngIf="editDetailsMode"
-            class="inputField"
-            [(ngModel)] = "user.contactNumber"
-          />
-        </div>
+        <button mat-button class="grey-btn" *ngIf="!editDetailsMode">
+          Change password
+        </button>
+        <button
+          mat-button
+          class="grey-btn"
+          (click)="editDetailsMode = true"
+          *ngIf="!editDetailsMode"
+        >
+          Edit Profile
+        </button>
+        <button
+          mat-button
+          class="grey-btn"
+          type="submit"
+          *ngIf="editDetailsMode"
+        >
+          Save Changes
+        </button>
       </div>
-    </mat-card-group>
-
-    <div
-      class="profile-btn-wrap"
-      fxLayout="row"
-      fxLayoutAlign="center center"
-      fxLayoutGap="5%"
-    >
-      <button mat-button class="grey-btn" *ngIf="!editDetailsMode">
-        Change password
-      </button>
-      <button
-        mat-button
-        class="grey-btn"
-        (click)="editDetailsMode = true"
-        *ngIf="!editDetailsMode"
-      >
-        Edit Profile
-      </button>
-      <button
-        mat-button
-        class="grey-btn"
-        (click)="closeProfileEdit()"
-        *ngIf="editDetailsMode"
-      >
-        Save Changes
-      </button>
-    </div>
+    </form>
 
     <mat-card-group class="covid-info-wrap" fxLayout="column" fxLayoutGap="2%">
       <h2 style="text-decoration: underline; align-self: flex-start">

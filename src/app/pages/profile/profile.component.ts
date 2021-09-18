@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -63,7 +64,8 @@ export class ProfileComponent implements OnInit {
     this.clickHoverMenuTrigger.openMenu();
   }
 
-  closeProfileEdit() {
+  closeProfileEdit(updateForm: NgForm) {
+    var updatedValues = updateForm.value;
     this.editDetailsMode = false;
   }
 }
