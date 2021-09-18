@@ -1,14 +1,15 @@
+import { MessageService } from 'primeng/api';
+import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/user/user.service';
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 
-import { UserService } from 'src/app/services/user/user.service';
-import { User } from 'src/app/models/user';
-import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
