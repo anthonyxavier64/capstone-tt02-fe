@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { AuthGuard } from './guards/auth.guard';
 import { AdminComponent } from './pages/admin/adminLanding/admin.component';
 import { AdminAnnouncementManagementComponent } from './pages/admin/announcementManagement/adminAnnouncementManagement.component';
@@ -19,7 +18,11 @@ const routes: Routes = [
   { path: 'index', component: IndexComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signUp', component: SignUpComponent },
-  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: 'adminCompanyDetailsManagement',
     component: AdminCompanyDetailsManagementComponent,
@@ -51,4 +54,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
