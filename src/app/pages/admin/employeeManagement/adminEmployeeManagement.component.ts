@@ -165,6 +165,14 @@ export class AdminEmployeeManagementComponent implements OnInit {
 
     console.log(JSON.stringify(user));
 
-    this.userService.createNewUser(user);
+    let newUserId = null;
+    this.userService.createNewUser(user).subscribe((response) => {
+      newUserId = response.user.userId;
+      console.log(newUserId);
+      if (!newUserId) {
+      } else {
+        this.userService.sendVerificationEmail(newUserId);
+      }
+    });
   }
 }

@@ -49,7 +49,6 @@ export class DepartmentPartOfComponent implements OnInit {
 
   // Returns the department the user is part of to the parent component
   confirmDepartmentPartOf() {
-    console.log('pre-confirm: ' + JSON.stringify(this.data));
     for (let dept of this.allDepartments) {
       if (dept.isSelected == true) {
         delete dept.isSelected;
