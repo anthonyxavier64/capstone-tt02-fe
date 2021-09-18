@@ -34,7 +34,6 @@ export class AdminEmployeeManagementComponent implements OnInit {
   allUsers: any;
 
   csvDownloadUrl: string;
-
   constructor(
     private _location: Location,
     private userService: UserService,
