@@ -74,11 +74,15 @@ export class UserService {
   }
 
   createNewUser(user: any) {
+    console.log(JSON.stringify(user));
     return this.httpClient
       .post<any>(this.baseUrl + '/register', user)
-      .pipe(catchError(handleError))
-      .subscribe((response) => {
-        console.log(response);
-      });
+      .pipe(catchError(handleError));
+  }
+
+  sendVerificationEmail(userId: String) {
+    return this.httpClient
+      .post<any>(this.baseUrl + '/send-verification-email', userId)
+      .pipe(catchError(handleError));
   }
 }
