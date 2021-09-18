@@ -1,0 +1,31 @@
+<button mat-button (click)="openNewDepartmentDialog()">
+  Add new Department
+</button>
+<mat-card>
+  <h2>All Departments</h2>
+
+  <div
+    cdkDropList
+    [cdkDropListData]="allDepartments"
+    (cdkDropListDropped)="drop($event)"
+  >
+    <div *ngFor="let item of allDepartments" cdkDrag>
+      {{ item.name }}
+    </div>
+  </div>
+</mat-card>
+
+<mat-card>
+  <h2>Selected Departments</h2>
+
+  <div
+    cdkDropList
+    [cdkDropListData]="selectedDepartments"
+    (cdkDropListDropped)="drop($event)"
+  >
+    <div class="example-box" *ngFor="let item of selectedDepartments" cdkDrag>
+      {{ item.name }}
+    </div>
+  </div>
+</mat-card>
+<button mat-button (click)="confirmDepartmentPartOf()">Confirm</button>
