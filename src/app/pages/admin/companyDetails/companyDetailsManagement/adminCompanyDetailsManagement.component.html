@@ -1,70 +1,130 @@
 <p-toast></p-toast>
-<div
-  fxLayout="column"
-  fxLayoutGap="3%"
-  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
->
-  <app-navbar></app-navbar>
+<div *ngIf="!!company">
+  <div
+    fxLayout="column"
+    fxLayoutGap="3%"
+    style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+  >
+    <app-navbar></app-navbar>
 
-  <div fxLayout="row" fxLayoutAlign="space-between center">
-    <div class="headerText">Company Details</div>
-    <div>
-      <button class="backButton" mat-button (click)="handleBackButton()">
-        Back
-      </button>
-    </div>
-  </div>
-
-  <div style="background-color: #faf9f6; width: 100%; padding: 2% 8% 2% 8%">
-    <div fxLayout="row" fxLayoutGap="3%">
-      <div fxLayout="column" fxLayoutGap="10%" style="width: 50%">
-        <span class="headerText"><strong>Company Name</strong></span>
-        <img
-          src="../../../../../assets/images/flexiworkLogo.png"
-          class="logoImage"
-        />
-        <div fxLayout="column" fxLayoutGap="0.5%">
-          <span class="subHeaderText">Company ID</span>
-          <span class="contentText">{{ company }}</span>
-        </div>
-        <div fxLayout="column" fxLayoutGap="0.5%">
-          <span class="subHeaderText">Company Email</span>
-          <span class="contentText">1232131</span>
-        </div>
-        <div fxLayout="column" fxLayoutGap="0.5%">
-          <span class="subHeaderText">Contact Number</span>
-          <span class="contentText">1232131</span>
-        </div>
-        <div fxLayout="column" fxLayoutGap="0.5%">
-          <span class="subHeaderText">Number of employees</span>
-          <span class="contentText">1232131</span>
-        </div>
-        <button mat-button class="button">Edit Details</button>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <div class="headerText">Company Details</div>
+      <div>
+        <button class="backButton" mat-button (click)="handleBackButton()">
+          Back
+        </button>
       </div>
-      <div fxLayout="column" fxLayoutGap="10%" style="width: 50%">
-        <div class="secondColumnTopSpacing"></div>
-        <div fxLayout="column" fxLayoutGap="0.5%">
-          <span class="subHeaderText">Office Name</span>
-          <span class="contentText">1232131</span>
+    </div>
+
+    <div style="background-color: #faf9f6; width: 100%; padding: 2% 8% 2% 8%">
+      <div fxLayout="row" fxLayoutGap="3%">
+        <div fxLayout="column" fxLayoutGap="10%" style="width: 50%">
+          <span class="headerText"><strong>Company Name</strong></span>
+          <img
+            src="../../../../../assets/images/flexiworkLogo.png"
+            class="logoImage"
+          />
+          <div fxLayout="column" fxLayoutGap="0.5%">
+            <span class="subHeaderText">Company ID</span>
+            <span class="contentText">{{ company.companyId }}</span>
+          </div>
+          <div fxLayout="column" fxLayoutGap="0.5%">
+            <span class="subHeaderText">Company Email</span>
+            <span *ngIf="!editDetailsMode" class="contentText">{{
+              company.email
+            }}</span>
+            <input
+              *ngIf="editDetailsMode"
+              [(ngModel)]="company.email"
+              class="inputFields"
+              pInputText
+            />
+          </div>
+          <div fxLayout="column" fxLayoutGap="0.5%">
+            <span class="subHeaderText">Contact Number</span>
+            <span *ngIf="!editDetailsMode" class="contentText">{{
+              company.contactNumber
+            }}</span>
+            <input
+              *ngIf="editDetailsMode"
+              [(ngModel)]="company.contactNumber"
+              class="inputFields"
+              pInputText
+            />
+          </div>
+          <div fxLayout="column" fxLayoutGap="0.5%">
+            <span class="subHeaderText">Number of employees</span>
+            <span class="contentText">{{ company.numOfEmployees }}</span>
+          </div>
+          <button
+            *ngIf="!editDetailsMode"
+            mat-button
+            class="button"
+            (click)="toggleEditDetails()"
+          >
+            Edit Details
+          </button>
+          <div fxLayout="row" *ngIf="editDetailsMode" fxLayoutGap="5%">
+            <button
+              mat-button
+              class="editActionButtons"
+              (click)="saveEditDetails()"
+            >
+              Save
+            </button>
+            <button
+              mat-button
+              (click)="toggleEditDetails()"
+              class="editActionButtons"
+            >
+              Back
+            </button>
+          </div>
         </div>
-        <div fxLayout="column" fxLayoutGap="0.5%">
-          <span class="subHeaderText">Office Address</span>
-          <span class="contentText">1232131</span>
+        <div fxLayout="column" fxLayoutGap="10%" style="width: 50%">
+          <div fxLayout="column" fxLayoutGap="0.5%">
+            <span class="subHeaderText">Office Name</span>
+            <span class="contentText">{{ company.officeName }}</span>
+          </div>
+          <div fxLayout="column" fxLayoutGap="0.5%">
+            <span class="subHeaderText">Office Address</span>
+            <span class="contentText">{{ company.officeAddress }}</span>
+          </div>
+          <div fxLayout="column" fxLayoutGap="0.5%">
+            <span class="subHeaderText">Office Opening Hours</span>
+            <span class="contentText">1232131</span>
+          </div>
+          <div fxLayout="column" fxLayoutGap="0.5%">
+            <span class="subHeaderText">Office Capacity</span>
+            <span class="contentText">{{ company.officeCapacity }}</span>
+          </div>
+          <button mat-button class="button" *ngIf="!editDetailsMode">
+            Configure Office Space
+          </button>
+          <button
+            mat-button
+            *ngIf="editDetailsMode"
+            [disabled]="true"
+            class="disabledButton"
+          >
+            Configure Office Space
+          </button>
+          <div fxLayout="column" fxLayoutGap="0.5%">
+            <span class="subHeaderText">Subscription Plan</span>
+            <span class="contentText">{{ company.subscriptionType }}</span>
+          </div>
+          <button mat-button class="button" *ngIf="!editDetailsMode">
+            Manage Subscription
+          </button>
+          <button
+            mat-button
+            *ngIf="editDetailsMode"
+            [disabled]="true"
+            class="disabledButton"
+          >
+            Manage Subscription
+          </button>
         </div>
-        <div fxLayout="column" fxLayoutGap="0.5%">
-          <span class="subHeaderText">Office Opening Hours</span>
-          <span class="contentText">1232131</span>
-        </div>
-        <div fxLayout="column" fxLayoutGap="0.5%">
-          <span class="subHeaderText">Office Capacity</span>
-          <span class="contentText">1232131</span>
-        </div>
-        <button mat-button class="button">Configure Office Space</button>
-        <div fxLayout="column" fxLayoutGap="0.5%">
-          <span class="subHeaderText">Subscription Plan</span>
-          <span class="contentText">1232131</span>
-        </div>
-        <button mat-button class="button">Manage Subscription</button>
       </div>
     </div>
   </div>
