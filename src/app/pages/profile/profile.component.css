@@ -34,4 +34,19 @@
   font-weight: 500;
 }
 
+.inputField {
+  font-weight: lighter;
+}
+
+.viewProfileDetails {
+  gap: 35%;
+  max-width: inherit;
+}
+
+
+.editProfileDetails {
+  gap: 8vw;
+  max-width: inherit;
+}
+
 

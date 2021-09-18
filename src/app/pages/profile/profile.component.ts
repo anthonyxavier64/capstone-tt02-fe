@@ -8,19 +8,21 @@ import { ChangePasswordComponent } from '../change-password/change-password.comp
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/models/user';
 import { MessageService } from 'primeng/api';
-
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class ProfileComponent implements OnInit {
   user: any | null;
   dept: any | null;
   mdept: any | null;
 
-  constructor(private router: Router,
+  editDetailsMode: boolean = false;
+
+  constructor(
+    private router: Router,
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
     private messageService: MessageService,
@@ -33,21 +35,29 @@ export class ProfileComponent implements OnInit {
     if (currentUser) {
       this.user = JSON.parse(currentUser);
       this.userService.getDepartments(this.user.email).subscribe(
-        response => {
-          this.dept = response
+        (response) => {
+          this.mdept = response;
         },
-        error => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Departments not found' })
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Departments not found',
+          });
         }
-      )
+      );
       this.userService.getManagedDepartments(this.user.email).subscribe(
-        response => {
-          this.mdept = response
+        (response) => {
+          this.mdept = response;
         },
-        error => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Managed departments not found' })
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Managed departments not found',
+          });
         }
-      )
+      );
     }
   }
 
@@ -69,4 +79,7 @@ export class ProfileComponent implements OnInit {
   }
 
 
+  closeProfileEdit() {
+    this.editDetailsMode = false;
+  }
 }
