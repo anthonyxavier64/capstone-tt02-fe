@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
+import { DepartmentService } from 'src/app/services/department/department.service';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -16,6 +17,8 @@ import { UserService } from 'src/app/services/user/user.service';
 export class AdminEmployeeManagementComponent implements OnInit {
   currNewUserEmail: String;
   currNewUserPosition: String;
+  currNewUserFullName: String;
+  currNewUserContactNumber: String;
 
   isLoading: boolean = false;
   sortField: string;
@@ -29,6 +32,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
   constructor(
     private _location: Location,
     private userService: UserService,
+    private departmentService: DepartmentService,
     private dialog: MatDialog
   ) {
     this.sortField = '';
@@ -82,9 +86,8 @@ export class AdminEmployeeManagementComponent implements OnInit {
     });
 
     deptPartOfDialogRef.afterClosed().subscribe((result) => {
-      this.inChargeOfDepartments = result.inChargeOfDepartments;
+      this.inChargeOfDepartments = result;
     });
-    console.log(this.inChargeOfDepartments);
     // How to attach departments to user?
   }
 
@@ -98,9 +101,8 @@ export class AdminEmployeeManagementComponent implements OnInit {
     });
 
     deptPartOfDialogRef.afterClosed().subscribe((result) => {
-      this.partOfDepartments = result.partOfDepartments;
+      this.partOfDepartments = result;
     });
-    console.log(this.partOfDepartments);
   }
 
   downloadCSVTemplate() {}
@@ -114,5 +116,39 @@ export class AdminEmployeeManagementComponent implements OnInit {
     //   }
     // );
     // uploadEmployeeCSVDialogRef.onClose.subscribe();
+  }
+
+  createNewEmployee() {
+    var currCompanyId = -1;
+    var currUserJson = localStorage.getItem('currentUser');
+    if (currUserJson != null) {
+      let currUser = JSON.parse(currUserJson);
+      currCompanyId = currUser.companyId;
+    }
+
+    let deptsInChargeOfIds = [];
+    let deptsPartOfIds = [];
+
+    for (let dept of this.inChargeOfDepartments) {
+      deptsInChargeOfIds.push(dept.departmentId);
+    }
+
+    for (let dept of this.partOfDepartments) {
+      deptsPartOfIds.push(dept.departmentId);
+    }
+
+    let user = {
+      email: this.currNewUserEmail,
+      fullName: this.currNewUserFullName,
+      company: { companyId: currCompanyId },
+      password: 'password',
+      contactNumber: this.currNewUserContactNumber,
+      deptsInChargeOf: { deptsInChargeOf: deptsInChargeOfIds },
+      deptsPartOf: { deptsPartOf: deptsPartOfIds },
+    };
+
+    console.log(JSON.stringify(user));
+
+    this.userService.createNewUser(user);
   }
 }

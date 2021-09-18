@@ -47,15 +47,13 @@ export class DepartmentInChargeOfComponent implements OnInit {
   }
 
   confirmDepartmentInChargeOf() {
-    console.log(this.data);
     for (let dept of this.allDepartments) {
       if (dept.isSelected == true) {
-        console.log(dept.name);
         delete dept.isSelected;
         this.data.inChargeOfDepartments.push(dept);
       }
     }
-    this.dialogRef.close(this.data);
+    this.dialogRef.close(this.data.inChargeOfDepartments);
   }
 
   openNewDepartmentDialog() {
