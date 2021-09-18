@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
@@ -18,7 +17,7 @@ import { firebaseStorage } from '../../../../firebase/firebase';
   providers: [MatDialog],
 })
 export class AdminEmployeeManagementComponent implements OnInit {
-  user: User;
+  user;
 
   currNewUserEmail: String;
   currNewUserPosition: String;
@@ -105,7 +104,6 @@ export class AdminEmployeeManagementComponent implements OnInit {
     });
   }
 
-  // Currently working on
   openPartOfDialog() {
     this.partOfDepartments = [];
     const deptPartOfDialogRef = this.dialog.open(DepartmentPartOfComponent, {
