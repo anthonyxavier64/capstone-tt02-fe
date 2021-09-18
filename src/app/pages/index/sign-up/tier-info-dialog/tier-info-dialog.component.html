@@ -1,0 +1,77 @@
+<div
+  fxLayout="column"
+  fxLayoutAlign="space-around center"
+  class="dialogWrapper"
+>
+  <div>
+    <p class="tierInfoDialogTitle"><u>Our Subscription Tiers</u></p>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="4%">
+    <div
+      class="tierCard"
+      fxLayout="column"
+      fxLayoutAlign="space-around center"
+      fxLayoutGap="2%"
+    >
+      <img
+        class="basicTierIcon"
+        src="../../../../../assets/images/basicTierIcon.png"
+      />
+      <h2 class="tierFeatureText" style="font-size: 25px">The Basic Tier</h2>
+      <div class="tierFeatureText">
+        <li>29 Users</li>
+        <li>Feature 2</li>
+        <li>Feature 3</li>
+        <li>Feature 4</li>
+        <li>Feature 5</li>
+      </div>
+      <p class="tierFeatureText">$200/Year</p>
+    </div>
+    <div
+      class="tierCard"
+      fxLayout="column"
+      fxLayoutAlign="space-around center"
+      fxLayoutGap="2%"
+    >
+      <img
+        class="standardTierIcon"
+        src="../../../../../assets/images/standardTierIcon.png"
+      />
+      <h2
+        class="tierFeatureText"
+        style="font-size: 25px; margin-top: 4vw; padding-top: 1.8vw"
+      >
+        The Standard Tier
+      </h2>
+      <div class="tierFeatureText">
+        <li>79 Users</li>
+        <li>Feature 2</li>
+        <li>Feature 3</li>
+        <li>Feature 4</li>
+        <li>Feature 5</li>
+      </div>
+      <p class="tierFeatureText">$300/Year</p>
+    </div>
+    <div
+      class="tierCard"
+      fxLayout="column"
+      fxLayoutAlign="space-around center"
+      fxLayoutGap="2%"
+    >
+      <img
+        class="proTierIcon"
+        src="../../../../../assets/images/proTierIcon.png"
+      />
+      <h2 class="tierFeatureText" style="font-size: 25px">The Pro Tier</h2>
+      <div class="tierFeatureText">
+        <li>Unlimited Users</li>
+        <li>Feature 2</li>
+        <li>Feature 3</li>
+        <li>Feature 4</li>
+        <li>Feature 5</li>
+      </div>
+      <p class="tierFeatureText">$500/Year</p>
+    </div>
+  </div>
+  <button mat-button class="closeButton" (click)="onCloseClick()">Close</button>
+</div>

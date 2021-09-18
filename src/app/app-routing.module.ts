@@ -7,12 +7,16 @@ import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDet
 import { AdminEmployeeManagementComponent } from './pages/admin/employeeManagement/adminEmployeeManagement.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
 import { IndexComponent } from './pages/index/index.component';
+import { LoginComponent } from './pages/index/login/login.component';
+import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { EditAnnouncementComponent } from './pages/admin/edit-announcement/edit-announcement.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
   { path: 'index', component: IndexComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'signUp', component: SignUpComponent },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
   {
     path: 'adminCompanyDetailsManagement',
