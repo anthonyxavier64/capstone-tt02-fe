@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
 import { UserService } from 'src/app/services/user/user.service';
+import { firebaseStorage } from '../../../../firebase/firebase';
 
 @Component({
   selector: 'app-admin-employeeManagement',
