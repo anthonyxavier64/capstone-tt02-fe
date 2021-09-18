@@ -30,7 +30,7 @@ export class DepartmentInChargeOfComponent implements OnInit {
     // Below is the correct code
     this.departmentService.getAllDepartments().subscribe(
       (response) => {
-        this.allDepartments = response;
+        this.allDepartments = response.types.departments;
       },
       (error) => {
         console.log(error);

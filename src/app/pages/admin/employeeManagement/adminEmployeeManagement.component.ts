@@ -90,19 +90,21 @@ export class AdminEmployeeManagementComponent implements OnInit {
 
   openInChargeOfDialog() {
     this.inChargeOfDepartments = [];
-    const deptPartOfDialogRef = this.dialog.open(DepartmentPartOfComponent, {
-      width: '50%',
-      height: '50%',
-      data: { inChargeOfDepartments: this.inChargeOfDepartments },
-    });
+    const deptInChargeOfDialogRef = this.dialog.open(
+      DepartmentInChargeOfComponent,
+      {
+        width: '50%',
+        height: '50%',
+        data: { inChargeOfDepartments: this.inChargeOfDepartments },
+      }
+    );
 
-    deptPartOfDialogRef.afterClosed().subscribe((result) => {
+    deptInChargeOfDialogRef.afterClosed().subscribe((result) => {
       this.inChargeOfDepartments = result;
     });
     // How to attach departments to user?
   }
 
-  // Currently working on
   openPartOfDialog() {
     this.partOfDepartments = [];
     const deptPartOfDialogRef = this.dialog.open(DepartmentPartOfComponent, {
