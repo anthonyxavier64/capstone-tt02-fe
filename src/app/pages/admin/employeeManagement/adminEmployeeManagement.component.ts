@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
@@ -29,6 +30,8 @@ export class AdminEmployeeManagementComponent implements OnInit {
   allDepartments: any;
   allUsers: any;
 
+  csvDownloadUrl: string;
+
   constructor(
     private _location: Location,
     private userService: UserService,
@@ -40,6 +43,8 @@ export class AdminEmployeeManagementComponent implements OnInit {
     this.inChargeOfDepartments = [];
     this.allDepartments = [];
     this.allUsers = [];
+    this.csvDownloadUrl =
+      'https://firebasestorage.googleapis.com/v0/b/capstone-fe.appspot.com/o/mass_invite_employee_template.csv?alt=media&token=fdd9c480-c384-4c7b-a85e-89a3c32230a3';
   }
 
   ngOnInit(): void {
@@ -105,7 +110,9 @@ export class AdminEmployeeManagementComponent implements OnInit {
     });
   }
 
-  downloadCSVTemplate() {}
+  downloadCSVTemplate() {
+    window.open(this.csvDownloadUrl, '_self');
+  }
 
   openUploadCSVDialog() {
     // const uploadEmployeeCSVDialogRef = this.dialogService.open(
