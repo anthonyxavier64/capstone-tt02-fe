@@ -1,11 +1,128 @@
-<div fxLayout="column" fxLayoutGap="3%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
+<div
+  fxLayout="column"
+  fxLayoutGap="3%"
+  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+>
   <app-navbar></app-navbar>
 
-  <div style="font-size:25px;">
-      Welcome [Username], what would you like to do today?
+  <div style="font-size: 25px">
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      Welcome {{ user.fullName }}, manage your employees here:
+      <button
+        mat-raised-button
+        (click)="backButtonClicked()"
+        style="margin-right: 30px"
+      >
+        back
+      </button>
+    </div>
   </div>
 
+  <div>
+    <mat-card fxLayout="row">
+      <mat-card fxFlex="100">
+        <h2 style="text-decoration: underline; text-align: center">
+          Invite Employee
+        </h2>
+        <div
+          fxLayout="row"
+          fxLayoutGap="10%"
+          fxLayoutAlign="space-evenly center"
+        >
+          <div fxLayout="row" fxLayoutGap="10px">
+            <div fxLayout="column" fxLayoutGap="10px">
+              <h3>Employee Full Name:</h3>
+              <input
+                type="text"
+                placeholder="Name"
+                [(ngModel)]="currNewUserFullName"
+                pInputText
+              />
+              <h3>Email Address:</h3>
+              <input
+                type="text"
+                placeholder="Email"
+                [(ngModel)]="currNewUserEmail"
+                pInputText
+              />
+            </div>
+          </div>
+          <div fxLayout="column" fxLayoutGap="10px">
+            <h3>Employee Position:</h3>
+            <input
+              type="text"
+              placeholder="Position"
+              [(ngModel)]="currNewUserPosition"
+              pInputText
+            />
+            <h3>Contact Number:</h3>
+            <input
+              type="text"
+              placeholder="Contact Number"
+              [(ngModel)]="currNewUserContactNumber"
+              pInputText
+            />
+          </div>
+          <div fxLayout="column" fxLayoutGap="10px">
+            <h4 style="text-align: left">Associated Departments:</h4>
+            <button mat-raised-button (click)="openInChargeOfDialog()">
+              In Charge of
+            </button>
+            <button mat-raised-button (click)="openPartOfDialog()">
+              Part Of
+            </button>
+          </div>
+        </div>
+        <button mat-raised-button (click)="createNewEmployee()">
+          Invite Employee
+        </button>
+      </mat-card>
+      <!-- <mat-card fxFlex="30">
+        <h2 style="text-decoration: underline; text-align: center">
+          Mass Invite Employee
+        </h2>
+        <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="space-between">
+          <button mat-raised-button (click)="downloadCSVTemplate()">
+            Download .csv template file
+          </button>
+          <button mat-raised-button (click)="openUploadCSVDialog()">
+            Upload Employee .csv file
+          </button>
+        </div>
+      </mat-card> -->
+    </mat-card>
+  </div>
 
+  <div>
+    <mat-card>
+      <p-dataView
+        [value]="allUsers"
+        layout="list"
+        [loading]="isLoading"
+        [paginator]="true"
+        [rows]="10"
+        [sortField]="sortField"
+      >
+        <ng-template pTemplate="header"></ng-template>
+        <ng-template let-user pTemplate="listItem">
+          <div style="width: 100%">
+            <mat-card>
+              <mat-card-title>
+                {{ user.fullName }}
+              </mat-card-title>
+              <mat-card-subtitle>
+                Date created: {{ user.createdAt }}
+              </mat-card-subtitle>
+              <mat-card-content> email: {{ user.email }} </mat-card-content>
+              <mat-card-content>
+                contact number: {{ user.contactNumber }}
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </ng-template>
+      </p-dataView>
+    </mat-card>
+  </div>
 
   <!-- generate number of cards to show -->
 </div>

@@ -1,0 +1,73 @@
+<div class="wrapper">
+  <div
+    fxLayout="row"
+    fxShow
+    class="left-section"
+    fxLayoutAlign="stretch"
+    #leftSection
+  >
+    <mat-card style="width: 100%" *ngIf="leftSection.style.display !== 'none'">
+      <mat-card-content fxLayout="column" fxLayoutGap="3%">
+        <label>Company Email: </label>
+        <input pInputText required [(ngModel)]="companyEmail" />
+        <label>Company Name: </label>
+        <input pInputText required [(ngModel)]="companyName" />
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+          <label>Subscription Tier: </label>
+          <img
+            class="infoLogo"
+            src="../../../../assets/images/infoLogo.png"
+            (click)="openTierInfo()"
+          />
+        </div>
+        <mat-form-field appearance="fill">
+          <mat-select
+            [(ngModel)]="selectedSubscriptionTier"
+            name="subscriptionTier"
+            required
+          >
+            <mat-option
+              *ngFor="let subscriptionTier of subscriptionTiers"
+              [value]="subscriptionTier"
+            >
+              {{ subscriptionTier }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <label>Payment Method: </label>
+        <mat-form-field appearance="fill">
+          <mat-select
+            [(ngModel)]="selectedPaymentMethod"
+            name="paymentMethod"
+            required
+          >
+            <mat-option
+              *ngFor="let paymentMethod of paymentMethods"
+              [value]="paymentMethod"
+            >
+              {{ paymentMethod }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button
+          mat-flat-button
+          color="accent"
+          (click)="openCompanyDetailsDialog()"
+        >
+          Sign Up
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div
+    fxLayout
+    fxLayoutAlign="center center"
+    fxShow
+    class="right-section"
+    #rightSection
+  >
+    <div *ngIf="rightSection.style.display !== 'none'">
+      <img class="logo" src="../../../../assets/images/flexiworkLogo.png" />
+    </div>
+  </div>
+</div>
