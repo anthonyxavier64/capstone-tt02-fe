@@ -52,16 +52,13 @@ export function tokenGetter() {
     AdminWfoManagementComponent,
     AdminAnnouncementManagementComponent,
     ProfileComponent,
-<<<<<<< HEAD
     EditAnnouncementComponent,
     DeleteAnnouncementComponent,
     ViewAnnouncementComponent,
     SignUpComponent,
     TierInfoDialogComponent,
     CompanyDetailsDialogComponent,
-=======
     ChangePasswordComponent,
->>>>>>> a9c443b... change password use case is hidden
   ],
   imports: [
     BrowserModule,
