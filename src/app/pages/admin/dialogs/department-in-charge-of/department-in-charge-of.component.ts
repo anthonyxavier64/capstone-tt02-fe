@@ -6,8 +6,7 @@ import {
 } from '@angular/material/dialog';
 
 import { NewDepartmentComponent } from '../new-department/new-department.component';
-import { UserService } from 'src/app/services/user/user.service';
-
+import { DepartmentService } from 'src/app/services/department/department.service';
 @Component({
   selector: 'app-department-in-charge-of',
   templateUrl: './department-in-charge-of.component.html',
@@ -18,6 +17,7 @@ export class DepartmentInChargeOfComponent implements OnInit {
   selectedDepartments: any[];
 
   constructor(
+    private departmentService: DepartmentService,
     private dialogRef: MatDialogRef<DepartmentInChargeOfComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog
@@ -28,22 +28,22 @@ export class DepartmentInChargeOfComponent implements OnInit {
 
   ngOnInit(): void {
     // Below is the correct code
-    // this.UserService.getDepartments().subscribe(
-    //   (response) => {
-    //     this.allDepartments = response;
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //   }
-    // );
-
-    var deptLocalStorage = localStorage.getItem('allDepts');
-    if (deptLocalStorage != null) {
-      this.allDepartments = JSON.parse(deptLocalStorage);
-      for (let dept of this.allDepartments) {
-        dept.isSelected = false;
+    this.departmentService.getAllDepartments().subscribe(
+      (response) => {
+        this.allDepartments = response;
+      },
+      (error) => {
+        console.log(error);
       }
-    }
+    );
+
+    // var deptLocalStorage = localStorage.getItem('allDepts');
+    // if (deptLocalStorage != null) {
+    //   this.allDepartments = JSON.parse(deptLocalStorage);
+    //   for (let dept of this.allDepartments) {
+    //     dept.isSelected = false;
+    //   }
+    // }
   }
 
   confirmDepartmentInChargeOf() {
@@ -76,15 +76,15 @@ export class DepartmentInChargeOfComponent implements OnInit {
     // });
 
     // Below is the correct code if the DB works
-    // openNewDepartmentRef.onClose.subscribe(() => {
-    //   this.UserService.getDepartments().subscribe(
-    //     (response) => {
-    //       this.allDepartments = response;
-    //     },
-    //     (error) => {
-    //       console.log(error);
-    //     }
-    //   );
-    // });
+    newDepartmentDialogRef.afterClosed().subscribe(() => {
+      this.departmentService.getAllDepartments().subscribe(
+        (response) => {
+          this.allDepartments = response;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    });
   }
 }
