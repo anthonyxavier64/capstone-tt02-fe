@@ -20,7 +20,12 @@
 
   <div>
     <mat-card fxLayout="row">
-      <mat-card fxFlex="70">
+      <mat-card
+        fxFlex="70"
+        fxLayout="column"
+        fxLayoutGap="10px"
+        fxLayoutAlign="space-between"
+      >
         <h2 style="text-decoration: underline; text-align: center">
           Invite Employee
         </h2>
@@ -29,19 +34,37 @@
           fxLayoutGap="10%"
           fxLayoutAlign="space-evenly center"
         >
+          <div fxLayout="row" fxLayoutGap="10px">
+            <div fxLayout="column" fxLayoutGap="10px">
+              <h3>Employee Full Name:</h3>
+              <input
+                type="text"
+                placeholder="Name"
+                [(ngModel)]="currNewUserFullName"
+                pInputText
+              />
+              <h3>Email Address:</h3>
+              <input
+                type="text"
+                placeholder="Email"
+                [(ngModel)]="currNewUserEmail"
+                pInputText
+              />
+            </div>
+          </div>
           <div fxLayout="column" fxLayoutGap="10px">
-            <h3>Email Address:</h3>
-            <input
-              type="text"
-              placeholder="Email"
-              [(ngModel)]="currNewUserEmail"
-              pInputText
-            />
             <h3>Employee Position:</h3>
             <input
               type="text"
               placeholder="Position"
               [(ngModel)]="currNewUserPosition"
+              pInputText
+            />
+            <h3>Contact Number:</h3>
+            <input
+              type="text"
+              placeholder="Contact Number"
+              [(ngModel)]="currNewUserContactNumber"
               pInputText
             />
           </div>
@@ -55,6 +78,9 @@
             </button>
           </div>
         </div>
+        <button mat-raised-button (click)="createNewEmployee()">
+          Invite Employee
+        </button>
       </mat-card>
       <mat-card fxFlex="30">
         <h2 style="text-decoration: underline; text-align: center">

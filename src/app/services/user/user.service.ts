@@ -47,4 +47,13 @@ export class UserService {
       .post(this.baseUrl + '/reset-password', { email, oldpassword, password1, password2 }, httpOptions)
       .pipe(catchError(handleError));
   }
+
+  createNewUser(user: any) {
+    return this.httpClient
+      .post<any>(this.baseUrl + '/register', user)
+      .pipe(catchError(handleError))
+      .subscribe((response) => {
+        console.log(response);
+      });
+  }
 }
