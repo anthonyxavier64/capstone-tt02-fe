@@ -27,7 +27,6 @@ import { PrimeNgModule } from './core/primeng.module';
 import { AdminComponent } from './pages/admin/adminLanding/admin.component';
 import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDetails/companyDetailsManagement/adminCompanyDetailsManagement.component';
 import { OfficeSpaceConfigComponent } from './pages/admin/companyDetails/office-space-config/office-space-config.component';
-import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDetailsManagement/adminCompanyDetailsManagement.component';
 import { DeleteAnnouncementComponent } from './pages/admin/delete-announcement/delete-announcement.component';
 import { NewDepartmentComponent } from './pages/admin/dialogs/new-department/new-department.component';
 import { EditAnnouncementComponent } from './pages/admin/edit-announcement/edit-announcement.component';
@@ -40,6 +39,7 @@ import { TierInfoDialogComponent } from './pages/index/sign-up/tier-info-dialog/
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
+import { AdminAnnouncementManagementComponent } from './pages/admin/announcementManagement/adminAnnouncementManagement.component';
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -93,4 +93,4 @@ export function tokenGetter() {
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
