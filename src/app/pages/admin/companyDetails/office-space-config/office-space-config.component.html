@@ -1,0 +1,376 @@
+<div
+  fxLayout="column"
+  fxLayoutGap="3%"
+  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+>
+  <app-navbar></app-navbar>
+
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="headerText">Office Space Configuration</div>
+    <button mat-button class="backButton" (click)="onBackClick()">Back</button>
+  </div>
+  <!-- generate number of cards to show -->
+
+  <div
+    fxLayout="column"
+    fxLayoutAlign="space-around center"
+    fxLayoutGap="3%"
+    style="width: 100%; padding: 2% 2% 2% 2%"
+  >
+    <div
+      fxLayout="column"
+      fxLayoutAlign="space-around center"
+      class="officeDetailsCard"
+    >
+      <mat-card-title class="officeDetailsHeading"
+        ><b>Office Details</b></mat-card-title
+      >
+      <div fxLayout="row" fxLayoutAlign="center">
+        <table class="companyDetailsTbl">
+          <tr>
+            <th class="text"><b>Office Name:</b></th>
+            <td class="text">{{ officeName }}</td>
+          </tr>
+          <tr>
+            <th class="text"><b>Office Address:</b></th>
+            <td class="text">{{ officeAddress }}</td>
+          </tr>
+          <tr>
+            <th class="text"><b>Opening Hours:</b></th>
+            <td class="text">{{ officeOpeningHours }}</td>
+          </tr>
+          <tr>
+            <th class="text"><b>Office Capacity:</b></th>
+            <td class="text">{{ officeCapacity }}</td>
+          </tr>
+        </table>
+      </div>
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-around center"
+        style="padding: 2% 2% 2% 2%"
+      >
+        <button
+          mat-button
+          class="editBtn"
+          (click)="openEditOfficeDetailsDialog()"
+        >
+          Edit Details
+        </button>
+        <p-dialog
+          header="Edit Office Details"
+          [(visible)]="isEditOfficeDetailsOpen"
+          [breakpoints]="{ '150vw': '75vw' }"
+          [draggable]="false"
+          [resizable]="false"
+          [style]="{ width: '50vw', height: '30vw', color: '#FAF9F6' }"
+        >
+          <form
+            #officeDetailsForm="ngForm"
+            ngNativeValidate
+            (ngSubmit)="submitOfficeDetailsForm(officeDetailsForm)"
+          >
+            <div fxLayout="column" fxLayoutAlign="space-around center">
+              <table class="companyDetailsTbl">
+                <tr>
+                  <th class="text">
+                    <label for="officeName">Office Name:</label>
+                  </th>
+                  <td class="text">
+                    <input
+                      type="text"
+                      [placeholder]="officeName"
+                      name="officeName"
+                      ngModel
+                      required
+                      pInputText
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text">
+                    <label for="officeAddress">Office Address:</label>
+                  </th>
+                  <td class="text">
+                    <textarea
+                      type="textarea"
+                      style="width: 20vw"
+                      [placeholder]="officeAddress"
+                      name="officeAddress"
+                      ngModel
+                      required
+                      pInputTextarea
+                    ></textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text">
+                    <label>Opening Hours:</label>
+                  </th>
+                  <td class="text">
+                    <input
+                      type="time"
+                      name="openingHour"
+                      style="width: 15vw"
+                      ngModel
+                      required
+                      pInputText
+                    />
+                  </td>
+                  <td class="text">
+                    <input
+                      type="time"
+                      name="closingHour"
+                      style="width: 15vw"
+                      ngModel
+                      required
+                      pInputText
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text"><label>Office Capacity:</label></th>
+                  <td class="text">64</td>
+                </tr>
+              </table>
+
+              <div
+                fxLayout="row"
+                fxLayoutAlign=" center"
+                fxLayoutGap="3%"
+                style="margin-top: 3%"
+              >
+                <button mat-button class="saveBtn" type="submit">
+                  Save Details
+                </button>
+                <button
+                  mat-button
+                  class="closeBtn"
+                  (click)="isEditOfficeDetailsOpen = false"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </form>
+        </p-dialog>
+      </div>
+    </div>
+
+    <div fxLayout="column" fxLayoutAlign=" center" class="roomManagementCard">
+      <mat-card-title class="roomManagementHeading"
+        >Room Management</mat-card-title
+      >
+      <div class="roomItemContainer">
+        <p-dataView [value]="rooms" layout="grid">
+          <ng-template let-room pTemplate="gridItem" style="border: 1px solid">
+            <div class="overridePrime">
+              <div
+                fxLayout="row"
+                fxLayoutAlign="space-between"
+                class="roomItem card"
+                (click)="openEditRoomDetailsDialog(room)"
+              >
+                <div
+                  fxLayout="column"
+                  fxLayoutAlign="space-evenly start"
+                  class="roomItemText"
+                >
+                  <p style="font-weight: bolder; font-size: 22px">
+                    {{ room.roomNumber }}
+                  </p>
+                  <p style="font-size: 18px">Level: {{ room.roomLocation }}</p>
+                  <p style="font-size: 18px">
+                    Capacity: {{ room.roomCapacity }}
+                  </p>
+                </div>
+                <div fxLayoutAlign=" end">
+                  <img src="../../../../../assets/images/editIcon.png" />
+                </div>
+              </div>
+            </div>
+            <p-dialog
+              header="Edit Room Details"
+              [(visible)]="isEditRoomDetailsOpen"
+              [breakpoints]="{ '150vw': '75vw' }"
+              [draggable]="false"
+              [resizable]="false"
+              [style]="{ width: '50vw', height: '32.5vw', color: '#FAF9F6' }"
+            >
+              <form
+                #roomDetailsForm="ngForm"
+                (ngSubmit)="submitRoomDetailsForm(roomDetailsForm)"
+              >
+                <div fxLayout="column" fxLayoutAlign="space-around center">
+                  <table class="companyDetailsTbl">
+                    <tr>
+                      <th class="text">
+                        <label for="roomNumber">Room Number:</label>
+                      </th>
+                      <td class="text">
+                        <input
+                          type="text"
+                          placeholder="Room Number"
+                          name="roomNumber"
+                          ngModel
+                          pInputText
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="text">
+                        <label for="roomLocation">Room Location:</label>
+                      </th>
+                      <td class="text">
+                        <input
+                          type="text"
+                          placeholder="Room Location"
+                          name="roomLocation"
+                          style="width: 15vw"
+                          ngModel
+                          pInputText
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="text">
+                        <label>Room Capacity:</label>
+                      </th>
+                      <td class="text">
+                        <input
+                          type="number"
+                          placeholder="Room Capacity"
+                          name="roomCapacity"
+                          ngModel
+                          pInputText
+                        />
+                      </td>
+                    </tr>
+                  </table>
+                  <button
+                    mat-button
+                    class="deleteBtn"
+                    style="padding-top: 1.5vw"
+                    (click)="deleteRoom()"
+                  >
+                    <p style="float: right">Delete Room</p>
+                    <img
+                      style="float: left"
+                      src="../../../../../assets/images/deleteIcon.png"
+                    />
+                  </button>
+
+                  <div
+                    fxLayout="row"
+                    fxLayoutAlign="center"
+                    fxLayoutGap="3%"
+                    style="margin-top: 3%"
+                  >
+                    <button mat-button class="saveBtn" type="submit">
+                      Save Details
+                    </button>
+                    <button
+                      mat-button
+                      class="closeBtn"
+                      (click)="isEditRoomDetailsOpen = false"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </p-dialog>
+          </ng-template>
+        </p-dataView>
+      </div>
+      <div>
+        <button mat-button class="addRoomBtn" (click)="openAddRoomDialog()">
+          Add Room
+        </button>
+      </div>
+      <p-dialog
+        header="Add a New Room"
+        [(visible)]="isAddRoomOpen"
+        [breakpoints]="{ '150vw': '75vw' }"
+        [draggable]="false"
+        [resizable]="false"
+        [style]="{ width: '50vw', height: '25vw', color: '#FAF9F6' }"
+      >
+        <form
+          #addRoomForm="ngForm"
+          ngNativeValidate
+          (ngSubmit)="submitAddRoomForm(addRoomForm)"
+        >
+          <div fxLayout="column" fxLayoutAlign="space-around center">
+            <table class="companyDetailsTbl">
+              <tr>
+                <th class="text">
+                  <label for="roomNumber">Room Number:</label>
+                </th>
+                <td class="text">
+                  <input
+                    type="text"
+                    placeholder="Room Number"
+                    name="roomNumber"
+                    ngModel
+                    required
+                    pInputText
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th class="text">
+                  <label for="roomLocation">Room Location:</label>
+                </th>
+                <td class="text">
+                  <input
+                    type="text"
+                    placeholder="Room Location"
+                    name="roomLocation"
+                    style="width: 15vw"
+                    ngModel
+                    required
+                    pInputText
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th class="text">
+                  <label>Room Capacity:</label>
+                </th>
+                <td class="text">
+                  <input
+                    type="number"
+                    placeholder="Room Capacity"
+                    name="roomCapacity"
+                    ngModel
+                    required
+                    pInputText
+                  />
+                </td>
+              </tr>
+            </table>
+
+            <div
+              fxLayout="row"
+              fxLayoutAlign=" center"
+              fxLayoutGap="3%"
+              style="margin-top: 3%"
+            >
+              <button mat-button class="saveBtn" type="submit">
+                Save Details
+              </button>
+              <button
+                mat-button
+                class="closeBtn"
+                (click)="isAddRoomOpen = false"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </form>
+      </p-dialog>
+    </div>
+  </div>
+</div>
