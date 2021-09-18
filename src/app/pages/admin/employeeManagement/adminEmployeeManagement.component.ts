@@ -104,7 +104,6 @@ export class AdminEmployeeManagementComponent implements OnInit {
     });
   }
 
-  // Currently working on
   openPartOfDialog() {
     this.partOfDepartments = [];
     const deptPartOfDialogRef = this.dialog.open(DepartmentPartOfComponent, {
