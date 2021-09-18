@@ -9,6 +9,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -33,6 +35,7 @@ import { TierInfoDialogComponent } from './pages/index/sign-up/tier-info-dialog/
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
+import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -49,12 +52,16 @@ export function tokenGetter() {
     AdminWfoManagementComponent,
     AdminAnnouncementManagementComponent,
     ProfileComponent,
+<<<<<<< HEAD
     EditAnnouncementComponent,
     DeleteAnnouncementComponent,
     ViewAnnouncementComponent,
     SignUpComponent,
     TierInfoDialogComponent,
     CompanyDetailsDialogComponent,
+=======
+    ChangePasswordComponent,
+>>>>>>> a9c443b... change password use case is hidden
   ],
   imports: [
     BrowserModule,
@@ -69,6 +76,9 @@ export function tokenGetter() {
     MatSelectModule,
     MatIconModule,
     MatMenuModule,
+    MatDialogModule,
+    MatInputModule,
+    MatFormFieldModule,
     PrimeNgModule,
     InputTextareaModule,
     DropdownModule,

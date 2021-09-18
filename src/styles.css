@@ -33,12 +33,20 @@
   margin: 0;
 }
 
-span {
+pan {
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 18px;
   color: #003672;
   font-weight: 200;
   margin: 0;
+}
+
+.mat-button {
+  font-family: 'Source Sans Pro', sans-serif;
+  background: rgba(0, 55, 100, 0.15);
+  color: #003672;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 

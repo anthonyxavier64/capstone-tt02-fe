@@ -1,5 +1,5 @@
 
-<p-toast></p-toast>
+<!-- <p-toast></p-toast> -->
 
 <div fxLayout="column" fxLayoutGap="3%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
   <app-navbar></app-navbar>
@@ -42,7 +42,7 @@
     </mat-card-group>
 
     <div class="profile-btn-wrap" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5%">
-      <button mat-button class="grey-btn">Change password</button>
+      <button mat-button class="grey-btn" (click)="openDialog()" style="display: none;">Change password</button>
       <button mat-button class="grey-btn">Edit Profile</button>
     </div>
 

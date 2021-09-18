@@ -25,15 +25,21 @@ export class UserService {
       .pipe(catchError(handleError));
   }
 
-  getDepartments(): Observable<any> {
+  getDepartments(email: string): Observable<any> {
     return this.httpClient
-      .get<any>(this.baseUrl + "/get-departments")
+      .post<any>(this.baseUrl + "/get-departments", { email }, httpOptions)
       .pipe(catchError(handleError));
   }
 
-  getManagedDepartments(): Observable<any> {
+  getManagedDepartments(email: string): Observable<any> {
     return this.httpClient
-      .get<any>(this.baseUrl + "/get-managed-departments")
+      .post<any>(this.baseUrl + "/get-managed-departments", { email }, httpOptions)
+      .pipe(catchError(handleError));
+  }
+
+  resetPassword(email: string, oldpassword: string, password1: string, password2: string): Observable<any> {
+    return this.httpClient
+      .post(this.baseUrl + '/reset-password', { email, oldpassword, password1, password2 }, httpOptions)
       .pipe(catchError(handleError));
   }
 }

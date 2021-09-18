@@ -2,6 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { MatDialog } from '@angular/material/dialog';
+import { ChangePasswordComponent } from '../change-password/change-password.component';
+
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/models/user';
 import { MessageService } from 'primeng/api';
@@ -20,7 +23,8 @@ export class ProfileComponent implements OnInit {
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
-    private messageService: MessageService) {
+    private messageService: MessageService,
+    public dialog: MatDialog) {
     this.user = null;
   }
 
@@ -28,15 +32,15 @@ export class ProfileComponent implements OnInit {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.user = JSON.parse(currentUser);
-      this.userService.getDepartments().subscribe(
+      this.userService.getDepartments(this.user.email).subscribe(
         response => {
-          this.mdept = response
+          this.dept = response
         },
         error => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Departments not found' })
         }
       )
-      this.userService.getManagedDepartments().subscribe(
+      this.userService.getManagedDepartments(this.user.email).subscribe(
         response => {
           this.mdept = response
         },
@@ -51,6 +55,17 @@ export class ProfileComponent implements OnInit {
 
   openOnMouseOver() {
     this.clickHoverMenuTrigger.openMenu();
+  }
+
+  openDialog(): void {
+    let dialogRef = this.dialog.open(ChangePasswordComponent, {
+      width: '250px',
+      data: 'test'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // this.message = result;
+    });
   }
 
 
