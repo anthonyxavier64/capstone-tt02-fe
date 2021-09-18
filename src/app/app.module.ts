@@ -21,7 +21,6 @@ import { AdminComponent } from './pages/admin/adminLanding/admin.component';
 import { AdminAnnouncementManagementComponent } from './pages/admin/announcementManagement/adminAnnouncementManagement.component';
 import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDetails/companyDetailsManagement/adminCompanyDetailsManagement.component';
 import { OfficeSpaceConfigComponent } from './pages/admin/companyDetails/office-space-config/office-space-config.component';
-import { UpdateCompanyDetailsDialogComponent } from './pages/admin/companyDetails/update-company-details-dialog/update-company-details-dialog.component';
 import { AdminEmployeeManagementComponent } from './pages/admin/employeeManagement/adminEmployeeManagement.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
 import { IndexComponent } from './pages/index/index.component';
@@ -43,7 +42,6 @@ export function tokenGetter() {
     AdminWfoManagementComponent,
     AdminAnnouncementManagementComponent,
     ProfileComponent,
-    UpdateCompanyDetailsDialogComponent,
   ],
   imports: [
     BrowserModule,
