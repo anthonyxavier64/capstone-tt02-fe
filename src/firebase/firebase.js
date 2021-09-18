@@ -1,9 +1,7 @@
-// Import firebase packages we want
-import 'firebase/storage';
+import firebase from "firebase/compat/app";
+import { getStorage } from 'firebase/storage';
 
-import firebase from "firebase/app";
-
-export const firebaseConfig = {
+const firebaseConfig = {
     apiKey: "AIzaSyDY5_Z80ttqGOetr5jjCUeJbYYQXCw06Qc",
     authDomain: "capstone-fe.firebaseapp.com",
     projectId: "capstone-fe",
@@ -12,6 +10,7 @@ export const firebaseConfig = {
     appId: "1:185196815190:web:35c51f46c15efb5c092cf7",
     measurementId: "G-LRK3BVSCYJ"
 };
+
 firebase.initializeApp(firebaseConfig);
 
-export default firebase;
+export const firebaseStorage = getStorage(firebase);
