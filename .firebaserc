@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "capstone-fe": {
+      "hosting": {
+        "Capstone-tt02-fe": [
+          "capstone-fe"
+        ]
+      }
+    }
+  }
+}
