@@ -14,7 +14,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class DepartmentService {
-  baseUrl: string = `${environment.API_REST_URL}`;
+  baseUrl: string = `${environment.API_REST_URL}` + '/department';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -26,19 +26,19 @@ export class DepartmentService {
   }
 
   createNewDepartment(department: any) {
+    console.log('Current Department: ' + JSON.stringify(department));
     this.httpClient
-      .post<any>(
-        this.baseUrl + '/create-department',
-        { department },
-        httpOptions
-      )
-      .pipe(catchError(handleError));
+      .post<any>(this.baseUrl + '/create-department', department)
+      .pipe(catchError(handleError))
+      .subscribe((response) => {
+        console.log('Response from server: ' + JSON.stringify(response));
+      });
   }
 
   // TODO: Will be updated when service is ready
   updateDepartment(department: any) {
     this.httpClient
-      .post<any>(this.baseUrl + '/get-department', { department }, httpOptions)
+      .post<any>(this.baseUrl + '/get-department', department)
       .pipe(catchError(handleError));
   }
 }

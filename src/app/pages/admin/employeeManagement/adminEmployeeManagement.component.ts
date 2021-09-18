@@ -43,7 +43,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
     this.isLoading = true;
     this.userService.getUsers().subscribe(
       (response) => {
-        this.allUsers = response.users;
+        this.allUsers = response.types.users;
         this.isLoading = false;
       },
       (error) => {
