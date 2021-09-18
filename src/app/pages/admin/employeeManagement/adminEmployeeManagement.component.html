@@ -7,7 +7,7 @@
 
   <div style="font-size: 25px">
     <div fxLayout="row" fxLayoutAlign="space-between">
-      Welcome [Username], manage your employees here:
+      Welcome {{user.fullName}}, manage your employees here:
       <button
         mat-raised-button
         (click)="backButtonClicked()"
@@ -20,7 +20,7 @@
 
   <div>
     <mat-card fxLayout="row">
-      <mat-card fxFlex="70">
+      <mat-card fxFlex="100">
         <h2 style="text-decoration: underline; text-align: center">
           Invite Employee
         </h2>
@@ -56,7 +56,7 @@
           </div>
         </div>
       </mat-card>
-      <mat-card fxFlex="30">
+      <!-- <mat-card fxFlex="30">
         <h2 style="text-decoration: underline; text-align: center">
           Mass Invite Employee
         </h2>
@@ -68,7 +68,7 @@
             Upload Employee .csv file
           </button>
         </div>
-      </mat-card>
+      </mat-card> -->
     </mat-card>
   </div>
 

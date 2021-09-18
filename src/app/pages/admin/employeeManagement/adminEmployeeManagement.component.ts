@@ -1,4 +1,5 @@
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
+import { User } from "src/app/models/user";
 import { UserService } from 'src/app/services/user/user.service';
 
 import { Location } from '@angular/common';
@@ -17,6 +18,8 @@ import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/uploa
   styleUrls: ['./adminEmployeeManagement.component.css'],
 })
 export class AdminEmployeeManagementComponent implements OnInit {
+  user: User;
+  
   currNewUserEmail: String;
   currNewUserPosition: String;
 
@@ -56,7 +59,10 @@ export class AdminEmployeeManagementComponent implements OnInit {
         console.log(error);
       }
     );
-
+    const currentUser = localStorage.getItem('currentUser');
+      if (currentUser) {
+        this.user = JSON.parse(currentUser);
+      }
     // Below is for when the DB is unaccessible
 
     // var deptLocalStorage = localStorage.getItem('allDepts');
