@@ -117,7 +117,6 @@ export class AdminEmployeeManagementComponent implements OnInit {
     deptPartOfDialogRef.afterClosed().subscribe((result) => {
       this.partOfDepartments = result;
     });
-    // How to attach departments to user?
   }
 
   downloadCSVTemplate() {
