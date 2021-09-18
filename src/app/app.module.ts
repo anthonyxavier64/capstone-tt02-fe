@@ -1,5 +1,4 @@
 import { DropdownModule } from 'primeng/dropdown';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -9,8 +8,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -29,13 +26,11 @@ import { AdminEmployeeManagementComponent } from './pages/admin/employeeManageme
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
 import { IndexComponent } from './pages/index/index.component';
 import { LoginComponent } from './pages/index/login/login.component';
-import { CompanyDetailsDialogComponent } from './pages/index/sign-up/company-details-dialog/company-details-dialog.component';
 import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 import { TierInfoDialogComponent } from './pages/index/sign-up/tier-info-dialog/tier-info-dialog.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
-import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -57,8 +52,6 @@ export function tokenGetter() {
     ViewAnnouncementComponent,
     SignUpComponent,
     TierInfoDialogComponent,
-    CompanyDetailsDialogComponent,
-    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,11 +66,7 @@ export function tokenGetter() {
     MatSelectModule,
     MatIconModule,
     MatMenuModule,
-    MatDialogModule,
-    MatInputModule,
-    MatFormFieldModule,
     PrimeNgModule,
-    InputTextareaModule,
     DropdownModule,
     JwtModule.forRoot({
       config: {

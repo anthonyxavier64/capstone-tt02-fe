@@ -1,11 +1,90 @@
-<div fxLayout="column" fxLayoutGap="3%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
+<div
+  fxLayout="column"
+  fxLayoutGap="3%"
+  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+>
   <app-navbar></app-navbar>
 
-  <div style="font-size:25px;">
-      Welcome [Username], what would you like to do today?
+  <div style="font-size: 25px">
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      Welcome [Username], manage your employees here:
+      <button
+        mat-raised-button
+        (click)="backButtonClicked()"
+        style="margin-right: 30px"
+      >
+        back
+      </button>
+    </div>
   </div>
 
+  <div>
+    <mat-card fxLayout="row">
+      <mat-card fxFlex="70">
+        <h2 style="text-decoration: underline; text-align: center">
+          Invite Employee
+        </h2>
+        <div
+          fxLayout="row"
+          fxLayoutGap="10%"
+          fxLayoutAlign="space-evenly center"
+        >
+          <div fxLayout="column" fxLayoutGap="10px">
+            <h3>Email Address:</h3>
+            <input
+              type="text"
+              placeholder="Email"
+              [(ngModel)]="currNewUserEmail"
+              pInputText
+            />
+            <h3>Employee Position:</h3>
+            <input
+              type="text"
+              placeholder="Position"
+              [(ngModel)]="currNewUserPosition"
+              pInputText
+            />
+          </div>
+          <div fxLayout="column" fxLayoutGap="10px">
+            <h4 style="text-align: left">Associated Departments:</h4>
+            <button mat-raised-button (click)="openInChargeOfDialog()">
+              In Charge of
+            </button>
+            <button mat-raised-button (click)="openPartOfDialog()">
+              Part Of
+            </button>
+          </div>
+        </div>
+      </mat-card>
+      <mat-card fxFlex="30">
+        <h2 style="text-decoration: underline; text-align: center">
+          Mass Invite Employee
+        </h2>
+        <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="space-between">
+          <button mat-raised-button (click)="downloadCSVTemplate()">
+            Download .csv template file
+          </button>
+          <button mat-raised-button (click)="uploadEmployeeCSV()">
+            Upload Employee .csv file
+          </button>
+        </div>
+      </mat-card>
+    </mat-card>
+  </div>
 
+  <div>
+    <mat-card>
+      <table mat-table [dataSource]="allUsers">
+        <mat-paginator
+          [length]="100"
+          [pageSize]="10"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          aria-label="Select page"
+        >
+        </mat-paginator>
+      </table>
+    </mat-card>
+  </div>
 
   <!-- generate number of cards to show -->
 </div>
