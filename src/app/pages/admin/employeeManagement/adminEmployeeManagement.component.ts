@@ -21,7 +21,6 @@ import { DepartmentPartOfComponent } from '../dialogs/department-part-of/departm
 })
 export class AdminEmployeeManagementComponent implements OnInit {
   user: User;
-
   currNewUserEmail: String;
   currNewUserPosition: String;
   currNewUserFullName: String;
