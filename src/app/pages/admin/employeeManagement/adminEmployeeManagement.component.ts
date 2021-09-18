@@ -1,15 +1,14 @@
+import { DepartmentService } from 'src/app/services/department/department.service';
+//import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
+import { UserService } from 'src/app/services/user/user.service';
+
+import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { getDownloadURL, getStorage, ref } from 'firebase/storage';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
-import { DepartmentService } from 'src/app/services/department/department.service';
-import { Location } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
-import { UserService } from 'src/app/services/user/user.service';
-import { firebaseStorage } from '../../../../firebase/firebase';
 
 @Component({
   selector: 'app-admin-employeeManagement',
