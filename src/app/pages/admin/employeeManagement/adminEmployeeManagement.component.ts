@@ -16,6 +16,8 @@ import { UserService } from 'src/app/services/user/user.service';
   styleUrls: ['./adminEmployeeManagement.component.css'],
 })
 export class AdminEmployeeManagementComponent implements OnInit {
+  user;
+
   currNewUserEmail: String;
   currNewUserPosition: String;
   currNewUserFullName: String;
@@ -59,7 +61,10 @@ export class AdminEmployeeManagementComponent implements OnInit {
         console.log(error);
       }
     );
-
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.user = JSON.parse(currentUser);
+    }
     // Below is for when the DB is unaccessible
 
     // var deptLocalStorage = localStorage.getItem('allDepts');
