@@ -43,6 +43,8 @@ export class IndexComponent implements OnInit, AfterViewInit {
   }
 
   handleLogin() {
+    console.log(this.email);
+    console.log(this.password);
     this.auth.login(this.email, this.password).then(
       (response) => {
         localStorage.setItem('currentUser', JSON.stringify(response));
