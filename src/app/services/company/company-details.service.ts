@@ -24,7 +24,13 @@ export class CompanyDetailsService {
 
   getCompanyById(companyId: string): Observable<any> {
     return this.httpClient
-      .get<any>(this.baseUrl + '/get-company-by-id/' + companyId)
+      .post<any>(this.baseUrl + '/get-company', { companyId }, httpOptions)
+      .pipe(catchError(handleError));
+  }
+
+  updateCompany(company: any): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + '/update-company', company, httpOptions)
       .pipe(catchError(handleError));
   }
 }
