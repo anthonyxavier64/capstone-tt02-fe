@@ -87,12 +87,15 @@
           <div style="width: 100%">
             <mat-card>
               <mat-card-title>
-                {{ user.name }}
+                {{ user.fullName }}
               </mat-card-title>
               <mat-card-subtitle>
                 Date created: {{ user.createdAt }}
               </mat-card-subtitle>
               <mat-card-content> email: {{ user.email }} </mat-card-content>
+              <mat-card-content>
+                contact number: {{ user.contactNumber }}
+              </mat-card-content>
             </mat-card>
           </div>
         </ng-template>

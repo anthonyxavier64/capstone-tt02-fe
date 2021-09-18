@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Department } from 'src/app/models/department.model';
 import { DepartmentService } from 'src/app/services/department/department.service';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -25,9 +24,17 @@ export class NewDepartmentComponent implements OnInit {
     // currentDepts
 
     // Below is if the DB works
-    // this.departmentService.createNewDepartment(
-    //   new Department(undefined, this.departmentName)
-    // );
+    var currCompanyId = -1;
+    var currUserJson = localStorage.getItem('currentUser');
+    if (currUserJson != null) {
+      let currUser = JSON.parse(currUserJson);
+      currCompanyId = currUser.companyId;
+    }
+
+    this.departmentService.createNewDepartment({
+      name: this.departmentName,
+      company: { companyId: currCompanyId },
+    });
     this.dialogRef.close();
   }
 }
