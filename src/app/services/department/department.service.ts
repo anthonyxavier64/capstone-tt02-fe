@@ -26,7 +26,6 @@ export class DepartmentService {
   }
 
   createNewDepartment(department: any) {
-    console.log('Current Department: ' + JSON.stringify(department));
     this.httpClient
       .post<any>(this.baseUrl + '/create-department', department)
       .pipe(catchError(handleError));

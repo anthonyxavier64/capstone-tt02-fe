@@ -115,7 +115,6 @@ export class AdminEmployeeManagementComponent implements OnInit {
     deptPartOfDialogRef.afterClosed().subscribe((result) => {
       this.partOfDepartments = result;
     });
-    console.log(this.partOfDepartments);
   }
 
   downloadCSVTemplate() {
