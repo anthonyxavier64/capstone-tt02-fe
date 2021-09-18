@@ -168,7 +168,6 @@ export class AdminEmployeeManagementComponent implements OnInit {
       console.log(newUserId);
       if (!newUserId) {
       } else {
-        console.log('send email');
         this.userService.sendVerificationEmail(newUserId);
       }
     });
