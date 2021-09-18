@@ -1,0 +1,133 @@
+.headerText {
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.8);
+  font-weight: bold;
+}
+
+.subHeaderText {
+  font-weight: bold;
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.8);
+}
+
+.contentText {
+  font-weight: lighter;
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.5);
+}
+
+.backButton {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.8);
+}
+
+.button {
+  background-color: rgba(255, 166, 135, 0.5);
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.8);
+}
+
+.editActionButtons {
+  background-color: rgba(255, 166, 135, 0.5);
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.8);
+}
+
+.inputFields {
+  font-weight: lighter;
+}
+
+.disabledButton {
+  background-color: rgba(255, 166, 135, 0.2);
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.2);
+}
+
+@media only screen and (max-width: 768px) {
+  .headerText {
+    font-size: 20px;
+  }
+
+  .subHeaderText {
+    font-size: 17px;
+  }
+
+  .contentText {
+    font-size: 15px;
+  }
+
+  .logoImage {
+    width: 140px;
+    height: auto;
+  }
+
+  .backButton {
+    height: 35px;
+    width: auto;
+  }
+
+  .button {
+    height: 35px;
+    width: 200px;
+  }
+
+  .editActionButtons {
+    height: 35px;
+    width: auto;
+  }
+
+  .inputFields {
+    width: 200px;
+    height: 30px;
+  }
+
+  .disabledButton {
+    height: 35px;
+    width: 200px;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .headerText {
+    font-size: 30px;
+  }
+
+  .subHeaderText {
+    font-size: 23px;
+  }
+
+  .contentText {
+    font-size: 20px;
+  }
+
+  .logoImage {
+    width: 270px;
+    height: auto;
+  }
+
+  .backButton {
+    height: 40px;
+    width: 80px;
+  }
+
+  .button {
+    height: 40px;
+    width: 230px;
+  }
+
+  .editActionButtons {
+    height: 40px;
+    width: 80px;
+  }
+
+  .inputFields {
+    width: 300px;
+    height: 40px;
+  }
+
+  .disabledButton {
+    height: 40px;
+    width: 230px;
+  }
+}

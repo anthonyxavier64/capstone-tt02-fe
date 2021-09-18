@@ -4,7 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminComponent } from './pages/admin/adminLanding/admin.component';
 import { AdminAnnouncementManagementComponent } from './pages/admin/announcementManagement/adminAnnouncementManagement.component';
-import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDetailsManagement/adminCompanyDetailsManagement.component';
+import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDetails/companyDetailsManagement/adminCompanyDetailsManagement.component';
+import { OfficeSpaceConfigComponent } from './pages/admin/companyDetails/office-space-config/office-space-config.component';
 import { EditAnnouncementComponent } from './pages/admin/edit-announcement/edit-announcement.component';
 import { AdminEmployeeManagementComponent } from './pages/admin/employeeManagement/adminEmployeeManagement.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'adminCompanyDetailsManagement',
     component: AdminCompanyDetailsManagementComponent,
+  },
+  {
+    path: 'officeSpaceConfig',
+    component: OfficeSpaceConfigComponent,
   },
   {
     path: 'adminEmployeeManagement',

@@ -14,14 +14,19 @@ import { MatTableModule } from '@angular/material/table';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
-
+import { DataViewModule } from 'primeng/dataview';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { StyleClassModule } from 'primeng/styleclass';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TOKEN_KEY } from './config';
 import { MaterialModule } from './core/material.module';
 import { PrimeNgModule } from './core/primeng.module';
 import { AdminComponent } from './pages/admin/adminLanding/admin.component';
-import { AdminAnnouncementManagementComponent } from './pages/admin/announcementManagement/adminAnnouncementManagement.component';
+import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDetails/companyDetailsManagement/adminCompanyDetailsManagement.component';
+import { OfficeSpaceConfigComponent } from './pages/admin/companyDetails/office-space-config/office-space-config.component';
 import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDetailsManagement/adminCompanyDetailsManagement.component';
 import { DeleteAnnouncementComponent } from './pages/admin/delete-announcement/delete-announcement.component';
 import { NewDepartmentComponent } from './pages/admin/dialogs/new-department/new-department.component';
@@ -47,6 +52,7 @@ export function tokenGetter() {
     LoginComponent,
     AdminComponent,
     AdminCompanyDetailsManagementComponent,
+    OfficeSpaceConfigComponent,
     AdminEmployeeManagementComponent,
     AdminWfoManagementComponent,
     AdminAnnouncementManagementComponent,
@@ -71,6 +77,11 @@ export function tokenGetter() {
     MatIconModule,
     MatMenuModule,
     PrimeNgModule,
+    InputTextareaModule,
+    InputTextModule,
+    DialogModule,
+    StyleClassModule,
+    DataViewModule,
     DropdownModule,
     JwtModule.forRoot({
       config: {
