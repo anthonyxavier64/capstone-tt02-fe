@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -78,8 +79,8 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
-  closeProfileEdit() {
+  closeProfileEdit(updateForm: NgForm) {
+    var updatedValues = updateForm.value;
     this.editDetailsMode = false;
   }
 }
