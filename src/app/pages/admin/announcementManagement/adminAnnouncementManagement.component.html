@@ -1,10 +1,116 @@
-<div fxLayout="column" fxLayoutGap="3%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
+<div class="main-wrapper" fxLayout="column" fxLayoutGap="3%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
   <app-navbar></app-navbar>
   <div style="font-size:25px;">
-      Welcome [Username], what would you like to do today?
+    Welcome [Username], manage all of your announcements here:
   </div>
+  <br />
+  <div>
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="fontmanagement" style="font-size: 20px;">
+          <b>Create Announcement</b>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div fxLayoutAlign="center center">
+        <mat-card class="card">
+          <mat-card-header>
+            <mat-card-title class="fontmanagement"><b>Announcement Creation Form</b></mat-card-title>
+          </mat-card-header>
+          <form class="example-form" #createAnnouncementForm="ngForm" (ngSubmit)="create(createAnnouncementForm)">
+            <mat-card-content>
+              <mat-form-field class="example-full-width">
+                <mat-label>Announcement Title:</mat-label>
+                <input matInput id="title" name="title" type="text" #title="ngModel" [(ngModel)]="newAnnouncement.title"
+                  required="true" />
+                <mat-error *ngIf="title.invalid && (title.dirty || title.touched || submitted)">
+                  <div *ngIf="title.errors != null && title.errors.required">
+                    Announcement Title is required.
+                  </div>
+                </mat-error>
+              </mat-form-field>
+              <br />
+              <mat-form-field class="example-full-width">
+                <mat-label>Announcement Type:</mat-label>
+                <mat-select id="announcementType" name="announcementType" [(ngModel)]="announcementType"
+                  required="true">
+                  <mat-option value="COVID_RELATED">COVID-19 Related</mat-option>
+                  <mat-option value="GENERAL">General</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <br />
+              <mat-form-field class="example-full-width">
+                <mat-label>Announcement Description:</mat-label>
+                <textarea matInput id="description" name="description" #description="ngModel"
+                  [(ngModel)]="newAnnouncement.description" required="true"></textarea>
+                <mat-error *ngIf="description.invalid && (description.dirty || description.touched || submitted)">
+                  <div *ngIf="description.errors != null && description.errors.required">
+                    Announcement Description is required.
+                  </div>
+                </mat-error>
+              </mat-form-field>
+            </mat-card-content>
+            <button mat-stroked-button color="blue" type="submit" class="btn-block">Submit</button>&nbsp;
+          </form>
+          <div *ngIf="resultSuccess == true" style="color:blue;">
+            {{message}}
+          </div>
+          <div *ngIf="resultError == true" style="color:red;">
+            {{message}}
+          </div>
+        </mat-card>
+      </div>
+    </mat-expansion-panel>
+  </div>
+  <br />
 
-
-
+  <div>
+    <h2 class="fontmanagement"><b>Announcements</b></h2>
+    <mat-tab-group>
+      <mat-tab label="Covid-19 Related">
+        <br />
+        <mat-card *ngFor="let cannouncement of covidAnnouncements" class="covidcard">
+          <mat-card-header>
+            <mat-card-title>{{cannouncement.title}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h4>Posted On: {{cannouncement.date}}</h4>
+          </mat-card-content>
+          <mat-card-actions style="text-align: right;">
+            <button mat-icon-button color="blue" (click)="viewAnnouncement(cannouncement)">
+              <mat-icon>description</mat-icon>
+            </button>
+            <button mat-icon-button color="blue" (click)="editAnnouncement(cannouncement)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="blue" (click)="deleteAnnouncement(cannouncement)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-tab>
+      <mat-tab label="General">
+        <br />
+        <mat-card *ngFor="let gannouncement of generalAnnouncements" class="viewcard">
+          <mat-card-header>
+            <mat-card-title>{{gannouncement.title}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h4>Posted On: {{gannouncement.date}}</h4>
+          </mat-card-content>
+          <mat-card-actions style="text-align: right;">
+            <button mat-icon-button color="blue" (click)="viewAnnouncement(gannouncement)">
+              <mat-icon>description</mat-icon>
+            </button>
+            <button mat-icon-button color="blue" (click)="editAnnouncement(gannouncement)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="blue" (click)="deleteAnnouncement(gannouncement)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
   <!-- generate number of cards to show -->
 </div>
