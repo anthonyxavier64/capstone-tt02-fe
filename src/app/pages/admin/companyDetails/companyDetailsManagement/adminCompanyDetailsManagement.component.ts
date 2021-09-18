@@ -3,6 +3,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
 import { MessageService } from 'primeng/api';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-admin-companyDetailsManagement',
@@ -16,6 +17,7 @@ export class AdminCompanyDetailsManagementComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private location: Location,
     private companyDetailsService: CompanyDetailsService,
     private messageService: MessageService
   ) {}
@@ -47,7 +49,7 @@ export class AdminCompanyDetailsManagementComponent implements OnInit {
   }
 
   handleBackButton() {
-    this.router.navigateByUrl('/admin');
+    this.location.back();
   }
 
   toggleEditDetails() {
@@ -62,6 +64,7 @@ export class AdminCompanyDetailsManagementComponent implements OnInit {
           summary: 'Success',
           detail: 'Company details have been updated.',
         });
+        this.toggleEditDetails();
       },
       (error) => {
         this.messageService.add({
@@ -71,5 +74,11 @@ export class AdminCompanyDetailsManagementComponent implements OnInit {
         });
       }
     );
+  }
+
+  handleConfigureOfficeSpace() {
+    this.router.navigate(['officeSpaceConfig'], {
+      state: this.company.companyId,
+    });
   }
 }

@@ -14,20 +14,26 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root',
 })
-export class CompanyDetailsService {
-  baseUrl: string = `${environment.API_REST_URL}/company`;
+export class RoomService {
+  baseUrl: string = `${environment.API_REST_URL}/room`;
 
   constructor(private httpClient: HttpClient) {}
 
-  getCompanyById(companyId: string): Observable<any> {
+  createRoom(room: any): Observable<any> {
     return this.httpClient
-      .post<any>(this.baseUrl + '/get-company', { companyId }, httpOptions)
+      .post<any>(this.baseUrl + '/create-room', room, httpOptions)
       .pipe(catchError(handleError));
   }
 
-  updateCompany(company: any): Observable<any> {
+  updateRoom(room: any): Observable<any> {
     return this.httpClient
-      .patch<any>(this.baseUrl + '/update-company', company, httpOptions)
+      .patch<any>(this.baseUrl + '/update-room', room, httpOptions)
+      .pipe(catchError(handleError));
+  }
+
+  deleteRoom(roomId: string): Observable<any> {
+    return this.httpClient
+      .post<any>(this.baseUrl + '/delete-room', { roomId }, httpOptions)
       .pipe(catchError(handleError));
   }
 }

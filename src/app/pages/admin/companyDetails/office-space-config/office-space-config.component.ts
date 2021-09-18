@@ -1,86 +1,58 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Location, DatePipe } from '@angular/common';
+import { Component, OnInit, ɵɵtrustConstantResourceUrl } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
+import { MessageService } from 'primeng/api';
+import { RoomService } from 'src/app/services/room/room.service';
 
 @Component({
   selector: 'app-office-space-config',
   templateUrl: './office-space-config.component.html',
   styleUrls: ['./office-space-config.component.css'],
+  providers: [MessageService],
 })
 export class OfficeSpaceConfigComponent implements OnInit {
-  rooms: { roomNumber: string; roomLocation: string; roomCapacity: number }[];
+  rooms: any[];
 
-  officeName: string;
-  officeAddress: string;
-  officeOpeningHours: string;
-  officeCapacity: number;
+  company: any | undefined;
+  companyId: any | undefined;
 
   editRoomIndex: number; //used to search up the item within the array of rooms
 
   isEditOfficeDetailsOpen: boolean = false;
   isEditRoomDetailsOpen: boolean = false;
   isAddRoomOpen: boolean = false;
+  datePipe: DatePipe;
 
-  constructor(private _location: Location) {}
+  constructor(
+    private _location: Location,
+    private router: Router,
+    private companyDetailsService: CompanyDetailsService,
+    private messageService: MessageService,
+    private roomService: RoomService
+  ) {
+    const currentNav = this.router.getCurrentNavigation();
+    if (currentNav) {
+      this.companyId = currentNav.extras.state;
+      this.datePipe = new DatePipe('en-US');
+    }
+  }
 
   ngOnInit(): void {
-    //Office Mock Data
-    var officeName = localStorage.getItem('officeName');
-    if (officeName !== null) {
-      this.officeName = officeName;
-    } else {
-      this.officeName = 'Company Name';
-    }
-
-    var officeAddress = localStorage.getItem('officeAddress');
-    if (officeAddress !== null) {
-      this.officeAddress = officeAddress;
-    } else {
-      this.officeAddress = 'Singapore Street Blk Singapore #SG-SG';
-    }
-
-    var officeOpeningHours = localStorage.getItem('officeOpeningHours');
-    if (officeOpeningHours !== null) {
-      this.officeOpeningHours = officeOpeningHours;
-    } else {
-      this.officeOpeningHours = '08:00 - 17:00';
-    }
-
-    this.officeCapacity = 64;
-
-    //Rooms Mock Data
-    var cachedRooms = localStorage.getItem('rooms');
-    if (cachedRooms !== null) {
-      this.rooms = JSON.parse(cachedRooms);
-    } else {
-      this.rooms = [
-        {
-          roomNumber: '01-01',
-          roomLocation: '1st Floor',
-          roomCapacity: 8,
-        },
-        {
-          roomNumber: '01-02',
-          roomLocation: '1st Floor',
-          roomCapacity: 6,
-        },
-        {
-          roomNumber: '01-03',
-          roomLocation: '1st Floor',
-          roomCapacity: 10,
-        },
-        {
-          roomNumber: '02-01',
-          roomLocation: '2nd Floor',
-          roomCapacity: 8,
-        },
-        {
-          roomNumber: '02-02',
-          roomLocation: '2nd Floor',
-          roomCapacity: 9,
-        },
-      ];
-    }
+    this.companyDetailsService.getCompanyById(this.companyId).subscribe(
+      (response) => {
+        this.company = response.company;
+        this.rooms = this.company.rooms;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'Error',
+          summary: 'Error',
+          detail: 'Unable to retrieve office details.',
+        });
+      }
+    );
   }
 
   onBackClick() {
@@ -91,30 +63,49 @@ export class OfficeSpaceConfigComponent implements OnInit {
     this.isEditOfficeDetailsOpen = true;
   }
 
-  openEditRoomDetailsDialog(roomItem: {}) {
+  openEditRoomDetailsDialog(roomItem: any) {
     this.isEditRoomDetailsOpen = true;
     this.editRoomIndex = this.rooms.findIndex((room) => room === roomItem);
   }
 
   deleteRoom() {
+    const room = this.rooms[this.editRoomIndex];
+
     if (this.editRoomIndex > -1) {
       this.rooms.splice(this.editRoomIndex, 1);
       this.rooms.sort((a, b) => {
         if (
-          Number(a.roomLocation.substring(0, 1)) >
-          Number(b.roomLocation.substring(0, 1))
+          Number(a.location.substring(0, 1)) >
+          Number(b.location.substring(0, 1))
         ) {
           return 1;
         } else if (
-          Number(a.roomLocation.substring(0, 1)) <
-          Number(b.roomLocation.substring(0, 1))
+          Number(a.location.substring(0, 1)) <
+          Number(b.location.substring(0, 1))
         ) {
           return -1;
         } else {
           return 0;
         }
       });
-      localStorage.setItem('rooms', JSON.stringify(this.rooms));
+
+      this.roomService.deleteRoom(room.roomId).subscribe(
+        (response) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Room is deleted.',
+          });
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Unable to delete room. Please try again.',
+          });
+        }
+      );
+
       this.isEditRoomDetailsOpen = false;
       this.ngOnInit();
     } else {
@@ -127,47 +118,56 @@ export class OfficeSpaceConfigComponent implements OnInit {
   }
 
   submitOfficeDetailsForm(officeDetailsForm: NgForm) {
-    var officeName = officeDetailsForm.form.controls.officeName.value;
-    localStorage.setItem('officeName', officeName);
-    this.officeName = officeName;
+    const officeDetails = officeDetailsForm.value;
 
-    var officeAddress = officeDetailsForm.form.controls.officeAddress.value;
-    localStorage.setItem('officeAddress', officeAddress);
-    this.officeAddress = officeAddress;
+    this.company.officeName = officeDetails.officeName;
+    this.company.officeAddress = officeDetails.officeAddress;
 
-    var opening: string = officeDetailsForm.form.controls.openingHour.value;
-    var closing: string = officeDetailsForm.form.controls.closingHour.value;
-    var openingHours: string = opening.concat(' - ', closing);
-    localStorage.setItem('officeOpeningHours', openingHours);
-    this.officeOpeningHours = openingHours;
+    this.company.officeOpeningHour = officeDetails.openingHour;
+    this.company.officeClosingHour = officeDetails.closingHour;
+
+    this.companyDetailsService.updateCompany(this.company).subscribe(
+      (response) => {
+        this.company = response.company;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Office details have been updated.',
+        });
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Unable to update. Please try again.',
+        });
+      }
+    );
 
     this.isEditOfficeDetailsOpen = false;
   }
 
   submitRoomDetailsForm(roomDetailsForm: NgForm) {
-    var roomDetails = roomDetailsForm.form.controls;
+    var roomDetails = roomDetailsForm.value;
 
-    var roomNumber = roomDetails.roomNumber.value;
-    var roomLocation = roomDetails.roomLocation.value;
-    var roomCapacity = roomDetails.roomCapacity.value;
+    var roomName = roomDetails.name;
+    var roomLocation = roomDetails.location;
+    var roomCapacity = roomDetails.capacity;
 
-    var updatedRoom = {
-      roomNumber: roomNumber,
-      roomLocation: roomLocation,
-      roomCapacity: roomCapacity,
-    };
+    const oldRoom = this.rooms[this.editRoomIndex];
 
-    this.rooms[this.editRoomIndex] = updatedRoom;
+    oldRoom.name = roomName;
+    oldRoom.location = roomLocation;
+    oldRoom.capacity = roomCapacity;
+    console.log(oldRoom);
 
     this.rooms.sort((a, b) => {
       if (
-        Number(a.roomLocation.substring(0, 1)) >
-        Number(b.roomLocation.substring(0, 1))
+        Number(a.location.substring(0, 1)) > Number(b.location.substring(0, 1))
       ) {
         return 1;
       } else if (
-        Number(a.roomLocation.substring(0, 1)) <
-        Number(b.roomLocation.substring(0, 1))
+        Number(a.location.substring(0, 1)) < Number(b.location.substring(0, 1))
       ) {
         return -1;
       } else {
@@ -175,33 +175,41 @@ export class OfficeSpaceConfigComponent implements OnInit {
       }
     });
 
-    localStorage.setItem('rooms', JSON.stringify(this.rooms));
+    // api call
+    this.roomService.updateRoom(oldRoom).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Unable to update. Please try again.',
+        });
+      }
+    );
     this.isEditRoomDetailsOpen = false;
   }
 
   submitAddRoomForm(addRoomForm: NgForm) {
-    var roomDetails = addRoomForm.form.controls;
+    const roomDetails = addRoomForm.value;
 
-    var roomNumber = roomDetails.roomNumber.value;
-    var roomLocation = roomDetails.roomLocation.value;
-    var roomCapacity = roomDetails.roomCapacity.value;
-
-    var newRoom = {
-      roomNumber: roomNumber,
-      roomLocation: roomLocation,
-      roomCapacity: roomCapacity,
+    const newRoom = {
+      capacity: roomDetails.capacity,
+      location: roomDetails.location,
+      name: roomDetails.name,
+      companyId: this.company.companyId,
     };
 
     this.rooms.push(newRoom);
+
     this.rooms.sort((a, b) => {
       if (
-        Number(a.roomLocation.substring(0, 1)) >
-        Number(b.roomLocation.substring(0, 1))
+        Number(a.location.substring(0, 1)) > Number(b.location.substring(0, 1))
       ) {
         return 1;
       } else if (
-        Number(a.roomLocation.substring(0, 1)) <
-        Number(b.roomLocation.substring(0, 1))
+        Number(a.location.substring(0, 1)) < Number(b.location.substring(0, 1))
       ) {
         return -1;
       } else {
@@ -209,8 +217,21 @@ export class OfficeSpaceConfigComponent implements OnInit {
       }
     });
 
-    localStorage.setItem('rooms', JSON.stringify(this.rooms));
-    this.isAddRoomOpen = false;
+    this.roomService.createRoom(newRoom).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
     this.ngOnInit();
+    this.isAddRoomOpen = false;
+  }
+
+  closeEditOfficeDetails(officeDetailsForm: NgForm) {
+    this.isEditOfficeDetailsOpen = false;
+    officeDetailsForm.reset();
   }
 }

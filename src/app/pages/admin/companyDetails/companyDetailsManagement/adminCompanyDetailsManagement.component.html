@@ -92,13 +92,21 @@
           </div>
           <div fxLayout="column" fxLayoutGap="0.5%">
             <span class="subHeaderText">Office Opening Hours</span>
-            <span class="contentText">1232131</span>
+            <span class="contentText"
+              >{{ company.officeOpeningHour }} -
+              {{ company.officeClosingHour }}</span
+            >
           </div>
           <div fxLayout="column" fxLayoutGap="0.5%">
             <span class="subHeaderText">Office Capacity</span>
             <span class="contentText">{{ company.officeCapacity }}</span>
           </div>
-          <button mat-button class="button" *ngIf="!editDetailsMode">
+          <button
+            mat-button
+            class="button"
+            *ngIf="!editDetailsMode"
+            (click)="handleConfigureOfficeSpace()"
+          >
             Configure Office Space
           </button>
           <button
