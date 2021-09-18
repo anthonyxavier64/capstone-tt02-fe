@@ -35,4 +35,13 @@ export class UserService {
       .get<any>(this.baseUrl + '/get-managed-departments')
       .pipe(catchError(handleError));
   }
+
+  createNewUser(user: any) {
+    return this.httpClient
+      .post<any>(this.baseUrl + '/register', user)
+      .pipe(catchError(handleError))
+      .subscribe((response) => {
+        console.log(response);
+      });
+  }
 }
