@@ -1,9 +1,9 @@
 import { Location } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CompanyService } from 'src/app/services/company/company.service';
 import { CompanyDetailsDialogData } from '../sign-up.component';
 import { MessageService } from 'primeng/api';
+import { CompanyService } from 'src/app/services/company/company.service';
 
 @Component({
   selector: 'app-company-details-dialog',
