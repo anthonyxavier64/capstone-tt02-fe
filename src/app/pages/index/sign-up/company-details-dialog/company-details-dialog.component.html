@@ -38,6 +38,26 @@
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between " fxLayoutGap="9.4vw">
         <div fxLayout="column">
+          <label>HR Email</label>
+          <input
+            type="text"
+            [(ngModel)]="data.hrAdminEmail"
+            required
+            pInputText
+          />
+        </div>
+        <div fxLayout="column">
+          <label>HR Full Name</label>
+          <input
+            type="text"
+            [(ngModel)]="data.hrAdminFullName"
+            required
+            pInputText
+          />
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between " fxLayoutGap="9.4vw">
+        <div fxLayout="column">
           <label>Company Contact Number</label>
           <input
             type="text"
@@ -124,7 +144,7 @@
           <div fxLayout="column">
             <label>Company Size</label>
             <p-dropdown
-              [options]="data.companySize"
+              [options]="companySizeArr"
               [(ngModel)]="data.companySize"
               placeholder="Select a Company Size"
             ></p-dropdown>
@@ -150,13 +170,13 @@
         <div>
           <label>Payment Type: </label>
           <p class="paymentDetailsText">
-            {{ company.paymentMethod }}
+            {{ data.paymentMethod }}
           </p>
         </div>
         <div>
           <label>Tier Confirmation: </label>
           <p class="paymentDetailsText">
-            {{ company.subscriptionType }}
+            {{ data.subscriptionType }}
           </p>
         </div>
       </div>
@@ -166,7 +186,7 @@
           <label>Credit Card Number: </label>
           <input
             type="text"
-            [(ngModel)]="company.creditCardNumber"
+            [(ngModel)]="data.creditCardNumber"
             required
             pInputText
             autocomplete="cc-csc"
@@ -174,7 +194,7 @@
         </div>
         <div>
           <label>CVV: </label>
-          <input type="number" [(ngModel)]="company.cvv" required pInputText />
+          <input type="number" [(ngModel)]="data.cvv" required pInputText />
         </div>
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -182,7 +202,7 @@
           <label>Cardholder Name: </label>
           <input
             type="text"
-            [(ngModel)]="company.cardHolderName"
+            [(ngModel)]="data.cardHolderName"
             required
             pInputText
             autocomplete="cc-csc"
@@ -192,7 +212,7 @@
           <label>Date of Expiry: </label>
           <input
             type="date"
-            [(ngModel)]="company.dateOfExpiry"
+            [(ngModel)]="data.CCDateOfExpiry"
             style="font-family: 'Source Sans Pro'"
             required
             pInputText
