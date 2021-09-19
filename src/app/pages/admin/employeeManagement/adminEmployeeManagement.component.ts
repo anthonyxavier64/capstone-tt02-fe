@@ -1,15 +1,17 @@
-//import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
-import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { DepartmentService } from 'src/app/services/department/department.service';
-import { UserService } from 'src/app/services/user/user.service';
+
+import { DeleteEmployeeDialogComponent } from './delete-employee-dialog/delete-employee-dialog.component';
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
-import { DeleteEmployeeDialogComponent } from './delete-employee-dialog/delete-employee-dialog.component';
+import { DepartmentService } from 'src/app/services/department/department.service';
 import { EditEmployeeDialogComponent } from './edit-employee-dialog/edit-employee-dialog.component';
+import { Location } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
+import { UserService } from 'src/app/services/user/user.service';
+import { firebaseStorage } from '../../../../firebase/firebase';
 
 export interface user {
   userId: number;
