@@ -1,15 +1,17 @@
+import { User } from 'src/app/models/user';
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { EditAnnouncementComponent } from '../edit-announcement/edit-announcement.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Announcement } from '../../../models/announcement';
-import { AnnouncementService } from '../../../services/announcement/announcement.service';
 import { AnnouncementType } from '../../../models/announcement-type';
-import { DeleteAnnouncementComponent } from '../delete-announcement/delete-announcement.component';
+import { AnnouncementService } from '../../../services/announcement/announcement.service';
 import { ViewAnnouncementComponent } from '../../view-announcement/view-announcement.component';
+import { DeleteAnnouncementComponent } from '../delete-announcement/delete-announcement.component';
+import { EditAnnouncementComponent } from '../edit-announcement/edit-announcement.component';
 
 let counter: number = 1;
 @Component({
@@ -18,6 +20,8 @@ let counter: number = 1;
   styleUrls: ['./adminAnnouncementManagement.component.css'],
 })
 export class AdminAnnouncementManagementComponent implements OnInit {
+  user: any;
+  
   submitted: boolean;
   newAnnouncement: Announcement;
   announcementToUpdate: Announcement;
@@ -48,32 +52,28 @@ export class AdminAnnouncementManagementComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //var cachedGeneralAnnouncement = localStorage.get('generalAnnouncements');
-    //if (cachedGeneralAnnouncement !== null) {
-    // this.generalAnnouncements = JSON.parse(cachedGeneralAnnouncement);
-    //} else {
-    //  this.generalAnnouncements = new Array();
-    //}
-
-    /*
-    this.announcementService.getCovidAnnouncements().subscribe(
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.user = JSON.parse(currentUser);
+    }
+    this.announcementService.getCovidAnnouncements(this.user.userId).subscribe(
       response => {
-        this.covidAnnouncements = response;
+        this.covidAnnouncements = response.announcements;
       },
       error => {
         console.log('********** AdminAnnouncementManagementComponent.ts: ' + error);
       }
     );
 
-    this.announcementService.getGeneralAnnouncements().subscribe(
+    this.announcementService.getGeneralAnnouncements(this.user.userId).subscribe(
       response => {
-        this.generalAnnouncements = response;
+        this.generalAnnouncements = response.announcements;
       },
       error => {
         console.log('********** AdminAnnouncementManagementComponent.ts: ' + error);
       }
     );
-    */
+    
   }
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
 
