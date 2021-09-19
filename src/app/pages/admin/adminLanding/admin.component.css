@@ -33,6 +33,15 @@
   opacity: 1;
 }
 
-.itemLogo {
-  align-self: flex-end;
+mat-card img{
+  object-fit: contain;
+  width: 45%;
+  height: auto;
+}
+
+.mat-card-content {
+    display: flex;
+    margin-bottom: 16px;
+    flex-direction: column;
+    align-items: flex-end;
 }
