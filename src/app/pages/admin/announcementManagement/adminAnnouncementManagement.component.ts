@@ -21,7 +21,7 @@ let counter: number = 1;
 })
 export class AdminAnnouncementManagementComponent implements OnInit {
   user: any;
-  
+
   submitted: boolean;
   newAnnouncement: Announcement;
   announcementToUpdate: Announcement;
@@ -70,7 +70,7 @@ export class AdminAnnouncementManagementComponent implements OnInit {
         console.log('********** AdminAnnouncementManagementComponent.ts: ' + error);
       }
     );
-    
+
   }
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
 
@@ -89,7 +89,6 @@ export class AdminAnnouncementManagementComponent implements OnInit {
     if (createAnnouncementForm.invalid) {
       this.resultSuccess = false;
       this.message = "An error has occurred while creating the new announcement";
-      console.log('********** AdminAnnouncementManagementComponent.ts: ERROR **********');
     }
 
     this.resultSuccess = true;
@@ -107,18 +106,15 @@ export class AdminAnnouncementManagementComponent implements OnInit {
           }
           this.message = "New announcement with id " + response.announcement.announcementId + " created successfully";
         }
-      else {
+        else {
           this.message = "An error has occured: " + response.message;
         }
       },
       error => {
         this.resultSuccess = false;
         this.message = "An error has occurred while creating the new announcement: " + error;
-
-        console.log(`********** AdminAnnouncementManagementComponent.ts: ${error}`);
       }
     );
-  
   }
 
   viewAnnouncement(announcement?: Announcement) {
@@ -136,13 +132,11 @@ export class AdminAnnouncementManagementComponent implements OnInit {
     });
   }
 
-  editAnnouncement(announcement?: Announcement) {
-    //this.announcementToUpdate = this.announcementService.getAnnouncement(parseInt(announcementId));
-    console.log(announcement);
+  editAnnouncement(announcement: Announcement) {
     const editDialog = this.matDialog.open(EditAnnouncementComponent, {
       width: '400px',
       data: {
-        id: announcement?.announcementId,
+        announcementId: announcement.announcementId,
         title: announcement?.title,
         date: announcement?.date,
         typeOfAnnouncement: announcement?.announcementType,
@@ -151,60 +145,37 @@ export class AdminAnnouncementManagementComponent implements OnInit {
     });
 
     editDialog.afterClosed().subscribe(result => {
-      if (result == false) {
-        return;
-      }
-      var temp = localStorage.getItem("updatedAnnouncement");
-      if (temp != null) {
-        this.announcementToUpdate = JSON.parse(temp);
-        if (announcement?.announcementType === AnnouncementType.COVID_RELATED) {
-          var indexToUpdate = this.covidAnnouncements.findIndex((existing) => existing === announcement)
-          if (this.announcementToUpdate.announcementType === AnnouncementType.COVID_RELATED) {
-            this.covidAnnouncements[indexToUpdate] = this.announcementToUpdate;
-          }
-          else {
+      const newAnnouncement = result;
+      newAnnouncement.announcementId = announcement.announcementId;
+      this.announcementService.updateAnnouncement(newAnnouncement).subscribe(response => {
+        if (!response.status) {
+          this.resultSuccess = false;
+          this.message = "An error has occurred while editing: " + response.message;
+        } else {
+          this.submitted = true;
+          this.resultSuccess = true;
+          const updatedAnnouncement = response.announcement;
+          this.message = "Announcement with id: " + updatedAnnouncement.announcementId +"updated successfully";
+          
+          if (announcement.announcementType === AnnouncementType.COVID_RELATED) {
             var announcementIndex = this.covidAnnouncements.findIndex(existing => { existing === announcement });
             this.covidAnnouncements.splice(announcementIndex, 1);
-            localStorage.setItem("covidAnnouncements", JSON.stringify(this.covidAnnouncements));
-            this.generalAnnouncements.push(this.announcementToUpdate);
-            localStorage.setItem("generalAnnouncements", JSON.stringify(this.generalAnnouncements));
-          }
-        }
-        else {
-          var indexToUpdate = this.generalAnnouncements.findIndex((existing) => existing === announcement)
-          if (this.announcementToUpdate.announcementType === AnnouncementType.GENERAL) {
-            this.generalAnnouncements[indexToUpdate] = this.announcementToUpdate;
-          }
-          else {
+          } else {
             var announcementIndex = this.generalAnnouncements.findIndex(existing => { existing === announcement });
             this.generalAnnouncements.splice(announcementIndex, 1);
-            localStorage.setItem("generalAnnouncements", JSON.stringify(this.generalAnnouncements));
-            this.covidAnnouncements.push(this.announcementToUpdate);
-            localStorage.setItem("covidAnnouncements", JSON.stringify(this.covidAnnouncements));
           }
-        }
+          
+          if (updatedAnnouncement.announcementType === AnnouncementType.COVID_RELATED) {
+            this.covidAnnouncements.push(updatedAnnouncement);
+          } else {
+            this.generalAnnouncements.push(updatedAnnouncement);
+          }
+        } 
       }
-      console.log(`Announcement To Update ID: ${this.announcementToUpdate.announcementId}, Description: ${this.announcementToUpdate.description}`);
-      localStorage.setItem(JSON.stringify(this.announcementToUpdate?.announcementId), JSON.stringify(this.announcementToUpdate));
-
-      /*
-      if (result === false) {
-        return;
-      }
-      this.announcementService.updateAnnouncement(announcementToUpdate?.announcementId,
-        announcementToUpdate?.title, announcementToUpdate?.description, announcementToUpdate.announcementType ).subscribe(
-        response => {
-          this.router.navigate(['/adminAnnouncementManagement']);
-        },
-        error => {
-          this.resultError = true;
-          this.message = error;
-          console.log('********** AdminAnnouncementManagementComponent.ts: ' + error);
-        }
-      );
-      */
-    });
+    );
   }
+  )
+}
 
   deleteAnnouncement(announcement: Announcement) {
     const confirmDialog = this.matDialog.open(DeleteAnnouncementComponent, {
@@ -221,12 +192,10 @@ export class AdminAnnouncementManagementComponent implements OnInit {
       if (announcement.announcementType == AnnouncementType.COVID_RELATED) {
         var announcementIndex = this.covidAnnouncements.findIndex(existing => { existing === announcement });
         this.covidAnnouncements.splice(announcementIndex, 1);
-        localStorage.setItem("covidAnnouncements", JSON.stringify(this.covidAnnouncements));
       }
       else {
         var announcementIndex = this.generalAnnouncements.findIndex(existing => { existing === announcement });
         this.generalAnnouncements.splice(announcementIndex, 1);
-        localStorage.setItem("generalAnnouncements", JSON.stringify(this.generalAnnouncements));
       }
 
       /*
