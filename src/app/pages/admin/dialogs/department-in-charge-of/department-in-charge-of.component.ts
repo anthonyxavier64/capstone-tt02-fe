@@ -79,7 +79,7 @@ export class DepartmentInChargeOfComponent implements OnInit {
     newDepartmentDialogRef.afterClosed().subscribe(() => {
       this.departmentService.getAllDepartments().subscribe(
         (response) => {
-          this.allDepartments = response;
+          this.allDepartments = response.departments;
         },
         (error) => {
           console.log(error);
