@@ -6,10 +6,16 @@ import { TierInfoDialogComponent } from './tier-info-dialog/tier-info-dialog.com
 export interface CompanyDetailsDialogData {
   subscriptionTier: string;
   paymentMethod: string;
-  companyName: string;
-  companyEmail: string;
-  companyDescription: string;
-  numEmployees: number;
+  name: string;
+  email: string;
+  contactNumber: string;
+  numOfEmployees: number;
+  officeAddress: string;
+  officeName: string;
+  officeOpeningHour: string;
+  officeClosingHour: string;
+  officeCapacity: number;
+  companySize: string[];
 
   creditCardNumber: string;
   cardHolderName: string;
@@ -28,10 +34,16 @@ export class SignUpComponent implements OnInit {
   selectedSubscriptionTier: string;
   selectedPaymentMethod: string;
 
-  companyName: string;
-  companyEmail: string;
-  companyDescription: string;
-  numEmployees: number;
+  name: string;
+  email: string;
+  contactNumber: string;
+  officeAddress: string;
+  numOfEmployees: number;
+  officeName: string;
+  officeOpeningHour: string;
+  officeClosingHour: string;
+  officeCapacity: number;
+  companySize: string[];
 
   creditCardNumber: string;
   cardHolderName: string;
@@ -44,6 +56,7 @@ export class SignUpComponent implements OnInit {
   ) {
     this.subscriptionTiers = ['Basic', 'Standard', 'Pro'];
     this.paymentMethods = ['Credit Card'];
+    this.companySize = ['Small', 'Medium', 'Large'];
   }
 
   ngOnInit(): void {}
@@ -58,14 +71,20 @@ export class SignUpComponent implements OnInit {
   openCompanyDetailsDialog() {
     var dialogRef = this.tierInfoDialog.open(CompanyDetailsDialogComponent, {
       width: '60vw',
-      height: '60vw',
+      height: '40vw',
       data: {
         subscriptionTier: this.selectedSubscriptionTier,
         paymentMethod: this.selectedPaymentMethod,
-        companyName: this.companyName,
-        companyEmail: this.companyEmail,
-        companyDescription: this.companyDescription,
-        numEmployees: this.numEmployees,
+        name: this.name,
+        email: this.email,
+        contactNumber: this.contactNumber,
+        officeAddress: this.officeAddress,
+        numOfEmployees: this.numOfEmployees,
+        officeName: this.officeName,
+        officeOpeningHour: this.officeOpeningHour,
+        officeClosingHour: this.officeClosingHour,
+        officeCapacity: this.officeCapacity,
+        companySize: this.companySize,
 
         creditCardNumber: this.creditCardNumber,
         cardHolderName: this.cardHolderName,

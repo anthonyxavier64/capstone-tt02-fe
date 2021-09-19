@@ -1,26 +1,136 @@
 <div fxLayout="column" fxLayoutAlign="space-around start" fxLayoutGap="5%">
-  <div fxLayout="column" fxLayoutAlign="space-around left" fxLayoutGap="4%">
-    <p class="companyDetailsTitle">Company Details</p>
-    <div fxLayout="column" fxLayoutAlign="space-around left" fxLayoutGap="3%">
-      <label>Company Name</label>
-      <p class="paymentDetailsText">{{ data.companyName }}</p>
-
-      <label>Description</label>
-      <textarea
-        pInputTextarea
-        type="text"
-        [(ngModel)]="data.companyDescription"
-        required
-      ></textarea>
-
-      <label>Number of Employees</label>
-      <input
-        type="number"
-        [(ngModel)]="data.numEmployees"
-        min="0"
-        required
-        pInputText
-      />
+  <div fxLayout="column" fxLayoutAlign="space-around start" fxLayoutGap="4%">
+    <p class="companyDetailsTitle" style="margin-bottom: 1vw">
+      Company Details
+    </p>
+    <div fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="3%">
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-around start"
+        fxLayoutGap="10.6vw"
+      >
+        <div fxLayout="column">
+          <label>Company Name</label>
+          <p *ngIf="data.name !== undefined" class="paymentDetailsText">
+            {{ data.name }}
+          </p>
+          <input
+            type="text"
+            *ngIf="data.name === undefined"
+            [(ngModel)]="data.name"
+            required
+            pInputText
+          />
+        </div>
+        <div fxLayout="column">
+          <label>Company Email</label>
+          <p *ngIf="data.email !== undefined" class="paymentDetailsText">
+            {{ data.email }}
+          </p>
+          <input
+            type="text"
+            *ngIf="data.email === undefined"
+            [(ngModel)]="data.email"
+            required
+            pInputText
+          />
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between " fxLayoutGap="9.4vw">
+        <div fxLayout="column">
+          <label>Company Contact Number</label>
+          <input
+            type="text"
+            [(ngModel)]="data.contactNumber"
+            required
+            pInputText
+          />
+        </div>
+        <div fxLayout="column">
+          <label>Number of Employees</label>
+          <input
+            type="number"
+            [(ngModel)]="data.numOfEmployees"
+            min="0"
+            required
+            pInputText
+          />
+        </div>
+      </div>
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-around start"
+        fxLayoutGap="10.5vw"
+      >
+        <div fxLayout="column">
+          <label>Office Name</label>
+          <input
+            type="text"
+            [(ngModel)]="data.officeName"
+            min="0"
+            required
+            pInputText
+          />
+        </div>
+        <div fxLayout="column">
+          <label>Office Address</label>
+          <textarea
+            pInputTextarea
+            type="text"
+            [(ngModel)]="data.officeAddress"
+            required
+          ></textarea>
+        </div>
+      </div>
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-around start"
+        fxLayoutGap="10.5vw"
+      >
+        <div fxLayout="column">
+          <label>Office Opening Hour</label>
+          <input
+            type="text"
+            [(ngModel)]="data.officeOpeningHour"
+            required
+            pInputText
+          />
+        </div>
+        <div fxLayout="column">
+          <label>Office Closing Hour</label>
+          <input
+            type="text"
+            [(ngModel)]="data.officeClosingHour"
+            required
+            pInputText
+          />
+        </div>
+      </div>
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-around start"
+        fxLayoutGap="10.5vw"
+      >
+        <div fxLayout="column">
+          <label>Office Max Capacity</label>
+          <input
+            type="number"
+            [(ngModel)]="data.officeCapacity"
+            required
+            pInputText
+          />
+        </div>
+        <div fxLayout="column">
+          <div fxLayout="column">
+            <label>Company Size</label>
+            <p-dropdown
+              [options]="data.companySize"
+              [(ngModel)]="data.companySize"
+              placeholder="Select a Company Size"
+            ></p-dropdown>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div
