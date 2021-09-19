@@ -4,8 +4,6 @@
   color: rgba(0, 55, 100, 0.8);
 }
 
-
-
 .backButton {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 1.2vw;
@@ -15,15 +13,13 @@
   width: 8vw;
 }
 
-
-
 /***** Office Details *****/
 
 .officeDetailsCard {
   min-width: 70%;
   max-width: 70%;
   min-height: 80%;
-  background-color: #FAF9F6;
+  background-color: #faf9f6;
   margin-bottom: 4%;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
@@ -34,7 +30,7 @@
   font-family: "Source Sans Pro";
   color: rgba(0, 55, 100, 0.8);
   font-weight: bolder;
-  padding-top: 2%
+  padding-top: 2%;
 }
 
 .companyDetailsTbl {
@@ -52,7 +48,7 @@
 
 .editBtn {
   background-color: rgba(255, 166, 135, 0.5);
-  color:rgba(0, 55, 100, 0.8);
+  color: rgba(0, 55, 100, 0.8);
   font-size: 23px;
   font-weight: lighter;
   min-height: 3vw;
@@ -61,11 +57,11 @@
 }
 
 .saveBtn {
-  font-family: 'Source Sans Pro';
-  font-size: 2.5vw;
+  font-family: "Source Sans Pro";
+  font-size: 23px;
   font-weight: lighter;
   text-align: center;
-  min-width: 60%;
+  min-width: 70%;
   min-height: 3vw;
   background: rgba(255, 166, 135, 0.5);
   border-radius: 8px;
@@ -73,26 +69,23 @@
 }
 
 .closeBtn {
-  font-family: 'Source Sans Pro';
-  font-size: 2.5vw;
+  font-family: "Source Sans Pro";
+  font-size: 23px;
   font-weight: lighter;
   text-align: center;
   min-width: 60%;
   min-height: 3vw;
-  background: #E5E5E5;
+  background: #e5e5e5;
   border-radius: 8px;
   align-content: center;
 }
-
-
-
 
 /***** Room Management *****/
 .roomManagementCard {
   min-width: 70%;
   max-width: 70%;
   min-height: 25vw;
-  background-color: #FAF9F6;
+  background-color: #faf9f6;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
 }
@@ -105,27 +98,23 @@
   padding: 2% 2% 6% 2%;
 }
 
-
-
 .roomItemContainer {
   padding: 0% 4% 4% 4%;
 }
 
-
 .p-dataview-content .p-dataview .p-component {
-  background:#FAF9F6;
-  background-color: #FAF9F6;
+  background: #faf9f6;
+  background-color: #faf9f6;
 }
 
 .overridePrime {
-  background:#FAF9F6 !important;
-  background-color: #FAF9F6 !important;
-  width: 100%
+  background: #faf9f6 !important;
+  background-color: #faf9f6 !important;
+  width: 100%;
 }
 
-
 .roomItem {
-  margin: .5em;
+  margin: 0.5em;
   min-width: 14vw;
   min-height: 9vw;
   max-height: 9vw;
@@ -134,7 +123,7 @@
 }
 
 .card {
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid rgba(0, 55, 100, 0.3);
   border-radius: 15px;
   /* margin-left: 10vw; */
@@ -147,17 +136,12 @@
 }
 
 .addRoomBtn {
-    background-color: rgba(255, 166, 135, 0.5);
-    color:rgba(0, 55, 100, 0.8);
-    font-size: 23px;
-    font-weight: lighter;
-    min-height: 3vw;
-    min-width: 8vw;
-    border-radius: 8px;
-    margin-bottom: 2vw;
+  background-color: rgba(255, 166, 135, 0.5);
+  color: rgba(0, 55, 100, 0.8);
+  font-size: 23px;
+  font-weight: lighter;
+  min-height: 3vw;
+  min-width: 8vw;
+  border-radius: 8px;
+  margin-bottom: 2vw;
 }
-
-
-
-
-

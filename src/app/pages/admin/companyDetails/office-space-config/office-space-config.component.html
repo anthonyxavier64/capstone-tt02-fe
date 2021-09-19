@@ -70,7 +70,7 @@
             [breakpoints]="{ '150vw': '75vw' }"
             [draggable]="false"
             [resizable]="false"
-            [style]="{ width: '50vw', height: '30vw', color: '#FAF9F6' }"
+            [style]="{ width: '50vw', height: '35vw', color: '#FAF9F6' }"
             (onHide)="closeEditOfficeDetails(officeDetailsForm)"
           >
             <form
@@ -192,7 +192,7 @@
                     <p style="font-weight: bolder; font-size: 22px">
                       {{ room.name }}
                     </p>
-                    <p style="font-size: 18px">Level: {{ room.location }}</p>
+                    <p style="font-size: 18px">Location: {{ room.location }}</p>
                     <p style="font-size: 18px">Capacity: {{ room.capacity }}</p>
                   </div>
                   <div fxLayoutAlign=" end">
@@ -306,7 +306,7 @@
           [breakpoints]="{ '150vw': '75vw' }"
           [draggable]="false"
           [resizable]="false"
-          [style]="{ width: '50vw', height: '25vw', color: '#FAF9F6' }"
+          [style]="{ width: '50vw', height: '30vw', color: '#FAF9F6' }"
         >
           <form
             #addRoomForm="ngForm"
