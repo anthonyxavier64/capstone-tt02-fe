@@ -39,12 +39,6 @@ export class UserService {
       .pipe(catchError(handleError));
   }
 
-  updateUserDetails(user: any): Observable<any> {
-    return this.httpClient
-      .patch<any>(this.baseUrl + '/me', user, httpOptions)
-      .pipe(catchError(handleError));
-  }
-
   resetPassword(
     email: string,
     oldpassword: string,
