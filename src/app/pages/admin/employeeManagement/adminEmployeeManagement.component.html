@@ -18,66 +18,61 @@
     </div>
   </div>
 
-  <div>
-    <mat-card fxLayout="row">
-      <mat-card fxFlex="100">
-        <h2 style="text-decoration: underline; text-align: center">
-          Invite Employee
-        </h2>
-        <div
-          fxLayout="row"
-          fxLayoutGap="10%"
-          fxLayoutAlign="space-evenly center"
-        >
-          <div fxLayout="row" fxLayoutGap="10px">
-            <div fxLayout="column" fxLayoutGap="10px">
-              <h3>Employee Full Name:</h3>
-              <input
-                type="text"
-                placeholder="Name"
-                [(ngModel)]="currNewUserFullName"
-                pInputText
-              />
-              <h3>Email Address:</h3>
-              <input
-                type="text"
-                placeholder="Email"
-                [(ngModel)]="currNewUserEmail"
-                pInputText
-              />
-            </div>
-          </div>
+  <div fxLayout="row" class="inviteEmployeeCard">
+    <div fxLayout="column" fxLayoutAlign="space-around center" fxFlex="100">
+      <h2 style="text-decoration: underline; text-align: center">
+        Invite Employee
+      </h2>
+      <div fxLayout="row" fxLayoutGap="10%" fxLayoutAlign="space-evenly center">
+        <div fxLayout="row" fxLayoutGap="10px">
           <div fxLayout="column" fxLayoutGap="10px">
-            <h3>Employee Position:</h3>
+            <h3>Employee Full Name:</h3>
             <input
               type="text"
-              placeholder="Position"
-              [(ngModel)]="currNewUserPosition"
+              placeholder="Name"
+              [(ngModel)]="currNewUserFullName"
               pInputText
             />
-            <h3>Contact Number:</h3>
+            <h3>Email Address:</h3>
             <input
               type="text"
-              placeholder="Contact Number"
-              [(ngModel)]="currNewUserContactNumber"
+              placeholder="Email"
+              [(ngModel)]="currNewUserEmail"
               pInputText
             />
-          </div>
-          <div fxLayout="column" fxLayoutGap="10px">
-            <h4 style="text-align: left">Associated Departments:</h4>
-            <button mat-raised-button (click)="openInChargeOfDialog()">
-              In Charge of
-            </button>
-            <button mat-raised-button (click)="openPartOfDialog()">
-              Part Of
-            </button>
           </div>
         </div>
-        <button mat-raised-button (click)="createNewEmployee()">
-          Invite Employee
-        </button>
-      </mat-card>
-      <!-- <mat-card fxFlex="30">
+        <div fxLayout="column" fxLayoutGap="10px">
+          <h3>Employee Position:</h3>
+          <input
+            type="text"
+            placeholder="Position"
+            [(ngModel)]="currNewUserPosition"
+            pInputText
+          />
+          <h3>Contact Number:</h3>
+          <input
+            type="text"
+            placeholder="Contact Number"
+            [(ngModel)]="currNewUserContactNumber"
+            pInputText
+          />
+        </div>
+        <div fxLayout="column" fxLayoutGap="10px">
+          <h4 style="text-align: left">Associated Departments:</h4>
+          <button mat-raised-button (click)="openInChargeOfDialog()">
+            In Charge of
+          </button>
+          <button mat-raised-button (click)="openPartOfDialog()">
+            Part Of
+          </button>
+        </div>
+      </div>
+      <button mat-raised-button (click)="createNewEmployee()">
+        Invite Employee
+      </button>
+    </div>
+    <!-- <mat-card fxFlex="30">
         <h2 style="text-decoration: underline; text-align: center">
           Mass Invite Employee
         </h2>
@@ -90,39 +85,133 @@
           </button>
         </div>
       </mat-card> -->
-    </mat-card>
   </div>
 
-  <div>
-    <mat-card>
-      <p-dataView
+  <div class="employeeTableCard" fxLayout="column" fxLayoutAlign=" center">
+    <h2 style="padding-top: 2vw">Existing Employees</h2>
+    <div
+      style="
+        max-width: 90%;
+        min-height: 20vw;
+        overflow-y: auto;
+        margin-bottom: 3vw;
+      "
+    >
+      <p-table
+        #employeeTable
         [value]="allUsers"
-        layout="list"
-        [loading]="isLoading"
-        [paginator]="true"
+        dataKey="id"
         [rows]="10"
-        [sortField]="sortField"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [loading]="isLoading"
+        styleClass="p-datatable-gridlines"
+        [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="[
+          'fullName',
+          'email',
+          'dateCreated',
+          'contactNumber'
+        ]"
       >
-        <ng-template pTemplate="header"></ng-template>
-        <ng-template let-user pTemplate="listItem">
-          <div style="width: 100%">
-            <mat-card>
-              <mat-card-title>
-                {{ user.fullName }}
-              </mat-card-title>
-              <mat-card-subtitle>
-                Date created: {{ user.createdAt }}
-              </mat-card-subtitle>
-              <mat-card-content> email: {{ user.email }} </mat-card-content>
-              <mat-card-content>
-                contact number: {{ user.contactNumber }}
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </ng-template>
-      </p-dataView>
-    </mat-card>
-  </div>
+        <!-- <ng-template pTemplate="caption">
+        <div class="p-d-flex">
+          <span class="p-input-icon-left p-ml-auto">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              (input)="employeeTable.filterGlobal($event.target, 'contains')"
+              placeholder="Search keyword"
+            />
+          </span>
+        </div>
+      </ng-template> -->
+        <ng-template pTemplate="header">
+          <tr>
+            <th>
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Full Name
+                <p-columnFilter
+                  type="text"
+                  field="fullName"
+                  display="menu"
+                ></p-columnFilter>
+              </div>
+            </th>
+            <th>
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Email
+                <p-columnFilter
+                  type="text"
+                  field="email"
+                  display="menu"
+                ></p-columnFilter>
+              </div>
+            </th>
+            <th>
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Date Joined
+                <p-columnFilter
+                  type="date"
+                  field="createdAt"
+                  display="menu"
+                ></p-columnFilter>
+              </div>
+            </th>
+            <th>
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Contact Number
+                <p-columnFilter
+                  type="numeric"
+                  field="contactNumber"
+                  display="menu"
+                  currency="USD"
+                ></p-columnFilter>
+              </div>
+            </th>
 
-  <!-- generate number of cards to show -->
+            <th style="width: 8rem">
+              <div class="p-d-flex p-jc-between p-ai-center">Actions</div>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+          <tr>
+            <td>{{ user.fullName }}</td>
+            <td>
+              {{ user.email }}
+            </td>
+            <td>
+              {{ user.createdAt }}
+            </td>
+            <td>
+              {{ user.contactNumber }}
+            </td>
+            <td>
+              <div
+                fxLayout="row"
+                fxLayoutAlign="space-around center"
+                fxLayoutGap="1%"
+                class="btnGroup"
+              >
+                <img src="../../../../assets/images/editIcon.png" />
+
+                <img
+                  class="deleteIcon"
+                  src="../../../../assets/images/deleteIcon.png"
+                />
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7">No customers found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
 </div>
