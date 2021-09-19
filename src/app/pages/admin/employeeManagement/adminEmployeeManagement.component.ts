@@ -17,7 +17,7 @@ export interface user {
   email: string;
   createdAt: string;
   contactNumber: string;
-  isVaccinated: boolean;
+  isActivated: boolean;
 }
 @Component({
   selector: 'app-admin-employeeManagement',
@@ -70,7 +70,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
         email: '1@test.com',
         createdAt: '01/01/2021',
         contactNumber: '123',
-        isVaccinated: true,
+        isActivated: true,
       },
       {
         userId: 123456,
@@ -78,7 +78,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
         email: '2@test.com',
         createdAt: '01/01/2021',
         contactNumber: '123',
-        isVaccinated: false,
+        isActivated: false,
       },
       {
         userId: 1234567,
@@ -86,7 +86,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
         email: '3@test.com',
         createdAt: '01/01/2021',
         contactNumber: '123',
-        isVaccinated: true,
+        isActivated: true,
       },
       {
         userId: 12345678,
@@ -94,7 +94,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
         email: '4@test.com',
         createdAt: '01/01/2021',
         contactNumber: '123',
-        isVaccinated: false,
+        isActivated: false,
       },
       {
         userId: 123456789,
@@ -102,7 +102,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
         email: '5@test.com',
         createdAt: '01/01/2021',
         contactNumber: '123',
-        isVaccinated: true,
+        isActivated: true,
       },
     ];
   }
@@ -238,7 +238,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
     email: string;
     createdAt: string;
     contactNumber: string;
-    isVaccinated: boolean;
+    isActivated: boolean;
   }) {
     this.editDialogRef = this.dialogService.open(EditEmployeeDialogComponent, {
       header: selectedUser.fullName + ' (' + selectedUser.userId + ')',
@@ -255,7 +255,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
     email: string;
     createdAt: string;
     contactNumber: string;
-    isVaccinated: boolean;
+    isActivated: boolean;
   }) {
     this.deleteDialogRef = this.dialogService.open(
       DeleteEmployeeDialogComponent,
