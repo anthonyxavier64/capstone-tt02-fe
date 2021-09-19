@@ -37,9 +37,7 @@ export class AdminAnnouncementManagementComponent implements OnInit {
   panelOpenState: boolean;
 
   constructor(private announcementService: AnnouncementService,
-    private matDialog: MatDialog,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,) {
+    private matDialog: MatDialog) {
     this.submitted = false;
     this.newAnnouncement = new Announcement();
     this.announcementToUpdate = new Announcement();
@@ -47,7 +45,6 @@ export class AdminAnnouncementManagementComponent implements OnInit {
     this.generalAnnouncements = new Array();
 
     this.resultSuccess = false;
-    this.resultError = false;
     this.panelOpenState = false;
   }
 
@@ -90,54 +87,38 @@ export class AdminAnnouncementManagementComponent implements OnInit {
     this.submitted = true;
 
     if (createAnnouncementForm.invalid) {
-      this.resultError = true;
       this.resultSuccess = false;
       this.message = "An error has occurred while creating the new announcement";
       console.log('********** AdminAnnouncementManagementComponent.ts: ERROR **********');
     }
 
-    if (this.announcementType == 'COVID_RELATED') {
-
-      this.covidAnnouncements.push(this.newAnnouncement);
-      var existingCovidAnnouncement = localStorage.getItem("covidAnnouncements");
-      if (existingCovidAnnouncement != null) {
-        var updatedList = Array.from(JSON.parse(existingCovidAnnouncement));
-        updatedList.push(this.newAnnouncement);
-        localStorage.setItem("covidAnnouncements", JSON.stringify(updatedList));
-        this.newAnnouncement.announcementType = AnnouncementType.COVID_RELATED;
-      }
-
-    } else {
-      this.generalAnnouncements.push(this.newAnnouncement);
-      localStorage.setItem("generalAnnouncements", JSON.stringify(this.generalAnnouncements));
-      this.newAnnouncement.announcementType = AnnouncementType.GENERAL;
-    }
-
-    this.newAnnouncement.date = new Date();
-    this.newAnnouncement.announcementId = counter++;
-
-    localStorage.setItem(JSON.stringify(this.newAnnouncement.announcementId), JSON.stringify(this.newAnnouncement));
-    this.resultError = false;
     this.resultSuccess = true;
-    this.message = `New announcement with announcement ID ${this.newAnnouncement.announcementId} created`;
-    this.newAnnouncement = new Announcement();
-    /*
-    this.announcementService.createAnnouncement(this.announcement.title, this.announcement.description, this.announcement.announcementType).subscribe(
+    this.newAnnouncement.date = new Date();
+    this.newAnnouncement.announcementType = AnnouncementType[this.announcementType];
+    this.newAnnouncement.senderId = this.user.userId;
+    this.announcementService.createAnnouncement(this.newAnnouncement).subscribe(
       response => {
-        let newAnnouncementId: number = response;
-        this.resultSuccess = true;
-        this.resultError = false;
-        this.message = "New announcement " + newAnnouncementId + " created successfully";
+        this.resultSuccess = response.status;
+        if (response.status) {
+          if (this.newAnnouncement.announcementType === AnnouncementType.COVID_RELATED) {
+            this.covidAnnouncements.push(response.announcement);
+          } else {
+            this.generalAnnouncements.push(response.announcement);
+          }
+          this.message = "New announcement with id " + response.announcement.announcementId + " created successfully";
+        }
+      else {
+          this.message = "An error has occured: " + response.message;
+        }
       },
       error => {
-        this.resultError = true;
         this.resultSuccess = false;
         this.message = "An error has occurred while creating the new announcement: " + error;
 
         console.log(`********** AdminAnnouncementManagementComponent.ts: ${error}`);
       }
     );
-    */
+  
   }
 
   viewAnnouncement(announcement?: Announcement) {
@@ -152,16 +133,6 @@ export class AdminAnnouncementManagementComponent implements OnInit {
       if (result === false) {
         return;
       }
-      /*this.announcementService.getAnnouncement(announcement?.announcementId).subscribe(
-        response => {
-          this.router.navigate(['/adminAnnouncementManagement']);
-        },
-        error => {
-          this.resultError = true;
-          this.message = error;
-          console.log('********** AdminAnnouncementManagementComponent.ts: ' + error);
-        }
-      );*/
     });
   }
 

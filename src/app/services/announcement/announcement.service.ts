@@ -45,9 +45,9 @@ export class AnnouncementService {
     );
   }
 
-  createAnnouncement(title: string | undefined, description: string | undefined, announcementType: AnnouncementType): Observable<any> {
+  createAnnouncement(announcement: Announcement): Observable<any> {
     return this.httpClient.post(`${this.baseUrl}/create-announcement`,
-      { title, description, announcementType }, httpOptions).pipe(
+      announcement, httpOptions).pipe(
         catchError(this.handleError)
       );
   }

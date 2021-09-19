@@ -1,4 +1,4 @@
 export enum AnnouncementType {
-  COVID_RELATED = 'COVID-19 Related',
-  GENERAL = 'General',
+  COVID_RELATED = 'COVID_RELATED',
+  GENERAL = 'GENERAL',
 }
