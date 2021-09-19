@@ -1,10 +1,9 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.dev';
-
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-
 import { handleError } from '../services-util';
 
 const httpOptions = {
@@ -27,9 +26,13 @@ export class DepartmentService {
   }
 
   createNewDepartment(department: any) {
+    console.log(department);
     this.httpClient
       .post<any>(this.baseUrl + '/create-department', department)
-      .pipe(catchError(handleError));
+      .pipe(catchError(handleError))
+      .subscribe((response) => {
+        console.log(response);
+      });
   }
 
   // TODO: Will be updated when service is ready

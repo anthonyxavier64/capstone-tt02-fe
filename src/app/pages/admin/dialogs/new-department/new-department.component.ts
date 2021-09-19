@@ -1,8 +1,6 @@
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Department } from 'src/app/models/department.model';
-import { DepartmentService } from 'src/app/services/department/department.service';
-
 import { Component, OnInit } from '@angular/core';
+
+import { DepartmentService } from 'src/app/services/department/department.service';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -33,10 +31,14 @@ export class NewDepartmentComponent implements OnInit {
       currCompanyId = currUser.companyId;
     }
 
+    console.log(currCompanyId);
+
     this.departmentService.createNewDepartment({
       name: this.departmentName,
       company: { companyId: currCompanyId },
     });
+    console.log('Service call completed');
+
     this.dialogRef.close();
   }
 }

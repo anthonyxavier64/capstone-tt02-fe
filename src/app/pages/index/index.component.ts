@@ -1,13 +1,14 @@
-import { User } from 'src/app/models/user';
-import { AuthService } from 'src/app/services/user/auth.service';
-
 import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
   OnInit,
 } from '@angular/core';
+
+import { AuthService } from 'src/app/services/user/auth.service';
+import { Department } from 'src/app/models/department.model';
 import { Router } from '@angular/router';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-index',
@@ -36,16 +37,16 @@ export class IndexComponent implements OnInit, AfterViewInit {
     this.router.navigateByUrl('/login');
   }
 
-  handleLoginPopup() {
-  }
+  handleLoginPopup() {}
   onSignUpClick() {
     this.router.navigateByUrl('/signUp');
   }
 
   handleLogin() {
+    console.log(this.email);
+    console.log(this.password);
     this.auth.login(this.email, this.password).then(
       (response) => {
-        console.log(response);
         localStorage.setItem('currentUser', JSON.stringify(response));
         this.router.navigateByUrl('/admin');
 

@@ -31,13 +31,12 @@ export class DepartmentPartOfComponent implements OnInit {
     // Below is the correct code
     this.departmentService.getAllDepartments().subscribe(
       (response) => {
-        this.allDepartments = response.types.departments;
+        this.allDepartments = response.departments;
       },
       (error) => {
         console.log(error);
       }
     );
-
     // var deptLocalStorage = localStorage.getItem('allDepts');
     // if (deptLocalStorage != null) {
     //   this.allDepartments = JSON.parse(deptLocalStorage);
@@ -49,7 +48,6 @@ export class DepartmentPartOfComponent implements OnInit {
 
   // Returns the department the user is part of to the parent component
   confirmDepartmentPartOf() {
-    console.log('pre-confirm: ' + JSON.stringify(this.data));
     for (let dept of this.allDepartments) {
       if (dept.isSelected == true) {
         delete dept.isSelected;
@@ -80,23 +78,12 @@ export class DepartmentPartOfComponent implements OnInit {
     newDepartmentDialogRef.afterClosed().subscribe(() => {
       this.departmentService.getAllDepartments().subscribe(
         (response) => {
-          this.allDepartments = response;
+          this.allDepartments = response.departments;
         },
         (error) => {
           console.log(error);
         }
       );
     });
-
-    // openNewDepartmentRef.onClose.subscribe(() => {
-    //   this.UserService.getDepartments().subscribe(
-    //     (response) => {
-    //       this.allDepartments = response;
-    //     },
-    //     (error) => {
-    //       console.log(error);
-    //     }
-    //   );
-    // });
   }
 }
