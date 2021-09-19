@@ -150,13 +150,13 @@
         <div>
           <label>Payment Type: </label>
           <p class="paymentDetailsText">
-            {{ data.paymentMethod }}
+            {{ company.paymentMethod }}
           </p>
         </div>
         <div>
           <label>Tier Confirmation: </label>
           <p class="paymentDetailsText">
-            {{ data.subscriptionTier }}
+            {{ company.subscriptionType }}
           </p>
         </div>
       </div>
@@ -166,7 +166,7 @@
           <label>Credit Card Number: </label>
           <input
             type="text"
-            [(ngModel)]="data.creditCardNumber"
+            [(ngModel)]="company.creditCardNumber"
             required
             pInputText
             autocomplete="cc-csc"
@@ -174,7 +174,7 @@
         </div>
         <div>
           <label>CVV: </label>
-          <input type="number" [(ngModel)]="data.cvv" required pInputText />
+          <input type="number" [(ngModel)]="company.cvv" required pInputText />
         </div>
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -182,7 +182,7 @@
           <label>Cardholder Name: </label>
           <input
             type="text"
-            [(ngModel)]="data.cardHolderName"
+            [(ngModel)]="company.cardHolderName"
             required
             pInputText
             autocomplete="cc-csc"
@@ -192,7 +192,7 @@
           <label>Date of Expiry: </label>
           <input
             type="date"
-            [(ngModel)]="data.dateOfExpiry"
+            [(ngModel)]="company.dateOfExpiry"
             style="font-family: 'Source Sans Pro'"
             required
             pInputText

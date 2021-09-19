@@ -1,9 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { environment } from 'src/environments/environment.dev';
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
+import { environment } from '../../../environments/environment.dev';
 import { handleError } from '../services-util';
 
 const httpOptions = {
@@ -18,5 +19,13 @@ export class CompanyService {
 
   constructor(private httpClient: HttpClient) {}
 
-  updateCompany() {}
+  createCreationRequest(request: any): Observable<any> {
+    return this.httpClient
+      .post<any>(
+        this.baseUrl + '/company-creation-request/create-request',
+        request,
+        httpOptions
+      )
+      .pipe(catchError(handleError));
+  }
 }
