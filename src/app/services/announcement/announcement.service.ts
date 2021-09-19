@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { AnnouncementType } from 'src/app/models/announcement-type';
 
-import { Announcement } from '../../models/announcement';
-import { AuthService } from '../../services/user/auth.service';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
 import { environment } from '../../../environments/environment.dev';
-import { AnnouncementType } from 'src/app/models/announcement-type';
+import { Announcement } from '../../models/announcement';
+import { AuthService } from '../../services/user/auth.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -21,21 +21,20 @@ export class AnnouncementService {
 
   constructor(private httpClient: HttpClient, private authService: AuthService) { }
 
-  getAllAnnouncements(): Observable<Announcement[]> {
-    return this.httpClient.get<Announcement[]>(`${this.baseUrl}/get-all-announcements`, httpOptions).pipe(
+  getAllAnnouncements(): Observable<any> {
+    return this.httpClient.get<any>(`${this.baseUrl}/get-all-announcements`, httpOptions).pipe(
       catchError(this.handleError)
     );
   }
 
-  getCovidAnnouncements(): Observable<Announcement[]> {
-    const userId = 1;
-    return this.httpClient.get<Announcement[]>(`${this.baseUrl}/get-covid-announcements/${userId}`, httpOptions).pipe(
+  getCovidAnnouncements(senderId: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.baseUrl}/get-covid-announcements/${senderId}`, httpOptions).pipe(
       catchError(this.handleError)
     );
   }
 
-  getGeneralAnnouncements(): Observable<Announcement[]> {
-    return this.httpClient.get<Announcement[]>(`${this.baseUrl}/get-general-announcements`, httpOptions).pipe(
+  getGeneralAnnouncements(senderId: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.baseUrl}/get-general-announcements/${senderId}`, httpOptions).pipe(
       catchError(this.handleError)
     );
   }
