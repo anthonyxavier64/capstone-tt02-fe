@@ -196,10 +196,14 @@
                 fxLayoutGap="1%"
                 class="btnGroup"
               >
-                <img src="../../../../assets/images/editIcon.png" />
+                <img
+                  (click)="openEditEmployeeDialog(user)"
+                  src="../../../../assets/images/editIcon.png"
+                />
 
                 <img
                   class="deleteIcon"
+                  (click)="onDeleteEmployeeClick(user)"
                   src="../../../../assets/images/deleteIcon.png"
                 />
               </div>
