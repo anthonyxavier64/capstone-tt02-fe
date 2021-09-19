@@ -61,15 +61,15 @@ export class UserService {
   }
 
   createNewUser(user: any) {
-    console.log(JSON.stringify(user));
     return this.httpClient
       .post<any>(this.baseUrl + '/register', user)
       .pipe(catchError(handleError));
   }
 
   sendVerificationEmail(userId: String) {
+    console.log('this.sendVerificationEmail');
     return this.httpClient
-      .post<any>(this.baseUrl + '/send-verification-email', userId)
+      .post<any>(this.baseUrl + '/send-verification-email', { userId: userId })
       .pipe(catchError(handleError));
   }
 }

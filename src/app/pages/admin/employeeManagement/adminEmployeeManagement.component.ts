@@ -54,7 +54,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
     this.isLoading = true;
     this.userService.getUsers().subscribe(
       (response) => {
-        this.allUsers = response;
+        this.allUsers = response.users;
         this.isLoading = false;
       },
       (error) => {
@@ -69,7 +69,8 @@ export class AdminEmployeeManagementComponent implements OnInit {
 
     // var deptLocalStorage = localStorage.getItem('allDepts');
     // if (deptLocalStorage != null) {
-    //   this.departments = JSON.parse(deptLocalStorage);
+    //   this.allDepartments = JSON.parse(deptLocalStorage);
+    //   console.log(this.allDepartments);
     // }
     // var userLocalStorage = localStorage.getItem('allUsers');
     // if (userLocalStorage != null) {

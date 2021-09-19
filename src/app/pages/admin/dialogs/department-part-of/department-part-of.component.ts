@@ -31,13 +31,12 @@ export class DepartmentPartOfComponent implements OnInit {
     // Below is the correct code
     this.departmentService.getAllDepartments().subscribe(
       (response) => {
-        this.allDepartments = response.types.departments;
+        this.allDepartments = response.departments;
       },
       (error) => {
         console.log(error);
       }
     );
-
     // var deptLocalStorage = localStorage.getItem('allDepts');
     // if (deptLocalStorage != null) {
     //   this.allDepartments = JSON.parse(deptLocalStorage);
@@ -79,7 +78,7 @@ export class DepartmentPartOfComponent implements OnInit {
     newDepartmentDialogRef.afterClosed().subscribe(() => {
       this.departmentService.getAllDepartments().subscribe(
         (response) => {
-          this.allDepartments = response;
+          this.allDepartments = response.departments;
         },
         (error) => {
           console.log(error);

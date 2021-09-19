@@ -26,6 +26,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { JwtModule } from '@auth0/angular-jwt';
 import { LoginComponent } from './pages/index/login/login.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -85,6 +86,7 @@ export function tokenGetter() {
     ReactiveFormsModule,
     MaterialModule,
     MatFormFieldModule,
+    MatCheckboxModule,
     MatDialogModule,
     MatButtonModule,
     MatSelectModule,

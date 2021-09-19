@@ -26,9 +26,13 @@ export class DepartmentService {
   }
 
   createNewDepartment(department: any) {
+    console.log(department);
     this.httpClient
       .post<any>(this.baseUrl + '/create-department', department)
-      .pipe(catchError(handleError));
+      .pipe(catchError(handleError))
+      .subscribe((response) => {
+        console.log(response);
+      });
   }
 
   // TODO: Will be updated when service is ready

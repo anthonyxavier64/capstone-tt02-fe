@@ -31,10 +31,14 @@ export class NewDepartmentComponent implements OnInit {
       currCompanyId = currUser.companyId;
     }
 
+    console.log(currCompanyId);
+
     this.departmentService.createNewDepartment({
       name: this.departmentName,
       company: { companyId: currCompanyId },
     });
+    console.log('Service call completed');
+
     this.dialogRef.close();
   }
 }
