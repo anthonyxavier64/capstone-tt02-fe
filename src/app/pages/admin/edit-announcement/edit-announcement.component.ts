@@ -36,14 +36,13 @@ export class EditAnnouncementComponent implements OnInit {
     this.submitted = false;
     this.announcementToUpdate = new Announcement();
 
-    this.announcementId = this.data.id;
+    this.announcementId = this.data.announcementId;
     this.titleToUpdate = this.data.title;
     this.date = this.data.date;
     this.announcementType = this.data.typeOfAnnouncement;
     this.descriptionToUpdate = this.data.description;
 
     this.retrieveAnnouncementError = false;
-    this.resultError = false;
     this.resultSuccess = false;
   }
 
@@ -67,39 +66,18 @@ export class EditAnnouncementComponent implements OnInit {
   }
 
   save(updateAnnouncementForm: NgForm) {
-    if (this.announcementId == null) {
-      return;
-    }
-
+  
     if (updateAnnouncementForm.invalid) {
-      this.resultError = true;
       this.resultSuccess = false;
       this.message = "Failed to edit announcement";
       return;
     }
-    this.submitted = true;
-    this.resultSuccess = true;
-    this.resultError = false;
-    this.message = "Announcement updated successfully";
-    if (this.announcementType == 'COVID_RELATED') {
-      this.announcementToUpdate.announcementType = AnnouncementType.COVID_RELATED
-    }
-    else {
-      this.announcementToUpdate.announcementType = AnnouncementType.GENERAL;
-    }
-    this.announcementToUpdate.announcementId = this.announcementId;
-    this.announcementToUpdate.date = this.date;
-    this.announcementToUpdate.description = this.descriptionToUpdate;
-    this.announcementToUpdate.title = this.titleToUpdate;
-
-    console.log(this.announcementToUpdate);
-
-
-    localStorage.setItem("updatedAnnouncement", JSON.stringify(this.announcementToUpdate));
-    console.log(localStorage.getItem("updatedAnnouncement"));
+    this.announcementToUpdate.announcementType = AnnouncementType[this.announcementType];
     this.dialogRef.close(this.announcementToUpdate);
   }
 
+
+  // deprecated
   update(updateAnnouncementForm: NgForm) {
     this.submitted = true;
 
@@ -115,8 +93,7 @@ export class EditAnnouncementComponent implements OnInit {
     this.announcementToUpdate.announcementType = AnnouncementType.GENERAL;
     this.announcementToUpdate.date = new Date();
 
-    this.announcementService.updateAnnouncement(this.announcementToUpdate.announcementId,
-      this.announcementToUpdate.title, this.announcementToUpdate.description, this.announcementToUpdate.announcementType).subscribe(
+    this.announcementService.updateAnnouncement(this.announcementToUpdate).subscribe(
         response => {
           this.resultSuccess = true;
           this.resultError = false;

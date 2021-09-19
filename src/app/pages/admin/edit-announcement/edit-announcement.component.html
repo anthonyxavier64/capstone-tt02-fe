@@ -10,7 +10,7 @@
         <br />
         <mat-form-field class="example-full-width">
           <mat-label>Title</mat-label>
-          <input matInput id="title" name="title" #title="ngModel" type="text" [(ngModel)]="titleToUpdate"
+          <input matInput id="title" name="title" #title="ngModel" type="text" [(ngModel)]="announcementToUpdate.title"
             required="true" />
         </mat-form-field>
         <mat-error *ngIf="title.invalid && (title.dirty || title.touched || submitted)" class="errorText">
@@ -34,7 +34,7 @@
         <mat-form-field class="example-full-width">
           <mat-label>Description</mat-label>
           <textarea matInput id="description" name="description" #description="ngModel"
-            [(ngModel)]="descriptionToUpdate" required="true"></textarea>
+            [(ngModel)]="announcementToUpdate.description" required="true"></textarea>
         </mat-form-field>
         <mat-error *ngIf="description.invalid && (description.dirty || description.touched || submitted)">
           <div *ngIf="description.errors != null && description.errors.required">
@@ -43,8 +43,8 @@
         </mat-error>
       </div>
       <div mat-dialog-actions>
-        <button mat-raised-button color="blue" type="submit" [mat-dialog-close]="true">Save</button>
-        <button mat-raised-button color="blue" [mat-dialog-close]="false">Cancel</button>
+        <button mat-raised-button color="blue" type="submit">Save</button>
+        <button mat-raised-button color="blue" [mat-dialog-close]>Cancel</button>
       </div>
     </form>
   </div>
