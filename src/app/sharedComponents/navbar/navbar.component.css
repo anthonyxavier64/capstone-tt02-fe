@@ -2,34 +2,39 @@
 .navbar {
   padding-left: 2%;
   padding-right: 2%;
-  height: 60px;
+  height: 4vw;
   background-color: #c1e7e3;
   border-radius: 15px;
 }
 
 .notificationIcon {
-  height: 30px;
-  width: 23.36;
+  height: 1.8vw;
+  width: 1.9vw;
 }
 
 .profileIcon {
-  height: 40px;
-  width: 40px;
+  height: 2.6vw;
+  width: 2.6vw;
+  align-self: center;
 }
 
 .homeButton {
-  height: 40px;
-  width: 40px;
+  max-height: 3vw;
+  max-width: 3vw;
   align-self: center;
 }
 
 .homeIcon {
-  align-self: center;
+  max-width: inherit;
+  max-height: inherit;
 }
 
 .navbarItem {
   color: #003764;
+  background-color: inherit;
   font-family: Source Sans Pro;
+  text-align: center;
+  font-size: 1.1vw;
 }
 
 ::ng-deep .workDropList {

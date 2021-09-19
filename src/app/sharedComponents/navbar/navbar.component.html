@@ -1,26 +1,37 @@
 <div class="navbar" fxLayout="row" fxLayoutAlign="space-between center">
-  <div class="leftNavbar">
-    <button class="homeButton" mat-fab color="basic" (click)="onCompanyLogoClick()">
+  <div class="leftNavbar" fxLayout="row" fxLayoutAlign="space-between center">
+    <button
+      class="homeButton"
+      mat-fab
+      color="basic"
+      (click)="onCompanyLogoClick()"
+      fxLayoutAlign="space-around center"
+    >
       <mat-icon class="homeIcon">home</mat-icon>
     </button>
     <button class="navbarItem" mat-button>Dashboard</button>
-    <button class="navbarItem" mat-icon-button [matMenuTriggerFor]="workMenu" #clickMenuTrigger="matMenuTrigger">
+    <button
+      class="navbarItem"
+      mat-button
+      [matMenuTriggerFor]="workMenu"
+      #clickMenuTrigger="matMenuTrigger"
+    >
       Work
     </button>
 
     <mat-menu class="workDropList" #workMenu="matMenu">
       <h3 class="workDropListHeader">Work</h3>
-      <hr class="headerDivider">
+      <hr class="headerDivider" />
       <button class="workDropListItem" mat-menu-item>
-        <img class="goalIcon" src="../../../assets/images/goalIcon.png">
+        <img class="goalIcon" src="../../../assets/images/goalIcon.png" />
         <p class="workDropListItemText">Goals</p>
-        <img class="arrowIcon" src="../../../assets/images/arrowIcon.png">
+        <img class="arrowIcon" src="../../../assets/images/arrowIcon.png" />
       </button>
-      <hr class="itemDivider">
+      <hr class="itemDivider" />
       <button class="workDropListItem" mat-menu-item>
-        <img class="taskIcon" src="../../../assets/images/taskIcon.png">
+        <img class="taskIcon" src="../../../assets/images/taskIcon.png" />
         <p class="workDropListItemText">Tasks</p>
-        <img class="arrowIcon" src="../../../assets/images/arrowIcon.png">
+        <img class="arrowIcon" src="../../../assets/images/arrowIcon.png" />
       </button>
     </mat-menu>
 
@@ -29,18 +40,39 @@
     <button class="navbarItem" mat-button>My Employees</button>
   </div>
   <!-- for table maybe can have a burger menu -->
-  <div class="rightNavbar">
-    <button mat-button [matMenuTriggerFor]="notificationMenu" #clickMenuTrigger="matMenuTrigger">
-      <img class="notificationIcon" src="../../../assets/images/notificationIcon.png">
+  <div
+    class="rightNavbar"
+    fxLayout="row"
+    fxLayoutAlign="space-between end"
+    fxLayoutGap="1%"
+  >
+    <button
+      mat-button
+      [matMenuTriggerFor]="notificationMenu"
+      #clickMenuTrigger="matMenuTrigger"
+      class="navbarItem"
+    >
+      <img
+        class="notificationIcon"
+        src="../../../assets/images/notificationIcon.png"
+      />
     </button>
     <mat-menu class="workDropList" #notificationMenu="matMenu">
-      <button class="workDropListItem" mat-menu-item
-        onClick="window.open('https://www.who.int/news-room/q-a-detail/coronavirus-disease-covid-19-health-and-safety-in-the-workplace')">
-        <img class="goalIcon" src="../../../assets/images/goalIcon.png">
+      <button
+        class="workDropListItem"
+        mat-menu-item
+        onClick="window.open('https://www.who.int/news-room/q-a-detail/coronavirus-disease-covid-19-health-and-safety-in-the-workplace')"
+      >
+        <img class="goalIcon" src="../../../assets/images/goalIcon.png" />
         <p class="workDropListItemText">WHO Covid Resources</p>
-        <img class="arrowIcon" src="../../../assets/images/arrowIcon.png">
+        <img class="arrowIcon" src="../../../assets/images/arrowIcon.png" />
       </button>
     </mat-menu>
-    <button class="profileIcon" mat-fab color="accent" (click)="onProfileLogoClick()"></button>
+    <button
+      class="profileIcon"
+      mat-fab
+      color="accent"
+      (click)="onProfileLogoClick()"
+    ></button>
   </div>
 </div>
