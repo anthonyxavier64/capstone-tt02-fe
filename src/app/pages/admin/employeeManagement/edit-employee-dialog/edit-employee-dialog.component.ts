@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+
+import { NgForm } from '@angular/forms';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-edit-employee-dialog',
@@ -10,7 +12,8 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 export class EditEmployeeDialogComponent implements OnInit {
   constructor(
     public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig
+    public config: DynamicDialogConfig,
+    private userService: UserService
   ) {
     console.log(config.data);
   }
@@ -22,16 +25,21 @@ export class EditEmployeeDialogComponent implements OnInit {
     if (formValue.fullName !== '') {
       this.config.data.fullName = formValue.fullName;
     }
-    if (formValue.email !== '') {
-      this.config.data.email = formValue.email;
-    }
     if (formValue.contactNumber !== '') {
-      this.config.data.email = formValue.contactNumber;
+      this.config.data.contactNumber = formValue.contactNumber;
     }
 
-    //ADD EDIT BE LOGIC HERE
+    this.userService.updateUserDetails(this.config.data).subscribe(
+      (response) => {
+        console.log('Done Updating');
+        console.log(this.config.data);
 
-    this.ref.close(this.config.data);
+        this.ref.close(this.config.data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   onCloseClick() {
