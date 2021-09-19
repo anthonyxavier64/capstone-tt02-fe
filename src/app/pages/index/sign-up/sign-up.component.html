@@ -9,9 +9,9 @@
     <mat-card style="width: 100%" *ngIf="leftSection.style.display !== 'none'">
       <mat-card-content fxLayout="column" fxLayoutGap="3%">
         <label>Company Email: </label>
-        <input pInputText required [(ngModel)]="companyEmail" />
+        <input pInputText required [(ngModel)]="email" />
         <label>Company Name: </label>
-        <input pInputText required [(ngModel)]="companyName" />
+        <input pInputText required [(ngModel)]="name" />
         <div fxLayout="row" fxLayoutAlign="space-between start">
           <label>Subscription Tier: </label>
           <img
