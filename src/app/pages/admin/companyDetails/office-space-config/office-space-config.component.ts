@@ -69,10 +69,11 @@ export class OfficeSpaceConfigComponent implements OnInit {
   }
 
   deleteRoom() {
-    const room = this.rooms[this.editRoomIndex];
+    const roomToDelete = this.rooms[this.editRoomIndex];
 
     if (this.editRoomIndex > -1) {
       this.rooms.splice(this.editRoomIndex, 1);
+
       this.rooms.sort((a, b) => {
         if (
           Number(a.location.substring(0, 1)) >
@@ -89,13 +90,14 @@ export class OfficeSpaceConfigComponent implements OnInit {
         }
       });
 
-      this.roomService.deleteRoom(room.roomId).subscribe(
+      this.roomService.deleteRoom(roomToDelete.roomId).subscribe(
         (response) => {
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
             detail: 'Room is deleted.',
           });
+          this.ngOnInit();
         },
         (error) => {
           this.messageService.add({
@@ -103,11 +105,11 @@ export class OfficeSpaceConfigComponent implements OnInit {
             summary: 'Error',
             detail: 'Unable to delete room. Please try again.',
           });
+          this.ngOnInit();
         }
       );
 
       this.isEditRoomDetailsOpen = false;
-      this.ngOnInit();
     } else {
       alert('The selected room cannot be deleted!');
     }
@@ -156,10 +158,15 @@ export class OfficeSpaceConfigComponent implements OnInit {
 
     const oldRoom = this.rooms[this.editRoomIndex];
 
+    const storedOldRoom = {
+      name: oldRoom.name,
+      location: oldRoom.location,
+      capacity: oldRoom.capacity,
+    };
+
     oldRoom.name = roomName;
     oldRoom.location = roomLocation;
     oldRoom.capacity = roomCapacity;
-    console.log(oldRoom);
 
     this.rooms.sort((a, b) => {
       if (
@@ -178,9 +185,17 @@ export class OfficeSpaceConfigComponent implements OnInit {
     // api call
     this.roomService.updateRoom(oldRoom).subscribe(
       (response) => {
-        console.log(response);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Room is updated.',
+        });
       },
       (error) => {
+        oldRoom.name = storedOldRoom.name;
+        oldRoom.location = storedOldRoom.location;
+        oldRoom.capacity = storedOldRoom.capacity;
+
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -217,16 +232,27 @@ export class OfficeSpaceConfigComponent implements OnInit {
       }
     });
 
+    this.rooms = this.rooms.slice();
+
     this.roomService.createRoom(newRoom).subscribe(
       (response) => {
-        console.log(response);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Room has been added.',
+        });
+        this.ngOnInit();
       },
       (error) => {
-        console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Problem adding room. Please try again.',
+        });
+        this.ngOnInit();
       }
     );
 
-    this.ngOnInit();
     this.isAddRoomOpen = false;
   }
 
