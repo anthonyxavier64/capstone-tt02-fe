@@ -15,12 +15,13 @@ export interface CompanyDetailsDialogData {
   officeOpeningHour: string;
   officeClosingHour: string;
   officeCapacity: number;
-  companySize: string[];
-
+  companySize: string;
+  hrAdminEmail: string;
+  hrAdminFullName: string;
   creditCardNumber: string;
   cardHolderName: string;
   cvv: number;
-  dateOfExpiry: Date;
+  CCDateOfExpiry: Date;
 }
 @Component({
   selector: 'app-sign-up',
@@ -43,12 +44,15 @@ export class SignUpComponent implements OnInit {
   officeOpeningHour: string;
   officeClosingHour: string;
   officeCapacity: number;
-  companySize: string[];
+  companySize: string;
 
   creditCardNumber: string;
   cardHolderName: string;
   cvv: number;
-  dateOfExpiry: Date;
+  CCDateOfExpiry: Date;
+
+  hrAdminFullName: string;
+  hrAdminEmail: string;
 
   constructor(
     public tierInfoDialog: MatDialog,
@@ -56,7 +60,6 @@ export class SignUpComponent implements OnInit {
   ) {
     this.subscriptionTiers = ['Basic', 'Standard', 'Pro'];
     this.paymentMethods = ['Credit Card'];
-    this.companySize = ['Small', 'Medium', 'Large'];
   }
 
   ngOnInit(): void {}
@@ -89,7 +92,10 @@ export class SignUpComponent implements OnInit {
         creditCardNumber: this.creditCardNumber,
         cardHolderName: this.cardHolderName,
         cvv: this.cvv,
-        dateOfExpiry: this.dateOfExpiry,
+        CCDateOfExpiry: this.CCDateOfExpiry,
+
+        hrAdminEmail: this.hrAdminEmail,
+        hrAdminFullName: this.hrAdminFullName,
       },
     });
   }
