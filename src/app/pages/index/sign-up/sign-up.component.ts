@@ -8,7 +8,6 @@ export interface CompanyDetailsDialogData {
   paymentMethod: string;
   name: string;
   email: string;
-<<<<<<< HEAD
   contactNumber: string;
   numOfEmployees: number;
   officeAddress: string;
@@ -17,10 +16,6 @@ export interface CompanyDetailsDialogData {
   officeClosingHour: string;
   officeCapacity: number;
   companySize: string[];
-=======
-  description: string;
-  companySize: number;
->>>>>>> 0fc1ca2 (refactor: naming of attributes)
 
   creditCardNumber: string;
   cardHolderName: string;
@@ -41,7 +36,6 @@ export class SignUpComponent implements OnInit {
 
   name: string;
   email: string;
-<<<<<<< HEAD
   contactNumber: string;
   officeAddress: string;
   numOfEmployees: number;
@@ -50,10 +44,6 @@ export class SignUpComponent implements OnInit {
   officeClosingHour: string;
   officeCapacity: number;
   companySize: string[];
-=======
-  description: string;
-  companySize: number;
->>>>>>> 0fc1ca2 (refactor: naming of attributes)
 
   creditCardNumber: string;
   cardHolderName: string;
@@ -87,7 +77,6 @@ export class SignUpComponent implements OnInit {
         paymentMethod: this.selectedPaymentMethod,
         name: this.name,
         email: this.email,
-<<<<<<< HEAD
         contactNumber: this.contactNumber,
         officeAddress: this.officeAddress,
         numOfEmployees: this.numOfEmployees,
@@ -95,9 +84,6 @@ export class SignUpComponent implements OnInit {
         officeOpeningHour: this.officeOpeningHour,
         officeClosingHour: this.officeClosingHour,
         officeCapacity: this.officeCapacity,
-=======
-        description: this.description,
->>>>>>> 0fc1ca2 (refactor: naming of attributes)
         companySize: this.companySize,
 
         creditCardNumber: this.creditCardNumber,
