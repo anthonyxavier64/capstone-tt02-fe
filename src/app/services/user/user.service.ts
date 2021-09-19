@@ -71,4 +71,10 @@ export class UserService {
       .post<any>(this.baseUrl + '/send-verification-email', { userId: userId })
       .pipe(catchError(handleError));
   }
+
+  deleteUser(userId: String) {
+    return this.httpClient
+      .post<any>(this.baseUrl + '/deleteUser', { userId: userId })
+      .pipe(catchError(handleError));
+  }
 }
