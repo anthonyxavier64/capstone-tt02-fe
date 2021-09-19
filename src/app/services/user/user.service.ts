@@ -1,12 +1,6 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../../models/user';
+import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.dev';
 import { handleError } from '../services-util';
@@ -79,8 +73,8 @@ export class UserService {
   }
 
   deleteUser(userId: String) {
-    return this.httpClient
-      .post<any>(this.baseUrl + '/delete-user', { userId: userId })
-      .pipe(catchError(handleError));
+    return this.httpClient.post<any>(this.baseUrl + '/delete-user', {
+      userId: userId,
+    });
   }
 }

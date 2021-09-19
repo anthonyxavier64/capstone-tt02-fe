@@ -25,10 +25,14 @@
           Basic Information
         </h2>
 
+<<<<<<< HEAD
         <div
           fxLayout="row"
           fxLayoutAlign="flex-start stretch"
           [ngClass]="{
+=======
+        <div fxLayout="row" fxLayoutAlign="space-between stretch" [ngClass]="{
+>>>>>>> ba0be6d... edit user profile
             editProfileDetails: editDetailsMode,
             viewProfileDetails: !editDetailsMode
           }"
@@ -37,6 +41,7 @@
             <label for="fullName">Name</label>
 
             <span *ngIf="!editDetailsMode">{{ user.fullName }}</span>
+<<<<<<< HEAD
             <input
               pInputText
               ngNativeValidate
@@ -48,11 +53,16 @@
               id="fullName"
               #fullName="ngModel"
             />
+=======
+            <input pInputText ngNativeValidate required *ngIf="editDetailsMode" class="inputField"
+              [(ngModel)]="user.fullName" name="fullName" id="fullName" #fullName="ngModel" />
+>>>>>>> ba0be6d... edit user profile
           </div>
 
           <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
             <label for="email">Email</label>
 
+<<<<<<< HEAD
             <span *ngIf="!editDetailsMode">{{ user.email }}</span>
             <input
               pInputText
@@ -65,12 +75,16 @@
               id="email"
               #email="ngModel"
             />
+=======
+            <span>{{ user.email }}</span>
+>>>>>>> ba0be6d... edit user profile
           </div>
 
           <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
             <label for="contactNumber">Contact</label>
 
             <span *ngIf="!editDetailsMode">{{ user.contactNumber }}</span>
+<<<<<<< HEAD
             <input
               pInputText
               ngNativeValidate
@@ -82,16 +96,38 @@
               id="contactNumber"
               #contactNumber="ngModel"
             />
+=======
+            <input pInputText ngNativeValidate required *ngIf="editDetailsMode" class="inputField"
+              [(ngModel)]="user.contactNumber" name="contactNumber" id="contactNumber" #contactNumber="ngModel" />
+>>>>>>> ba0be6d... edit user profile
           </div>
         </div>
       </mat-card-group>
 
+<<<<<<< HEAD
       <div
         class="profile-btn-wrap"
         fxLayout="row"
         fxLayoutAlign="center center"
         fxLayoutGap="5%"
       >
+=======
+      <div class="profile-btn-wrap" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5%">
+        <button mat-button class="grey-btn" *ngIf="!editDetailsMode" (click)="openDialog()">
+          Change password
+        </button>
+        <button mat-button class="grey-btn" (click)="editDetailsMode = true" *ngIf="!editDetailsMode">
+          Edit Profile
+        </button>
+        <button mat-button class="grey-btn" type="submit" *ngIf="editDetailsMode" (click)="editDetails()">
+          Save Changes
+        </button>
+      </div>
+
+      </mat-card-group>
+
+      <div class="profile-btn-wrap" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5%">
+>>>>>>> ba0be6d... edit user profile
         <button mat-button class="grey-btn" *ngIf="!editDetailsMode">
           Change password
         </button>
@@ -103,15 +139,24 @@
         >
           Edit Profile
         </button>
+<<<<<<< HEAD
         <button
           mat-button
           class="grey-btn"
           type="submit"
           *ngIf="editDetailsMode"
         >
+=======
+        <button mat-button class="grey-btn" (click)="editDetails()" *ngIf="editDetailsMode">
+>>>>>>> ba0be6d... edit user profile
           Save Changes
         </button>
+
       </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> ba0be6d... edit user profile
     </form>
 
     <mat-card-group class="covid-info-wrap" fxLayout="column" fxLayoutGap="2%">
@@ -119,7 +164,7 @@
         Covid Related Information
       </h2>
 
-      <div fxLayout="row" fxLayoutAlign="flex-start stretch" fxLayoutGap="45%">
+      <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="45%">
         <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
           <label for="name">Vaccination Status</label>
 
@@ -132,26 +177,26 @@
           <span>Test</span>
         </div>
       </div>
-      <div fxLayout="row" fxLayoutAlign="flex-start stretch" fxLayoutGap="45%">
-        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+      <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="45%">
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%" *ngIf="hasWFOMonthlyCap">
           <label for="name">WFO Monthly Cap</label>
 
           <span>{{ user.wfoMonthlyAllocation }}</span>
         </div>
 
-        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%" *ngIf="hasWFOTeam">
           <label for="name">WFO Team</label>
 
           <span>{{ user.alternateWfoTeam }}</span>
         </div>
       </div>
     </mat-card-group>
-    <mat-card-group class="work-info-wrap" fxLayout="column" fxLayoutGap="2%">
+    <mat-card-group class="work-info-wrap" fxLayout="column" fxLayoutGap="5%">
       <h2 style="text-decoration: underline; align-self: flex-start">
         Work Related Information
       </h2>
 
-      <div fxLayout="row" fxLayoutAlign="flex-start stretch" fxLayoutGap="35%">
+      <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="25%">
         <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
           <label for="name">Position</label>
 

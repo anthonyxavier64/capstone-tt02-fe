@@ -4,7 +4,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { MatDialog } from '@angular/material/dialog';
-import { ChangePasswordComponent } from '../change-password/change-password.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/models/user';
@@ -19,6 +19,9 @@ export class ProfileComponent implements OnInit {
   user: any | null;
   dept: any | null;
   mdept: any | null;
+
+  hasWFOMonthlyCap: boolean = false;
+  hasWFOTeam: boolean = false;
 
   editDetailsMode: boolean = false;
 
@@ -37,7 +40,7 @@ export class ProfileComponent implements OnInit {
       this.user = JSON.parse(currentUser);
       this.userService.getDepartments(this.user.email).subscribe(
         (response) => {
-          this.mdept = response;
+          this.dept = response;
         },
         (error) => {
           this.messageService.add({
@@ -60,6 +63,15 @@ export class ProfileComponent implements OnInit {
         }
       );
     }
+
+    if (this.user.wfoMonthlyAllocation) {
+      this.hasWFOMonthlyCap = true;
+    }
+
+    if (this.user.alternateWfoTeam) {
+      this.hasWFOTeam = true;
+    }
+
   }
 
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
@@ -82,5 +94,27 @@ export class ProfileComponent implements OnInit {
   closeProfileEdit(updateForm: NgForm) {
     var updatedValues = updateForm.value;
     this.editDetailsMode = false;
+  }
+
+  editDetails() {
+    console.log(this.user);
+
+    this.userService.updateUserDetails(this.user).subscribe(
+      (response) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'User profile has been updated.',
+        });
+        this.editDetailsMode = false;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'An error has occured: $(error)',
+        });
+      }
+    );
   }
 }
