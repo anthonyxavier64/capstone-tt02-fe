@@ -6,6 +6,7 @@ export class Announcement {
   description: string | undefined;
   date: Date | undefined;
   announcementType: AnnouncementType | undefined;
+  senderId: number;
 
   constructor(
     id?: number,
