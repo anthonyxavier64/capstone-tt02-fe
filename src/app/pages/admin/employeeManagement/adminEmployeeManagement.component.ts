@@ -65,53 +65,12 @@ export class AdminEmployeeManagementComponent implements OnInit {
       'https://firebasestorage.googleapis.com/v0/b/capstone-fe.appspot.com/o/mass_invite_employee_template.csv?alt=media&token=fdd9c480-c384-4c7b-a85e-89a3c32230a3';
 
     //Mock All Users Data
-    this.allUsers = [
-      {
-        userId: 12345,
-        fullName: 'user 1',
-        email: '1@test.com',
-        createdAt: '01/01/2021',
-        contactNumber: '123',
-        isActivated: true,
-      },
-      {
-        userId: 123456,
-        fullName: 'user 2',
-        email: '2@test.com',
-        createdAt: '01/01/2021',
-        contactNumber: '123',
-        isActivated: false,
-      },
-      {
-        userId: 1234567,
-        fullName: 'user 3',
-        email: '3@test.com',
-        createdAt: '01/01/2021',
-        contactNumber: '123',
-        isActivated: true,
-      },
-      {
-        userId: 12345678,
-        fullName: 'user 4',
-        email: '4@test.com',
-        createdAt: '01/01/2021',
-        contactNumber: '123',
-        isActivated: false,
-      },
-      {
-        userId: 123456789,
-        fullName: 'user 5',
-        email: '5@test.com',
-        createdAt: '01/01/2021',
-        contactNumber: '123',
-        isActivated: true,
-      },
-    ];
+    this.allUsers = [];
   }
 
   ngOnInit(): void {
     // Below is the correct code
-    this.isLoading = false;
+    // this.isLoading = false;
     this.userService.getUsers().subscribe(
       (response) => {
         this.allUsers = response.users;
@@ -228,7 +187,11 @@ export class AdminEmployeeManagementComponent implements OnInit {
       newUserId = response.user.userId;
       if (!newUserId) {
       } else {
-        this.userService.sendVerificationEmail(newUserId);
+        this.userService
+          .sendVerificationEmail(newUserId)
+          .subscribe((response) => {
+            this.ngOnInit();
+          });
       }
     });
   }
@@ -273,6 +236,9 @@ export class AdminEmployeeManagementComponent implements OnInit {
       }
     );
 
-    this.ngOnInit();
+    this.deleteDialogRef.onClose.subscribe(() => {
+      console.log('Delete dialog closed');
+      this.ngOnInit();
+    });
   }
 }

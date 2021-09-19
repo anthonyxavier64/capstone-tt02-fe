@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
+import { UserService } from 'src/app/services/user/user.service';
+
 @Component({
   selector: 'app-delete-employee-dialog',
   templateUrl: './delete-employee-dialog.component.html',
@@ -9,15 +11,19 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 export class DeleteEmployeeDialogComponent implements OnInit {
   constructor(
     public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig
+    public config: DynamicDialogConfig,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {}
 
   onConfirmClick() {
-    //ADD DELETE BE LOGIC HERE
-    this.config.data.confirmDelete = true;
-    this.ref.close(this.config);
+    this.userService
+      .deleteUser(this.config.data.selectedUser.userId)
+      .subscribe((response) => {
+        this.config.data.confirmDelete = true;
+        this.ref.close(this.config);
+      });
   }
 
   onCloseClick() {

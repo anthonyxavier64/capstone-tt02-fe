@@ -18,7 +18,6 @@ export class DepartmentService {
 
   constructor(private httpClient: HttpClient) {}
 
-  // TODO: Will be updated when service is ready
   getAllDepartments(): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + '/get-all-departments')
