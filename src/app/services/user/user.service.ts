@@ -67,7 +67,6 @@ export class UserService {
   }
 
   sendVerificationEmail(userId: String) {
-    console.log('this.sendVerificationEmail');
     return this.httpClient
       .post<any>(this.baseUrl + '/send-verification-email', { userId: userId })
       .pipe(catchError(handleError));
