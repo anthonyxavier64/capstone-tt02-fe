@@ -45,6 +45,12 @@ export class UserService {
       .pipe(catchError(handleError));
   }
 
+  updateUserDetails(user: any): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + '/me', user, httpOptions)
+      .pipe(catchError(handleError));
+  }
+
   resetPassword(
     email: string,
     oldpassword: string,
@@ -74,7 +80,7 @@ export class UserService {
 
   deleteUser(userId: String) {
     return this.httpClient
-      .post<any>(this.baseUrl + '/deleteUser', { userId: userId })
+      .post<any>(this.baseUrl + '/delete-user', { userId: userId })
       .pipe(catchError(handleError));
   }
 }

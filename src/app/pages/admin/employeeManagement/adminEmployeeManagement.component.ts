@@ -210,7 +210,10 @@ export class AdminEmployeeManagementComponent implements OnInit {
       contentStyle: { 'max-height': '50vw', overflow: 'auto' },
       data: selectedUser,
     });
-    this.ngOnInit();
+
+    this.editDialogRef.onClose.subscribe(() => {
+      this.ngOnInit();
+    });
   }
 
   onDeleteEmployeeClick(selectedUser: {
@@ -237,7 +240,6 @@ export class AdminEmployeeManagementComponent implements OnInit {
     );
 
     this.deleteDialogRef.onClose.subscribe(() => {
-      console.log('Delete dialog closed');
       this.ngOnInit();
     });
   }
