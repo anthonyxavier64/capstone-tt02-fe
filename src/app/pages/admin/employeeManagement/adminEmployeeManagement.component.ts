@@ -1,14 +1,21 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-
-import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
-import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
-import { DepartmentService } from 'src/app/services/department/department.service';
+//import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
 import { Location } from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
+import { DepartmentService } from 'src/app/services/department/department.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { firebaseStorage } from '../../../../firebase/firebase';
+import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
+import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
+
+export interface EditEmployeeDialogData {
+  userId: number;
+  fullName: string;
+  email: string;
+  createdAt: string;
+  contactNumber: string;
+  isVaccinated: boolean;
+}
 
 @Component({
   selector: 'app-admin-employeeManagement',
@@ -44,14 +51,57 @@ export class AdminEmployeeManagementComponent implements OnInit {
     this.partOfDepartments = [];
     this.inChargeOfDepartments = [];
     this.allDepartments = [];
-    this.allUsers = [];
     this.csvDownloadUrl =
       'https://firebasestorage.googleapis.com/v0/b/capstone-fe.appspot.com/o/mass_invite_employee_template.csv?alt=media&token=fdd9c480-c384-4c7b-a85e-89a3c32230a3';
+
+    //Mock All Users Data
+    this.allUsers = [
+      {
+        userId: 12345,
+        fullName: 'user 1',
+        email: '1@test.com',
+        createdAt: '01/01/2021',
+        contactNumber: '123',
+        isVaccinated: true,
+      },
+      {
+        userId: 123456,
+        fullName: 'user 2',
+        email: '2@test.com',
+        createdAt: '01/01/2021',
+        contactNumber: '123',
+        isVaccinated: false,
+      },
+      {
+        userId: 1234567,
+        fullName: 'user 3',
+        email: '3@test.com',
+        createdAt: '01/01/2021',
+        contactNumber: '123',
+        isVaccinated: true,
+      },
+      {
+        userId: 12345678,
+        fullName: 'user 4',
+        email: '4@test.com',
+        createdAt: '01/01/2021',
+        contactNumber: '123',
+        isVaccinated: false,
+      },
+      {
+        userId: 123456789,
+        fullName: 'user 5',
+        email: '5@test.com',
+        createdAt: '01/01/2021',
+        contactNumber: '123',
+        isVaccinated: true,
+      },
+    ];
   }
 
   ngOnInit(): void {
     // Below is the correct code
-    this.isLoading = true;
+    this.isLoading = false;
     this.userService.getUsers().subscribe(
       (response) => {
         this.allUsers = response.users;
