@@ -66,6 +66,12 @@ export class UserService {
       .pipe(catchError(handleError));
   }
 
+  updateUserDetails(user: any): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + '/me', user, httpOptions)
+      .pipe(catchError(handleError));
+  }
+
   deleteUser(userId: String) {
     return this.httpClient.post<any>(this.baseUrl + '/delete-user', {
       userId: userId,
