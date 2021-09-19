@@ -25,14 +25,7 @@
           Basic Information
         </h2>
 
-<<<<<<< HEAD
-        <div
-          fxLayout="row"
-          fxLayoutAlign="flex-start stretch"
-          [ngClass]="{
-=======
         <div fxLayout="row" fxLayoutAlign="space-between stretch" [ngClass]="{
->>>>>>> ba0be6d... edit user profile
             editProfileDetails: editDetailsMode,
             viewProfileDetails: !editDetailsMode
           }"
@@ -41,77 +34,26 @@
             <label for="fullName">Name</label>
 
             <span *ngIf="!editDetailsMode">{{ user.fullName }}</span>
-<<<<<<< HEAD
-            <input
-              pInputText
-              ngNativeValidate
-              required
-              *ngIf="editDetailsMode"
-              class="inputField"
-              [ngModel]="user.fullName"
-              name="fullName"
-              id="fullName"
-              #fullName="ngModel"
-            />
-=======
             <input pInputText ngNativeValidate required *ngIf="editDetailsMode" class="inputField"
               [(ngModel)]="user.fullName" name="fullName" id="fullName" #fullName="ngModel" />
->>>>>>> ba0be6d... edit user profile
           </div>
 
           <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
             <label for="email">Email</label>
 
-<<<<<<< HEAD
-            <span *ngIf="!editDetailsMode">{{ user.email }}</span>
-            <input
-              pInputText
-              ngNativeValidate
-              required
-              *ngIf="editDetailsMode"
-              class="inputField"
-              [ngModel]="user.email"
-              name="email"
-              id="email"
-              #email="ngModel"
-            />
-=======
             <span>{{ user.email }}</span>
->>>>>>> ba0be6d... edit user profile
           </div>
 
           <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
             <label for="contactNumber">Contact</label>
 
             <span *ngIf="!editDetailsMode">{{ user.contactNumber }}</span>
-<<<<<<< HEAD
-            <input
-              pInputText
-              ngNativeValidate
-              required
-              *ngIf="editDetailsMode"
-              class="inputField"
-              [ngModel]="user.contactNumber"
-              name="contactNumber"
-              id="contactNumber"
-              #contactNumber="ngModel"
-            />
-=======
             <input pInputText ngNativeValidate required *ngIf="editDetailsMode" class="inputField"
               [(ngModel)]="user.contactNumber" name="contactNumber" id="contactNumber" #contactNumber="ngModel" />
->>>>>>> ba0be6d... edit user profile
           </div>
         </div>
       </mat-card-group>
 
-<<<<<<< HEAD
-      <div
-        class="profile-btn-wrap"
-        fxLayout="row"
-        fxLayoutAlign="center center"
-        fxLayoutGap="5%"
-      >
-=======
       <div class="profile-btn-wrap" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5%">
         <button mat-button class="grey-btn" *ngIf="!editDetailsMode" (click)="openDialog()">
           Change password
@@ -127,7 +69,6 @@
       </mat-card-group>
 
       <div class="profile-btn-wrap" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5%">
->>>>>>> ba0be6d... edit user profile
         <button mat-button class="grey-btn" *ngIf="!editDetailsMode">
           Change password
         </button>
@@ -139,24 +80,11 @@
         >
           Edit Profile
         </button>
-<<<<<<< HEAD
-        <button
-          mat-button
-          class="grey-btn"
-          type="submit"
-          *ngIf="editDetailsMode"
-        >
-=======
         <button mat-button class="grey-btn" (click)="editDetails()" *ngIf="editDetailsMode">
->>>>>>> ba0be6d... edit user profile
           Save Changes
         </button>
 
       </div>
-<<<<<<< HEAD
-=======
-
->>>>>>> ba0be6d... edit user profile
     </form>
 
     <mat-card-group class="covid-info-wrap" fxLayout="column" fxLayoutGap="2%">
