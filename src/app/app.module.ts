@@ -4,7 +4,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -15,6 +15,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { DialogService } from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { StyleClassModule } from 'primeng/styleclass';
@@ -34,6 +35,8 @@ import { DepartmentPartOfComponent } from './pages/admin/dialogs/department-part
 import { NewDepartmentComponent } from './pages/admin/dialogs/new-department/new-department.component';
 import { EditAnnouncementComponent } from './pages/admin/edit-announcement/edit-announcement.component';
 import { AdminEmployeeManagementComponent } from './pages/admin/employeeManagement/adminEmployeeManagement.component';
+import { DeleteEmployeeDialogComponent } from './pages/admin/employeeManagement/delete-employee-dialog/delete-employee-dialog.component';
+import { EditEmployeeDialogComponent } from './pages/admin/employeeManagement/edit-employee-dialog/edit-employee-dialog.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { IndexComponent } from './pages/index/index.component';
@@ -75,6 +78,8 @@ export function tokenGetter() {
     LoginComponent,
     SignUpComponent,
     ProfileComponent,
+    EditEmployeeDialogComponent,
+    DeleteEmployeeDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -107,7 +112,13 @@ export function tokenGetter() {
       },
     }),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: MatDialogRef,
+      useValue: {},
+    },
+    DialogService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,0 +1,39 @@
+.editEmployeeDetailsTbl {
+  align-content: center;
+  align-self: center;
+  border-spacing: 50px 20px;
+}
+
+.text {
+  font-size: 25px;
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.8);
+  text-align: left;
+}
+
+
+
+.saveBtn {
+  font-family: "Source Sans Pro";
+  font-size: 23px;
+  font-weight: lighter;
+  text-align: center;
+  min-width: 70%;
+  min-height: 3vw;
+  background: rgba(255, 166, 135, 0.5);
+  border-radius: 8px;
+  justify-content: center;
+}
+
+.closeBtn {
+  font-family: "Source Sans Pro";
+  font-size: 23px;
+  font-weight: lighter;
+  text-align: center;
+  min-width: 60%;
+  min-height: 3vw;
+  background: #e5e5e5;
+  border-radius: 8px;
+  align-content: center;
+}
+

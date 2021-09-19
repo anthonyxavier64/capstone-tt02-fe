@@ -3,12 +3,15 @@ import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DepartmentService } from 'src/app/services/department/department.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
+import { DeleteEmployeeDialogComponent } from './delete-employee-dialog/delete-employee-dialog.component';
+import { EditEmployeeDialogComponent } from './edit-employee-dialog/edit-employee-dialog.component';
 
-export interface EditEmployeeDialogData {
+export interface user {
   userId: number;
   fullName: string;
   email: string;
@@ -16,7 +19,6 @@ export interface EditEmployeeDialogData {
   contactNumber: string;
   isVaccinated: boolean;
 }
-
 @Component({
   selector: 'app-admin-employeeManagement',
   templateUrl: './adminEmployeeManagement.component.html',
@@ -41,11 +43,17 @@ export class AdminEmployeeManagementComponent implements OnInit {
   allUsers: any;
 
   csvDownloadUrl: string;
+
+  editDialogRef: DynamicDialogRef;
+  deleteDialogRef: DynamicDialogRef;
+  selectedEmployee: any;
+
   constructor(
     private _location: Location,
     private userService: UserService,
     private departmentService: DepartmentService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public dialogService: DialogService
   ) {
     this.sortField = '';
     this.partOfDepartments = [];
@@ -222,5 +230,48 @@ export class AdminEmployeeManagementComponent implements OnInit {
         this.userService.sendVerificationEmail(newUserId);
       }
     });
+  }
+
+  openEditEmployeeDialog(selectedUser: {
+    userId: number;
+    fullName: string;
+    email: string;
+    createdAt: string;
+    contactNumber: string;
+    isVaccinated: boolean;
+  }) {
+    this.editDialogRef = this.dialogService.open(EditEmployeeDialogComponent, {
+      header: selectedUser.fullName + ' (' + selectedUser.userId + ')',
+      width: '70%',
+      contentStyle: { 'max-height': '50vw', overflow: 'auto' },
+      data: selectedUser,
+    });
+    this.ngOnInit();
+  }
+
+  onDeleteEmployeeClick(selectedUser: {
+    userId: number;
+    fullName: string;
+    email: string;
+    createdAt: string;
+    contactNumber: string;
+    isVaccinated: boolean;
+  }) {
+    this.deleteDialogRef = this.dialogService.open(
+      DeleteEmployeeDialogComponent,
+      {
+        header:
+          'Delete Employee ' +
+          selectedUser.fullName +
+          ' (' +
+          selectedUser.userId +
+          ')',
+        width: '30%',
+        contentStyle: { 'max-height': '20vw', overflow: 'auto' },
+        data: { selectedUser, confirmDelete: false },
+      }
+    );
+
+    this.ngOnInit();
   }
 }

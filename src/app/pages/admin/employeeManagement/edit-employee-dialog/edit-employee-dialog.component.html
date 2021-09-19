@@ -1,0 +1,73 @@
+<form
+  #editEmployeeDetailsForm="ngForm"
+  name="roomDetailsForm"
+  (ngSubmit)="saveDetails(editEmployeeDetailsForm)"
+>
+  <div fxLayout="column" fxLayoutAlign="space-around center">
+    <table class="editEmployeeDetailsTbl">
+      <tr>
+        <th class="text">
+          <label for="fullName">Full Name:</label>
+        </th>
+        <td class="text">
+          <input
+            type="text"
+            placeholder="Full Name"
+            name="fullName"
+            ngModel
+            pInputText
+          />
+        </td>
+        <th>
+          <label for="contactNumber">Contact Number:</label>
+        </th>
+        <td class="text">
+          <input
+            type="text"
+            placeholder="Contact Number"
+            name="contactNumber"
+            ngModel
+            pInputText
+          />
+        </td>
+      </tr>
+      <tr>
+        <th class="text">
+          <label for="location">Email:</label>
+        </th>
+        <td class="text">
+          <input
+            type="email"
+            placeholder="Email"
+            name="email"
+            style="width: 15vw"
+            ngModel
+            pInputText
+          />
+        </td>
+        <th><label>Vaccinated:</label></th>
+        <td>{{ config.data.isVaccinated }}</td>
+      </tr>
+      <tr>
+        <th class="text">
+          <label>Created At:</label>
+        </th>
+        <td class="text">
+          {{ config.data.createdAt }}
+        </td>
+      </tr>
+    </table>
+
+    <div
+      fxLayout="row"
+      fxLayoutAlign="center"
+      fxLayoutGap="3%"
+      style="margin-top: 3%"
+    >
+      <button mat-button class="saveBtn" type="submit">Save Details</button>
+      <button mat-button class="closeBtn" (click)="onCloseClick()">
+        Close
+      </button>
+    </div>
+  </div>
+</form>
