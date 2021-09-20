@@ -155,7 +155,7 @@ export class AdminAnnouncementManagementComponent implements OnInit {
           this.submitted = true;
           this.resultSuccess = true;
           const updatedAnnouncement = response.announcement;
-          this.message = "Announcement with id: " + updatedAnnouncement.announcementId +"updated successfully";
+          this.message = "Announcement with id: " + updatedAnnouncement.announcementId + " updated successfully";
           
           if (announcement.announcementType === AnnouncementType.COVID_RELATED) {
             var announcementIndex = this.covidAnnouncements.findIndex(existing => { existing === announcement });
@@ -189,27 +189,21 @@ export class AdminAnnouncementManagementComponent implements OnInit {
         return;
       }
 
-      if (announcement.announcementType == AnnouncementType.COVID_RELATED) {
-        var announcementIndex = this.covidAnnouncements.findIndex(existing => { existing === announcement });
-        this.covidAnnouncements.splice(announcementIndex, 1);
-      }
-      else {
-        var announcementIndex = this.generalAnnouncements.findIndex(existing => { existing === announcement });
-        this.generalAnnouncements.splice(announcementIndex, 1);
-      }
-
-      /*
-      this.announcementService.deleteAnnouncement(announcementId).subscribe(
-        response => {
-          this.router.navigate(['/adminAnnouncementManagement']);
-        },
-        error => {
-          this.resultError = true;
-          this.message = error;
-          console.log('********** AdminAnnouncementManagementComponent.ts: ' + error);
+      this.announcementService.deleteAnnouncement(announcement.announcementId).subscribe(response => {
+        if (!response.status) {
+          this.message = "Unable to delete announcement: " + response.message;
+          return;
         }
-      );
-      */
+        this.message = "Announcement with id: " + announcement.announcementId + " deleted successfully";
+        if (announcement.announcementType == AnnouncementType.COVID_RELATED) {
+          var announcementIndex = this.covidAnnouncements.findIndex(existing => { existing === announcement });
+          this.covidAnnouncements.splice(announcementIndex, 1);
+        }
+        else {
+          var announcementIndex = this.generalAnnouncements.findIndex(existing => { existing === announcement });
+          this.generalAnnouncements.splice(announcementIndex, 1);
+        }
+      })
     });
   }
 }
