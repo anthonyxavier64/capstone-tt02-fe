@@ -8,7 +8,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent implements OnInit {
-  constructor(private router: Router) {}
+  user: any | undefined;
+
+  constructor(private router: Router) {
+    const currentUser = localStorage.getItem('currentUser');
+    this.user = JSON.parse(currentUser);
+  }
 
   ngOnInit(): void {}
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
