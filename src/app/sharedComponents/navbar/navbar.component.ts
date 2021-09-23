@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/user/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,14 +9,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private auth: AuthService) {}
 
   ngOnInit(): void {}
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
-
-  openOnMouseOver() {
-    this.clickHoverMenuTrigger.openMenu();
-  }
 
   onCompanyLogoClick() {
     this.router.navigateByUrl('/admin');
@@ -23,5 +20,12 @@ export class NavbarComponent implements OnInit {
 
   onProfileLogoClick() {
     this.router.navigateByUrl('/profile');
+  }
+
+  onLogoutClick() {
+    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.auth.logout();
+    this.router.navigateByUrl('/index');
+    alert('Thank you for using Flexiwork, ' + currentUser.fullName + '!');
   }
 }

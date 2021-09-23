@@ -1,12 +1,9 @@
-import { BehaviorSubject, Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { RESET_TOKEN_KEY, TOKEN_KEY } from 'src/app/config';
-import { User } from 'src/app/models/user';
-
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { RESET_TOKEN_KEY, TOKEN_KEY } from 'src/app/config';
 import { environment } from '../../../environments/environment.dev';
 import { handleError } from '../services-util';
 
@@ -58,6 +55,10 @@ export class AuthService {
         }
       );
     });
+  }
+
+  logout() {
+    localStorage.clear();
   }
 
   getUserAndTokens(email: string, password: string): Observable<any> {
