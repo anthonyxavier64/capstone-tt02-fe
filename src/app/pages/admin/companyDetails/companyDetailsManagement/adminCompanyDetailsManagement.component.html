@@ -33,37 +33,49 @@
             <span *ngIf="!editDetailsMode" class="contentText">{{
               company.email
             }}</span>
-            <input
-              *ngIf="editDetailsMode"
-              [(ngModel)]="company.email"
-              #emailText="ngModel"
-              class="inputFields"
-              pInputText
-              (change)="onEmailTextChange(emailText)"
-            />
-            <!-- <div *ngIf="emailText.invalid && (emailText.touched || emailText.dirty)" 
-            class="errorText" style="color:red">
-              Email must be valid.
-        </div> -->
+            <div *ngIf="editDetailsMode">
+              <input
+                [(ngModel)]="company.email"
+                #emailText="ngModel"
+                email="true"
+                class="inputFields"
+                pInputText
+              />
+              <div
+                *ngIf="
+                  (emailText.touched || emailText.dirty) && emailText.invalid
+                "
+                class="errorText"
+                style="color: red"
+              >
+                Email must be valid.
+              </div>
+            </div>
           </div>
           <div fxLayout="column" fxLayoutGap="0.5%">
             <span class="subHeaderText">Contact Number</span>
             <span *ngIf="!editDetailsMode" class="contentText">{{
               company.contactNumber
             }}</span>
-            <input
-              *ngIf="editDetailsMode"
-              [(ngModel)]="company.contactNumber"
-              #contactNum="ngModel"
-              pattern="[689][0-9]{7}"
-              type="tel"
-              class="inputFields"
-              pInputText
-            />
-            <!-- <div *ngIf="contactNum.invalid && (contactNum.touched || contactNum.dirty)" 
-            class="errorText" style="color:red">
-              A valid 8-digit Singapore contact number is required.
-            </div> -->
+            <div *ngIf="editDetailsMode">
+              <input
+                [(ngModel)]="company.contactNumber"
+                #contactNum="ngModel"
+                pattern="[689][0-9]{7}"
+                type="tel"
+                class="inputFields"
+                pInputText
+              />
+              <div
+                *ngIf="
+                  contactNum.invalid && (contactNum.touched || contactNum.dirty)
+                "
+                class="errorText"
+                style="color: red"
+              >
+                A valid 8-digit Singapore contact number is required.
+              </div>
+            </div>
           </div>
           <div fxLayout="column" fxLayoutGap="0.5%">
             <span class="subHeaderText">Number of employees</span>

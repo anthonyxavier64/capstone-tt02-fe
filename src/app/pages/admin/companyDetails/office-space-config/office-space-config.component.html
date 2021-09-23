@@ -86,14 +86,27 @@
                       <label for="officeName">Office Name:</label>
                     </th>
                     <td class="text">
-                      <input
-                        type="text"
-                        [placeholder]="company.officeName"
-                        name="officeName"
-                        ngModel
-                        required
-                        pInputText
-                      />
+                      <div>
+                        <input
+                          type="text"
+                          [placeholder]="company.officeName"
+                          name="officeName"
+                          ngModel
+                          #officeName="ngModel"
+                          required
+                          pInputText
+                        />
+                        <div
+                          *ngIf="
+                            (officeName.touched || officeName.dirty) &&
+                            officeName.value.length === 0
+                          "
+                          class="errorText"
+                          style="color: red; font-size: small"
+                        >
+                          Office Name cannot be empty.
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -101,15 +114,28 @@
                       <label for="officeAddress">Office Address:</label>
                     </th>
                     <td class="text">
-                      <textarea
-                        type="textarea"
-                        style="width: 20vw"
-                        [placeholder]="company.officeAddress"
-                        name="officeAddress"
-                        ngModel
-                        required
-                        pInputTextarea
-                      ></textarea>
+                      <div>
+                        <textarea
+                          type="textarea"
+                          style="width: 20vw"
+                          [placeholder]="company.officeAddress"
+                          name="officeAddress"
+                          #officeAddress="ngModel"
+                          ngModel
+                          required
+                          pInputTextarea
+                        ></textarea>
+                        <div
+                          *ngIf="
+                            (officeAddress.touched || officeAddress.dirty) &&
+                            officeAddress.value.length === 0
+                          "
+                          class="errorText"
+                          style="color: red; font-size: small"
+                        >
+                          Office Address cannot be empty.
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -117,24 +143,72 @@
                       <label>Opening Hours:</label>
                     </th>
                     <td class="text">
-                      <input
-                        type="text"
-                        name="openingHour"
-                        style="width: 15vw"
-                        ngModel
-                        required
-                        pInputText
-                      />
+                      <div>
+                        <input
+                          type="text"
+                          name="openingHour"
+                          style="width: 15vw"
+                          #openingHour="ngModel"
+                          pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
+                          ngModel
+                          required
+                          pInputText
+                        />
+                        <div
+                          *ngIf="
+                            (openingHour.touched || openingHour.dirty) &&
+                            openingHour.value.length === 0
+                          "
+                          class="errorText"
+                          style="color: red; font-size: small"
+                        >
+                          Office Opening Hour cannot be empty.
+                        </div>
+                        <div
+                          *ngIf="
+                            (openingHour.touched || openingHour.dirty) &&
+                            openingHour.invalid
+                          "
+                          class="errorText"
+                          style="color: red; font-size: small"
+                        >
+                          Please enter a valid Opening Hour. (00:00 - 23:59)
+                        </div>
+                      </div>
                     </td>
                     <td class="text">
-                      <input
-                        type="text"
-                        name="closingHour"
-                        style="width: 15vw"
-                        ngModel
-                        required
-                        pInputText
-                      />
+                      <div>
+                        <input
+                          type="text"
+                          name="closingHour"
+                          style="width: 15vw"
+                          #closingHour="ngModel"
+                          pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
+                          ngModel
+                          required
+                          pInputText
+                        />
+                        <div
+                          *ngIf="
+                            (closingHour.touched || closingHour.dirty) &&
+                            closingHour.value.length === 0
+                          "
+                          class="errorText"
+                          style="color: red; font-size: small"
+                        >
+                          Office Closing Hour cannot be empty.
+                        </div>
+                        <div
+                          *ngIf="
+                            (closingHour.touched || closingHour.dirty) &&
+                            closingHour.invalid
+                          "
+                          class="errorText"
+                          style="color: red; font-size: small"
+                        >
+                          Please enter a valid Closing Hour. (00:00 - 23:59)
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   <tr>
