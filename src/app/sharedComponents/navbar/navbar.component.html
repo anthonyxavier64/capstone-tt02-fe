@@ -72,7 +72,27 @@
       class="profileIcon"
       mat-fab
       color="accent"
-      (click)="onProfileLogoClick()"
+      [matMenuTriggerFor]="profileMenu"
+      #clickMenuTrigger="matMenuTrigger"
     ></button>
+    <mat-menu class="workDropList" #profileMenu="matMenu">
+      <button
+        class="workDropListItem"
+        mat-menu-item
+        (click)="onProfileLogoClick()"
+      >
+        <div fxLayout="row" fxLayoutGap="18%">
+          <img class="goalIcon" src="../../../assets/images/profileIcon.png" />
+          <p class="workDropListItemText">My Profile</p>
+        </div>
+      </button>
+      <hr class="itemDivider" />
+      <button class="workDropListItem" mat-menu-item (click)="onLogoutClick()">
+        <div fxLayout="row" fxLayoutAlign=" center" fxLayoutGap="2%">
+          <img class="logoutIcon" src="../../../assets/images/logoutIcon.png" />
+          <p class="workDropListItemText">Log Out</p>
+        </div>
+      </button>
+    </mat-menu>
   </div>
 </div>
