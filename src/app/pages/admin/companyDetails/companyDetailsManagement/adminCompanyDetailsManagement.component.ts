@@ -1,9 +1,11 @@
+import { MessageService } from 'primeng/api';
+import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
+
+import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
-import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
-import { MessageService } from 'primeng/api';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-admin-companyDetailsManagement',
@@ -80,5 +82,9 @@ export class AdminCompanyDetailsManagementComponent implements OnInit {
     this.router.navigate(['officeSpaceConfig'], {
       state: this.company.companyId,
     });
+  }
+
+  onEmailTextChange(emailText: any) {
+    console.log(emailText)
   }
 }

@@ -60,11 +60,17 @@
         <div fxLayout="column">
           <label>Company Contact Number</label>
           <input
-            type="text"
+            type="tel"
             [(ngModel)]="data.contactNumber"
+            #contactNum="ngModel"
+            pattern="[689][0-9]{7}"
             required
             pInputText
           />
+          <div *ngIf="contactNum.invalid && contactNum.touched" 
+            class="errorText" style="color:red">
+            A valid 8-digit Singapore contact number is required.
+        </div>
         </div>
         <div fxLayout="column">
           <label>Number of Employees</label>
