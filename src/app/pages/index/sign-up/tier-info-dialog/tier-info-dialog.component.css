@@ -4,16 +4,16 @@
 }
 
 .tierInfoDialogTitle {
-  color: #003764;
+  color: rgb(var(--theme-primary-color));
   font-size: 2vw;
-  font-family: 'Source Sans Pro';
+  font-family: var(--primary-font);
   font-weight: bold;
 }
 
 .tierCard {
   width: 18vw;
   height: 28vw;
-  background: rgba(255, 166, 135, 0.2);
+  background: rgba(var(--primary-button-color), 0.2);
   border-radius: 8px;
   padding: 2%
 }
@@ -39,15 +39,15 @@
 
 
 .tierFeatureText {
-  color: #003764;
+  color: rgb(var(--theme-primary-color));
   font-weight: lighter;
-  font-family: 'Source Sans Pro';
+  font-family: var(--primary-font);
 }
 
 .closeButton {
-  background-color: rgba(255, 166, 135, 0.2);
+  background-color: rgba(var(--primary-button-color), 0.2);
   min-width: 8vw;
   min-height: 3.5vw;
   border-radius: 7px;
-  font-family: 'Source Sans Pro';
+  font-family: var(--primary-font);
 }

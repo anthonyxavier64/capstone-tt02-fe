@@ -1,7 +1,7 @@
 .inviteEmployeeCard {
   width: 94vw;
   height: 20vw;
-  background: #FAF9F6;
+  background: rgb(var(--secondary-card-color));
   box-shadow: -4px -4px 4px rgba(0, 0, 0, 0.05);
   border-radius: 15px;
 }
@@ -9,7 +9,7 @@
 .employeeTableCard{
   width: 94vw;
   height: 28vw;
-  background: #FAF9F6;
+  background: rgb(var(--secondary-card-color));
   box-shadow: -4px -4px 4px rgba(0, 0, 0, 0.05);
   border-radius: 15px;
 }

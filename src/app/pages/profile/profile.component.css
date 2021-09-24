@@ -1,11 +1,11 @@
 .page-title {
   font-size: 25px;
-  color: #003672;
+  color: rgb(var(--title-color));
   font-weight: 400;
 }
 
 .beige-block {
-  background-color: #FAF9F6;
+  background-color: rgb(var(--secondary-card-color));
   border-radius: 25px;
   padding: 5% 10%;
   height: auto;
@@ -27,9 +27,9 @@
 }
 
 .grey-btn {
-  font-family: 'Source Sans Pro', sans-serif;
-  background: rgba(0, 55, 100, 0.15);
-  color: #003672;
+  font-family: var(--primary-font);
+  background: rgba(var(--theme-primary-color), 0.15);
+  color: rgb(var(--title-color));
   font-size: 16px;
   font-weight: 500;
 }
