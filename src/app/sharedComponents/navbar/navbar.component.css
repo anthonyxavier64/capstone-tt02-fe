@@ -3,7 +3,7 @@
   padding-left: 2%;
   padding-right: 2%;
   height: 4vw;
-  background-color: #c1e7e3;
+  background-color: var(--navbar-background);
   border-radius: 15px;
 }
 
@@ -32,26 +32,26 @@
 .navbarItem {
   color: #003764;
   background-color: inherit;
-  font-family: Source Sans Pro;
+  font-family: var(--primary-font);
   text-align: center;
   font-size: 1.1vw;
 }
 
 ::ng-deep .workDropList {
-  background-color: #c9e3e8;
+  background-color: var(--navbar-droplist);
   width: 500px;
 }
 
 .workDropListHeader {
-  color: #003764;
-  font-family: Source Sans Pro;
+  color: var(--theme-primary-color);
+  font-family: var(--primary-font);
   margin-left: 10%;
 }
 
 .headerDivider {
   width: 100%;
   height: 1px;
-  background-color: #e5e5e5;
+  background-color: var(--theme-secondary-color);
   border: none;
 }
 
@@ -59,7 +59,7 @@
   width: 90%;
   height: 1px;
   margin-left: -5%;
-  background-color: #e5e5e5;
+  background-color: var(--theme-secondary-color);
   border: none;
 }
 
@@ -90,7 +90,7 @@
 }
 
 .workDropListItemText {
-  color: #003764;
-  font-family: Source Sans Pro;
+  color: var(--theme-primary-color);
+  font-family: var(--primary-font);
   margin-left: 10%;
 }
