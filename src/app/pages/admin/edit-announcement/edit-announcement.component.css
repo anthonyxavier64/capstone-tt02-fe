@@ -12,12 +12,12 @@
 	z-index: 5;
 	max-width: 800px;
 	margin-left: 15px;
-  background-color: rgba(255, 166, 135, 0.2);
+  background-color: rgba(var(--primary-button-color), 0.2);
 }
 
 .fontmanagement {
-  color: #003764;
-  font-family: Source Sans Pro;
+  color: rgb(var(--theme-primary-color));
+  font-family: var(--primary-font);
   opacity: 1;
 }
 
@@ -55,19 +55,19 @@
 .main-wrapper .mat-stroked-button {
 	border: 1px solid currentColor;
 	line-height: 54px;
-	background: rgba(255, 166, 135, 0.1);
+	background: rgba(var(--primary-button-color), 0.1);
 }
 
 .mat-stroked-button.mat-blue {
-	color: #003764;
+	color: rgb(var(--theme-primary-color));
 }
 
 .main-wrapper .mat-raised-button {
 	border: 1px solid currentColor;
 	line-height: 54px;
-	background: rgba(255, 166, 135, 0.1);
+	background: rgba(var(--primary-button-color), 0.1);
 }
 
 .mat-raised-button.mat-blue {
-	color: #003764;
+	color: rgb(var(--theme-primary-color));
 }

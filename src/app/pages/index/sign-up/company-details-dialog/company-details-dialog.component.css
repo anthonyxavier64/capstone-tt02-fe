@@ -1,13 +1,13 @@
 .companyDetailsTitle {
-  color: rgba(0, 55, 100, 0.8);
-  font-family: 'Source Sans Pro';
+  color: rgba(var(--theme-primary-color), 0.8);
+  font-family: var(--primary-font);
   font-size: 3vw;
   font-weight: bolder;
 }
 
 .companyInput {
   background: #FFFFFF;
-  border: 1px solid #003764;
+  border: 1px solid rgb(var(--theme-primary-color));
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
   border-radius: 6.9px;
   width: 25vw;
@@ -17,23 +17,23 @@
 
 .paymentDetailsText {
   font-weight: lighter;
-  font-family: 'Source Sans Pro';
+  font-family: var(--primary-font);
   font-size: 1.8vw;
-  color: rgba(0, 55, 100, 0.8);
+  color: rgba(var(--theme-primary-color), 0.8);
 }
 
 .creditCardInfoSection {
-  background: rgba(255, 166, 135, 0.2);
+  background: rgba(var(--primary-button-color), 0.2);
   border-radius: 7px;
   width: 100%;
   padding: 4%
 }
 
 .btn {
-  background-color: rgba(255, 166, 135, 0.2);
+  background-color: rgba(var(--primary-button-color), 0.2);
   min-width: 8vw;
   min-height: 3.5vw;
   border-radius: 7px;
-  font-family: 'Source Sans Pro';
+  font-family: var(--primary-font);
 }
 

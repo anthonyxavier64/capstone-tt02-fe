@@ -1,32 +1,33 @@
 :root {
   /* Navbar */
-  --navbar-background: rgb(193, 231, 227);
-  --navbar-droplist: rgb(201, 227, 232);
+  --navbar-background: 193, 231, 227;
+  --navbar-droplist: 201, 227, 232;
 
   /* Colors */
-  --theme-primary-color: rgb(0, 55, 100);
-  --theme-secondary-color: rgb(229,229,229);
-  --covid-related-color: rgb(251, 142, 126);
+  --theme-primary-color: 0, 55, 100;
+  --theme-secondary-color: 229,229,229;
+  --covid-related-color: 251, 142, 126;
+  --title-color: 0, 54, 114;
 
   /* Buttons */
-  --primary-button-color: rgb(255, 166, 135);
-  --secondary-button-color: rgb(229, 229, 229);
-  --success-button-color: rgb(107, 200, 81);
-  --warn-button-color: rgb(255, 0, 0);
+  --primary-button-color: 255, 166, 135;
+  --secondary-button-color: 229, 229, 229;
+  --success-button-color: 107, 200, 81;
+  --warn-button-color: 255, 0, 0;
 
   /* Typography */
   --primary-font: 'Source Sans Pro';
   --calendar-font: 'Montserrat';
 
   /* Cards */
-  --primary-card-color: rgb(255, 166, 135);
-  --secondary-card-color: rgb(250, 249, 246);
+  --primary-card-color: 255, 166, 135;
+  --secondary-card-color: 250, 249, 246;
 
   /* Calendar Styles */
-  --event-1: rgb(231, 254, 223);
-  --event-2: rgb(255, 251, 216);
-  --event-3: rgb(217, 248, 255);
-  --event-4: rgb(255, 225, 252);
+  --event-1: 231, 254, 223;
+  --event-2: 255, 251, 216;
+  --event-3: 217, 248, 255;
+  --event-4: 255, 225, 252;
 }
 
 .mat-h2, .mat-title, .mat-typography h1 {
