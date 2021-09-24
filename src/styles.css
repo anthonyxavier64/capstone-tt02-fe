@@ -1,3 +1,34 @@
+:root {
+  /* Navbar */
+  --navbar-background: rgb(193, 231, 227);
+  --navbar-droplist: rgb(201, 227, 232);
+
+  /* Colors */
+  --theme-primary-color: rgb(0, 55, 100);
+  --theme-secondary-color: rgb(229,229,229);
+  --covid-related-color: rgb(251, 142, 126);
+
+  /* Buttons */
+  --primary-button-color: rgb(255, 166, 135);
+  --secondary-button-color: rgb(229, 229, 229);
+  --success-button-color: rgb(107, 200, 81);
+  --warn-button-color: rgb(255, 0, 0);
+
+  /* Typography */
+  --primary-font: 'Source Sans Pro';
+  --calendar-font: 'Montserrat';
+
+  /* Cards */
+  --primary-card-color: rgb(255, 166, 135);
+  --secondary-card-color: rgb(250, 249, 246);
+
+  /* Calendar Styles */
+  --event-1: rgb(231, 254, 223);
+  --event-2: rgb(255, 251, 216);
+  --event-3: rgb(217, 248, 255);
+  --event-4: rgb(255, 225, 252);
+}
+
 .mat-h2, .mat-title, .mat-typography h1 {
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 22px;
