@@ -61,6 +61,15 @@
       <button
         class="workDropListItem"
         mat-menu-item
+        (click)="openDialog()"
+      >
+        <img class="goalIcon" src="../../../assets/images/goalIcon.png" />
+        <p class="workDropListItemText">Startup Guide</p>
+        <img class="arrowIcon" src="../../../assets/images/arrowIcon.png" />
+      </button>
+      <button
+        class="workDropListItem"
+        mat-menu-item
         onClick="window.open('https://www.who.int/news-room/q-a-detail/coronavirus-disease-covid-19-health-and-safety-in-the-workplace')"
       >
         <img class="goalIcon" src="../../../assets/images/goalIcon.png" />

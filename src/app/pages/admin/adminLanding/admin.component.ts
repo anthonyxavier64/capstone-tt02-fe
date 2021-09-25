@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+
+import { AdminGuideComponent } from './admin-guide/admin-guide.component';
 
 @Component({
   selector: 'app-admin',
@@ -8,9 +11,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent implements OnInit {
-  constructor(private router: Router) {}
+  openedOnce: boolean | undefined;
 
-  ngOnInit(): void {}
+  constructor(private router: Router, public dialog: MatDialog) {
+  }
+
+
+  ngOnInit() {
+    if (!this.openedOnce) {
+      // this.openDialog();
+      console.log(this.openedOnce);
+    }
+    this.openedOnce === true;
+  }
+
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
 
   openOnMouseOver() {
@@ -32,4 +46,15 @@ export class AdminComponent implements OnInit {
   onManageAnnouncementsClick() {
     this.router.navigateByUrl('/adminAnnouncementManagement');
   }
+
+  openDialog(): void {
+    let dialogRef = this.dialog.open(AdminGuideComponent, {
+      data: 'test'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // this.message = result;
+    });
+  }
+
 }

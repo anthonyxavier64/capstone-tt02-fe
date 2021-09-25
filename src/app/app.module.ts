@@ -48,6 +48,7 @@ import { ChangePasswordComponent } from './pages/profile/change-password/change-
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
+import { AdminGuideComponent } from './pages/admin/adminLanding/admin-guide/admin-guide.component';
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -81,6 +82,7 @@ export function tokenGetter() {
     ProfileComponent,
     EditEmployeeDialogComponent,
     DeleteEmployeeDialogComponent,
+    AdminGuideComponent,
   ],
   imports: [
     BrowserModule,
