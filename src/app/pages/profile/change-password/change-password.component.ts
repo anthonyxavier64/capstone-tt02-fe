@@ -3,11 +3,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user/user.service';
 import { NgForm } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.css']
+  styleUrls: ['./change-password.component.css'],
+  providers: [MessageService],
 })
 export class ChangePasswordComponent implements OnInit {
   submitted: boolean;
@@ -17,12 +19,12 @@ export class ChangePasswordComponent implements OnInit {
   cfmPassword: any | null;
 
   resultSuccess: boolean;
-  resultError: boolean;
   message: string | null;
 
   constructor(public dialogRef: MatDialogRef<ChangePasswordComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private userService: UserService,
+    private messageService: MessageService,
     private router: Router,
     private activatedRoute: ActivatedRoute) {
     this.submitted = false;
@@ -30,6 +32,7 @@ export class ChangePasswordComponent implements OnInit {
     this.oldPassword = '';
     this.newPassword = '';
     this.cfmPassword = '';
+    this.resultSuccess = false;
   }
 
   ngOnInit() {
@@ -40,22 +43,21 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   save(changePasswordForm: NgForm) {
-    this.userService.resetPassword(this.user.userId, this.oldPassword, this.newPassword, this.cfmPassword)
-      .subscribe(
-        response => {
-          this.resultSuccess = true;
-          this.resultError = true;
-          this.message = "Your password has been reset successfully."
-          this.router.navigateByUrl('/profile');
-        },
-        error => {
-          this.resultError = true;
-          this.resultSuccess = false;
-          this.message = `An error has occurred: ${error.message}`;
-
-          console.log("hi " + error.message);
-        }
-      )
+    if (changePasswordForm.invalid) {
+      this.message = "Please fill in all required fields.";
+      return;
+    } else {
+      this.userService.resetPassword(this.user.userId, this.oldPassword, this.newPassword, this.cfmPassword)
+        .subscribe(
+          response => {
+            this.resultSuccess = true;
+            this.message = "Your password has been reset successfully."
+          },
+          error => {
+            this.message = `An error has occurred: ${error}`;
+          }
+        )
+    }
   }
 
 }
