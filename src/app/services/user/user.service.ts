@@ -15,7 +15,7 @@ const httpOptions = {
 export class UserService {
   baseUrl: string = environment.API_REST_URL + '/user';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   getUsers(companyId: string): Observable<any> {
     let params = new HttpParams().set('companyId', companyId);
@@ -25,34 +25,27 @@ export class UserService {
       .pipe(catchError(handleError));
   }
 
-  getDepartments(email: string): Observable<any> {
+  getDepartments(email: any): Observable<any> {
     return this.httpClient
-      .post<any>(this.baseUrl + '/get-departments', { email }, httpOptions)
+      .get<any>(this.baseUrl + '/get-departments')
       .pipe(catchError(handleError));
   }
 
-  getManagedDepartments(email: string): Observable<any> {
+  getManagedDepartments(): Observable<any> {
     return this.httpClient
-      .post<any>(
-        this.baseUrl + '/get-managed-departments',
-        { email },
-        httpOptions
-      )
+      .get<any>(this.baseUrl + '/get-managed-departments')
       .pipe(catchError(handleError));
   }
 
   resetPassword(
-    email: string,
-    oldpassword: string,
-    password1: string,
-    password2: string
+    userId: String,
+    oldpassword: String,
+    password1: String,
+    password2: String
   ): Observable<any> {
     return this.httpClient
       .post(
-        this.baseUrl + '/reset-password',
-        { email, oldpassword, password1, password2 },
-        httpOptions
-      )
+        this.baseUrl + '/reset-password', { userId, oldpassword, password1, password2 }, httpOptions)
       .pipe(catchError(handleError));
   }
 

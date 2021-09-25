@@ -40,7 +40,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   save(changePasswordForm: NgForm) {
-    this.userService.resetPassword(this.user.email, this.oldPassword, this.newPassword, this.cfmPassword)
+    this.userService.resetPassword(this.user.userId, this.oldPassword, this.newPassword, this.cfmPassword)
       .subscribe(
         response => {
           this.resultSuccess = true;
@@ -51,9 +51,9 @@ export class ChangePasswordComponent implements OnInit {
         error => {
           this.resultError = true;
           this.resultSuccess = false;
-          this.message = `An error has occurred: ${error}`;
+          this.message = `An error has occurred: ${error.message}`;
 
-          console.log("hi " + error);
+          console.log("hi " + error.message);
         }
       )
   }
