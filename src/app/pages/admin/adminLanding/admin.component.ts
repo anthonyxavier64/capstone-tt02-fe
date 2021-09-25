@@ -11,13 +11,19 @@ import { AdminGuideComponent } from './admin-guide/admin-guide.component';
   styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent implements OnInit {
+  user: any | null;
   openedOnce: boolean | undefined;
 
   constructor(private router: Router, public dialog: MatDialog) {
+    this.user = null;
   }
 
 
   ngOnInit() {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.user = JSON.parse(currentUser);
+    }
     if (!this.openedOnce) {
       // this.openDialog();
       console.log(this.openedOnce);
