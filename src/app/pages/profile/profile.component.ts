@@ -49,9 +49,10 @@ export class ProfileComponent implements OnInit {
             summary: 'Error',
             detail: 'Departments not found',
           });
+          console.log(error);
         }
       );
-      this.userService.getManagedDepartments(this.user.email).subscribe(
+      this.userService.getManagedDepartments().subscribe(
         (response) => {
           this.mdept = response;
         },
@@ -98,7 +99,6 @@ export class ProfileComponent implements OnInit {
   }
 
   editDetails() {
-    console.log(this.user);
 
     this.userService.updateUserDetails(this.user).subscribe(
       (response) => {
