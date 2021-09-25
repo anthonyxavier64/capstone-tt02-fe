@@ -26,32 +26,37 @@ const routes: Routes = [
   {
     path: 'adminCompanyDetailsManagement',
     component: AdminCompanyDetailsManagementComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'officeSpaceConfig',
     component: OfficeSpaceConfigComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'adminEmployeeManagement',
     component: AdminEmployeeManagementComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'adminWfoManagement',
     component: AdminWfoManagementComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'adminAnnouncementManagement',
     component: AdminAnnouncementManagementComponent,
+    canActivate: [AuthGuard],
   },
   {
-    path: 'adminAnnouncementManagement/edit/:announcementId',
-    component: EditAnnouncementComponent,
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuard],
   },
-  { path: 'profile', component: ProfileComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
