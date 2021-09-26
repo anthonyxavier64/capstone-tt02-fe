@@ -94,7 +94,7 @@ export class AdminWfoManagementComponent implements OnInit {
   }
 
   onOfficeQuotaSelectClick() {
-    if (!this.officeQuotaConfig) {
+    if (this.company.officeQuotaConfigurationId === null) {
       this.dialog.open(NoOptionSelectedDialog, {
         width: '570px',
         height: '227px',

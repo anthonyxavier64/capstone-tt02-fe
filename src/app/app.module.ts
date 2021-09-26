@@ -10,6 +10,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -110,6 +111,7 @@ export function tokenGetter() {
     MatDialogModule,
     MatSelectModule,
     MatAutocompleteModule,
+    MatProgressSpinnerModule,
     PrimeNgModule,
     TableModule,
     InputTextareaModule,

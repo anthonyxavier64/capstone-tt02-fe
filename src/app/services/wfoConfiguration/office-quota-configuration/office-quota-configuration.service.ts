@@ -13,7 +13,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class OfficeQuotaConfigurationService {
-  baseUrl: string = `${environment.API_REST_URL}`;
+  baseUrl: string = `${environment.API_REST_URL}/officeQuotaConfiguration`;
   constructor(private httpClient: HttpClient) {}
 
   createOfficeQuotaConfiguration(
@@ -21,9 +21,20 @@ export class OfficeQuotaConfigurationService {
   ): Observable<any> {
     return this.httpClient
       .post<any>(
-        this.baseUrl +
-          '/officeQuotaConfiguration/create-office-quota-configuration',
+        this.baseUrl + '/create-office-quota-configuration',
         officeQuotaConfiguration,
+        httpOptions
+      )
+      .pipe(catchError(handleError));
+  }
+
+  getOfficeQuotaConfiguration(
+    officeQuotaConfigurationId: any
+  ): Observable<any> {
+    const paramValue: string = JSON.stringify(officeQuotaConfigurationId);
+    return this.httpClient
+      .get<any>(
+        `${this.baseUrl}/get-office-quota-configuration/${paramValue}`,
         httpOptions
       )
       .pipe(catchError(handleError));

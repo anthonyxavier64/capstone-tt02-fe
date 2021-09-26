@@ -14,6 +14,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
   company: any | null;
   officeQuotaConfigId: number;
   officeQuotaConfig: any | null;
+  isLoading: boolean;
 
   numEmployeesPerDay: number;
   numDaysAllowedPerMonth: number;
@@ -29,9 +30,14 @@ export class OfficeQuotaConfigComponent implements OnInit {
       this.numDaysAllowedPerMonth = 0;
       this.numDaysAllowedPerMonth = 0;
     }
+    this.isLoading = true;
+
+    // console.log(this.numEmployeesPerDay);
+    // console.log(this.numDaysAllowedPerMonth);
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     const currentUser = localStorage.getItem('currentUser');
 
     if (currentUser) {
@@ -39,11 +45,31 @@ export class OfficeQuotaConfigComponent implements OnInit {
       this.companyDetailsService.getCompanyById(companyId).subscribe(
         (result) => {
           this.company = result.company;
-          if (this.company.officeQuotaConfigId === null) {
-            this.officeQuotaConfig = null;
+          if (this.company.officeQuotaConfigurationId === null) {
+            this.officeQuotaConfigId = null;
+            this.isLoading = false;
           } else {
-            //INSERT OFFICE QUOTA CONFIG SERVICE HERE
-            // this.officeQuotaConfig =
+            this.officeQuotaConfigId = this.company.officeQuotaConfigurationId;
+
+            this.officeQuotaConfigurationService
+              .getOfficeQuotaConfiguration(this.officeQuotaConfigId)
+              .subscribe((response) => {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: 'Office Quota Configuration has been added.',
+                });
+                this.officeQuotaConfig = response.officeQuotaConfig;
+                this.numEmployeesPerDay =
+                  this.officeQuotaConfig.numEmployeesPerDay;
+                this.numDaysAllowedPerMonth =
+                  this.officeQuotaConfig.numDaysAllowedPerMonth;
+
+                console.log(this.numEmployeesPerDay);
+                console.log(this.numDaysAllowedPerMonth);
+                console.log(this.officeQuotaConfig);
+                this.isLoading = false;
+              });
           }
         },
         (error) => {
@@ -61,9 +87,8 @@ export class OfficeQuotaConfigComponent implements OnInit {
     this._location.back();
   }
 
-  createNewOfficeConfig(officeQuotaConfigForm: NgForm) {
+  createNewOfficeConfig(officeQuotaConfigForm: NgForm): void {
     const formValues = officeQuotaConfigForm.value;
-    console.log(formValues);
     const newOfficeQuotaConfigForm = {
       numEmployeesPerDay: formValues.numEmployeesPerDay,
       numDaysAllowedPerMonth: formValues.numDaysAllowedPerMonth,
@@ -84,7 +109,6 @@ export class OfficeQuotaConfigComponent implements OnInit {
             officeQuotaConfigurationId:
               response.officeQuotaConfig.officeQuotaConfigurationId,
           };
-          console.log(updateCompany);
           this.companyDetailsService.updateCompany(updateCompany).subscribe(
             (response) => {
               this.messageService.add({
@@ -93,8 +117,6 @@ export class OfficeQuotaConfigComponent implements OnInit {
                 detail:
                   'Office Quota Configuration has been binded to the company.',
               });
-
-              console.log(response);
             },
             (error) => {
               this.messageService.add({
@@ -114,6 +136,8 @@ export class OfficeQuotaConfigComponent implements OnInit {
         }
       );
   }
+
+  updateOfficeQuotaConfig(officeQuotaConfigForm: NgForm): void {}
 
   submit(officeQuotaConfigForm: NgForm) {
     if (this.officeQuotaConfigId === null) {

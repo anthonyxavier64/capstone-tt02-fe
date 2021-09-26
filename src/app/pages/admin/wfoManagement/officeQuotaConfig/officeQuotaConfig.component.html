@@ -1,4 +1,11 @@
+<mat-spinner
+  *ngIf="isLoading"
+  style="color: aquamarine; margin-left: 50%; margin-top: 30vw"
+  fxLayoutAlign=" center"
+></mat-spinner>
+
 <div
+  *ngIf="!isLoading"
   fxLayout="column"
   fxLayoutGap="3%"
   style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
@@ -34,6 +41,7 @@
           type="number"
           [max]="31"
           [min]="0"
+          [placeholder]="officeQuotaConfig.numEmployeesPerDay"
         />
       </div>
       <div class="formGroup">
@@ -50,6 +58,7 @@
           type="number"
           [max]="31"
           [min]="0"
+          [placeholder]="officeQuotaConfig.numDaysAllowedPerMonth"
         />
       </div>
 
