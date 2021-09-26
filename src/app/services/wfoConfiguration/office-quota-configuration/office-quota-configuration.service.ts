@@ -39,4 +39,14 @@ export class OfficeQuotaConfigurationService {
       )
       .pipe(catchError(handleError));
   }
+
+  updateOfficeQuotaConfiguration(
+    officeQuotaConfiguration: any
+  ): Observable<any> {
+    return this.httpClient.patch<any>(
+      `${this.baseUrl}/update-office-quota-configuration/${officeQuotaConfiguration.officeQuotaConfigurationId}`,
+      officeQuotaConfiguration,
+      httpOptions
+    );
+  }
 }

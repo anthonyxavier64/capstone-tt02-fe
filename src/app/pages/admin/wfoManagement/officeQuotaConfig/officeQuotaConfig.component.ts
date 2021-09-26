@@ -31,9 +31,6 @@ export class OfficeQuotaConfigComponent implements OnInit {
       this.numDaysAllowedPerMonth = 0;
     }
     this.isLoading = true;
-
-    // console.log(this.numEmployeesPerDay);
-    // console.log(this.numDaysAllowedPerMonth);
   }
 
   ngOnInit(): void {
@@ -65,9 +62,6 @@ export class OfficeQuotaConfigComponent implements OnInit {
                 this.numDaysAllowedPerMonth =
                   this.officeQuotaConfig.numDaysAllowedPerMonth;
 
-                console.log(this.numEmployeesPerDay);
-                console.log(this.numDaysAllowedPerMonth);
-                console.log(this.officeQuotaConfig);
                 this.isLoading = false;
               });
           }
@@ -137,12 +131,39 @@ export class OfficeQuotaConfigComponent implements OnInit {
       );
   }
 
-  updateOfficeQuotaConfig(officeQuotaConfigForm: NgForm): void {}
+  updateOfficeQuotaConfig(officeQuotaConfigForm: NgForm): void {
+    const formValues = officeQuotaConfigForm.value;
+    const updatedOfficeQuotaConfig = {
+      officeQuotaConfigurationId: this.officeQuotaConfigId,
+      numEmployeesPerDay: formValues.numEmployeesPerDay,
+      numDaysAllowedPerMonth: formValues.numDaysAllowedPerMonth,
+    };
+
+    this.officeQuotaConfigurationService
+      .updateOfficeQuotaConfiguration(updatedOfficeQuotaConfig)
+      .subscribe(
+        (response) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Office Quota Configuration has been updated.',
+          });
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Problem updating configuration. Please try again.',
+          });
+        }
+      );
+  }
 
   submit(officeQuotaConfigForm: NgForm) {
     if (this.officeQuotaConfigId === null) {
       this.createNewOfficeConfig(officeQuotaConfigForm);
     } else {
+      this.updateOfficeQuotaConfig(officeQuotaConfigForm);
     }
   }
 }
