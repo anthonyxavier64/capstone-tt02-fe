@@ -40,20 +40,42 @@
         <div fxLayout="column">
           <label>HR Email</label>
           <input
-            type="text"
+            type="email"
             [(ngModel)]="data.hrAdminEmail"
+            #emailText="ngModel"
+            email="true"
             required
             pInputText
           />
+          <div
+          *ngIf="
+            emailText.touched && emailText.invalid
+          "
+          class="errorText"
+          style="color: red; font-size: small"
+        >
+          A valid email is required.
+        </div>
         </div>
         <div fxLayout="column">
           <label>HR Full Name</label>
           <input
             type="text"
             [(ngModel)]="data.hrAdminFullName"
+            #fullName="ngModel"
             required
             pInputText
           />
+          <div
+          *ngIf="
+            fullName.touched &&
+            fullName.invalid
+          "
+          class="errorText"
+          style="color: red; font-size: small"
+        >
+          HR Full Name is required.
+        </div>
         </div>
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between " fxLayoutGap="9.4vw">
@@ -68,7 +90,7 @@
             pInputText
           />
           <div *ngIf="contactNum.invalid && contactNum.touched" 
-            class="errorText" style="color:red">
+            class="errorText" style="color:red; font-size: small">
             A valid 8-digit Singapore contact number is required.
         </div>
         </div>
@@ -77,10 +99,22 @@
           <input
             type="number"
             [(ngModel)]="data.numOfEmployees"
+            #employeeNum="ngModel"
+            pattern="[1-9]\d*"
             min="0"
             required
             pInputText
           />
+          <div
+          *ngIf="
+            employeeNum.touched &&
+            officeName.invalid
+          "
+          class="errorText"
+          style="color: red; font-size: small"
+        >
+          A valid employee number is required.
+        </div>
         </div>
       </div>
       <div
@@ -93,10 +127,21 @@
           <input
             type="text"
             [(ngModel)]="data.officeName"
+            #officeName="ngModel"
             min="0"
             required
             pInputText
           />
+          <div
+          *ngIf="
+            officeName.touched &&
+            officeName.invalid
+          "
+          class="errorText"
+          style="color: red; font-size: small"
+        >
+          A valid office name is required.
+        </div>
         </div>
         <div fxLayout="column">
           <label>Office Address</label>
@@ -104,8 +149,19 @@
             pInputTextarea
             type="text"
             [(ngModel)]="data.officeAddress"
+            #officeAddress="ngModel"
             required
           ></textarea>
+          <div
+          *ngIf="
+            officeAddress.touched &&
+            officeAddress.invalid
+          "
+          class="errorText"
+          style="color: red; font-size: small"
+        >
+          Office address is required.
+        </div>
         </div>
       </div>
       <div
@@ -118,18 +174,62 @@
           <input
             type="text"
             [(ngModel)]="data.officeOpeningHour"
+            #openingHour="ngModel"
+            pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
             required
             pInputText
           />
+          <div
+          *ngIf="
+            openingHour.touched &&
+            openingHour.value.length === 0
+          "
+          class="errorText"
+          style="color: red; font-size: small"
+        >
+          Office Opening Hour is required.
+        </div>
+        <div
+          *ngIf="
+            openingHour.touched &&
+            openingHour.invalid
+          "
+          class="errorText"
+          style="color: red; font-size: small"
+        >
+          Please enter a valid Opening Hour. (00:00 - 23:59)
+        </div>
         </div>
         <div fxLayout="column">
           <label>Office Closing Hour</label>
           <input
             type="text"
             [(ngModel)]="data.officeClosingHour"
+            #closingHour="ngModel"
+            pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
             required
             pInputText
           />
+          <div
+          *ngIf="
+            closingHour.touched &&
+            closingHour.value.length === 0
+          "
+          class="errorText"
+          style="color: red; font-size: small"
+        >
+          Office Closing Hour is required.
+        </div>
+        <div
+          *ngIf="
+            closingHour.touched &&
+            closingHour.invalid
+          "
+          class="errorText"
+          style="color: red; font-size: small"
+        >
+          Please enter a valid Closing Hour. (00:00 - 23:59)
+        </div>
         </div>
       </div>
       <div
@@ -142,9 +242,21 @@
           <input
             type="number"
             [(ngModel)]="data.officeCapacity"
+            #officeCapacity="ngModel"
+            pattern="[1-9]\d*"
             required
             pInputText
           />
+          <div
+          *ngIf="
+            officeCapacity.touched &&
+            officeCapacity.invalid
+          "
+          class="errorText"
+          style="color: red; font-size: small"
+        >
+          A valid Max Office Capacity is required.
+        </div>
         </div>
         <div fxLayout="column">
           <div fxLayout="column">
@@ -152,8 +264,13 @@
             <p-dropdown
               [options]="companySizeArr"
               [(ngModel)]="data.companySize"
+              #companySize="ngModel"
               placeholder="Select a Company Size"
             ></p-dropdown>
+            <div *ngIf="companySize.errors?.required && companySize.touched"
+            class="errorText" style="color:red; font-size: small">
+          Company size is required.
+       </div>
           </div>
         </div>
       </div>
