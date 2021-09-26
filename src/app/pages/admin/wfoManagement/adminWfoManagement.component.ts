@@ -3,13 +3,21 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { CompanyDetailsService } from './../../../services/company/company-details.service';
 
 @Component({
   selector: 'app-admin-wfoManagement',
   templateUrl: './adminWfoManagement.component.html',
   styleUrls: ['./adminWfoManagement.component.css'],
+  providers: [MessageService],
 })
 export class AdminWfoManagementComponent implements OnInit {
+  company: any | null;
+  companyWfoConfigType: string;
+  officeQuotaConfig: any | null;
+  alternateWorkTeamsConfig: any | null;
+
   altWorkTeamSelectBtn: String;
   officeQuotaSelectBtn: String;
   altWorkTeamsSelection: String;
@@ -22,7 +30,9 @@ export class AdminWfoManagementComponent implements OnInit {
   constructor(
     private _location: Location,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private companyDetailsService: CompanyDetailsService,
+    private messageService: MessageService
   ) {
     this.altWorkTeamSelectBtn = 'selectButton';
     this.officeQuotaSelectBtn = 'selectButton';
@@ -34,7 +44,34 @@ export class AdminWfoManagementComponent implements OnInit {
     this.isAlternateWorkTeamConfigured = false;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const currentUser = localStorage.getItem('currentUser');
+
+    if (currentUser) {
+      const { companyId } = JSON.parse(currentUser);
+      this.companyDetailsService.getCompanyById(companyId).subscribe(
+        (result) => {
+          this.company = result.company;
+          this.companyWfoConfigType = this.company.wfoArrangement;
+          console.log(this.company);
+
+          if (this.companyWfoConfigType === 'OFFICE_QUOTAS') {
+            this.officeQuotaConfig = this.company.officeQuotaConfiguration;
+          } else if (this.companyWfoConfigType === 'ALTERNATE_WORK_TEAMS') {
+            this.alternateWorkTeamsConfig =
+              this.company.alternateWorkTeamsConfig;
+          }
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Company not found',
+          });
+        }
+      );
+    }
+  }
 
   onBackClick() {
     this._location.back();
@@ -57,28 +94,22 @@ export class AdminWfoManagementComponent implements OnInit {
   }
 
   onOfficeQuotaSelectClick() {
-    if (localStorage.getItem('isOfficeQuotaConfigured') === 'true') {
+    if (!this.officeQuotaConfig) {
+      this.dialog.open(NoOptionSelectedDialog, {
+        width: '570px',
+        height: '227px',
+      });
+    } else {
       this.isOfficeQuotaSelectBtnClicked = true;
       this.isAltWorkTeamSelectBtnClicked = false;
       this.officeQuotaSelectBtn = 'selectedButton';
       this.officeQuotaSelection = 'selectedWfoSelection';
       this.altWorkTeamSelectBtn = 'selectButton';
       this.altWorkTeamsSelection = 'wfoSelection';
-    } else {
-      this.dialog.open(NoOptionSelectedDialog, {
-        width: '570px',
-        height: '227px',
-      });
     }
   }
 
   onConfigureOfficeQuotaClick() {
-    this.isOfficeQuotaConfigured = true;
-
-    localStorage.setItem(
-      'isOfficeQuotaConfigured',
-      JSON.stringify(this.isOfficeQuotaConfigured)
-    );
     this.router.navigateByUrl('/officeQuotaConfig');
   }
 

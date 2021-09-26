@@ -15,7 +15,47 @@
   </div>
 
   <div>
-    <ng-form class="officeQuotaForm">
+    <form
+      #officeQuotaConfigForm="ngForm"
+      ngNativeValidate
+      name="officeQuotaConfigForm"
+      (ngSubmit)="submit(officeQuotaConfigForm)"
+    >
+      <div class="formGroup">
+        <label class="labelText" for="employeesAllowed"
+          >Number of employees allowed in office per day:</label
+        >
+        <input
+          matInput
+          ngModel
+          class="numberInput"
+          name="numEmployeesPerDay"
+          #numEmployeesPerDay="ngModel"
+          type="number"
+          [max]="31"
+          [min]="0"
+        />
+      </div>
+      <div class="formGroup">
+        <label class="labelText" for="wfoDaysAllowed"
+          >Number of days each employee is allowed to work from office per
+          month:</label
+        >
+        <input
+          matInput
+          ngModel
+          class="numberInput"
+          name="numDaysAllowedPerMonth"
+          #numDaysAllowedPerMonth="ngModel"
+          type="number"
+          [max]="31"
+          [min]="0"
+        />
+      </div>
+
+      <button mat-button class="saveBtn">Save</button>
+    </form>
+    <!-- <ng-form class="officeQuotaForm">
       <div class="formGroup">
         <label class="labelText" for="employeesAllowed"
           >Number of employees allowed in office per day:</label
@@ -27,7 +67,6 @@
           type="number"
           [max]="31"
           [min]="0"
-          [placeholder]="employeeCounterValue"
         />
       </div>
       <div class="formGroup">
@@ -42,10 +81,9 @@
           type="number"
           [max]="31"
           [min]="0"
-          [placeholder]="wfoDaysLimit"
         />
-      </div>
-      <div class="formGroupException">
+      </div> -->
+    <!-- <div class="formGroupException">
         <label class="labelText" style="margin-top: 1%">Exceptions: </label>
         <div class="nameButtonRows">
           <div class="formGroupException">
@@ -72,7 +110,7 @@
               type="number"
               [max]="31"
               [min]="0"
-              [placeholder]="exceptionDaysLimit"
+              [placeholder]="exceptionDaysLimit.toString()"
             />
             <p class="labelText" style="margin-left: 5%; margin-top: 3.5%">
               days
@@ -90,8 +128,8 @@
             </button>
           </div>
         </div>
-      </div>
-      <button mat-button class="saveBtn">Save</button>
-    </ng-form>
+      </div> -->
+    <!-- <button mat-button class="saveBtn">Save</button>
+    </ng-form> -->
   </div>
 </div>
