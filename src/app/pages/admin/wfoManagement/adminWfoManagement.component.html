@@ -5,7 +5,7 @@
 >
   <app-navbar></app-navbar>
 
-  <div class="headerBackButton">
+  <div fxLayout="row" fxLayoutAlign="space-between start">
     <div class="headerText">
       Select your company's Work From Office arrangement:
     </div>
@@ -16,12 +16,17 @@
     </div>
   </div>
 
-  <div class="firstRow">
-    <mat-card [ngClass]="[officeQuotaSelection]">
+  <div fxLayout="row" fxLayoutAlign="space-evenly center">
+    <mat-card
+      fxLayout="column"
+      fxLayoutAlign="space-around center"
+      fxLayoutGap="2%"
+      [ngClass]="[officeQuotaSelection]"
+    >
       <mat-card-title>
         <h2 class="itemTitle">Office Quotas</h2>
       </mat-card-title>
-      <mat-card-content class="itemContentSection">
+      <mat-card-content>
         <ul class="itemText">
           <li>Limit number of employees in the office<br />per day</li>
           <br />
@@ -38,7 +43,7 @@
           </li>
         </ul>
       </mat-card-content>
-      <mat-card-content class="selectionButtonRow">
+      <mat-card-content fxLayout="row" fxLayoutAlign="space-around center">
         <button
           mat-button
           class="configureButton"
@@ -57,11 +62,16 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card [ngClass]="[altWorkTeamsSelection]">
+    <mat-card
+      fxLayout="column"
+      fxLayoutAlign="space-around center"
+      fxLayoutGap="2%"
+      [ngClass]="[altWorkTeamsSelection]"
+    >
       <mat-card-title>
         <h2 class="itemTitle">Alternate Work Teams</h2>
       </mat-card-title>
-      <mat-card-content class="itemContentSection">
+      <mat-card-content>
         <ul class="itemText">
           <li>
             Assign employees into 2 teams working on<br />rotational shifts
@@ -77,7 +87,7 @@
           </li>
         </ul>
       </mat-card-content>
-      <mat-card-content class="selectionButtonRow">
+      <mat-card-content fxLayout="row" fxLayoutAlign="space-around center">
         <button
           mat-button
           (click)="onConfigureAlternativeWorkTeamsClick()"

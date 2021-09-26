@@ -1,109 +1,82 @@
-.headerBackButton {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
 .headerText {
-  font-size: 32px;
-  font-family: "Source Sans Pro";
-  color: rgba(0, 55, 100, 0.8);
+  font-size: 2.5vw;
+  font-family: var(--primary-font);
+  color: rgba(var(--theme-primary-color), 0.8);
 }
 
 .backButton {
   background-color: rgba(0, 0, 0, 0.05);
-  font-size: 28px;
-  font-family: "Source Sans Pro";
-  color: rgba(0, 55, 100, 0.8);
-  height: 56px;
-  width: 153px;
-  border: 10px;
-  justify-self: end;
+  font-size: 1.8vw;
+  font-family: var(--primary-font);
+  color: rgba(var(--theme-primary-color), 0.8);
+  height: 4vw;
+  width: 9vw;
   margin-top: -20px;
 }
 
-.firstRow {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-}
-
 .wfoSelection {
-  display: flex;
-  flex-direction: column;
   background-color: #faf9f6;
-  width: 610px;
-  height: 680px;
+  min-width: 30vw;
+  min-height: 35vw;
+  width: 40vw;
+  height: 45vw;
   margin-bottom: 40px;
-  align-content: center;
-  align-items: center;
+  overflow: auto;
 }
 
 .selectedWfoSelection {
-  display: flex;
-  flex-direction: column;
   background-color: #ffede7;
-  width: 610px;
-  height: 680px;
+  min-width: 30vw;
+  min-height: 35vw;
+  width: 40vw;
+  height: 45vw;
   margin-bottom: 40px;
-  align-content: center;
-  align-items: center;
+  overflow:auto;
 }
 
 .itemTitle {
   color: #003764;
-  font-family: Source Sans Pro;
+  font-family: var(--primary-font);
   font-weight: bold;
-  font-size: 40px;
-  line-height: 40px;
-  margin-top: 8%;
+  font-size: 2.8vw;
 }
 
-.itemContentSection {
-  margin-top: 50px;
-}
 
 .itemText {
   color: #003764;
   font-family: Source Sans Pro;
   font-weight: lighter;
-  font-size: 28px;
-  line-height: 30px;
+  font-size: 1.6vw;
+  line-height: 1.8vw;
 }
 
-.selectionButtonRow {
-  display: flex;
-  flex-direction: row;
-  margin-top: 10%;
-  justify-content: space-around;
-}
 
 .configureButton {
   background-color: #ffffff;
-  color: rgba(0, 55, 100, 0.8);
-  font-size: 20px;
-  height: 55px;
-  width: 154px;
+  color: rgba(var(--theme-primary-color), 0.8);
+  font-size: 1.2vw;
+  height: 4vw;
+  width: 9vw;
   border-radius: 7px;
   margin-right: 6%;
 }
 
 .selectButton {
   background-color: rgba(255, 166, 135, 0.5);
-  color: rgba(0, 55, 100, 0.8);
-  font-size: 20px;
-  height: 55px;
-  width: 154px;
+  color: rgba(var(--theme-primary-color), 0.8);
+  font-size: 1.2vw;
+  height: 4vw;
+  width: 9vw;
   border-radius: 7px;
   margin-left: 6%;
 }
 
 .selectedButton {
   background-color: rgba(229, 229, 229, 0.5);
-  color: rgba(0, 55, 100, 0.5);
-  font-size: 20px;
-  height: 55px;
-  width: 154px;
+  color: rgba(var(--theme-primary-color), 0.5);
+  font-size: 1.2vw;
+  height: 4vw;
+  width: 9vw;
   border-radius: 7px;
   margin-left: 6%;
 }
