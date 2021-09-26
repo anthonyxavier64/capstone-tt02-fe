@@ -298,9 +298,20 @@
                             type="text"
                             placeholder="Room Name"
                             name="name"
+                            #roomName="ngModel"
                             ngModel
                             pInputText
                           />
+                          <div
+                          *ngIf="
+                            (roomName.touched || roomName.dirty) &&
+                            roomName.value.length === 0
+                          "
+                          class="errorText"
+                          style="color: red; font-size: small"
+                        >
+                          Room name cannot be empty.
+                        </div>
                         </td>
                       </tr>
                       <tr>
@@ -313,9 +324,20 @@
                             placeholder="Room Location"
                             name="location"
                             style="width: 15vw"
+                            #roomLocation="ngModel"
                             ngModel
                             pInputText
                           />
+                          <div
+                          *ngIf="
+                            (roomLocation.touched || roomLocation.dirty) &&
+                            roomLocation.value.length === 0
+                          "
+                          class="errorText"
+                          style="color: red; font-size: small"
+                        >
+                          Room location cannot be empty.
+                        </div>
                         </td>
                       </tr>
                       <tr>
@@ -327,9 +349,31 @@
                             type="number"
                             placeholder="Room Capacity"
                             name="capacity"
+                            #roomCapacity="ngModel"
+                            pattern="[1-9]\d*"
                             ngModel
                             pInputText
                           />
+                          <div
+                          *ngIf="
+                            (roomCapacity.touched || roomCapacity.dirty) &&
+                            roomCapacity.value.length == 0
+                          "
+                          class="errorText"
+                          style="color: red; font-size: small"
+                        >
+                          Room capacity cannot be empty.
+                        </div>
+                        <div
+                        *ngIf="
+                          (roomCapacity.touched || roomCapacity.dirty) &&
+                          roomCapacity.invalid
+                        "
+                        class="errorText"
+                        style="color: red; font-size: small"
+                      >
+                        Please enter a valid room capacity.
+                      </div>
                         </td>
                       </tr>
                     </table>
@@ -400,9 +444,20 @@
                       placeholder="Room Name"
                       name="name"
                       required
+                      #newRoomName="ngModel"
                       ngModel
                       pInputText
                     />
+                    <div
+                    *ngIf="
+                      newRoomName.touched &&
+                      newRoomName.value.length === 0
+                    "
+                    class="errorText"
+                    style="color: red; font-size: small"
+                  >
+                    Room name cannot be empty.
+                  </div>
                   </td>
                 </tr>
                 <tr>
@@ -416,9 +471,20 @@
                       name="location"
                       style="width: 15vw"
                       required
+                      #newRoomLocation="ngModel"
                       ngModel
                       pInputText
                     />
+                    <div
+                    *ngIf="
+                      newRoomLocation.touched &&
+                      newRoomLocation.value.length === 0
+                    "
+                    class="errorText"
+                    style="color: red; font-size: small"
+                  >
+                    Room location cannot be empty.
+                  </div>
                   </td>
                 </tr>
                 <tr>
@@ -431,9 +497,31 @@
                       placeholder="Room Capacity"
                       name="capacity"
                       required
+                      #newRoomCapacity="ngModel"
+                      pattern="[1-9]\d*"
                       ngModel
                       pInputText
                     />
+                    <div
+                    *ngIf="
+                      newRoomCapacity.touched &&
+                      newRoomCapacity.value.length == 0
+                    "
+                    class="errorText"
+                    style="color: red; font-size: small"
+                  >
+                    Room capacity cannot be empty.
+                  </div>
+                  <div
+                  *ngIf="
+                    newRoomCapacity.touched &&
+                    newRoomCapacity.invalid
+                  "
+                  class="errorText"
+                  style="color: red; font-size: small"
+                >
+                  Please enter a valid room capacity.
+                </div>
                   </td>
                 </tr>
               </table>
