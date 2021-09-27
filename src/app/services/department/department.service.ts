@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -18,9 +18,11 @@ export class DepartmentService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getAllDepartments(): Observable<any> {
+  getAllDepartments(companyId: string): Observable<any> {
+    let params = new HttpParams().set('companyId', companyId);
+
     return this.httpClient
-      .get<any>(this.baseUrl + '/get-all-departments')
+      .get<any>(this.baseUrl + '/get-all-departments', { params })
       .pipe(catchError(handleError));
   }
 
