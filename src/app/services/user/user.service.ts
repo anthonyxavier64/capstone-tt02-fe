@@ -1,4 +1,5 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -17,9 +18,11 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getUsers(): Observable<any> {
+  getUsers(companyId: string): Observable<any> {
+    let params = new HttpParams().set('companyId', companyId);
+
     return this.httpClient
-      .get<any>(this.baseUrl + '/get-all-users')
+      .get<any>(this.baseUrl + '/get-all-users', { params })
       .pipe(catchError(handleError));
   }
 
