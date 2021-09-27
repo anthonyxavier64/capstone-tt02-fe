@@ -181,18 +181,12 @@ export class AdminEmployeeManagementComponent implements OnInit {
       deptsPartOf: { deptsPartOf: deptsPartOfIds },
     };
 
-    console.log(JSON.stringify(user));
-
     let newUserId = null;
     this.userService.createNewUser(user).subscribe((response) => {
       newUserId = response.user.userId;
       if (!newUserId) {
       } else {
-        this.userService
-          .sendVerificationEmail(newUserId)
-          .subscribe((response) => {
-            this.ngOnInit();
-          });
+        this.ngOnInit();
       }
     });
   }
