@@ -69,9 +69,13 @@ export class AdminEmployeeManagementComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.user = JSON.parse(currentUser);
+    }
     // Below is the correct code
     // this.isLoading = false;
-    this.userService.getUsers().subscribe(
+    this.userService.getUsers(this.user.companyId).subscribe(
       (response) => {
         this.allUsers = response.users;
         this.isLoading = false;
@@ -80,10 +84,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
         console.log(error);
       }
     );
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      this.user = JSON.parse(currentUser);
-    }
+
     // Below is for when the DB is unaccessible
 
     // var deptLocalStorage = localStorage.getItem('allDepts');
