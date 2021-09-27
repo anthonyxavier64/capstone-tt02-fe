@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-
 import { AdminGuideComponent } from './admin-guide/admin-guide.component';
 
 @Component({
@@ -17,7 +16,6 @@ export class AdminComponent implements OnInit {
   constructor(private router: Router, public dialog: MatDialog) {
     this.user = null;
   }
-
 
   ngOnInit() {
     const currentUser = localStorage.getItem('currentUser');
@@ -55,12 +53,11 @@ export class AdminComponent implements OnInit {
 
   openDialog(): void {
     let dialogRef = this.dialog.open(AdminGuideComponent, {
-      data: 'test'
+      data: 'test',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       // this.message = result;
     });
   }
-
 }

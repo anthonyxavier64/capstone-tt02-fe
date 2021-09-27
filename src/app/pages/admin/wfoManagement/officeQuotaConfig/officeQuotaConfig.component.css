@@ -42,7 +42,18 @@
 }
 
 
+.addExceptionsButton {
+  width: 25vw;
+  height: 2.8vw;
 
+  background: #FFFFFF;
+  border: 1px dashed rgba(0, 55, 100, 0.5);
+  box-sizing: border-box;
+  border-radius: 5px;
+  font-size: 1vw;
+  font-family: var(--primary-font);
+  color: rgba(var(--theme-primary-color), 0.5)
+}
 
 
 .saveBtn {
@@ -54,6 +65,5 @@
   width: 8vw;
   border: 10px;
   align-self: center;
-  margin-top: 10%;
 }
 

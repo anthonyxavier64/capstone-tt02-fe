@@ -1,9 +1,10 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, NgForm } from '@angular/forms';
+import { FormBuilder, NgForm, NgModel } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
 import { OfficeQuotaConfigurationService } from 'src/app/services/wfoConfiguration/office-quota-configuration/office-quota-configuration.service';
+import { UserService } from './../../../../services/user/user.service';
 @Component({
   selector: 'app-admin-office-quota-config',
   templateUrl: './officeQuotaConfig.component.html',
@@ -16,6 +17,11 @@ export class OfficeQuotaConfigComponent implements OnInit {
   officeQuotaConfig: any | null;
   isLoading: boolean;
 
+  users: any | null;
+  exceptions: any | null;
+  selectedException: any | null;
+  selectedExceptionWfoMonthlyAllocation: number;
+
   numEmployeesPerDay: number;
   numDaysAllowedPerMonth: number;
 
@@ -24,7 +30,8 @@ export class OfficeQuotaConfigComponent implements OnInit {
     private fb: FormBuilder,
     private messageService: MessageService,
     private companyDetailsService: CompanyDetailsService,
-    private officeQuotaConfigurationService: OfficeQuotaConfigurationService
+    private officeQuotaConfigurationService: OfficeQuotaConfigurationService,
+    private userService: UserService
   ) {
     if (this.officeQuotaConfig === null) {
       this.numDaysAllowedPerMonth = 0;
@@ -74,11 +81,26 @@ export class OfficeQuotaConfigComponent implements OnInit {
           });
         }
       );
+
+      this.userService.getUsers().subscribe((response) => {
+        this.users = response.users;
+      });
     }
   }
 
   onBackClick() {
     this._location.back();
+  }
+
+  addException(
+    selectedException: NgModel,
+    selectedExceptionWfoMonthlyAllocation: NgModel
+  ): void {
+    const exception = {
+      ...selectedException.value,
+      wfoMonthlyAllocation: selectedExceptionWfoMonthlyAllocation.value,
+    };
+    console.log(exception);
   }
 
   createNewOfficeConfig(officeQuotaConfigForm: NgForm): void {
