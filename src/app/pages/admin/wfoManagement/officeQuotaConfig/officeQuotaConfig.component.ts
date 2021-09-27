@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, NgForm, NgModel } from '@angular/forms';
+import { FormBuilder, NgForm } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
 import { OfficeQuotaConfigurationService } from 'src/app/services/wfoConfiguration/office-quota-configuration/office-quota-configuration.service';
@@ -68,6 +68,8 @@ export class OfficeQuotaConfigComponent implements OnInit {
                   this.officeQuotaConfig.numEmployeesPerDay;
                 this.numDaysAllowedPerMonth =
                   this.officeQuotaConfig.numDaysAllowedPerMonth;
+                console.log(this.officeQuotaConfig);
+                this.exceptions = this.officeQuotaConfig.exceptions;
 
                 this.isLoading = false;
               });
@@ -92,15 +94,33 @@ export class OfficeQuotaConfigComponent implements OnInit {
     this._location.back();
   }
 
-  addException(
-    selectedException: NgModel,
-    selectedExceptionWfoMonthlyAllocation: NgModel
-  ): void {
-    const exception = {
-      ...selectedException.value,
-      wfoMonthlyAllocation: selectedExceptionWfoMonthlyAllocation.value,
-    };
-    console.log(exception);
+  addException(addExceptionForm: NgForm): void {
+    const formValue = addExceptionForm.value;
+    const selectedException = formValue.selectedException;
+    const selectedExceptionWfoMonthlyAllocation =
+      formValue.selectedExceptionWfoMonthlyAllocation;
+    console.log(formValue);
+    if (
+      selectedExceptionWfoMonthlyAllocation <= 31 &&
+      selectedExceptionWfoMonthlyAllocation >= 0
+    ) {
+      const exception = {
+        ...selectedException,
+        wfoMonthlyAllocation: selectedExceptionWfoMonthlyAllocation,
+      };
+      if (!this.exceptions) {
+        this.exceptions = [exception];
+      } else {
+        this.exceptions.push(exception);
+      }
+    }
+  }
+
+  editException(selectedException: any) {}
+
+  deleteException(selectedException: any) {
+    const indexToRemove = this.exceptions.indexOf(selectedException);
+    this.exceptions.splice(indexToRemove, 1);
   }
 
   createNewOfficeConfig(officeQuotaConfigForm: NgForm): void {
@@ -108,6 +128,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
     const newOfficeQuotaConfigForm = {
       numEmployeesPerDay: formValues.numEmployeesPerDay,
       numDaysAllowedPerMonth: formValues.numDaysAllowedPerMonth,
+      exceptions: this.exceptions,
     };
 
     this.officeQuotaConfigurationService
@@ -119,6 +140,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
             summary: 'Success',
             detail: 'Office Quota Configuration has been added.',
           });
+          console.log('CREATE', response);
 
           const updateCompany = {
             ...this.company,
@@ -133,6 +155,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
                 detail:
                   'Office Quota Configuration has been binded to the company.',
               });
+              console.log(response);
             },
             (error) => {
               this.messageService.add({
@@ -159,6 +182,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
       officeQuotaConfigurationId: this.officeQuotaConfigId,
       numEmployeesPerDay: formValues.numEmployeesPerDay,
       numDaysAllowedPerMonth: formValues.numDaysAllowedPerMonth,
+      exceptions: this.exceptions,
     };
 
     this.officeQuotaConfigurationService
@@ -170,6 +194,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
             summary: 'Success',
             detail: 'Office Quota Configuration has been updated.',
           });
+          console.log('UPDATE', response);
         },
         (error) => {
           this.messageService.add({
@@ -183,8 +208,10 @@ export class OfficeQuotaConfigComponent implements OnInit {
 
   submit(officeQuotaConfigForm: NgForm) {
     if (this.officeQuotaConfigId === null) {
+      console.log('CREATE');
       this.createNewOfficeConfig(officeQuotaConfigForm);
     } else {
+      console.log('UPDATE');
       this.updateOfficeQuotaConfig(officeQuotaConfigForm);
     }
   }

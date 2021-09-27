@@ -64,48 +64,46 @@
       </div>
 
       <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="5%">
-        <label class="labelText">Exceptions:</label>
-
-        <div
-          fxLayout="row"
-          fxLayoutGap="8%"
-          fxLayoutAlign="space-between start"
+        <form
+          #addExceptionForm="ngForm"
+          ngNativeValidate
+          name="addExceptionForm"
+          (ngSubmit)="addException(addExceptionForm)"
         >
-          <div>
-            <p-dropdown
-              [options]="users"
-              optionLabel="fullName"
-              name="selectedException"
-              ngModel
-              #selectedException="ngModel"
-              placeholder="Please select an employee"
-            ></p-dropdown>
-          </div>
-          <p class="labelText">=</p>
-          <input
-            matInput
-            style="min-width: 12vw"
-            class="numberInput"
-            name="selectedExceptionWfoMonthlyAllocation"
-            ngModel
-            #selectedExceptionWfoMonthlyAllocation="ngModel"
-            type="number"
-            [max]="31"
-            [min]="0"
-          />
-          <button
-            mat-button
-            class="addExceptionsButton"
-            (click)="
-              addException(
-                selectedException,
-                selectedExceptionWfoMonthlyAllocation
-              )
-            "
+          <label class="labelText">Exceptions:</label>
+
+          <div
+            fxLayout="row"
+            fxLayoutGap="8%"
+            fxLayoutAlign="space-between start"
           >
-            + Add Exception
-          </button>
-        </div>
+            <div>
+              <p-dropdown
+                [options]="users"
+                optionLabel="fullName"
+                name="selectedException"
+                ngModel
+                #selectedException="ngModel"
+                placeholder="Please select an employee"
+              ></p-dropdown>
+            </div>
+            <p class="labelText">=</p>
+            <input
+              matInput
+              style="min-width: 12vw"
+              class="numberInput"
+              name="selectedExceptionWfoMonthlyAllocation"
+              ngModel
+              #selectedExceptionWfoMonthlyAllocation="ngModel"
+              type="number"
+              [max]="31"
+              [min]="0"
+            />
+            <button mat-button class="addExceptionsButton" type="submit">
+              + Add Exception
+            </button>
+          </div>
+        </form>
       </div>
 
       <div>
@@ -179,6 +177,7 @@
 
                   <img
                     class="deleteIcon"
+                    (click)="deleteException(exception)"
                     src="../../../../assets/images/deleteIcon.png"
                   />
                 </div>
