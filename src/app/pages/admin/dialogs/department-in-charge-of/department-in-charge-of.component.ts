@@ -17,6 +17,7 @@ import { DepartmentService } from 'src/app/services/department/department.servic
 export class DepartmentInChargeOfComponent implements OnInit {
   allDepartments: any[];
   selectedDepartments: any[];
+  user: any;
 
   constructor(
     private departmentService: DepartmentService,
@@ -29,8 +30,13 @@ export class DepartmentInChargeOfComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.user = JSON.parse(currentUser);
+    }
+
     // Below is the correct code
-    this.departmentService.getAllDepartments().subscribe(
+    this.departmentService.getAllDepartments(this.user.companyId).subscribe(
       (response) => {
         this.allDepartments = response.departments;
       },
@@ -77,7 +83,7 @@ export class DepartmentInChargeOfComponent implements OnInit {
 
     // Below is the correct code if the DB works
     newDepartmentDialogRef.afterClosed().subscribe(() => {
-      this.departmentService.getAllDepartments().subscribe(
+      this.departmentService.getAllDepartments(this.user.companyId).subscribe(
         (response) => {
           this.allDepartments = response.departments;
         },
