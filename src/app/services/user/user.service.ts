@@ -15,7 +15,7 @@ const httpOptions = {
 export class UserService {
   baseUrl: string = environment.API_REST_URL + '/user';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   getUsers(companyId: string): Observable<any> {
     let params = new HttpParams().set('companyId', companyId);
@@ -26,14 +26,16 @@ export class UserService {
   }
 
   getDepartments(email: any): Observable<any> {
+    let params = new HttpParams().set('email', email);
     return this.httpClient
-      .get<any>(this.baseUrl + '/get-departments')
+      .get<any>(this.baseUrl + '/get-departments', { params })
       .pipe(catchError(handleError));
   }
 
-  getManagedDepartments(): Observable<any> {
+  getManagedDepartments(email: any): Observable<any> {
+    let params = new HttpParams().set('email', email);
     return this.httpClient
-      .get<any>(this.baseUrl + '/get-managed-departments')
+      .get<any>(this.baseUrl + '/get-managed-departments', { params })
       .pipe(catchError(handleError));
   }
 
@@ -45,7 +47,10 @@ export class UserService {
   ): Observable<any> {
     return this.httpClient
       .post(
-        this.baseUrl + '/reset-password', { userId, oldpassword, password1, password2 }, httpOptions)
+        this.baseUrl + '/reset-password',
+        { userId, oldpassword, password1, password2 },
+        httpOptions
+      )
       .pipe(catchError(handleError));
   }
 
