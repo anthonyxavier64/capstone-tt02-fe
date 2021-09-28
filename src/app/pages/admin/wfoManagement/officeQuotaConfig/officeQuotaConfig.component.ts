@@ -1,10 +1,19 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, NgForm } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MessageService } from 'primeng/api';
 import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
 import { OfficeQuotaConfigurationService } from 'src/app/services/wfoConfiguration/office-quota-configuration/office-quota-configuration.service';
 import { UserService } from './../../../../services/user/user.service';
+import { EditExceptionDialogComponent } from './edit-exception-dialog/edit-exception-dialog.component';
+
+export interface exceptionData {
+  userId: number;
+  fullName: string;
+  wfoMonthlyAllocation: number;
+}
+
 @Component({
   selector: 'app-admin-office-quota-config',
   templateUrl: './officeQuotaConfig.component.html',
@@ -33,7 +42,8 @@ export class OfficeQuotaConfigComponent implements OnInit {
     private messageService: MessageService,
     private companyDetailsService: CompanyDetailsService,
     private officeQuotaConfigurationService: OfficeQuotaConfigurationService,
-    private userService: UserService
+    private userService: UserService,
+    public dialog: MatDialog
   ) {
     if (this.officeQuotaConfig === null) {
       this.numDaysAllowedPerMonth = 0;
@@ -133,7 +143,13 @@ export class OfficeQuotaConfigComponent implements OnInit {
     }
   }
 
-  editException(selectedException: any) {}
+  editException(selectedException: any) {
+    const editDialogRef = this.dialog.open(EditExceptionDialogComponent, {
+      width: '70vw',
+      height: '20vw',
+      data: selectedException,
+    });
+  }
 
   deleteException(selectedException: any) {
     //Logic to store an array of deletedExceptions to reset deletedExceptions wfoMonthlyAllocation to default in update

@@ -53,6 +53,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
 import { AdminGuideComponent } from './pages/admin/adminLanding/admin-guide/admin-guide.component';
+import { EditExceptionDialogComponent } from './pages/admin/wfoManagement/officeQuotaConfig/edit-exception-dialog/edit-exception-dialog.component';
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -89,6 +90,7 @@ export function tokenGetter() {
     EditEmployeeDialogComponent,
     DeleteEmployeeDialogComponent,
     AdminGuideComponent,
+    EditExceptionDialogComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,31 @@
+<div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="4%">
+  <p mat-dialog-title>
+    Edit {{ dialogDisplayData.fullName }} Monthly Allocated WFO Days
+  </p>
+  <form
+    #editUserWfoMonthlyAllocationForm="ngForm"
+    ngNativeValidate
+    name="editUserWfoMonthlyAllocationForm"
+    (ngSubmit)="onSave(editUserWfoMonthlyAllocationForm)"
+    fxLayout="column"
+    fxLayoutAlign="space-around center"
+    fxLayoutGap="3%"
+  >
+    <label class="labelText" for="updateWfoAllocation"
+      >Updated Monthly WFO Allocation:
+    </label>
+    <input
+      matInput
+      style="min-width: 12vw"
+      class="numberInput"
+      name="updateWfoAllocation"
+      ngModel
+      #updateWfoAllocation="ngModel"
+      type="number"
+      [max]="31"
+      [min]="0"
+    />
+
+    <button type="submit" class="saveButton" mat-button>Save</button>
+  </form>
+</div>
