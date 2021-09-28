@@ -21,12 +21,14 @@ export class ChangePasswordComponent implements OnInit {
   resultSuccess: boolean;
   message: string | null;
 
-  constructor(public dialogRef: MatDialogRef<ChangePasswordComponent>,
+  constructor(
+    public dialogRef: MatDialogRef<ChangePasswordComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private userService: UserService,
     private messageService: MessageService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute
+  ) {
     this.submitted = false;
     this.user = null;
     this.oldPassword = '';
@@ -44,20 +46,25 @@ export class ChangePasswordComponent implements OnInit {
 
   save(changePasswordForm: NgForm) {
     if (changePasswordForm.invalid) {
-      this.message = "Please fill in all required fields.";
+      this.message = 'Please fill in all required fields.';
       return;
     } else {
-      this.userService.resetPassword(this.user.userId, this.oldPassword, this.newPassword, this.cfmPassword)
-        .subscribe(
-          response => {
-            this.resultSuccess = true;
-            this.message = "Your password has been reset successfully."
-          },
-          error => {
-            this.message = `An error has occurred: ${error}`;
-          }
+      this.userService
+        .resetPassword(
+          this.user.userId,
+          this.oldPassword,
+          this.newPassword,
+          this.cfmPassword
         )
+        .subscribe(
+          (response) => {
+            this.resultSuccess = true;
+            this.message = 'Your password has been reset successfully.';
+          },
+          (error) => {
+            this.message = `An error has occurred, at least one of the fields is invalid!`;
+          }
+        );
     }
   }
-
 }
