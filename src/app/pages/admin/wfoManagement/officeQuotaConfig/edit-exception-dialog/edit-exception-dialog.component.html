@@ -24,8 +24,16 @@
       type="number"
       [max]="31"
       [min]="0"
+      [placeholder]="dialogDisplayData.wfoMonthlyAllocation"
     />
 
     <button type="submit" class="saveButton" mat-button>Save</button>
+    <div
+      *ngIf="updateWfoAllocation.value === '' && updateWfoAllocation.touched"
+      class="errorText"
+      style="color: red"
+    >
+      A valid number is required.
+    </div>
   </form>
 </div>

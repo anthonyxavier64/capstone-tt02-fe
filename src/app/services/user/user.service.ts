@@ -80,8 +80,7 @@ export class UserService {
     });
   }
 
-  updateUserDetailsByUserId(userId: String, updateDetails: any) {
-    console.log(updateDetails);
+  updateUserDetailsByUserId(userId: any, updateDetails: any) {
     return this.httpClient.patch<any>(
       `${this.baseUrl}/update-user-by-id/${userId}`,
       updateDetails,

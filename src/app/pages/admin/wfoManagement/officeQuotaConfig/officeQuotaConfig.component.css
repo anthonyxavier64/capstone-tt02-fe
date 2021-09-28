@@ -50,9 +50,14 @@
   border: 1px dashed rgba(0, 55, 100, 0.5);
   box-sizing: border-box;
   border-radius: 5px;
+  justify-content: center;
+}
+
+.addExceptionButtonText {
   font-size: 1vw;
   font-family: var(--primary-font);
-  color: rgba(var(--theme-primary-color), 0.5)
+  color: rgba(var(--theme-primary-color), 0.5);
+  text-align: center;
 }
 
 

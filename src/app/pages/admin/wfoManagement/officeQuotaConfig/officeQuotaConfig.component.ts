@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, NgForm } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageService } from 'primeng/api';
 import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
@@ -38,7 +38,6 @@ export class OfficeQuotaConfigComponent implements OnInit {
 
   constructor(
     private _location: Location,
-    private fb: FormBuilder,
     private messageService: MessageService,
     private companyDetailsService: CompanyDetailsService,
     private officeQuotaConfigurationService: OfficeQuotaConfigurationService,
@@ -63,6 +62,9 @@ export class OfficeQuotaConfigComponent implements OnInit {
           this.company = result.company;
           if (this.company.officeQuotaConfigurationId === null) {
             this.officeQuotaConfigId = null;
+            this.exceptions = [];
+            this.deletedExceptions = [];
+
             this.isLoading = false;
           } else {
             this.officeQuotaConfigId = this.company.officeQuotaConfigurationId;
@@ -116,7 +118,12 @@ export class OfficeQuotaConfigComponent implements OnInit {
       };
 
       //Logic to ensure that no repeated users in exceptions
-      if (!this.exceptions.find((item) => item.userId === exception.userId)) {
+      if (
+        !(
+          this.exceptions.filter((item) => item.userId === exception.userId)
+            .length > 0
+        )
+      ) {
         //Logic to add exception into exceptions array if it is valid
         if (!this.exceptions) {
           this.exceptions = [exception];
@@ -166,11 +173,28 @@ export class OfficeQuotaConfigComponent implements OnInit {
       exceptions: this.exceptions,
     };
 
+    //Logic to set exception wfoMonthlyAllocation for exception users
     for (let exception of this.exceptions) {
+      const indexToRemoveFromUsers = this.users.findIndex(
+        (item) => item.userId === exception.userId
+      );
+      this.users.splice(indexToRemoveFromUsers, 1);
       this.userService
         .updateUserDetailsByUserId(exception.userId, exception)
         .subscribe((response) => {});
     }
+
+    //Logic to set default wfoMonthlyAllocation for users
+    for (let user of this.users) {
+      const updatedUser = {
+        ...user,
+        wfoMonthlyAllocation: formValues.numDaysAllowedPerMonth,
+      };
+      this.userService
+        .updateUserDetailsByUserId(user.userId, updatedUser)
+        .subscribe((response) => {});
+    }
+
     this.officeQuotaConfigurationService
       .createOfficeQuotaConfiguration(newOfficeQuotaConfigForm)
       .subscribe(
@@ -264,10 +288,22 @@ export class OfficeQuotaConfigComponent implements OnInit {
   }
 
   submit(officeQuotaConfigForm: NgForm) {
-    if (this.officeQuotaConfigId === null) {
-      this.createNewOfficeConfig(officeQuotaConfigForm);
+    if (
+      officeQuotaConfigForm.value.numEmployeesPerDay !== '' &&
+      officeQuotaConfigForm.value.numDaysAllowedPerMonth !== ''
+    ) {
+      if (this.officeQuotaConfigId === null) {
+        this.createNewOfficeConfig(officeQuotaConfigForm);
+      } else {
+        this.updateOfficeQuotaConfig(officeQuotaConfigForm);
+      }
     } else {
-      this.updateOfficeQuotaConfig(officeQuotaConfigForm);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail:
+          'Problem updating configuration. Please ensure fields are not empty.',
+      });
     }
   }
 }

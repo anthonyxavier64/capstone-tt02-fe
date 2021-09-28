@@ -19,10 +19,12 @@ export class EditExceptionDialogComponent implements OnInit {
   }
 
   onSave(editUserWfoMonthlyAllocationForm: NgForm): void {
-    const updatedNumber =
-      editUserWfoMonthlyAllocationForm.value.updateWfoAllocation;
-    this.data.wfoMonthlyAllocation = updatedNumber;
-    this.dialogRef.close();
+    if (editUserWfoMonthlyAllocationForm.value.updateWfoAllocation !== '') {
+      const updatedNumber =
+        editUserWfoMonthlyAllocationForm.value.updateWfoAllocation;
+      this.data.wfoMonthlyAllocation = updatedNumber;
+      this.dialogRef.close();
+    }
   }
 
   ngOnInit(): void {}

@@ -19,7 +19,6 @@ export class OfficeQuotaConfigurationService {
   createOfficeQuotaConfiguration(
     officeQuotaConfiguration: any
   ): Observable<any> {
-    console.log(officeQuotaConfiguration);
     return this.httpClient
       .post<any>(
         this.baseUrl + '/create-office-quota-configuration',

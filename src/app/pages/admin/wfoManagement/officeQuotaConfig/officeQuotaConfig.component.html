@@ -100,8 +100,14 @@
               [max]="31"
               [min]="0"
             />
-            <button mat-button class="addExceptionsButton" type="submit">
-              + Add Exception
+            <button
+              mat-button
+              class="addExceptionsButton"
+              type="submit"
+              fxLayout="column"
+              fxLayoutAlign="space-around center"
+            >
+              <p class="addExceptionButtonText">+ Add Exception</p>
             </button>
           </div>
         </form>
@@ -195,6 +201,27 @@
             </tr>
           </ng-template>
         </p-table>
+        <div fxLayout="column" fxLayoutAlign="space-around center">
+          <div
+            *ngIf="
+              numEmployeesPerDay.value === '' && numEmployeesPerDay.touched
+            "
+            class="errorText"
+            style="color: red"
+          >
+            Number of Employees Per Day cannot be empty
+          </div>
+          <div
+            *ngIf="
+              numDaysAllowedPerMonth.value === '' &&
+              numDaysAllowedPerMonth.touched
+            "
+            class="errorText"
+            style="color: red"
+          >
+            Number of Days Allowed Per Month cannot be empty
+          </div>
+        </div>
       </div>
 
       <button mat-button type="submit" class="saveBtn">Save</button>
