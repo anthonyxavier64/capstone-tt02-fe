@@ -1,0 +1,16 @@
+.beige-block {
+  background-color: rgb(var(--secondary-card-color));
+  border-radius: 25px;
+  height: auto;
+  width: 100%;
+  padding: 2rem;
+}
+
+.announcement-tab {
+  background-color: rgb(var(--covid-related-color));
+  border-radius: 15px;
+  height: auto;
+  width: 100%;
+  padding: 1rem;
+  box-shadow: none;
+}

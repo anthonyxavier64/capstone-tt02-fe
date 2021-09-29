@@ -26,6 +26,8 @@ import { AppComponent } from './app.component';
 import { TOKEN_KEY } from './config';
 import { MaterialModule } from './core/material.module';
 import { PrimeNgModule } from './core/primeng.module';
+// import { NgCircleProgressModule } from '../../node_modules/ng-circle-progress';
+
 import { AdminComponent } from './pages/admin/adminLanding/admin.component';
 import { AdminAnnouncementManagementComponent } from './pages/admin/announcementManagement/adminAnnouncementManagement.component';
 import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDetails/companyDetailsManagement/adminCompanyDetailsManagement.component';
@@ -111,6 +113,7 @@ export function tokenGetter() {
     StyleClassModule,
     DataViewModule,
     DropdownModule,
+    // NgCircleProgressModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
