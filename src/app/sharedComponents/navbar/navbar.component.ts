@@ -15,9 +15,9 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     private auth: AuthService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
 
   onCompanyLogoClick() {
@@ -45,5 +45,9 @@ export class NavbarComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       // this.message = result;
     });
+  }
+
+  onDashboardClick() {
+    this.router.navigateByUrl('/dashboard');
   }
 }

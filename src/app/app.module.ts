@@ -49,6 +49,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
 import { AdminGuideComponent } from './pages/admin/adminLanding/admin-guide/admin-guide.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -83,6 +84,7 @@ export function tokenGetter() {
     EditEmployeeDialogComponent,
     DeleteEmployeeDialogComponent,
     AdminGuideComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -125,4 +127,4 @@ export function tokenGetter() {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
