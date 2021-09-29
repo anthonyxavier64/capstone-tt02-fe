@@ -1,5 +1,4 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -79,5 +78,13 @@ export class UserService {
     return this.httpClient.post<any>(this.baseUrl + '/delete-user', {
       userId: userId,
     });
+  }
+
+  updateUserDetailsByUserId(userId: any, updateDetails: any) {
+    return this.httpClient.patch<any>(
+      `${this.baseUrl}/update-user-by-id/${userId}`,
+      updateDetails,
+      httpOptions
+    );
   }
 }

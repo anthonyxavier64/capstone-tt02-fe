@@ -1,0 +1,23 @@
+.headerBackButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.headerText {
+  font-size: 32px;
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.8);
+}
+
+.backButton {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-size: 28px;
+  font-family: "Source Sans Pro";
+  color: rgba(0, 55, 100, 0.8);
+  height: 56px;
+  width: 153px;
+  border: 10px;
+  justify-self: end;
+  margin-top: -20px;
+}

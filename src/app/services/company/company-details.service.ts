@@ -1,9 +1,7 @@
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment.dev';
 import { handleError } from '../services-util';
 
@@ -22,6 +20,26 @@ export class CompanyDetailsService {
   getCompanyById(companyId: string): Observable<any> {
     return this.httpClient
       .post<any>(this.baseUrl + '/get-company', { companyId }, httpOptions)
+      .pipe(catchError(handleError));
+  }
+
+  getOfficeQuotaConfig(wfoConfigId: string): Observable<any> {
+    return this.httpClient
+      .post<any>(
+        this.baseUrl + '/get-company-office-quota-config',
+        { wfoConfigId },
+        httpOptions
+      )
+      .pipe(catchError(handleError));
+  }
+
+  getAlternateWorkTeamsConfig(wfoConfigId: string): Observable<any> {
+    return this.httpClient
+      .post<any>(
+        this.baseUrl + '/get-company-alternate-work-teams-config',
+        { wfoConfigId },
+        httpOptions
+      )
       .pipe(catchError(handleError));
   }
 
