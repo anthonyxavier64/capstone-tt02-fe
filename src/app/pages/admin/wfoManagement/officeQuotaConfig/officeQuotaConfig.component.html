@@ -14,9 +14,9 @@
   <app-navbar></app-navbar>
 
   <div fxLayout="row" fxLayoutAlign="space-between start">
-    <div class="headerText">Office Quota Configuration</div>
+    <h1>Office Quota Configuration</h1>
     <div>
-      <button mat-button class="backButton" (click)="onBackClick()">
+      <button mat-button class="grey-btn" (click)="onBackClick()">
         Back
       </button>
     </div>
@@ -30,12 +30,10 @@
       (ngSubmit)="submit(officeQuotaConfigForm)"
       fxLayout="column"
       fxLayoutAlign="space-around start"
-      fxLayoutGap="3%"
+      fxLayoutGap="2%"
     >
-      <div fxLayout="row" fxLayoutAlign="space-around start" fxLayoutGap="5%">
-        <label class="labelText" for="employeesAllowed"
-          >Number of employees allowed in office per day:</label
-        >
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2%"  style="width:100%">
+        <label for="employeesAllowed">Number of employees allowed in office per day:</label>
         <input
           matInput
           ngModel
@@ -47,11 +45,10 @@
           [min]="0"
         />
       </div>
-      <div fxLayout="row" fxLayoutAlign="space-around start" fxLayoutGap="5%">
-        <label class="labelText" for="wfoDaysAllowed"
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2%"  style="width:100%">
+        <label for="wfoDaysAllowed"
           >Number of days each employee is allowed to work from office per
-          month:</label
-        >
+          month:</label>
         <input
           matInput
           ngModel
@@ -64,19 +61,20 @@
         />
       </div>
 
-      <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="5%">
+      <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="25%">
         <form
           #addExceptionForm="ngForm"
           ngNativeValidate
           name="addExceptionForm"
           (ngSubmit)="addException(addExceptionForm)"
         >
-          <label class="labelText">Exceptions:</label>
+          <label>Exceptions:</label>
 
           <div
             fxLayout="row"
             fxLayoutGap="8%"
             fxLayoutAlign="space-between start"
+            style="margin-top:3%;"
           >
             <div>
               <p-dropdown
@@ -224,7 +222,7 @@
         </div>
       </div>
 
-      <button mat-button type="submit" class="saveBtn">Save</button>
+      <button mat-button type="submit" class="peach-btn">Save</button>
     </form>
   </div>
 </div>

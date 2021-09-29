@@ -6,11 +6,11 @@
   <app-navbar></app-navbar>
 
   <div fxLayout="row" fxLayoutAlign="space-between start">
-    <div class="headerText">
+    <h1>
       Select your company's Work From Office arrangement:
-    </div>
+    </h1>
     <div>
-      <button mat-button class="backButton" (click)="onBackClick()">
+      <button mat-button class="grey-btn" (click)="onBackClick()">
         Back
       </button>
     </div>
@@ -23,11 +23,9 @@
       fxLayoutGap="2%"
       [ngClass]="[officeQuotaSelection]"
     >
-      <mat-card-title>
-        <h2 class="itemTitle">Office Quotas</h2>
-      </mat-card-title>
+      <mat-card-title>Office Quotas</mat-card-title>
       <mat-card-content>
-        <ul class="itemText">
+        <ul>
           <li>Limit number of employees in the office<br />per day</li>
           <br />
           <li>Limit number of work from office days for<br />each employee</li>
@@ -68,11 +66,9 @@
       fxLayoutGap="2%"
       [ngClass]="[altWorkTeamsSelection]"
     >
-      <mat-card-title>
-        <h2 class="itemTitle">Alternate Work Teams</h2>
-      </mat-card-title>
+      <mat-card-title>Alternate Work Teams</mat-card-title>
       <mat-card-content>
-        <ul class="itemText">
+        <ul>
           <li>
             Assign employees into 2 teams working on<br />rotational shifts
           </li>

@@ -28,19 +28,18 @@
 }
 
 .numberInput {
-  height: 3vw;
+  height: 2.75vw;
   width: 12vw;
   fill: #FFFFFF;
-  border-color:rgba(var(--theme-primary-color), 0.4);
+  border-color: rgba(var(--theme-primary-color), 0.25);
+  border-width: 1px;
   font-family: var(--primary-font);
-  font-size: 2vw;
-  color: rgba(var(--theme-primary-color), 0.65);
+  font-size: 1.25rem;
+  color: rgba(var(--theme-primary-color), .80);
   text-align: center;
-  margin-left: 3%;
-  border-radius: 7px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 10px;
+  box-shadow: rgb(0 0 10 / 10%) 1px 1px 3px 0px;
 }
-
 
 .addExceptionsButton {
   width: 25vw;
