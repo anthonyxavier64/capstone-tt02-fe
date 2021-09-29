@@ -16,9 +16,7 @@
   <div fxLayout="row" fxLayoutAlign="space-between start">
     <h1>Office Quota Configuration</h1>
     <div>
-      <button mat-button class="grey-btn" (click)="onBackClick()">
-        Back
-      </button>
+      <button mat-button class="grey-btn" (click)="onBackClick()">Back</button>
     </div>
   </div>
 
@@ -32,8 +30,15 @@
       fxLayoutAlign="space-around start"
       fxLayoutGap="2%"
     >
-      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2%"  style="width:100%">
-        <label for="employeesAllowed">Number of employees allowed in office per day:</label>
+      <div
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxLayoutGap="2%"
+        style="width: 100%"
+      >
+        <label for="employeesAllowed"
+          >Number of employees allowed in office per day:</label
+        >
         <input
           matInput
           ngModel
@@ -43,12 +48,21 @@
           type="number"
           [max]="31"
           [min]="0"
+          [placeholder]="
+            officeQuotaConfig ? officeQuotaConfig.numEmployeesPerDay : 0
+          "
         />
       </div>
-      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2%"  style="width:100%">
+      <div
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxLayoutGap="2%"
+        style="width: 100%"
+      >
         <label for="wfoDaysAllowed"
           >Number of days each employee is allowed to work from office per
-          month:</label>
+          month:</label
+        >
         <input
           matInput
           ngModel
@@ -58,6 +72,9 @@
           type="number"
           [max]="31"
           [min]="0"
+          [placeholder]="
+            officeQuotaConfig ? officeQuotaConfig.numDaysAllowedPerMonth : 0
+          "
         />
       </div>
 
@@ -74,7 +91,7 @@
             fxLayout="row"
             fxLayoutGap="8%"
             fxLayoutAlign="space-between start"
-            style="margin-top:3%;"
+            style="margin-top: 3%"
           >
             <div>
               <p-dropdown

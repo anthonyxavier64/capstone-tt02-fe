@@ -81,3 +81,28 @@
   border-radius: 7px;
   margin-left: 6%;
 }
+
+
+@media only screen and (max-width: 1024px) {
+  .wfoSelection {
+    background-color: #faf9f6;
+    min-width: 30vw;
+    min-height: 52vw;
+    width: 36vw;
+    height: 40vw;
+    margin-bottom: 40px;
+    overflow: auto;
+    padding: 3rem;
+  }
+
+  .selectedWfoSelection {
+    background-color: #ffede7;
+    min-width: 30vw;
+    min-height: 52vw;
+    width: 40vw;
+    height: 45vw;
+    margin-bottom: 40px;
+    overflow:auto;
+  }
+
+}

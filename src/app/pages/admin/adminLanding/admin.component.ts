@@ -52,9 +52,7 @@ export class AdminComponent implements OnInit {
   }
 
   openDialog(): void {
-    let dialogRef = this.dialog.open(AdminGuideComponent, {
-      data: 'test',
-    });
+    let dialogRef = this.dialog.open(AdminGuideComponent, {});
 
     dialogRef.afterClosed().subscribe((result) => {
       // this.message = result;
