@@ -104,7 +104,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
 
   addException(addExceptionForm: NgForm): void {
     const formValue = addExceptionForm.value;
-    const selectedException = formValue.selectedException;
+    const selectedException = formValue.selectedExceptionOption;
     const selectedExceptionWfoMonthlyAllocation =
       formValue.selectedExceptionWfoMonthlyAllocation;
     if (
