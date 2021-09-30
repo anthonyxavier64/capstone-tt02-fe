@@ -65,7 +65,7 @@
                   <div
                     *ngIf="
                       selectedEmployeeTeamA.control.touched &&
-                      selectedEmployeeTeamA.control.value === ''
+                      selectedEmployeeTeamA.control.value === null
                     "
                     class="errorText"
                     style="color: red"
@@ -76,7 +76,7 @@
                 <button
                   mat-button
                   class="peach-btn"
-                  [disabled]="selectedEmployeeTeamA.control.value === ''"
+                  [disabled]="selectedEmployeeTeamA.control.value === null"
                 >
                   Add
                 </button>
