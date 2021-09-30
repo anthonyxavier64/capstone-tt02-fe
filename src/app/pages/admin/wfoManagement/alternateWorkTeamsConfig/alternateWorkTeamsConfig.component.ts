@@ -145,6 +145,12 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
       const tempTeamA = this.teamA;
       this.teamA = this.teamB;
       this.teamB = tempTeamA;
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Members of Teams A and B have been swapped.',
+      });
     }
   }
 
@@ -163,6 +169,12 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
       const tempTeamA = this.teamA;
       this.teamA = this.teamB;
       this.teamB = tempTeamA;
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Members of Teams A and B have been swapped.',
+      });
     }
   }
 
@@ -181,6 +193,12 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
       const tempTeamA = this.teamA;
       this.teamA = this.teamB;
       this.teamB = tempTeamA;
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Members of Teams A and B have been swapped.',
+      });
     }
   }
 
@@ -199,6 +217,12 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
       const tempTeamA = this.teamA;
       this.teamA = this.teamB;
       this.teamB = tempTeamA;
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Members of Teams A and B have been swapped.',
+      });
     }
   }
 }
