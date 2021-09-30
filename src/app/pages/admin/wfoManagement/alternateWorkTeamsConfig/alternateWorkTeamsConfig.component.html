@@ -61,11 +61,28 @@
                     ngModel
                     #selectedEmployeeTeamA="ngModel"
                     placeholder="Please select an employee"
-                  ></p-dropdown>
+                    [filter]="true"
+                    filterBy="fullName"
+                  >
+                    <ng-template let-user pTemplate="item">
+                      <div fxLayout="row" fxLayoutGap="3%">
+                        <img
+                          *ngIf="user.isVaccinated"
+                          src="../../../../../assets/images/vaccinatedIcon.svg"
+                        />
+                        <img
+                          *ngIf="!user.isVaccinated"
+                          src="../../../../../assets/images/unvaccinatedIcon.svg"
+                        />
+                        <div>{{ user.fullName }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
                   <div
                     *ngIf="
                       selectedEmployeeTeamA.control.touched &&
-                      selectedEmployeeTeamA.control.value === null
+                      (selectedEmployeeTeamA.control.value === null ||
+                        selectedEmployeeTeamA.control.value === '')
                     "
                     class="errorText"
                     style="color: red"
@@ -159,11 +176,28 @@
                     ngModel
                     #selectedEmployeeTeamB="ngModel"
                     placeholder="Please select an employee"
-                  ></p-dropdown>
+                    [filter]="true"
+                    filterBy="fullName"
+                  >
+                    <ng-template let-user pTemplate="item">
+                      <div fxLayout="row" fxLayoutGap="3%">
+                        <img
+                          *ngIf="user.isVaccinated"
+                          src="../../../../../assets/images/vaccinatedIcon.svg"
+                        />
+                        <img
+                          *ngIf="!user.isVaccinated"
+                          src="../../../../../assets/images/unvaccinatedIcon.svg"
+                        />
+                        <div>{{ user.fullName }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
                   <div
                     *ngIf="
                       selectedEmployeeTeamB.control.touched &&
-                      selectedEmployeeTeamB.control.value === ''
+                      (selectedEmployeeTeamB.control.value === '' ||
+                        selectedEmployeeTeamB.control.value === null)
                     "
                     class="errorText"
                     style="color: red"
