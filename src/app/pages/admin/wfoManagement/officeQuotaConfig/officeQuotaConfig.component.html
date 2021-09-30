@@ -99,9 +99,25 @@
                 optionLabel="fullName"
                 name="selectedException"
                 ngModel
-                #selectedException="ngModel"
+                #selectedExceptionOption="ngModel"
                 placeholder="Please select an employee"
-              ></p-dropdown>
+                [filter]="true"
+                filterBy="fullName"
+              >
+                <ng-template let-user pTemplate="item">
+                  <div fxLayout="row" fxLayoutGap="3%">
+                    <img
+                      *ngIf="user.isVaccinated"
+                      src="../../../../../assets/images/vaccinatedIcon.svg"
+                    />
+                    <img
+                      *ngIf="!user.isVaccinated"
+                      src="../../../../../assets/images/unvaccinatedIcon.svg"
+                    />
+                    <div>{{ user.fullName }}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
             </div>
             <p class="labelText">=</p>
             <input
