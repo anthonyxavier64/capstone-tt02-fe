@@ -1,11 +1,21 @@
-.teamCard {
-  width: 40vw;
-  height: 20vw;
-  background: linear-gradient(to bottom, rgba(var(--primary-card-color), 0.4) 0%, rgba(var(--primary-card-color), 0.4) 10%,
-  rgb(var(--secondary-card-color)) 10%, rgb(var(--secondary-card-color)) 100%);
-  border-radius: 10px;
+.teamCardHeader {
+  background: rgba(var(--primary-card-color), 0.4);
+  height: 3vw;
+  width: 33vw;
+  border-radius: 10px 10px 0px 0px;
   filter: drop-shadow(-2px -2px 8px rgba(0, 0, 0, 0.1));
-  overflow: auto;
+}
+
+.teamCardContent {
+  background: rgb(var(--secondary-card-color));
+  height: 18vw;
+  width: 33vw;
+  border-radius: 0px 0px 10px 10px;
+  padding-top: 3%;
+  padding-bottom: 2%;
+  filter: drop-shadow(-2px -2px 8px rgba(0, 0, 0, 0.1));
+  overflow:auto;
+
 }
 
 .employeeItem {
