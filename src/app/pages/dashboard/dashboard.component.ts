@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit {
   weekday = this.datePipe.transform(this.today, "EEEE");
   startDate = moment().startOf('week').toDate();
   endDate = moment().endOf('week').toDate();
+  weekProgress = parseInt(moment().startOf('week').fromNow()) / 7 * 100; 
   
   constructor(private router: Router, 
     private userService: UserService, 

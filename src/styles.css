@@ -10,7 +10,7 @@
   --title-color: 0, 54, 114;
 
   /* Buttons */
-  --primary-button-color: 255, 166, 135, 0.5;
+  --primary-button-color: 255, 166, 135, 0.25;
   --secondary-button-color: 229, 229, 229;
   --covid-button-color: 251, 142, 126;
   --success-button-color: 107, 200, 81;
@@ -121,6 +121,7 @@ h1 {
   font-size: 22px;
   font-weight: 800;
   color: #003672;
+  margin: inherit;
 }
 
 h2 {
@@ -128,6 +129,7 @@ h2 {
   font-size: 18px;
   font-weight: 800;
   color: #003672;
+  margin: inherit;
 }
 
 p {
@@ -136,7 +138,7 @@ p {
   color: #003672;
   font-weight: 200;
   line-height: normal;
-  margin: 0;
+  margin: inherit;
 }
 
 span {
@@ -162,6 +164,7 @@ span {
   font-size: 22px;
   font-weight: 800;
   color: #003672;
+  margin: inherit;
 }
 
 .mat-h2,
@@ -171,6 +174,7 @@ span {
   font-size: 18px;
   font-weight: 800;
   color: #003672;
+  margin: inherit;
 }
 
 .mat-h2,
@@ -180,6 +184,7 @@ span {
   font-size: 18px;
   color: #003672;
   font-weight: 600;
+  margin: inherit;
 }
 
 .mat-h2,
@@ -190,7 +195,7 @@ span {
   color: #003672;
   font-weight: 200;
   line-height: normal;
-  margin: 0;
+  margin: inherit;
 }
 
 /* Angular Material Form Style Overrides */

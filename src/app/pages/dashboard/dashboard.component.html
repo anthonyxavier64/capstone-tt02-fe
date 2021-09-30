@@ -10,30 +10,41 @@
 
     <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5%">
       <mat-card-title> My Weekly Tasks </mat-card-title>
-        <mat-card-content> 
-            <circle-progress 
-              [percent]="75" 
-              subtitle="3/4">
-          </circle-progress>
-        </mat-card-content>
+        <circle-progress 
+            [percent]="75" 
+            subtitle="3/4">
+        </circle-progress>
+        <mat-card class="general-tab" fxLayout="column" fxLayoutAlign="start start"> 
+          <h2>Task Name</h2>
+          <p>Project - Goal</p>
+          <p>Start Date: </p>
+          <p>Deadline: </p>
+        </mat-card>
     </mat-card>
 
     <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5%">
       <mat-card-title> My Weekly Events </mat-card-title>
       <circle-progress 
+        [percent]="weekProgress"
         title="{{ weekday }}"
         [showSubtitle]="false"
         [showUnits]="false">
       </circle-progress>
       <p>Start: {{ startDate | date: "shortDate" }}</p>
       <p>End: {{ endDate | date: "shortDate" }}</p>
+      <mat-card class="general-tab" fxLayout="column" fxLayoutAlign="start start"> 
+        <h2>Meeting DateTime</h2>
+        <p>Project - Goal</p>
+        <p>Physical/Online</p>
+        <p>Venue: </p>
+      </mat-card>
     </mat-card>
 
     <mat-card-group fxLayout="column" fxLayoutGap="5%" style="width:100%">
 
       <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="2%">
         <mat-card-title> Announcements </mat-card-title>
-        <mat-card *ngFor="let cannouncement of covidAnnouncements" class="cannouncement-tab" fxLayout="column" fxLayoutAlign="start center"> 
+        <mat-card *ngFor="let cannouncement of covidAnnouncements" class="covid-tab" fxLayout="column" fxLayoutAlign="start center"> 
           <p>{{ cannouncement.title }}</p>
           <div fxLayout="row" fxLayoutAlign="space-around center" style="width:100%">
             <div>
@@ -44,7 +55,7 @@
           (click)="viewAnnouncement(cannouncement)">View Details</button>
         </div>
         </mat-card>
-        <mat-card *ngFor="let gannouncement of generalAnnouncements" class="gannouncement-tab" fxLayout="column" fxLayoutAlign="start center"> 
+        <mat-card *ngFor="let gannouncement of generalAnnouncements" class="general-tab" fxLayout="column" fxLayoutAlign="start center"> 
           <p>{{ gannouncement.title }}</p>
           <div fxLayout="row" fxLayoutAlign="space-around center" style="width:100%">
             <div>
@@ -59,6 +70,16 @@
 
       <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5%">
         <mat-card-title> My Meeting RSVPs </mat-card-title>
+        <mat-card class="general-tab" fxLayout="column" fxLayoutAlign="start start"> 
+          <h2>Meeting DateTime</h2>
+          <p>Project - Goal</p>
+          <p>Physical/Online</p>
+          <p>Venue: </p><br/>
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5%" style="width: 100%;">
+              <button class="grey-btn">Yes</button>
+              <button class="grey-btn">No</button>
+            </div>
+        </mat-card>
       </mat-card>
     </mat-card-group>
 

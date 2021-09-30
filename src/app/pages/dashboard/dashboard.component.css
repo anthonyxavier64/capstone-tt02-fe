@@ -6,7 +6,7 @@
   padding: 1.5rem 1rem;
 }
 
-.cannouncement-tab {
+.covid-tab {
   background-color: rgb(var(--covid-related-color));
   border-radius: 15px;
   height: auto;
@@ -15,7 +15,7 @@
   box-shadow: none;
 }
 
-.gannouncement-tab {
+.general-tab {
   background-color: rgb(var(--primary-button-color));
   border-radius: 15px;
   height: auto;
