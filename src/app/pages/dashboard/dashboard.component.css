@@ -3,11 +3,20 @@
   border-radius: 25px;
   height: auto;
   width: 100%;
-  padding: 2rem;
+  padding: 1.5rem 1rem;
 }
 
-.announcement-tab {
+.cannouncement-tab {
   background-color: rgb(var(--covid-related-color));
+  border-radius: 15px;
+  height: auto;
+  width: 100%;
+  padding: 1rem;
+  box-shadow: none;
+}
+
+.gannouncement-tab {
+  background-color: rgb(var(--primary-button-color));
   border-radius: 15px;
   height: auto;
   width: 100%;

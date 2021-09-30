@@ -22,16 +22,28 @@
 
     <mat-card-group fxLayout="column" fxLayoutGap="5%" style="width:100%">
 
-      <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5%">
+      <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="2%">
         <mat-card-title> Announcements </mat-card-title>
-        <mat-card class="announcement-tab" fxLayout="column" fxLayoutAlign="start center"> 
-          <p>Announcement Title</p>
+        <mat-card *ngFor="let cannouncement of covidAnnouncements" class="cannouncement-tab" fxLayout="column" fxLayoutAlign="start center"> 
+          <p>{{ cannouncement.title }}</p>
           <div fxLayout="row" fxLayoutAlign="space-around center" style="width:100%">
             <div>
             <p>From:</p>
-            <p>Date:</p>
+            <p>Date: {{ cannouncement.date | date:'short' }} </p>
           </div>
-          <button class="grey-btn">View Details</button>
+          <button class="grey-btn"
+          (click)="viewAnnouncement(cannouncement)">View Details</button>
+        </div>
+        </mat-card>
+        <mat-card *ngFor="let gannouncement of generalAnnouncements" class="gannouncement-tab" fxLayout="column" fxLayoutAlign="start center"> 
+          <p>{{ gannouncement.title }}</p>
+          <div fxLayout="row" fxLayoutAlign="space-around center" style="width:100%">
+            <div>
+            <p>From:</p>
+            <p>Date: {{ gannouncement.date | date:'short' }} </p>
+          </div>
+          <button class="grey-btn"
+          (click)="viewAnnouncement(gannouncement)">View Details</button>
         </div>
         </mat-card>
       </mat-card>

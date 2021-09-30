@@ -242,6 +242,7 @@ span {
   height: auto;
   min-height: inherit;
   max-height: inherit;
+  background-color: rgb(var(--secondary-card-color));
 }
 
 .mat-dialog-content {
@@ -250,7 +251,7 @@ span {
   padding: 0 24px;
   max-height: 65vh;
   overflow: initial;
-  text-align: center;
+  text-align: inherit;
 }
 
 .mat-dialog-actions {
