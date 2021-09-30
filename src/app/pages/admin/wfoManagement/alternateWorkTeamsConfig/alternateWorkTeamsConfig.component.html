@@ -76,7 +76,10 @@
                 <button
                   mat-button
                   class="peach-btn"
-                  [disabled]="selectedEmployeeTeamA.control.value === null"
+                  [disabled]="
+                    selectedEmployeeTeamA.control.value === null ||
+                    selectedEmployeeTeamA.control.value === ''
+                  "
                 >
                   Add
                 </button>
@@ -173,7 +176,10 @@
                   mat-button
                   type="submit"
                   class="peach-btn"
-                  [disabled]="selectedEmployeeTeamB.control.value === ''"
+                  [disabled]="
+                    selectedEmployeeTeamB.control.value === null ||
+                    selectedEmployeeTeamA.control.value === ''
+                  "
                 >
                   Add
                 </button>

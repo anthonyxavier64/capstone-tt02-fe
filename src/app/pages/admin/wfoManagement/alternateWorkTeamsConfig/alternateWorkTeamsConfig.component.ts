@@ -29,6 +29,11 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
   isBiWeeklySelected: boolean = false;
   isMonthlySelected: boolean = false;
 
+  isDailyConfigFirstClicked: boolean = true;
+  isWeeklyConfigFirstClicked: boolean = true;
+  isBiweeklyConfigFirstClicked: boolean = true;
+  isMonthlyConfigFirstClicked: boolean = true;
+
   constructor(
     private _location: Location,
     private messageService: MessageService,
@@ -126,30 +131,74 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
   }
 
   selectDailyConfig(): void {
-    this.isDailySelected = true;
-    this.isWeeklySelected = false;
-    this.isBiWeeklySelected = false;
-    this.isMonthlySelected = false;
+    if (this.isDailyConfigFirstClicked) {
+      this.isDailySelected = true;
+      this.isWeeklySelected = false;
+      this.isBiWeeklySelected = false;
+      this.isMonthlySelected = false;
+
+      this.isDailyConfigFirstClicked = false;
+      this.isWeeklyConfigFirstClicked = true;
+      this.isBiweeklyConfigFirstClicked = true;
+      this.isMonthlyConfigFirstClicked = true;
+    } else {
+      const tempTeamA = this.teamA;
+      this.teamA = this.teamB;
+      this.teamB = tempTeamA;
+    }
   }
 
   selectWeeklyConfig(): void {
-    this.isDailySelected = false;
-    this.isWeeklySelected = true;
-    this.isBiWeeklySelected = false;
-    this.isMonthlySelected = false;
+    if (this.isWeeklyConfigFirstClicked) {
+      this.isDailySelected = false;
+      this.isWeeklySelected = true;
+      this.isBiWeeklySelected = false;
+      this.isMonthlySelected = false;
+
+      this.isDailyConfigFirstClicked = true;
+      this.isWeeklyConfigFirstClicked = false;
+      this.isBiweeklyConfigFirstClicked = true;
+      this.isMonthlyConfigFirstClicked = true;
+    } else {
+      const tempTeamA = this.teamA;
+      this.teamA = this.teamB;
+      this.teamB = tempTeamA;
+    }
   }
 
   selectBiweeklyConfig(): void {
-    this.isDailySelected = false;
-    this.isWeeklySelected = false;
-    this.isBiWeeklySelected = true;
-    this.isMonthlySelected = false;
+    if (this.isBiweeklyConfigFirstClicked) {
+      this.isDailySelected = false;
+      this.isWeeklySelected = false;
+      this.isBiWeeklySelected = true;
+      this.isMonthlySelected = false;
+
+      this.isDailyConfigFirstClicked = true;
+      this.isWeeklyConfigFirstClicked = true;
+      this.isBiweeklyConfigFirstClicked = false;
+      this.isMonthlyConfigFirstClicked = true;
+    } else {
+      const tempTeamA = this.teamA;
+      this.teamA = this.teamB;
+      this.teamB = tempTeamA;
+    }
   }
 
   selectMonthlyConfig(): void {
-    this.isDailySelected = false;
-    this.isWeeklySelected = false;
-    this.isBiWeeklySelected = false;
-    this.isMonthlySelected = true;
+    if (this.isMonthlyConfigFirstClicked) {
+      this.isDailySelected = false;
+      this.isWeeklySelected = false;
+      this.isBiWeeklySelected = false;
+      this.isMonthlySelected = true;
+
+      this.isDailyConfigFirstClicked = true;
+      this.isWeeklyConfigFirstClicked = true;
+      this.isBiweeklyConfigFirstClicked = true;
+      this.isMonthlyConfigFirstClicked = false;
+    } else {
+      const tempTeamA = this.teamA;
+      this.teamA = this.teamB;
+      this.teamB = tempTeamA;
+    }
   }
 }
