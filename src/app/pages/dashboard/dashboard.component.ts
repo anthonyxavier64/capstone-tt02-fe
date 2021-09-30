@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { DatePipe } from '@angular/common';
+import * as moment from 'moment';
 
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -12,7 +14,8 @@ import { AnnouncementService } from 'src/app/services/announcement/announcement.
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
+  providers: [DatePipe]
 })
 export class DashboardComponent implements OnInit {
   user: any | null;
@@ -20,10 +23,17 @@ export class DashboardComponent implements OnInit {
   covidAnnouncements: Announcement[];
   generalAnnouncements: Announcement[];
 
+  today = new Date();
+  weekday = this.datePipe.transform(this.today, "EEEE");
+  startDate = moment().startOf('week').toDate();
+  endDate = moment().endOf('week').toDate();
+  
   constructor(private router: Router, 
     private userService: UserService, 
     private announcementService: AnnouncementService,
-    private matDialog: MatDialog) { }
+    private matDialog: MatDialog,
+    private datePipe: DatePipe) 
+    { let now = moment(); }
 
   ngOnInit() {
     const currentUser = localStorage.getItem('currentUser');

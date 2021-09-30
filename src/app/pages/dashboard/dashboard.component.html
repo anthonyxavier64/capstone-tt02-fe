@@ -10,14 +10,23 @@
 
     <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5%">
       <mat-card-title> My Weekly Tasks </mat-card-title>
-      <mat-card-content>
-        
-
-      </mat-card-content>
+        <mat-card-content> 
+            <circle-progress 
+              [percent]="75" 
+              subtitle="3/4">
+          </circle-progress>
+        </mat-card-content>
     </mat-card>
 
     <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5%">
       <mat-card-title> My Weekly Events </mat-card-title>
+      <circle-progress 
+        title="{{ weekday }}"
+        [showSubtitle]="false"
+        [showUnits]="false">
+      </circle-progress>
+      <p>Start: {{ startDate | date: "shortDate" }}</p>
+      <p>End: {{ endDate | date: "shortDate" }}</p>
     </mat-card>
 
     <mat-card-group fxLayout="column" fxLayoutGap="5%" style="width:100%">

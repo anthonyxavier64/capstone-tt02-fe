@@ -26,7 +26,7 @@ import { AppComponent } from './app.component';
 import { TOKEN_KEY } from './config';
 import { MaterialModule } from './core/material.module';
 import { PrimeNgModule } from './core/primeng.module';
-// import { NgCircleProgressModule } from '../../node_modules/ng-circle-progress';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 
 import { AdminComponent } from './pages/admin/adminLanding/admin.component';
 import { AdminAnnouncementManagementComponent } from './pages/admin/announcementManagement/adminAnnouncementManagement.component';
@@ -113,7 +113,22 @@ export function tokenGetter() {
     StyleClassModule,
     DataViewModule,
     DropdownModule,
-    // NgCircleProgressModule,
+    NgCircleProgressModule.forRoot({
+      radius: 80,
+      innerStrokeWidth: 10,
+      outerStrokeWidth: 10,
+      space: -10,
+      innerStrokeColor: "rgb(var(--primary-button-color)",
+      outerStrokeColor: "rgb(var(--covid-button-color)",
+      animation: true,
+      animationDuration: 300,
+      titleFontSize: "1.8rem",
+      titleColor: "rgb(var(--theme-primary-color)",
+      unitsFontSize: "1.8rem",
+      unitsColor: "rgb(var(--theme-primary-color)",
+      subtitleFontSize: "1.5rem",
+      subtitleColor: "rgba(var(--theme-primary-color)",
+    }),
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
