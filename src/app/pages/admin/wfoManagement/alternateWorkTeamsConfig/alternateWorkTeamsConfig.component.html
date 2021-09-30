@@ -40,34 +40,54 @@
               fxLayout="column"
               fxLayoutAlign="space-around center"
             >
+              <p>Team A ({{ teamA.length }} Employees)</p>
+            </div>
+            <div
+              class="teamCardContent"
+              fxLayout="column"
+              fxLayoutAlgin="space-around center"
+              fxLayoutGap="5%"
+            >
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <div
+                  fxLayout="column"
+                  fxLayoutAlign="space-around center"
+                  fxLayoutGap="2%"
+                >
+                  <p-dropdown
+                    [options]="teamAUsers"
+                    optionLabel="fullName"
+                    name="selectedEmployeeTeamA"
+                    ngModel
+                    #selectedEmployeeTeamA="ngModel"
+                    placeholder="Please select an employee"
+                  ></p-dropdown>
+                  <div
+                    *ngIf="
+                      selectedEmployeeTeamA.control.touched &&
+                      selectedEmployeeTeamA.control.value === ''
+                    "
+                    class="errorText"
+                    style="color: red"
+                  >
+                    Select a valid employee before adding.
+                  </div>
+                </div>
+                <button
+                  mat-button
+                  class="peach-btn"
+                  [disabled]="selectedEmployeeTeamA.control.value === ''"
+                >
+                  Add
+                </button>
+              </div>
+              <div *ngIf="teamA.length === 0">
+                <p>Please Add Employees to Team A!</p>
+              </div>
               <div
+                *ngIf="teamA.length !== 0"
                 fxLayout="column"
                 fxLayoutAlign="space-around center"
-                fxLayoutGap="2%"
-              >
-                <p-dropdown
-                  [options]="teamAUsers"
-                  optionLabel="fullName"
-                  name="selectedEmployeeTeamA"
-                  ngModel
-                  #selectedEmployeeTeamA="ngModel"
-                  placeholder="Please select an employee"
-                ></p-dropdown>
-                <div
-                  *ngIf="
-                    selectedEmployeeTeamA.control.touched &&
-                    selectedEmployeeTeamA.control.value === ''
-                  "
-                  class="errorText"
-                  style="color: red"
-                >
-                  Select a valid employee before adding.
-                </div>
-              </div>
-              <button
-                mat-button
-                class="peach-btn"
-                [disabled]="selectedEmployeeTeamA.control.value === ''"
               >
                 Add
               </button>
@@ -185,36 +205,56 @@
               fxLayout="column"
               fxLayoutAlign="space-around center"
             >
+              <p>Team B ({{ teamB.length }} Employees)</p>
+            </div>
+            <div
+              class="teamCardContent"
+              fxLayout="column"
+              fxLayoutAlgin="space-around center"
+              fxLayoutGap="5%"
+            >
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <div
+                  fxLayout="column"
+                  fxLayoutAlign="space-around center"
+                  fxLayoutGap="2%"
+                >
+                  <p-dropdown
+                    [options]="teamBUsers"
+                    optionLabel="fullName"
+                    name="selectedEmployeeTeamB"
+                    ngModel
+                    #selectedEmployeeTeamB="ngModel"
+                    placeholder="Please select an employee"
+                  ></p-dropdown>
+                  <div
+                    *ngIf="
+                      selectedEmployeeTeamB.control.touched &&
+                      selectedEmployeeTeamB.control.value === ''
+                    "
+                    class="errorText"
+                    style="color: red"
+                  >
+                    Select a valid employee before adding.
+                  </div>
+                </div>
+
+                <button
+                  mat-button
+                  type="submit"
+                  class="peach-btn"
+                  [disabled]="selectedEmployeeTeamB.control.value === ''"
+                >
+                  Add
+                </button>
+              </div>
+              <div *ngIf="teamB.length === 0">
+                <p>Please Add Employees to Team B!</p>
+              </div>
               <div
+                *ngIf="teamB.length !== 0"
                 fxLayout="column"
                 fxLayoutAlign="space-around center"
-                fxLayoutGap="2%"
-              >
-                <p-dropdown
-                  [options]="teamBUsers"
-                  optionLabel="fullName"
-                  name="selectedEmployeeTeamB"
-                  ngModel
-                  #selectedEmployeeTeamB="ngModel"
-                  placeholder="Please select an employee"
-                ></p-dropdown>
-                <div
-                  *ngIf="
-                    selectedEmployeeTeamB.control.touched &&
-                    selectedEmployeeTeamB.control.value === ''
-                  "
-                  class="errorText"
-                  style="color: red"
-                >
-                  Select a valid employee before adding.
-                </div>
-              </div>
-
-              <button
-                mat-button
-                type="submit"
-                class="peach-btn"
-                [disabled]="selectedEmployeeTeamB.control.value === ''"
               >
                 Add
               </button>
