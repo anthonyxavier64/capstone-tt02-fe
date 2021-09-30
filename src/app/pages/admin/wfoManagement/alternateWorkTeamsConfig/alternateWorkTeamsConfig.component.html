@@ -21,90 +21,103 @@
   </div>
 
   <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="5%">
-    <div fxLayout="row" fxLayoutAlgin="space-around center" fxLayoutGap="18%">
-      <div fxLayout="row" fxLayoutAlign="space-around start" class="teamCard">
+    <div
+      fxLayout="row"
+      style="width: 75vw"
+      fxLayoutAlgin="space-around start"
+      fxLayoutGap="12%"
+    >
+      <div fxLayout="row" fxLayoutAlign="space-around start">
         <form
           #addEmployeeToTeamAForm="ngForm"
           ngNativeValidate
           name="addEmployeeToTeamAForm"
           (ngSubmit)="addToTeamA(addEmployeeToTeamAForm)"
         >
-          <div
-            fxLayout="column"
-            fxLayoutAlign="space-around center"
-            fxLayoutGap="8%"
-          >
-            <p>Team A ({{ teamA.length }} Employees)</p>
-
+          <div fxLayout="column" fxLayoutAlign="space-around center">
             <div
-              fxLayout="row"
+              class="teamCardHeader"
+              fxLayout="column"
               fxLayoutAlign="space-around center"
-              fxLayoutGap="4%"
             >
+              <p>Team A ({{ teamA.length }} Employees)</p>
+            </div>
+            <div
+              class="teamCardContent"
+              fxLayout="column"
+              fxLayoutAlgin="space-around center"
+              fxLayoutGap="5%"
+            >
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <div
+                  fxLayout="column"
+                  fxLayoutAlign="space-around center"
+                  fxLayoutGap="2%"
+                >
+                  <p-dropdown
+                    [options]="teamAUsers"
+                    optionLabel="fullName"
+                    name="selectedEmployeeTeamA"
+                    ngModel
+                    #selectedEmployeeTeamA="ngModel"
+                    placeholder="Please select an employee"
+                  ></p-dropdown>
+                  <div
+                    *ngIf="
+                      selectedEmployeeTeamA.control.touched &&
+                      selectedEmployeeTeamA.control.value === ''
+                    "
+                    class="errorText"
+                    style="color: red"
+                  >
+                    Select a valid employee before adding.
+                  </div>
+                </div>
+                <button
+                  mat-button
+                  class="peach-btn"
+                  [disabled]="selectedEmployeeTeamA.control.value === ''"
+                >
+                  Add
+                </button>
+              </div>
+              <div *ngIf="teamA.length === 0">
+                <p>Please Add Employees to Team A!</p>
+              </div>
               <div
+                *ngIf="teamA.length !== 0"
                 fxLayout="column"
                 fxLayoutAlign="space-around center"
-                fxLayoutGap="2%"
               >
-                <p-dropdown
-                  [options]="teamAUsers"
-                  optionLabel="fullName"
-                  name="selectedEmployeeTeamA"
-                  ngModel
-                  #selectedEmployeeTeamA="ngModel"
-                  placeholder="Please select an employee"
-                ></p-dropdown>
-                <div
-                  *ngIf="
-                    selectedEmployeeTeamA.control.touched &&
-                    selectedEmployeeTeamA.control.value === ''
-                  "
-                  class="errorText"
-                  style="color: red"
-                >
-                  Select a valid employee before adding.
-                </div>
-              </div>
-              <button
-                mat-button
-                class="peach-btn"
-                [disabled]="selectedEmployeeTeamA.control.value === ''"
-              >
-                Add
-              </button>
-            </div>
-            <div *ngIf="teamA.length === 0">
-              <p>Please Add Employees to Team A!</p>
-            </div>
-            <div *ngIf="teamA.length !== 0">
-              <table *ngFor="let employee of teamA">
-                <tr>
-                  <td>
-                    <div
-                      class="employeeItem"
-                      fxLayout="row"
-                      fxLayoutAlign="space-between center"
-                    >
-                      <p>
-                        {{ employee.fullName }}
-                      </p>
-                      <button
-                        mat-button
-                        style="background-color: inherit; display: none"
-                        class="deleteButton"
+                <table *ngFor="let employee of teamA">
+                  <tr>
+                    <td>
+                      <div
+                        class="employeeItem"
                         fxLayout="row"
-                        fxLayoutAlign="space-around center"
-                        (click)="onTeamAEmployeeDelete(employee)"
+                        fxLayoutAlign="space-between center"
                       >
-                        <img
-                          style="height: 1vw; width: 1vw"
-                          src="../../../../../assets/images/cross.png"
-                        />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </table>
+                        <p style="font-size: 1.3vw">
+                          {{ employee.fullName }}
+                        </p>
+                        <button
+                          mat-button
+                          style="background-color: inherit; display: none"
+                          class="deleteButton"
+                          fxLayout="row"
+                          fxLayoutAlign="space-around center"
+                          (click)="onTeamAEmployeeDelete(employee)"
+                        >
+                          <img
+                            style="height: 1vw; width: 1vw"
+                            src="../../../../../assets/images/cross.png"
+                          />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </div>
           </div>
         </form>
@@ -116,83 +129,92 @@
           name="addEmployeeToTeamBForm"
           (ngSubmit)="addToTeamB(addEmployeeToTeamBForm)"
         >
-          <div
-            fxLayout="column"
-            fxLayoutAlign="space-around center"
-            fxLayoutGap="8%"
-          >
-            <p>Team B ({{ teamB.length }} Employees)</p>
+          <div fxLayout="column" fxLayoutAlign="space-around center">
             <div
-              fxLayout="row"
+              class="teamCardHeader"
+              fxLayout="column"
               fxLayoutAlign="space-around center"
-              fxLayoutGap="4%"
             >
+              <p>Team B ({{ teamB.length }} Employees)</p>
+            </div>
+            <div
+              class="teamCardContent"
+              fxLayout="column"
+              fxLayoutAlgin="space-around center"
+              fxLayoutGap="5%"
+            >
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <div
+                  fxLayout="column"
+                  fxLayoutAlign="space-around center"
+                  fxLayoutGap="2%"
+                >
+                  <p-dropdown
+                    [options]="teamBUsers"
+                    optionLabel="fullName"
+                    name="selectedEmployeeTeamB"
+                    ngModel
+                    #selectedEmployeeTeamB="ngModel"
+                    placeholder="Please select an employee"
+                  ></p-dropdown>
+                  <div
+                    *ngIf="
+                      selectedEmployeeTeamB.control.touched &&
+                      selectedEmployeeTeamB.control.value === ''
+                    "
+                    class="errorText"
+                    style="color: red"
+                  >
+                    Select a valid employee before adding.
+                  </div>
+                </div>
+
+                <button
+                  mat-button
+                  type="submit"
+                  class="peach-btn"
+                  [disabled]="selectedEmployeeTeamB.control.value === ''"
+                >
+                  Add
+                </button>
+              </div>
+              <div *ngIf="teamB.length === 0">
+                <p>Please Add Employees to Team B!</p>
+              </div>
               <div
+                *ngIf="teamB.length !== 0"
                 fxLayout="column"
                 fxLayoutAlign="space-around center"
-                fxLayoutGap="2%"
               >
-                <p-dropdown
-                  [options]="teamBUsers"
-                  optionLabel="fullName"
-                  name="selectedEmployeeTeamB"
-                  ngModel
-                  #selectedEmployeeTeamB="ngModel"
-                  placeholder="Please select an employee"
-                ></p-dropdown>
-                <div
-                  *ngIf="
-                    selectedEmployeeTeamB.control.touched &&
-                    selectedEmployeeTeamB.control.value === ''
-                  "
-                  class="errorText"
-                  style="color: red"
-                >
-                  Select a valid employee before adding.
-                </div>
-              </div>
-
-              <button
-                mat-button
-                type="submit"
-                class="peach-btn"
-                [disabled]="selectedEmployeeTeamB.control.value === ''"
-              >
-                Add
-              </button>
-            </div>
-            <div *ngIf="teamB.length === 0">
-              <p>Please Add Employees to Team B!</p>
-            </div>
-            <div *ngIf="teamB.length !== 0">
-              <table *ngFor="let employee of teamB">
-                <tr>
-                  <td>
-                    <div
-                      class="employeeItem"
-                      fxLayout="row"
-                      fxLayoutAlign="space-between center"
-                    >
-                      <p>
-                        {{ employee.fullName }}
-                      </p>
-                      <button
-                        mat-button
-                        style="background-color: inherit; display: none"
-                        class="deleteButton"
+                <table *ngFor="let employee of teamB">
+                  <tr>
+                    <td>
+                      <div
+                        class="employeeItem"
                         fxLayout="row"
-                        fxLayoutAlign="space-around center"
-                        (click)="onTeamBEmployeeDelete(employee)"
+                        fxLayoutAlign="space-between center"
                       >
-                        <img
-                          style="height: 1vw; width: 1vw"
-                          src="../../../../../assets/images/cross.png"
-                        />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </table>
+                        <p style="font-size: 1.3vw">
+                          {{ employee.fullName }}
+                        </p>
+                        <button
+                          mat-button
+                          style="background-color: inherit; display: none"
+                          class="deleteButton"
+                          fxLayout="row"
+                          fxLayoutAlign="space-around center"
+                          (click)="onTeamBEmployeeDelete(employee)"
+                        >
+                          <img
+                            style="height: 1vw; width: 1vw"
+                            src="../../../../../assets/images/cross.png"
+                          />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </div>
           </div>
         </form>
