@@ -15,14 +15,15 @@ import { AlternateWorkTeamsConfigurationService } from './../../../../services/w
 export class AlternateWorkTeamsConfigComponent implements OnInit {
   company: any | null;
   alternateWorkTeamsConfigurationId: number;
+  alternateWorkTeamsConfig: any | null;
 
   teamAUsers: any | null;
   teamBUsers: any | null;
 
   isLoading: boolean = false;
   isHovering: boolean = false;
-  teamA: any | null;
-  teamB: any | null;
+  teamA: any | null = [];
+  teamB: any | null = [];
 
   selectedEmployeeTeamA: any | null;
   selectedEmployeeTeamB: any | null;
@@ -58,12 +59,62 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
 
           if (this.company.alternateWorkTeamsConfigurationId === null) {
             this.alternateWorkTeamsConfigurationId = null;
-            this.teamA = [];
-            this.teamB = [];
-
             this.isDailySelected = true;
-
+            this.isDailyConfigFirstClicked = false;
             this.isLoading = false;
+          } else {
+            this.alternateWorkTeamsConfigurationService
+              .getAlternateWorkTeamsConfiguration(
+                this.company.alternateWorkTeamsConfigurationId
+              )
+              .subscribe((response) => {
+                this.alternateWorkTeamsConfig =
+                  response.alternateWorkTeamsConfig;
+                this.teamA = this.alternateWorkTeamsConfig.teamA;
+                this.teamB = this.alternateWorkTeamsConfig.teamB;
+                this.selectedConfig =
+                  this.alternateWorkTeamsConfig.scheduleType;
+
+                if (this.selectedConfig === 'DAILY') {
+                  this.isDailySelected = true;
+                  this.isDailyConfigFirstClicked = false;
+                } else if (this.selectedConfig === 'WEEKLY') {
+                  this.isWeeklySelected = true;
+                  this.isWeeklyConfigFirstClicked = false;
+                } else if (this.selectedConfig === 'BIWEEKLY') {
+                  this.isBiWeeklySelected = true;
+                  this.isBiweeklyConfigFirstClicked = false;
+                } else if (this.selectedConfig === 'MONTHLY') {
+                  this.isMonthlySelected = true;
+                  this.isMonthlyConfigFirstClicked = false;
+                }
+
+                this.userService.getUsers(companyId).subscribe((response) => {
+                  const populateTeamAArr = [];
+                  const populateTeamBArr = [];
+                  for (let user of response.users) {
+                    const userModel = {
+                      userId: user.userId,
+                      fullName: user.fullName,
+                      isVaccinated: user.isVaccinated,
+                    };
+
+                    const insideTeamA = this.teamA.find(
+                      (item) => item.userId === userModel.userId
+                    );
+                    const insideTeamB = this.teamB.find(
+                      (item) => item.userId === userModel.userId
+                    );
+                    if (!insideTeamA && !insideTeamB) {
+                      populateTeamAArr.push(userModel);
+                      populateTeamBArr.push(userModel);
+                    }
+                  }
+
+                  this.teamAUsers = populateTeamAArr;
+                  this.teamBUsers = populateTeamBArr;
+                });
+              });
           }
         },
         (error) => {
@@ -74,23 +125,6 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
           });
         }
       );
-
-      this.userService.getUsers(companyId).subscribe((response) => {
-        const populateTeamAArr = [];
-        const populateTeamBArr = [];
-        for (let user of response.users) {
-          const userModel = {
-            userId: user.userId,
-            fullName: user.fullName,
-            isVaccinated: user.isVaccinated,
-          };
-          populateTeamAArr.push(userModel);
-          populateTeamBArr.push(userModel);
-        }
-
-        this.teamAUsers = populateTeamAArr;
-        this.teamBUsers = populateTeamBArr;
-      });
     }
   }
 
@@ -246,6 +280,37 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
       teamA: this.teamA,
       teamB: this.teamB,
     };
+
+    //Bind employee to the team they belong to
+    for (let user of this.teamA) {
+      const wfoTeamAllocation = {
+        userId: user.userId,
+        fullName: user.fullName,
+        alternateWfoTeam: 'A',
+      };
+      this.userService
+        .updateUserDetailsByUserId(user.userId, wfoTeamAllocation)
+        .subscribe(
+          (response) => console.log(response),
+          (error) => console.log(error)
+        );
+    }
+
+    for (let user of this.teamB) {
+      const wfoTeamAllocation = {
+        userId: user.userId,
+        fullName: user.fullName,
+        alternateWfoTeam: 'B',
+      };
+      this.userService
+        .updateUserDetailsByUserId(user.userId, wfoTeamAllocation)
+        .subscribe(
+          (response) => console.log(response),
+          (error) => console.log(error)
+        );
+    }
+
+    //Create Alternate Work Teams Config and Bind to Company
     this.alternateWorkTeamsConfigurationService
       .createAlternateWorkTeamsConfiguration(newConfig)
       .subscribe((response) => {
@@ -288,9 +353,13 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
       });
   }
 
+  updateAlternateWorkTeamsConfiguration() {}
+
   onSave(): void {
     if (this.alternateWorkTeamsConfigurationId === null) {
       this.createAlternateWorkTeamsConfiguration();
+    } else {
+      this.updateAlternateWorkTeamsConfiguration();
     }
   }
 }
