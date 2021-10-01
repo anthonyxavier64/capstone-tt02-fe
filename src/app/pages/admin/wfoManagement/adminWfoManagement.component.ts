@@ -55,11 +55,30 @@ export class AdminWfoManagementComponent implements OnInit {
           this.companyWfoConfigType = this.company.wfoArrangement;
           console.log(this.company);
 
-          if (this.companyWfoConfigType === 'OFFICE_QUOTAS') {
+          if (
+            this.companyWfoConfigType === 'OFFICE_QUOTAS' &&
+            this.company.officeQuotaConfigurationId !== null
+          ) {
             this.officeQuotaConfig = this.company.officeQuotaConfiguration;
-          } else if (this.companyWfoConfigType === 'ALTERNATE_WORK_TEAMS') {
+            this.isOfficeQuotaSelectBtnClicked = true;
+            this.isAltWorkTeamSelectBtnClicked = false;
+            this.officeQuotaSelectBtn = 'selectedButton';
+            this.officeQuotaSelection = 'selectedWfoSelection';
+            this.altWorkTeamSelectBtn = 'selectButton';
+            this.altWorkTeamsSelection = 'wfoSelection';
+          } else if (
+            this.companyWfoConfigType === 'ALTERNATE_WORK_TEAMS' &&
+            this.company.alternateWorkTeamsConfigurationId !== null
+          ) {
             this.alternateWorkTeamsConfig =
               this.company.alternateWorkTeamsConfig;
+
+            this.isAltWorkTeamSelectBtnClicked = true;
+            this.isOfficeQuotaSelectBtnClicked = false;
+            this.altWorkTeamSelectBtn = 'selectedButton';
+            this.altWorkTeamsSelection = 'selectedWfoSelection';
+            this.officeQuotaSelectBtn = 'selectButton';
+            this.officeQuotaSelection = 'wfoSelection';
           }
         },
         (error) => {
@@ -85,12 +104,18 @@ export class AdminWfoManagementComponent implements OnInit {
       });
     } else {
       this.company.wfoArrangement = 'ALTERNATE_WORK_TEAMS';
+      console.log(this.company);
       this.isAltWorkTeamSelectBtnClicked = true;
       this.isOfficeQuotaSelectBtnClicked = false;
       this.altWorkTeamSelectBtn = 'selectedButton';
       this.altWorkTeamsSelection = 'selectedWfoSelection';
       this.officeQuotaSelectBtn = 'selectButton';
       this.officeQuotaSelection = 'wfoSelection';
+
+      this.companyDetailsService.updateCompany(this.company).subscribe(
+        (response) => {},
+        (error) => {}
+      );
     }
   }
 
@@ -108,6 +133,11 @@ export class AdminWfoManagementComponent implements OnInit {
       this.officeQuotaSelection = 'selectedWfoSelection';
       this.altWorkTeamSelectBtn = 'selectButton';
       this.altWorkTeamsSelection = 'wfoSelection';
+
+      this.companyDetailsService.updateCompany(this.company).subscribe(
+        (response) => {},
+        (error) => {}
+      );
     }
   }
 
