@@ -50,4 +50,12 @@ export class NavbarComponent implements OnInit {
   onDashboardClick() {
     this.router.navigateByUrl('/dashboard');
   }
+  
+  handleGoals() {
+    console.log('clicking on goals');
+  }
+
+  handleTasks() {
+    this.router.navigateByUrl('/task');
+  }
 }

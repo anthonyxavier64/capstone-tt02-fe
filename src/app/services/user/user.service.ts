@@ -1,5 +1,4 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -26,32 +25,30 @@ export class UserService {
       .pipe(catchError(handleError));
   }
 
-  getDepartments(email: string): Observable<any> {
+  getDepartments(email: any): Observable<any> {
+    let params = new HttpParams().set('email', email);
     return this.httpClient
-      .post<any>(this.baseUrl + '/get-departments', { email }, httpOptions)
+      .get<any>(this.baseUrl + '/get-departments', { params })
       .pipe(catchError(handleError));
   }
 
-  getManagedDepartments(email: string): Observable<any> {
+  getManagedDepartments(email: any): Observable<any> {
+    let params = new HttpParams().set('email', email);
     return this.httpClient
-      .post<any>(
-        this.baseUrl + '/get-managed-departments',
-        { email },
-        httpOptions
-      )
+      .get<any>(this.baseUrl + '/get-managed-departments', { params })
       .pipe(catchError(handleError));
   }
 
   resetPassword(
-    email: string,
-    oldpassword: string,
-    password1: string,
-    password2: string
+    userId: String,
+    oldpassword: String,
+    password1: String,
+    password2: String
   ): Observable<any> {
     return this.httpClient
       .post(
         this.baseUrl + '/reset-password',
-        { email, oldpassword, password1, password2 },
+        { userId, oldpassword, password1, password2 },
         httpOptions
       )
       .pipe(catchError(handleError));
@@ -79,5 +76,13 @@ export class UserService {
     return this.httpClient.post<any>(this.baseUrl + '/delete-user', {
       userId: userId,
     });
+  }
+
+  updateUserDetailsByUserId(userId: any, updateDetails: any) {
+    return this.httpClient.patch<any>(
+      `${this.baseUrl}/update-user-by-id/${userId}`,
+      updateDetails,
+      httpOptions
+    );
   }
 }

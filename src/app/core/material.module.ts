@@ -9,10 +9,21 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
-  exports: [MatButtonModule, MatIconModule, MatCardModule, MatRadioModule,
-    MatInputModule, MatFormFieldModule, MatSelectModule, MatTabsModule, MatDialogModule,
-    MatExpansionModule],
+  exports: [
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatRadioModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatTabsModule,
+    MatDialogModule,
+    MatExpansionModule,
+    MatProgressSpinnerModule,
+  ],
 })
-export class MaterialModule { }
+export class MaterialModule {}

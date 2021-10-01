@@ -1,0 +1,245 @@
+<p-toast></p-toast>
+<mat-spinner
+  *ngIf="isLoading"
+  style="color: aquamarine; margin-left: 50%; margin-top: 30vw"
+  fxLayoutAlign=" center"
+></mat-spinner>
+
+<div
+  *ngIf="!isLoading"
+  fxLayout="column"
+  fxLayoutGap="3%"
+  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+>
+  <app-navbar></app-navbar>
+
+  <div fxLayout="row" fxLayoutAlign="space-between start">
+    <h1>Office Quota Configuration</h1>
+    <div>
+      <button mat-button class="grey-btn" (click)="onBackClick()">Back</button>
+    </div>
+  </div>
+
+  <div>
+    <form
+      #officeQuotaConfigForm="ngForm"
+      ngNativeValidate
+      name="officeQuotaConfigForm"
+      (ngSubmit)="submit(officeQuotaConfigForm)"
+      fxLayout="column"
+      fxLayoutAlign="space-around start"
+      fxLayoutGap="2%"
+    >
+      <div
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxLayoutGap="2%"
+        style="width: 100%"
+      >
+        <label for="employeesAllowed"
+          >Number of employees allowed in office per day:</label
+        >
+        <input
+          matInput
+          ngModel
+          class="numberInput"
+          name="numEmployeesPerDay"
+          #numEmployeesPerDay="ngModel"
+          type="number"
+          [max]="31"
+          [min]="0"
+          [placeholder]="
+            officeQuotaConfig ? officeQuotaConfig.numEmployeesPerDay : 0
+          "
+        />
+      </div>
+      <div
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxLayoutGap="2%"
+        style="width: 100%"
+      >
+        <label for="wfoDaysAllowed"
+          >Number of days each employee is allowed to work from office per
+          month:</label
+        >
+        <input
+          matInput
+          ngModel
+          class="numberInput"
+          name="numDaysAllowedPerMonth"
+          #numDaysAllowedPerMonth="ngModel"
+          type="number"
+          [max]="31"
+          [min]="0"
+          [placeholder]="
+            officeQuotaConfig ? officeQuotaConfig.numDaysAllowedPerMonth : 0
+          "
+        />
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="25%">
+        <form
+          #addExceptionForm="ngForm"
+          ngNativeValidate
+          name="addExceptionForm"
+          (ngSubmit)="addException(addExceptionForm)"
+        >
+          <label>Exceptions:</label>
+
+          <div
+            fxLayout="row"
+            fxLayoutGap="8%"
+            fxLayoutAlign="space-between start"
+            style="margin-top: 3%"
+          >
+            <div>
+              <p-dropdown
+                [options]="users"
+                optionLabel="fullName"
+                name="selectedException"
+                ngModel
+                #selectedException="ngModel"
+                placeholder="Please select an employee"
+              ></p-dropdown>
+            </div>
+            <p class="labelText">=</p>
+            <input
+              matInput
+              style="min-width: 12vw"
+              class="numberInput"
+              name="selectedExceptionWfoMonthlyAllocation"
+              ngModel
+              #selectedExceptionWfoMonthlyAllocation="ngModel"
+              type="number"
+              [max]="31"
+              [min]="0"
+            />
+            <button
+              mat-button
+              class="addExceptionsButton"
+              type="submit"
+              fxLayout="column"
+              fxLayoutAlign="space-around center"
+            >
+              <p class="addExceptionButtonText">+ Add Exception</p>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div>
+        <p-table
+          #exceptionsTable
+          [value]="exceptions"
+          dataKey="id"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          [loading]="isLoading"
+          styleClass="p-datatable-gridlines"
+          [paginator]="true"
+          [globalFilterFields]="['userId', 'fullName', 'wfoMonthlyAllocation']"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  Employee ID
+                  <p-columnFilter
+                    type="text"
+                    field="userId"
+                    display="menu"
+                  ></p-columnFilter>
+                </div>
+              </th>
+              <th>
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  Full Name
+                  <p-columnFilter
+                    type="text"
+                    field="fullName"
+                    display="menu"
+                  ></p-columnFilter>
+                </div>
+              </th>
+              <th>
+                <div class="p-d-flex p-jc-between p-ai-center">
+                  WFO Monthly Allocation
+                  <p-columnFilter
+                    type="number"
+                    field="wfoMonthlyAllocation"
+                    display="menu"
+                  ></p-columnFilter>
+                </div>
+              </th>
+
+              <th style="width: 8rem">
+                <div class="p-d-flex p-jc-between p-ai-center">Actions</div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-exception>
+            <tr>
+              <td>{{ exception.userId }}</td>
+              <td>
+                {{ exception.fullName }}
+              </td>
+              <td>
+                {{ exception.wfoMonthlyAllocation }}
+              </td>
+              <td>
+                <div
+                  fxLayout="row"
+                  fxLayoutAlign="space-around center"
+                  fxLayoutGap="1%"
+                  class="btnGroup"
+                >
+                  <img
+                    (click)="editException(exception)"
+                    src="../../../../assets/images/editIcon.png"
+                  />
+
+                  <img
+                    class="deleteIcon"
+                    (click)="deleteException(exception)"
+                    src="../../../../assets/images/deleteIcon.png"
+                  />
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="4">No exceptions found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <div fxLayout="column" fxLayoutAlign="space-around center">
+          <div
+            *ngIf="
+              numEmployeesPerDay.value === '' && numEmployeesPerDay.touched
+            "
+            class="errorText"
+            style="color: red"
+          >
+            Number of Employees Per Day cannot be empty
+          </div>
+          <div
+            *ngIf="
+              numDaysAllowedPerMonth.value === '' &&
+              numDaysAllowedPerMonth.touched
+            "
+            class="errorText"
+            style="color: red"
+          >
+            Number of Days Allowed Per Month cannot be empty
+          </div>
+        </div>
+      </div>
+
+      <button mat-button type="submit" class="peach-btn">Save</button>
+    </form>
+  </div>
+</div>

@@ -2,13 +2,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -41,6 +43,8 @@ import { AdminEmployeeManagementComponent } from './pages/admin/employeeManageme
 import { DeleteEmployeeDialogComponent } from './pages/admin/employeeManagement/delete-employee-dialog/delete-employee-dialog.component';
 import { EditEmployeeDialogComponent } from './pages/admin/employeeManagement/edit-employee-dialog/edit-employee-dialog.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
+import { AlternateWorkTeamsConfigComponent } from './pages/admin/wfoManagement/alternateWorkTeamsConfig/alternateWorkTeamsConfig.component';
+import { OfficeQuotaConfigComponent } from './pages/admin/wfoManagement/officeQuotaConfig/officeQuotaConfig.component';
 import { IndexComponent } from './pages/index/index.component';
 import { LoginComponent } from './pages/index/login/login.component';
 import { CompanyDetailsDialogComponent } from './pages/index/sign-up/company-details-dialog/company-details-dialog.component';
@@ -52,6 +56,8 @@ import { ViewAnnouncementComponent } from './pages/view-announcement/view-announ
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
 import { AdminGuideComponent } from './pages/admin/adminLanding/admin-guide/admin-guide.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { EditExceptionDialogComponent } from './pages/admin/wfoManagement/officeQuotaConfig/edit-exception-dialog/edit-exception-dialog.component';
+import { TaskComponent } from './pages/employee/task/task.component';
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -67,6 +73,8 @@ export function tokenGetter() {
     OfficeSpaceConfigComponent,
     AdminEmployeeManagementComponent,
     AdminWfoManagementComponent,
+    OfficeQuotaConfigComponent,
+    AlternateWorkTeamsConfigComponent,
     AdminAnnouncementManagementComponent,
     ProfileComponent,
     EditAnnouncementComponent,
@@ -87,6 +95,8 @@ export function tokenGetter() {
     DeleteEmployeeDialogComponent,
     AdminGuideComponent,
     DashboardComponent,
+    EditExceptionDialogComponent,
+    TaskComponent,
   ],
   imports: [
     BrowserModule,
@@ -105,6 +115,11 @@ export function tokenGetter() {
     MatIconModule,
     MatMenuModule,
     MatCardModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatProgressSpinnerModule,
     PrimeNgModule,
     TableModule,
     InputTextareaModule,
@@ -141,6 +156,7 @@ export function tokenGetter() {
       provide: MatDialogRef,
       useValue: {},
     },
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
     DialogService,
   ],
   bootstrap: [AppComponent],

@@ -1,4 +1,4 @@
-<!-- <p-toast></p-toast> -->
+<p-toast></p-toast>
 
 <div
   fxLayout="column"
@@ -7,12 +7,10 @@
 >
   <app-navbar></app-navbar>
 
-  <div class="page-title">Welcome {{ user.fullName }}.</div>
-
   <mat-card class="beige-block">
     <form #updateForm="ngForm" (ngSubmit)="closeProfileEdit(updateForm)">
       <mat-card-group fxLayoutAlign="center center" fxLayout="column">
-        <mat-card-title> My Profile</mat-card-title>
+        <mat-card-title>My Profile</mat-card-title>
         <div mat-card-avatar class="profile-image"></div>
       </mat-card-group>
 
@@ -33,7 +31,7 @@
           <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
             <label for="fullName">Name</label>
 
-            <span *ngIf="!editDetailsMode">{{ user.fullName }}</span>
+            <p *ngIf="!editDetailsMode">{{ user.fullName }}</p>
             <input pInputText ngNativeValidate required *ngIf="editDetailsMode" class="inputField"
               [(ngModel)]="user.fullName" name="fullName" id="fullName" #fullName="ngModel" />
           </div>
@@ -41,17 +39,19 @@
           <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
             <label for="email">Email</label>
 
-            <span>{{ user.email }}</span>
+            <p>{{ user.email }}</p>
           </div>
 
           <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
             <label for="contactNumber">Contact</label>
 
-            <span *ngIf="!editDetailsMode">{{ user.contactNumber }}</span>
+            <p *ngIf="!editDetailsMode">{{ user.contactNumber }}</p>
             <input pInputText ngNativeValidate required *ngIf="editDetailsMode" class="inputField"
               [(ngModel)]="user.contactNumber" name="contactNumber" id="contactNumber" #contactNumber="ngModel" />
           </div>
         </div>
+
+      </mat-card-group>
 
       <div class="profile-btn-wrap" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5%">
         <button mat-button class="grey-btn" *ngIf="!editDetailsMode" (click)="openDialog()">
@@ -64,8 +64,6 @@
           Save Changes
         </button>
       </div>
-
-      </mat-card-group>
 
     </form>
 
@@ -84,14 +82,14 @@
         <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
           <label for="name">WFH Productivity Status</label>
 
-          <span>Test</span>
+          <p>Test</p>
         </div>
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="45%">
         <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%" *ngIf="hasWFOMonthlyCap">
           <label for="name">WFO Monthly Cap</label>
 
-          <span>{{ user.wfoMonthlyAllocation }}</span>
+          <p>{{ user.wfoMonthlyAllocation }}</p>
         </div>
 
         <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%" *ngIf="hasWFOTeam">
@@ -110,19 +108,19 @@
         <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
           <label for="name">Position</label>
 
-          <span>{{ user.position }}</span>
+          <p>{{ user.position }}</p>
         </div>
 
         <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
           <label for="name">In-charge of</label>
 
-          <span>{{ user.mdept }}</span>
+          <p>{{ user.mdept }}</p>
         </div>
 
         <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
           <label for="name">Part of</label>
 
-          <span>{{ user.dept }}</span>
+          <p>{{ user.dept }}</p>
         </div>
       </div>
     </mat-card-group>

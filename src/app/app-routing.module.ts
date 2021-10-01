@@ -8,11 +8,14 @@ import { OfficeSpaceConfigComponent } from './pages/admin/companyDetails/office-
 import { EditAnnouncementComponent } from './pages/admin/edit-announcement/edit-announcement.component';
 import { AdminEmployeeManagementComponent } from './pages/admin/employeeManagement/adminEmployeeManagement.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
+import { AlternateWorkTeamsConfigComponent } from './pages/admin/wfoManagement/alternateWorkTeamsConfig/alternateWorkTeamsConfig.component';
+import { OfficeQuotaConfigComponent } from './pages/admin/wfoManagement/officeQuotaConfig/officeQuotaConfig.component';
 import { IndexComponent } from './pages/index/index.component';
 import { LoginComponent } from './pages/index/login/login.component';
 import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { TaskComponent } from './pages/employee/task/task.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
@@ -45,6 +48,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'officeQuotaConfig',
+    component: OfficeQuotaConfigComponent,
+  },
+  {
+    path: 'alternateWorkTeamsConfig',
+    component: AlternateWorkTeamsConfigComponent,
+  },
+  {
     path: 'adminAnnouncementManagement',
     component: AdminAnnouncementManagementComponent,
     canActivate: [AuthGuard],
@@ -59,10 +70,15 @@ const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'task',
+    component: TaskComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -1,11 +1,107 @@
-<div fxLayout="column" fxLayoutGap="3%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
+<div
+  fxLayout="column"
+  fxLayoutGap="3%"
+  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+>
   <app-navbar></app-navbar>
 
-  <div style="font-size:25px;">
-      Welcome [Username], what would you like to do today?
+  <div fxLayout="row" fxLayoutAlign="space-between start">
+    <h1>
+      Select your company's Work From Office arrangement:
+    </h1>
+    <div>
+      <button mat-button class="grey-btn" (click)="onBackClick()">
+        Back
+      </button>
+    </div>
   </div>
 
+  <div fxLayout="row" fxLayoutAlign="space-evenly center">
+    <mat-card
+      fxLayout="column"
+      fxLayoutAlign="space-around center"
+      fxLayoutGap="2%"
+      [ngClass]="[officeQuotaSelection]"
+    >
+      <mat-card-title>Office Quotas</mat-card-title>
+      <mat-card-content>
+        <ul>
+          <li>Limit number of employees in the office<br />per day</li>
+          <br />
+          <li>Limit number of work from office days for<br />each employee</li>
+          <br />
+          <li>
+            Allow employees to self-declare their work<br />from office days
+            from Calendar
+          </li>
+          <br />
+          <li>
+            Suitable for companies who requires a<br />flexible hybrid working
+            arrangement
+          </li>
+        </ul>
+      </mat-card-content>
+      <mat-card-content fxLayout="row" fxLayoutAlign="space-around center">
+        <button
+          mat-button
+          class="configureButton"
+          (click)="onConfigureOfficeQuotaClick()"
+        >
+          Configure
+        </button>
+        <button
+          mat-button
+          [ngClass]="[officeQuotaSelectBtn]"
+          [disabled]="isOfficeQuotaSelectBtnClicked"
+          (click)="onOfficeQuotaSelectClick()"
+        >
+          Select
+        </button>
+      </mat-card-content>
+    </mat-card>
 
+    <mat-card
+      fxLayout="column"
+      fxLayoutAlign="space-around center"
+      fxLayoutGap="2%"
+      [ngClass]="[altWorkTeamsSelection]"
+    >
+      <mat-card-title>Alternate Work Teams</mat-card-title>
+      <mat-card-content>
+        <ul>
+          <li>
+            Assign employees into 2 teams working on<br />rotational shifts
+          </li>
+          <br />
+          <li>Schedule fixed work from office days for<br />each team</li>
+          <br />
+          <li>Set period of rotation for each team</li>
+          <br />
+          <li>
+            Suitable for companies who requires<br />higher control over hybrid
+            working<br />arrangement
+          </li>
+        </ul>
+      </mat-card-content>
+      <mat-card-content fxLayout="row" fxLayoutAlign="space-around center">
+        <button
+          mat-button
+          (click)="onConfigureAlternativeWorkTeamsClick()"
+          class="configureButton"
+        >
+          Configure
+        </button>
+        <button
+          mat-button
+          [ngClass]="[altWorkTeamSelectBtn]"
+          [disabled]="isAltWorkTeamSelectBtnClicked"
+          (click)="onAltWorkTeamSelectClick()"
+        >
+          Select
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
   <!-- generate number of cards to show -->
 </div>
