@@ -54,6 +54,7 @@ import { ViewAnnouncementComponent } from './pages/view-announcement/view-announ
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
 import { AdminGuideComponent } from './pages/admin/adminLanding/admin-guide/admin-guide.component';
 import { EditExceptionDialogComponent } from './pages/admin/wfoManagement/officeQuotaConfig/edit-exception-dialog/edit-exception-dialog.component';
+import { TaskComponent } from './pages/employee/task/task.component';
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -91,6 +92,7 @@ export function tokenGetter() {
     DeleteEmployeeDialogComponent,
     AdminGuideComponent,
     EditExceptionDialogComponent,
+    TaskComponent,
   ],
   imports: [
     BrowserModule,

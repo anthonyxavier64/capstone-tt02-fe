@@ -22,13 +22,13 @@
     <mat-menu class="workDropList" #workMenu="matMenu">
       <h3 class="workDropListHeader">Work</h3>
       <hr class="headerDivider" />
-      <button class="workDropListItem" mat-menu-item>
+      <button class="workDropListItem" mat-menu-item (click)="handleGoals()">
         <img class="goalIcon" src="../../../assets/images/goalIcon.png" />
         <p class="workDropListItemText">Goals</p>
         <img class="arrowIcon" src="../../../assets/images/arrowIcon.png" />
       </button>
       <hr class="itemDivider" />
-      <button class="workDropListItem" mat-menu-item>
+      <button class="workDropListItem" mat-menu-item (click)="handleTasks()">
         <img class="taskIcon" src="../../../assets/images/taskIcon.png" />
         <p class="workDropListItemText">Tasks</p>
         <img class="arrowIcon" src="../../../assets/images/arrowIcon.png" />
@@ -58,11 +58,7 @@
       />
     </button>
     <mat-menu class="workDropList" #notificationMenu="matMenu">
-      <button
-        class="workDropListItem"
-        mat-menu-item
-        (click)="openDialog()"
-      >
+      <button class="workDropListItem" mat-menu-item (click)="openDialog()">
         <img class="goalIcon" src="../../../assets/images/goalIcon.png" />
         <p class="workDropListItemText">Startup Guide</p>
         <img class="arrowIcon" src="../../../assets/images/arrowIcon.png" />
