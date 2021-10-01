@@ -58,7 +58,7 @@
   color: rgba(var(--theme-primary-color), 0.8);
   font-size: 1.2vw;
   height: 4vw;
-  width: 9vw;
+  width: 11vw;
   border-radius: 7px;
   margin-right: 6%;
 }
@@ -68,7 +68,7 @@
   color: rgba(var(--theme-primary-color), 0.8);
   font-size: 1.2vw;
   height: 4vw;
-  width: 9vw;
+  width: 11vw;
   border-radius: 7px;
   margin-left: 6%;
 }
@@ -78,7 +78,7 @@
   color: rgba(var(--theme-primary-color), 0.5);
   font-size: 1.2vw;
   height: 4vw;
-  width: 9vw;
+  width: 11vw;
   border-radius: 7px;
   margin-left: 6%;
 }
