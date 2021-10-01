@@ -15,28 +15,21 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class CovidDocumentSubmissionService {
-  baseUrl: string = `${environment.API_REST_URL}` + '/department';
+  baseUrl: string = `${environment.API_REST_URL}` + '/covid-document-submission';
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllDepartments(companyId: string): Observable<any> {
-    let params = new HttpParams().set('companyId', companyId);
-
+  getUserSubmissions(userId: number): Observable<any> {
     return this.httpClient
-      .get<any>(this.baseUrl + '/get-all-departments', { params })
+      .get<any>(`${this.baseUrl}/get-user-submissions/${userId}`)
       .pipe(catchError(handleError));
   }
-
-  createCovidDocumentSubmission(submission: any) {
+  createCovidDocumentSubmission(submission: any): Observable<any> {
     console.log(submission);
-    this.httpClient
+    return this.httpClient
       .post<any>(this.baseUrl + '/create-covid-document-submission', submission)
-      .pipe(catchError(handleError))
-      .subscribe((response) => {
-        console.log(response);
-      });
+      .pipe(catchError(handleError));
   }
-
   updateDocument(submission: any): Observable<any> {
     console.log(submission);
     return this.httpClient.patch(`${this.baseUrl}/update-covid-document-submission/${submission.covidDocumentSubmissionId}`, submission, httpOptions);

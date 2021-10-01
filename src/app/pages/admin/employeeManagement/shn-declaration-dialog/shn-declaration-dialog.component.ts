@@ -1,5 +1,6 @@
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covidDocumentSubmission.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 import { Component, OnInit } from '@angular/core';
@@ -13,6 +14,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 })
 
 export class ShnDeclarationDialogComponent implements OnInit {
+  covidSubmissionType: string;
   remarks: string;
   showWarningMessage: boolean;
   uploadProgress: number;
@@ -22,9 +24,12 @@ export class ShnDeclarationDialogComponent implements OnInit {
     public config: DynamicDialogConfig,
     private userService: UserService,
     private afStorage: AngularFireStorage,
+    private covidDocumentSubmissionService: CovidDocumentSubmissionService
   ) {
     this.uploadProgress = -1;
     this.showWarningMessage = false;
+    this.covidSubmissionType="STAY_HOME_NOTICE";
+    
   }
 
   ngOnInit(): void {
@@ -37,6 +42,16 @@ export class ShnDeclarationDialogComponent implements OnInit {
       });
   }
 
+  onClickSHN() {
+    this.covidSubmissionType = "STAY_HOME_NOTICE";
+  }
+  onClickQO() {
+    this.covidSubmissionType = "QUARANTINE_ORDER";
+  }
+  onWriteRemarks(event) {
+    this.remarks = event.target.value;
+  }
+  
   upload(event) { 
     const currentDate  = new Date().toString();
 
@@ -44,7 +59,22 @@ export class ShnDeclarationDialogComponent implements OnInit {
     const uploadTask = fileRef.put(event.target.files[0]);
     uploadTask.percentageChanges().subscribe((data) => this.uploadProgress = data);
 
-    this.user.latestProofOfVaccination = currentDate.toString()
+    this.user.latestMedicalCert = currentDate.toString();
+    const newSubmission = { dateOfSubmission: currentDate, remarks: this.remarks, covidDocumentType: this.covidSubmissionType, employeeId: this.user.userId };
+    this.covidDocumentSubmissionService
+      .createCovidDocumentSubmission(newSubmission)
+      .subscribe(
+        (response) => {
+          if (response.true) {
+            console.log("success!", response.covidDocumentSubmission);
+          } else {
+            console.log("A problem has occured", response);
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
 
     this.userService.updateUserDetails(this.user).subscribe(
       (response) => {

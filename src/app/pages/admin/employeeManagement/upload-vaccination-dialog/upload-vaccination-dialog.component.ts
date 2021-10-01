@@ -1,5 +1,6 @@
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covidDocumentSubmission.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 import { Component, OnInit } from '@angular/core';
@@ -20,6 +21,7 @@ export class UploadVaccinationDialogComponent implements OnInit {
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     private userService: UserService,
+    private covidDocumentSubmissionService: CovidDocumentSubmissionService,
     private afStorage: AngularFireStorage,
   ) {
     this.uploadProgress = -1;
@@ -36,15 +38,30 @@ export class UploadVaccinationDialogComponent implements OnInit {
       });
   }
 
-  upload(event) { 
-    const currentDate  = new Date().toString();
+  upload(event) {
+    const currentDate = new Date().toString();
 
     const fileRef = this.afStorage.ref(`Vaccination_Certs/${this.user.userId}/${currentDate}`);
     const uploadTask = fileRef.put(event.target.files[0]);
     uploadTask.percentageChanges().subscribe((data) => this.uploadProgress = data);
 
-    this.user.latestProofOfVaccination = currentDate.toString()
+    this.user.latestProofOfVaccination = currentDate.toString();
 
+    const newSubmission = { dateOfSubmission: currentDate, covidDocumentType: "PROOF_OF_VACCINATION", employeeId: this.user.userId };
+    this.covidDocumentSubmissionService
+      .createCovidDocumentSubmission(newSubmission)
+      .subscribe(
+        (response) => {
+          if (response.true) {
+            console.log("success!", response.covidDocumentSubmission);
+          } else {
+            console.log("A problem has occured", response);
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     this.userService.updateUserDetails(this.user).subscribe(
       (response) => {
         this.user = response.user;
@@ -52,7 +69,7 @@ export class UploadVaccinationDialogComponent implements OnInit {
       (error) => {
         console.log(error);
       }
-    );;
+    );
   }
 
   onConfirmClick() {
