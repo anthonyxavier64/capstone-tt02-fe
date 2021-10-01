@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GoalService } from 'src/app/services/goal/goal.service';
+import { TaskService } from 'src/app/services/task/task.service';
 
 @Component({
   selector: 'app-task',
@@ -11,7 +12,10 @@ export class TaskComponent implements OnInit {
   goals: any[];
   selectedGoal: any;
 
-  constructor(private goalService: GoalService) {
+  constructor(
+    private goalService: GoalService,
+    private taskService: TaskService
+  ) {
     this.user = JSON.parse(localStorage.getItem('currentUser'));
   }
 
@@ -29,6 +33,12 @@ export class TaskComponent implements OnInit {
   handleGoalSelection() {
     if (!!this.selectedGoal) {
       console.log(this.selectedGoal.goalId);
+      this.taskService.getAllTasksByGoalId(this.selectedGoal.goalId).subscribe(
+        (response) => {
+          console.log(response.tasks);
+        },
+        (error) => {}
+      );
     }
   }
 }
