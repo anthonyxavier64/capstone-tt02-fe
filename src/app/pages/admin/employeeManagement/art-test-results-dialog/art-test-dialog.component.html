@@ -1,0 +1,60 @@
+<form>
+  <div class="dialog-container">
+    <h1>ART/FET Test Results</h1>
+    <p class="last-updated">Last updated: {{ renderLastUpdate() }}</p>
+    <div class="vaccination-status-wrapper">
+      <div
+        class="vaccination-status {{
+          user.isVaccinated ? 'vaccinated' : 'unvaccinated'
+        }}"
+      ></div>
+      <p class="text">{{ renderVaccinationStatus() }}</p>
+    </div>
+    <div>
+    <div>
+      <input type="radio" id="positive" name="isPositive" value={{true}}
+             checked>
+      <label for="stay-home-notice">Positive</label>
+    </div>
+    <div>
+      <input type="radio" id="negative" name="isPositive" value={{false}}>
+      <label for="quarantine-order">Negative</label>
+    </div>
+    </div>
+    <br/>
+    <input
+      class="custom-file-input"
+      type="file"
+      (change)="upload($event)"
+      accept="image/*, application/pdf"
+    />
+    <progress max="100" [value]="uploadProgress"></progress>
+    <div
+      class="success-message {{
+        uploadProgress === 100 ? 'visible' : 'hidden'
+      }}"
+    >
+      File successfully uploaded!
+    </div>
+    <div
+      class="warning-message {{
+        showWarningMessage && uploadProgress !== 100 ? 'visible' : 'hidden'
+      }}"
+    >
+      Please wait for your file to be uploaded!
+    </div>
+  </div>
+  <div
+    fxLayout="row"
+    fxLayoutAlign="center"
+    fxLayoutGap="3%"
+    style="
+      margin-top: 3%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    "
+  >
+    <button mat-button class="closeBtn" (click)="onCloseClick()">Close</button>
+  </div>
+</form>
