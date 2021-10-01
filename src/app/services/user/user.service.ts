@@ -1,8 +1,10 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.dev';
+
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
 import { handleError } from '../services-util';
 
 const httpOptions = {
@@ -69,6 +71,12 @@ export class UserService {
   updateUserDetails(user: any): Observable<any> {
     return this.httpClient
       .patch<any>(this.baseUrl + '/me', user, httpOptions)
+      .pipe(catchError(handleError));
+  }
+
+  getUser(userId: number): Observable<any> {
+    return this.httpClient
+      .get<any>(`${this.baseUrl}/get-user/${userId}`, httpOptions)
       .pipe(catchError(handleError));
   }
 

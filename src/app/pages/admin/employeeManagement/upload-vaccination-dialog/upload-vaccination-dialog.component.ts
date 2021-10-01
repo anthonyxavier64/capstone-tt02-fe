@@ -1,3 +1,4 @@
+import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -8,32 +9,50 @@ import { AngularFireStorage } from '@angular/fire/storage';
   selector: 'app-upload-vaccination-dialog',
   templateUrl: './upload-vaccination-dialog.component.html',
   styleUrls: ['./upload-vaccination-dialog.component.css'],
+  providers: [MessageService],
 })
+
 export class UploadVaccinationDialogComponent implements OnInit {
+  showWarningMessage: boolean;
   uploadProgress: number;
+  user: any;
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     private userService: UserService,
-    private afStorage: AngularFireStorage
+    private afStorage: AngularFireStorage,
   ) {
-    this.uploadProgress = 0;
+    this.uploadProgress = -1;
+    this.showWarningMessage = false;
   }
 
   ngOnInit(): void {
+    this.userService.getUser(this.config.data.userId).subscribe(
+      (response) => {
+        this.user = response.user;
+      },
+      (error) => {
+        console.log(error);
+      });
   }
 
-  upload(event) {
-    const currentUser = localStorage.getItem('currentUser');
-    const { email } = JSON.parse(currentUser);
-    const now  = new Date();
-    const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  upload(event) { 
+    const currentDate  = new Date().toString();
 
-    const fileRef = this.afStorage.ref(`Vaccination_Certs/${email}/${currentDate}`);
+    const fileRef = this.afStorage.ref(`Vaccination_Certs/${this.user.userId}/${currentDate}`);
     const uploadTask = fileRef.put(event.target.files[0]);
     uploadTask.percentageChanges().subscribe((data) => this.uploadProgress = data);
 
-    console.log(this.uploadProgress);
+    this.user.latestProofOfVaccination = currentDate.toString()
+
+    this.userService.updateUserDetails(this.user).subscribe(
+      (response) => {
+        this.user = response.user;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );;
   }
 
   onConfirmClick() {
@@ -46,7 +65,30 @@ export class UploadVaccinationDialogComponent implements OnInit {
   }
 
   onCloseClick() {
-    this.ref.close();
+    if (this.uploadProgress === -1 || this.uploadProgress === 100) {
+      this.ref.close();
+    } else {
+      this.showWarningMessage = true;
+    }
   }
 
+  renderLastUpdate() {
+    if (this.user?.latestProofOfVaccination) {
+      const date = new Date(this.user.latestProofOfVaccination);
+      return date;
+    }
+    return "NA";
+  }
+  renderVaccinationStatus() {
+    if (this.user?.isVaccinated) {
+      return "Vaccinated";
+    }
+    return "Not Yet Vaccinated";
+  }
+  renderVaccinationStyle() {
+    if (this.user?.isVaccinated) {
+      return "vaccinated";
+    }
+    return "unvaccinated";
+  }
 }
