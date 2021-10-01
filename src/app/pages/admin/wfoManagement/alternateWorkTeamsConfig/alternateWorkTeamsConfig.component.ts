@@ -90,6 +90,32 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
                   this.isMonthlySelected = true;
                   this.isMonthlyConfigFirstClicked = false;
                 }
+
+                this.userService.getUsers(companyId).subscribe((response) => {
+                  const populateTeamAArr = [];
+                  const populateTeamBArr = [];
+                  for (let user of response.users) {
+                    const userModel = {
+                      userId: user.userId,
+                      fullName: user.fullName,
+                      isVaccinated: user.isVaccinated,
+                    };
+
+                    const insideTeamA = this.teamA.find(
+                      (item) => item.userId === userModel.userId
+                    );
+                    const insideTeamB = this.teamB.find(
+                      (item) => item.userId === userModel.userId
+                    );
+                    if (!insideTeamA && !insideTeamB) {
+                      populateTeamAArr.push(userModel);
+                      populateTeamBArr.push(userModel);
+                    }
+                  }
+
+                  this.teamAUsers = populateTeamAArr;
+                  this.teamBUsers = populateTeamBArr;
+                });
               });
           }
         },
@@ -101,32 +127,6 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
           });
         }
       );
-
-      this.userService.getUsers(companyId).subscribe((response) => {
-        const populateTeamAArr = [];
-        const populateTeamBArr = [];
-        for (let user of response.users) {
-          const userModel = {
-            userId: user.userId,
-            fullName: user.fullName,
-            isVaccinated: user.isVaccinated,
-          };
-
-          const insideTeamA = this.teamA.find(
-            (item) => item.userId === userModel.userId
-          );
-          const insideTeamB = this.teamB.find(
-            (item) => item.userId === userModel.userId
-          );
-          if (insideTeamA && insideTeamB) {
-            populateTeamAArr.push(userModel);
-            populateTeamBArr.push(userModel);
-          }
-        }
-
-        this.teamAUsers = populateTeamAArr;
-        this.teamBUsers = populateTeamBArr;
-      });
     }
   }
 
