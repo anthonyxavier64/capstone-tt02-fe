@@ -10,8 +10,9 @@
   --title-color: 0, 54, 114;
 
   /* Buttons */
-  --primary-button-color: 255, 166, 135;
+  --primary-button-color: 255, 166, 135, 0.25;
   --secondary-button-color: 229, 229, 229;
+  --covid-button-color: 251, 142, 126;
   --success-button-color: 107, 200, 81;
   --warn-button-color: 255, 0, 0;
 
@@ -41,19 +42,78 @@
 
 .grey-btn {
   font-family: var(--primary-font);
-  background: rgba(0, 55, 100, 0.15);
+  background: rgb(var(--secondary-button-color));
   color: rgb(var(--title-color));
   font-size: 16px;
   font-weight: 500;
+  box-sizing: border-box;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  display: inline-block;
+  white-space: nowrap;
+  text-decoration: none;
+  vertical-align: baseline;
+  text-align: center;
+  margin: 0;
+  min-width: 64px;
+  line-height: 36px;
+  padding: 0 16px;
+  border-radius: 4px;
+  overflow: visible;
   min-width: 6vw;
 }
 
 .peach-btn {
   font-family: var(--primary-font);
-  background: rgba(255, 166, 135, 0.5);
+  background: rgb(var(--primary-button-color));
   color: rgb(var(--title-color));
   font-size: 16px;
   font-weight: 500;
+  box-sizing: border-box;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  display: inline-block;
+  white-space: nowrap;
+  text-decoration: none;
+  vertical-align: baseline;
+  text-align: center;
+  margin: 0;
+  min-width: 64px;
+  line-height: 36px;
+  padding: 0 16px;
+  border-radius: 4px;
+  overflow: visible;
+}
+
+.red-btn {
+  font-family: var(--primary-font);
+  background: rgb(var(--covid-button-color));
+  color: rgb(var(--title-color));
+  font-size: 16px;
+  font-weight: 500;
+  box-sizing: border-box;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  display: inline-block;
+  white-space: nowrap;
+  text-decoration: none;
+  vertical-align: baseline;
+  text-align: center;
+  margin: 0;
+  min-width: 64px;
+  line-height: 36px;
+  padding: 0 16px;
+  border-radius: 4px;
+  overflow: visible;
   min-width: 6vw;
 }
 
@@ -68,37 +128,39 @@
 
 /* Text Style Overrides */
 h1 {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 1.5rem;
   font-weight: 800;
   color: #003672;
+  margin: inherit;
 }
 
 h2 {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 1.375rem;
   font-weight: 800;
   color: #003672;
+  margin: inherit;
 }
 
 h3 {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 1.25rem;
   font-weight: 200;
   color: #003672;
 }
 
 p {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 1.25rem;
   color: #003672;
   font-weight: 200;
   line-height: normal;
-  margin: 0;
+  margin: inherit;
 }
 
 span {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 1.125rem;
   color: #003672;
   font-weight: 200;
@@ -107,49 +169,60 @@ span {
 
 /* Angular Material Text Style Overrides */
 .mat-card-title {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 1.375rem;
   font-weight: 800;
   color: #003672;
 }
 
-.mat-h2, .mat-title, .mat-typography h1 {
-  font-family: 'Source Sans Pro', sans-serif;
+.mat-h2,
+.mat-title,
+.mat-typography h1 {
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 1.5rem;
   font-weight: 800;
   color: #003672;
+  margin: inherit;
 }
 
-.mat-h2, .mat-title, .mat-typography h2 {
-  font-family: 'Source Sans Pro', sans-serif;
+.mat-h2,
+.mat-title,
+.mat-typography h2 {
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 1.375rem;
   font-weight: 800;
   color: #003672;
+  margin: inherit;
 }
 
-.mat-h2, .mat-title, .mat-typography label {
-  font-family: 'Source Sans Pro', sans-serif;
+.mat-h2,
+.mat-title,
+.mat-typography label {
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 1.25rem;
   color: #003672;
   font-weight: 200;
 }
 
-.mat-h2, .mat-title, .mat-typography p {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 1.25rem;
-  color: #003672;
-  font-weight: 200;
-  line-height: normal;
-  margin: 0;
-}
-
-.mat-card-subtitle, .mat-card-content {
-  font-family: 'Source Sans Pro', sans-serif;
+.mat-h2,
+.mat-title,
+.mat-typography p {
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 1.25rem;
   color: #003672;
   font-weight: 200;
   line-height: normal;
   margin: 0;
+}
+
+.mat-card-subtitle,
+.mat-card-content {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 1.25rem;
+  color: #003672;
+  font-weight: 200;
+  line-height: normal;
+  margin: inherit;
 }
 
 /* Angular Material Form Style Overrides */
@@ -162,7 +235,7 @@ span {
 }
 
 .mat-label {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 1.25rem;
   font-weight: 800;
   color: #003672;
@@ -201,6 +274,7 @@ span {
   height: auto;
   min-height: inherit;
   max-height: inherit;
+  background-color: rgb(var(--secondary-card-color));
 }
 
 .mat-dialog-content {
@@ -209,7 +283,7 @@ span {
   padding: 0 1.5rem;
   max-height: 65vh;
   overflow: initial;
-  text-align: center;
+  text-align: inherit;
 }
 
 .mat-dialog-actions {
