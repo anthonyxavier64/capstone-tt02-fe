@@ -11,7 +11,7 @@
       <button
         mat-raised-button
         (click)="backButtonClicked()"
-        style="margin-right: 30px"
+        style="margin-right: 30px; cursor: pointer"
       >
         back
       </button>
@@ -244,13 +244,20 @@
                 fxLayoutGap="1%"
                 class="btnGroup"
               >
+              <img
+                class="actionIcon"
+                  (click)="openVaccinationDialog(user)"
+                  src="../../../../assets/images/injection.png"
+                  style="cursor: pointer; height: 1.5em; width: 1.5em"
+                />
                 <img
+                  class="actionIcon"
                   (click)="openEditEmployeeDialog(user)"
                   src="../../../../assets/images/editIcon.png"
+                  style="cursor: pointer; height: 1.5em; width: 1.5em"
                 />
-
                 <img
-                  class="deleteIcon"
+                  class="actionIcon"
                   (click)="onDeleteEmployeeClick(user)"
                   src="../../../../assets/images/deleteIcon.png"
                 />

@@ -19,3 +19,9 @@
   height: 1.3vw
 }
 
+.actionIcon {
+  cursor: pointer; 
+  height: 1.5em; 
+  width: 1.5em
+}
+
