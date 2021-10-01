@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { AlternateWorkTeamsConfigurationService } from './../../../../services/wfoConfiguration/alternate-work-teams-configuration/alternate-work-teams-configuration.service';
 
 @Component({
   selector: 'app-admin-alternate-work-teams-config',
@@ -13,6 +14,8 @@ import { UserService } from 'src/app/services/user/user.service';
 })
 export class AlternateWorkTeamsConfigComponent implements OnInit {
   company: any | null;
+  alternateWorkTeamsConfigurationId: number;
+
   teamAUsers: any | null;
   teamBUsers: any | null;
 
@@ -34,34 +37,15 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
   isBiweeklyConfigFirstClicked: boolean = true;
   isMonthlyConfigFirstClicked: boolean = true;
 
+  selectedConfig: String;
+
   constructor(
     private _location: Location,
     private messageService: MessageService,
     private companyDetailsService: CompanyDetailsService,
-    private userService: UserService
-  ) {
-    this.teamA = [
-      { fullName: 'Bob' },
-      { fullName: 'Charlie' },
-      { fullName: 'Sam' },
-
-      // NOTE: TO MAKE COMPONENT RESPONSIVE/SCROLLABLE WITH MORE USERS
-      // { fullName: 'George' },
-      // { fullName: 'Greg' },
-      // { fullName: 'Jimmy' },
-    ];
-
-    this.teamB = [
-      { fullName: 'Grace' },
-      { fullName: 'Lucy' },
-      { fullName: 'Amanda' },
-
-      // NOTE: TO MAKE COMPONENT RESPONSIVE/SCROLLABLE WITH MORE USERS
-      // { fullName: 'Allison' },
-      // { fullName: 'Sarah' },
-      // { fullName: 'Jovanne' },
-    ];
-  }
+    private userService: UserService,
+    private alternateWorkTeamsConfigurationService: AlternateWorkTeamsConfigurationService
+  ) {}
 
   ngOnInit(): void {
     const currentUser = localStorage.getItem('currentUser');
@@ -71,6 +55,16 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
       this.companyDetailsService.getCompanyById(companyId).subscribe(
         (result) => {
           this.company = result.company;
+
+          if (this.company.alternateWorkTeamsConfigurationId === null) {
+            this.alternateWorkTeamsConfigurationId = null;
+            this.teamA = [];
+            this.teamB = [];
+
+            this.isDailySelected = true;
+
+            this.isLoading = false;
+          }
         },
         (error) => {
           this.messageService.add({
@@ -82,8 +76,20 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
       );
 
       this.userService.getUsers(companyId).subscribe((response) => {
-        this.teamAUsers = response.users;
-        this.teamBUsers = response.users;
+        const populateTeamAArr = [];
+        const populateTeamBArr = [];
+        for (let user of response.users) {
+          const userModel = {
+            userId: user.userId,
+            fullName: user.fullName,
+            isVaccinated: user.isVaccinated,
+          };
+          populateTeamAArr.push(userModel);
+          populateTeamBArr.push(userModel);
+        }
+
+        this.teamAUsers = populateTeamAArr;
+        this.teamBUsers = populateTeamBArr;
       });
     }
   }
@@ -99,6 +105,7 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
     //Remove user so that he cannot be selected for team B
     const indexToRemove = this.teamBUsers.indexOf(userToAdd);
     this.teamBUsers.splice(indexToRemove, 1);
+    this.teamAUsers.splice(indexToRemove, 1);
 
     formValue.resetForm();
   }
@@ -110,6 +117,7 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
     //Remove user so that he cannot be selected for team A
     const indexToRemove = this.teamAUsers.indexOf(userToAdd);
     this.teamAUsers.splice(indexToRemove, 1);
+    this.teamBUsers.splice(indexToRemove, 1);
 
     formValue.resetForm();
   }
@@ -120,6 +128,7 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
 
     //Add removed user back to selectable list
     this.teamAUsers.push(employee);
+    this.teamBUsers.push(employee);
   }
 
   onTeamBEmployeeDelete(employee: any): void {
@@ -128,9 +137,11 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
 
     //Add removed user back to selectable list
     this.teamBUsers.push(employee);
+    this.teamAUsers.push(employee);
   }
 
   selectDailyConfig(): void {
+    this.selectedConfig = 'DAILY';
     if (this.isDailyConfigFirstClicked) {
       this.isDailySelected = true;
       this.isWeeklySelected = false;
@@ -155,6 +166,7 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
   }
 
   selectWeeklyConfig(): void {
+    this.selectedConfig = 'WEEKLY';
     if (this.isWeeklyConfigFirstClicked) {
       this.isDailySelected = false;
       this.isWeeklySelected = true;
@@ -179,6 +191,7 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
   }
 
   selectBiweeklyConfig(): void {
+    this.selectedConfig = 'BIWEEKLY';
     if (this.isBiweeklyConfigFirstClicked) {
       this.isDailySelected = false;
       this.isWeeklySelected = false;
@@ -203,6 +216,7 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
   }
 
   selectMonthlyConfig(): void {
+    this.selectedConfig = 'MONTHLY';
     if (this.isMonthlyConfigFirstClicked) {
       this.isDailySelected = false;
       this.isWeeklySelected = false;
@@ -223,6 +237,60 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
         summary: 'Success',
         detail: 'Members of Teams A and B have been swapped.',
       });
+    }
+  }
+
+  createAlternateWorkTeamsConfiguration() {
+    const newConfig = {
+      scheduleType: this.selectedConfig,
+      teamA: this.teamA,
+      teamB: this.teamB,
+    };
+    this.alternateWorkTeamsConfigurationService
+      .createAlternateWorkTeamsConfiguration(newConfig)
+      .subscribe((response) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Alternate Work Teams Configuration has been added.',
+        });
+
+        this.alternateWorkTeamsConfigurationId =
+          response.alternateWorkTeamsConfig.alternateWorkTeamsConfigurationId;
+
+        console.log(response);
+        console.log(this.alternateWorkTeamsConfigurationId);
+
+        const updateCompany = {
+          ...this.company,
+          alternateWorkTeamsConfigurationId:
+            this.alternateWorkTeamsConfigurationId,
+        };
+
+        this.companyDetailsService.updateCompany(updateCompany).subscribe(
+          (response) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail:
+                'Alternate Work Teams Configuration has been binded to the company.',
+            });
+            console.log(response);
+          },
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Problem adding configuration. Please try again.',
+            });
+          }
+        );
+      });
+  }
+
+  onSave(): void {
+    if (this.alternateWorkTeamsConfigurationId === null) {
+      this.createAlternateWorkTeamsConfiguration();
     }
   }
 }

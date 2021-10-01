@@ -102,7 +102,11 @@
                   Add
                 </button>
               </div>
-              <div *ngIf="teamA.length === 0">
+              <div
+                *ngIf="teamA.length === 0"
+                fxLayout="row"
+                fxLayoutAlign="space-around center"
+              >
                 <p>Please Add Employees to Team A!</p>
               </div>
               <div
@@ -220,7 +224,11 @@
                   Add
                 </button>
               </div>
-              <div *ngIf="teamB.length === 0">
+              <div
+                *ngIf="teamB.length === 0"
+                fxLayout="row"
+                fxLayoutAlign="space-around center"
+              >
                 <p>Please Add Employees to Team B!</p>
               </div>
               <div
@@ -382,6 +390,6 @@
       </div>
     </div>
 
-    <button mat-button class="peach-btn">Save</button>
+    <button mat-button class="peach-btn" (click)="onSave()">Save</button>
   </div>
 </div>
