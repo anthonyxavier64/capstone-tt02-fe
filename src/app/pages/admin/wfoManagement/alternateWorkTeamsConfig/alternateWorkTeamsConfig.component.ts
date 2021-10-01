@@ -68,6 +68,8 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
                 this.company.alternateWorkTeamsConfigurationId
               )
               .subscribe((response) => {
+                this.alternateWorkTeamsConfigurationId =
+                  this.company.alternateWorkTeamsConfigurationId;
                 this.alternateWorkTeamsConfig =
                   response.alternateWorkTeamsConfig;
                 this.teamA = this.alternateWorkTeamsConfig.teamA;
@@ -88,32 +90,6 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
                   this.isMonthlySelected = true;
                   this.isMonthlyConfigFirstClicked = false;
                 }
-
-                this.userService.getUsers(companyId).subscribe((response) => {
-                  const populateTeamAArr = [];
-                  const populateTeamBArr = [];
-                  for (let user of response.users) {
-                    const userModel = {
-                      userId: user.userId,
-                      fullName: user.fullName,
-                      isVaccinated: user.isVaccinated,
-                    };
-
-                    const insideTeamA = this.teamA.find(
-                      (item) => item.userId === userModel.userId
-                    );
-                    const insideTeamB = this.teamB.find(
-                      (item) => item.userId === userModel.userId
-                    );
-                    if (!insideTeamA && !insideTeamB) {
-                      populateTeamAArr.push(userModel);
-                      populateTeamBArr.push(userModel);
-                    }
-                  }
-
-                  this.teamAUsers = populateTeamAArr;
-                  this.teamBUsers = populateTeamBArr;
-                });
               });
           }
         },
@@ -125,6 +101,32 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
           });
         }
       );
+
+      this.userService.getUsers(companyId).subscribe((response) => {
+        const populateTeamAArr = [];
+        const populateTeamBArr = [];
+        for (let user of response.users) {
+          const userModel = {
+            userId: user.userId,
+            fullName: user.fullName,
+            isVaccinated: user.isVaccinated,
+          };
+
+          const insideTeamA = this.teamA.find(
+            (item) => item.userId === userModel.userId
+          );
+          const insideTeamB = this.teamB.find(
+            (item) => item.userId === userModel.userId
+          );
+          if (insideTeamA && insideTeamB) {
+            populateTeamAArr.push(userModel);
+            populateTeamBArr.push(userModel);
+          }
+        }
+
+        this.teamAUsers = populateTeamAArr;
+        this.teamBUsers = populateTeamBArr;
+      });
     }
   }
 
@@ -291,8 +293,8 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
       this.userService
         .updateUserDetailsByUserId(user.userId, wfoTeamAllocation)
         .subscribe(
-          (response) => console.log(response),
-          (error) => console.log(error)
+          (response) => {},
+          (error) => {}
         );
     }
 
@@ -305,8 +307,8 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
       this.userService
         .updateUserDetailsByUserId(user.userId, wfoTeamAllocation)
         .subscribe(
-          (response) => console.log(response),
-          (error) => console.log(error)
+          (response) => {},
+          (error) => {}
         );
     }
 
@@ -323,9 +325,6 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
         this.alternateWorkTeamsConfigurationId =
           response.alternateWorkTeamsConfig.alternateWorkTeamsConfigurationId;
 
-        console.log(response);
-        console.log(this.alternateWorkTeamsConfigurationId);
-
         const updateCompany = {
           ...this.company,
           alternateWorkTeamsConfigurationId:
@@ -340,7 +339,6 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
               detail:
                 'Alternate Work Teams Configuration has been binded to the company.',
             });
-            console.log(response);
           },
           (error) => {
             this.messageService.add({
@@ -353,7 +351,62 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
       });
   }
 
-  updateAlternateWorkTeamsConfiguration() {}
+  updateAlternateWorkTeamsConfiguration() {
+    const newConfig = {
+      alternateWorkTeamsConfigurationId: this.alternateWorkTeamsConfigurationId,
+      scheduleType: this.selectedConfig,
+      teamA: this.teamA,
+      teamB: this.teamB,
+    };
+
+    //Bind employee to the team they belong to
+    for (let user of this.teamA) {
+      const wfoTeamAllocation = {
+        userId: user.userId,
+        fullName: user.fullName,
+        alternateWfoTeam: 'A',
+      };
+      this.userService
+        .updateUserDetailsByUserId(user.userId, wfoTeamAllocation)
+        .subscribe(
+          (response) => {},
+          (error) => {}
+        );
+    }
+
+    for (let user of this.teamB) {
+      const wfoTeamAllocation = {
+        userId: user.userId,
+        fullName: user.fullName,
+        alternateWfoTeam: 'B',
+      };
+      this.userService
+        .updateUserDetailsByUserId(user.userId, wfoTeamAllocation)
+        .subscribe(
+          (response) => {},
+          (error) => {}
+        );
+    }
+
+    this.alternateWorkTeamsConfigurationService
+      .updateAlternateWorkTeamsConfiguration(newConfig)
+      .subscribe(
+        (response) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Alternate Work Teams Configuration has been updated.',
+          });
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Problem updating configuration. Please try again.',
+          });
+        }
+      );
+  }
 
   onSave(): void {
     if (this.alternateWorkTeamsConfigurationId === null) {
