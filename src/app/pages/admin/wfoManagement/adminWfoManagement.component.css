@@ -29,10 +29,11 @@
   background-color: #ffede7;
   min-width: 30vw;
   min-height: 35vw;
-  width: 40vw;
-  height: 45vw;
+  width: 36vw;
+  height: 40vw;
   margin-bottom: 40px;
   overflow:auto;
+  padding: 3rem;
 }
 
 .itemTitle {
