@@ -11,22 +11,33 @@
       <p class="text">{{ renderVaccinationStatus() }}</p>
     </div>
     <div>
+      <div>
+        <input
+          type="radio"
+          id="stay-home-notice"
+          name="covidSubmissionType"
+          value="STAY_HOME_NOTICE"
+          (click)="onClickSHN()"
+          checked
+        />
+        <label for="stay-home-notice">Stay Home Notice</label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="quarantine-order"
+          name="covidSubmissionType"
+          value="QUARANTINE_ORDER"
+          (click)="onClickQO()"
+        />
+        <label for="quarantine-order">Quarantine Order</label>
+      </div>
+    </div>
+    <br />
     <div>
-      <input type="radio" id="stay-home-notice" name="covidSubmissionType" value="STAY_HOME_NOTICE"
-             checked>
-      <label for="stay-home-notice">Stay Home Notice</label>
+      <input type="text" id="remarks" name="remarks" [value]="remarks" (change)="onWriteRemarks($event)"/>
     </div>
-    <div>
-      <input type="radio" id="quarantine-order" name="covidSubmissionType" value="QUARANTINE_ORDER">
-      <label for="quarantine-order">Quarantine Order</label>
-    </div>
-    </div>
-    <br/>
-    <div>
-      <label for="remarks">Reason: </label>
-      <input type="text" id="remarks" name="remarks" value={{remarks}}>
-    </div>
-    <br/>
+    <br />
     <input
       class="custom-file-input"
       type="file"

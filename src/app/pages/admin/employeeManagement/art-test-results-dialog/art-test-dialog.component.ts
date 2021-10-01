@@ -1,5 +1,6 @@
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covidDocumentSubmission.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 import { Component, OnInit } from '@angular/core';
@@ -13,7 +14,6 @@ import { AngularFireStorage } from '@angular/fire/storage';
 })
 
 export class ArtDialogComponent implements OnInit {
-  remarks: string;
   showWarningMessage: boolean;
   uploadProgress: number;
   user: any;
@@ -22,6 +22,7 @@ export class ArtDialogComponent implements OnInit {
     public config: DynamicDialogConfig,
     private userService: UserService,
     private afStorage: AngularFireStorage,
+    private covidDocumentSubmissionService: CovidDocumentSubmissionService
   ) {
     this.uploadProgress = -1;
     this.showWarningMessage = false;
@@ -44,7 +45,22 @@ export class ArtDialogComponent implements OnInit {
     const uploadTask = fileRef.put(event.target.files[0]);
     uploadTask.percentageChanges().subscribe((data) => this.uploadProgress = data);
 
-    this.user.latestProofOfVaccination = currentDate.toString()
+    this.user.latestArtTestResult = currentDate.toString();
+    const newSubmission = { dateOfSubmission: currentDate, covidDocumentType: "ART_TEST_RESULT", employeeId: this.user.userId };
+    this.covidDocumentSubmissionService
+      .createCovidDocumentSubmission(newSubmission)
+      .subscribe(
+        (response) => {
+          if (response.true) {
+            console.log("success!");
+          } else {
+            console.log("A problem has occured", response.message);
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
 
     this.userService.updateUserDetails(this.user).subscribe(
       (response) => {
