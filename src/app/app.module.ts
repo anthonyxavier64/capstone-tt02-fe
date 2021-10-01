@@ -7,7 +7,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import {
+  MatFormFieldModule,
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+} from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -28,6 +31,8 @@ import { AppComponent } from './app.component';
 import { TOKEN_KEY } from './config';
 import { MaterialModule } from './core/material.module';
 import { PrimeNgModule } from './core/primeng.module';
+import { NgCircleProgressModule } from 'ng-circle-progress';
+
 import { AdminComponent } from './pages/admin/adminLanding/admin.component';
 import { AdminAnnouncementManagementComponent } from './pages/admin/announcementManagement/adminAnnouncementManagement.component';
 import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDetails/companyDetailsManagement/adminCompanyDetailsManagement.component';
@@ -53,6 +58,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
 import { AdminGuideComponent } from './pages/admin/adminLanding/admin-guide/admin-guide.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { EditExceptionDialogComponent } from './pages/admin/wfoManagement/officeQuotaConfig/edit-exception-dialog/edit-exception-dialog.component';
 import { TaskComponent } from './pages/employee/task/task.component';
 
@@ -91,6 +97,7 @@ export function tokenGetter() {
     EditEmployeeDialogComponent,
     DeleteEmployeeDialogComponent,
     AdminGuideComponent,
+    DashboardComponent,
     EditExceptionDialogComponent,
     TaskComponent,
   ],
@@ -124,6 +131,22 @@ export function tokenGetter() {
     StyleClassModule,
     DataViewModule,
     DropdownModule,
+    NgCircleProgressModule.forRoot({
+      radius: 80,
+      innerStrokeWidth: 10,
+      outerStrokeWidth: 10,
+      space: -10,
+      innerStrokeColor: 'rgb(var(--primary-button-color)',
+      outerStrokeColor: 'rgb(var(--covid-button-color)',
+      animation: true,
+      animationDuration: 300,
+      titleFontSize: '1.8rem',
+      titleColor: 'rgb(var(--theme-primary-color)',
+      unitsFontSize: '1.8rem',
+      unitsColor: 'rgb(var(--theme-primary-color)',
+      subtitleFontSize: '1.5rem',
+      subtitleColor: 'rgba(var(--theme-primary-color)',
+    }),
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -136,9 +159,12 @@ export function tokenGetter() {
       provide: MatDialogRef,
       useValue: {},
     },
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'outline' },
+    },
     DialogService,
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
