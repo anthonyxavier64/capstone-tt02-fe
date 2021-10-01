@@ -1,10 +1,8 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.dev';
-
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-
 import { handleError } from '../../services-util';
 
 const httpOptions = {
@@ -33,7 +31,9 @@ export class AlternateWorkTeamsConfigurationService {
   getAlternateWorkTeamsConfiguration(
     alternateWorkTeamsConfigurationId: any
   ): Observable<any> {
-    const paramValue: string = JSON.stringify(alternateWorkTeamsConfigurationId);
+    const paramValue: string = JSON.stringify(
+      alternateWorkTeamsConfigurationId
+    );
     return this.httpClient
       .get<any>(
         `${this.baseUrl}/get-alternate-work-teams-configuration/${paramValue}`,
@@ -45,11 +45,11 @@ export class AlternateWorkTeamsConfigurationService {
   updateAlternateWorkTeamsConfiguration(
     alternateWorkTeamsConfiguration: any
   ): Observable<any> {
+    console.log(alternateWorkTeamsConfiguration);
     return this.httpClient.patch<any>(
       `${this.baseUrl}/update-alternate-work-teams-configuration/${alternateWorkTeamsConfiguration.alternateWorkTeamsConfigurationId}`,
       alternateWorkTeamsConfiguration,
       httpOptions
     );
   }
-
 }
