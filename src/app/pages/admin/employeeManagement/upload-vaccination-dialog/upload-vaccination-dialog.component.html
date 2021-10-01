@@ -1,17 +1,40 @@
-<div>
-  <label for="file">Upload File:  </label>
-  <input type="file" (change)="upload($event)" accept="png, jpg, jpeg, pdf"/>
-  <progress max="100" [value]="(uploadProgress)"></progress>
-  <!-- <div *ngIf="isUploadComplete()">
-      File successfully uploaded!
-  </div> -->
-
+<div class="dialog-container">
+  <h1>My Vaccination Status</h1>
+  <p class="last-updated">Last updated: {{ renderLastUpdate() }}</p>
+  <div class="vaccination-status-wrapper">
+    <div class="vaccination-status {{ user.isVaccinated ? 'vaccinated' : 'unvaccinated' }}"></div>
+    <p class="text">{{ renderVaccinationStatus() }}</p>
+  </div>
+  <input
+    class="custom-file-input"
+    type="file"
+    (change)="upload($event)"
+    accept="image/*, application/pdf"
+  />
+  <progress max="100" [value]="uploadProgress"></progress>
+  <div
+    class="success-message {{ uploadProgress === 100 ? 'visible' : 'hidden' }}"
+  >
+    File successfully uploaded!
+  </div>
+  <div
+    class="warning-message {{
+      showWarningMessage && uploadProgress !== 100 ? 'visible' : 'hidden'
+    }}"
+  >
+    Please wait for your file to be uploaded!
+  </div>
 </div>
 <div
   fxLayout="row"
   fxLayoutAlign="center"
   fxLayoutGap="3%"
-  style="margin-top: 3%; display: flex; align-items: center; justify-content: center"
+  style="
+    margin-top: 3%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  "
 >
   <button mat-button class="closeBtn" (click)="onCloseClick()">Close</button>
 </div>
