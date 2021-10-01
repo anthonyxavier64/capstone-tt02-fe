@@ -60,7 +60,7 @@ h1 {
 .custom-file-input::before {
   background: rgba(var(--primary-button-color), 0.5);
   border-radius: 8px;
-  content: "Upload Vaccination Certificate";
+  content: "Upload MC";
   cursor: pointer;
   font-size: 18px;
   font-weight: 400px;

@@ -12,6 +12,7 @@ import { DepartmentPartOfComponent } from '../dialogs/department-part-of/departm
 import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
 import { DeleteEmployeeDialogComponent } from './delete-employee-dialog/delete-employee-dialog.component';
 import { EditEmployeeDialogComponent } from './edit-employee-dialog/edit-employee-dialog.component';
+import { ShnDeclarationDialogComponent } from './shn-declaration-dialog/shn-declaration-dialog.component';
 import { UploadVaccinationDialogComponent } from './upload-vaccination-dialog/upload-vaccination-dialog.component';
 
 export interface user {
@@ -47,7 +48,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
 
   csvDownloadUrl: string;
 
-  vaccinationDialogRef: DynamicDialogRef;
+  shnDeclarationDialogRef: DynamicDialogRef;
   editDialogRef: DynamicDialogRef;
   deleteDialogRef: DynamicDialogRef;
   selectedEmployee: any;
@@ -192,6 +193,25 @@ export class AdminEmployeeManagementComponent implements OnInit {
       }
     });
   }
+  openShnDeclarationDialog(selectedUser: {
+    userId: number;
+    fullName: string;
+    email: string;
+    createdAt: string;
+    contactNumber: string;
+    isActivated: boolean;
+  }) {
+    this.shnDeclarationDialogRef = this.dialogService.open(ShnDeclarationDialogComponent, {
+      header: selectedUser.fullName + "'s SHN/QO Declaration",
+      width: '70%',
+      contentStyle: { 'max-height': '50vw', overflow: 'auto' },
+      data: selectedUser,
+    });
+
+    this.shnDeclarationDialogRef.onClose.subscribe(() => {
+      this.ngOnInit();
+    });
+  }
   openVaccinationDialog(selectedUser: {
     userId: number;
     fullName: string;
@@ -200,18 +220,17 @@ export class AdminEmployeeManagementComponent implements OnInit {
     contactNumber: string;
     isActivated: boolean;
   }) {
-    this.vaccinationDialogRef = this.dialogService.open(UploadVaccinationDialogComponent, {
+    this.shnDeclarationDialogRef = this.dialogService.open(UploadVaccinationDialogComponent, {
       header: selectedUser.fullName + "'s Vaccination Certificate",
       width: '70%',
       contentStyle: { 'max-height': '50vw', overflow: 'auto' },
       data: selectedUser,
     });
 
-    this.vaccinationDialogRef.onClose.subscribe(() => {
+    this.shnDeclarationDialogRef.onClose.subscribe(() => {
       this.ngOnInit();
     });
   }
-
   
   openEditEmployeeDialog(selectedUser: {
     userId: number;
