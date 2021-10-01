@@ -62,6 +62,11 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
             this.isDailySelected = true;
             this.isDailyConfigFirstClicked = false;
             this.isLoading = false;
+
+            this.userService.getUsers(companyId).subscribe((response) => {
+              this.teamAUsers = response.users;
+              this.teamBUsers = response.users;
+            });
           } else {
             this.alternateWorkTeamsConfigurationService
               .getAlternateWorkTeamsConfiguration(
@@ -107,6 +112,7 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
                     const insideTeamB = this.teamB.find(
                       (item) => item.userId === userModel.userId
                     );
+
                     if (!insideTeamA && !insideTeamB) {
                       populateTeamAArr.push(userModel);
                       populateTeamBArr.push(userModel);
@@ -141,7 +147,6 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
     //Remove user so that he cannot be selected for team B
     const indexToRemove = this.teamBUsers.indexOf(userToAdd);
     this.teamBUsers.splice(indexToRemove, 1);
-    this.teamAUsers.splice(indexToRemove, 1);
 
     formValue.resetForm();
   }
@@ -153,7 +158,6 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
     //Remove user so that he cannot be selected for team A
     const indexToRemove = this.teamAUsers.indexOf(userToAdd);
     this.teamAUsers.splice(indexToRemove, 1);
-    this.teamBUsers.splice(indexToRemove, 1);
 
     formValue.resetForm();
   }
@@ -163,8 +167,12 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
     this.teamA.splice(indexToRemove, 1);
 
     //Add removed user back to selectable list
-    this.teamAUsers.push(employee);
-    this.teamBUsers.push(employee);
+    if (!this.teamBUsers.find((item) => item.userId === employee.userId)) {
+      this.teamBUsers.push(employee);
+    }
+    if (!this.teamAUsers.find((item) => item.userId === employee.userId)) {
+      this.teamAUsers.push(employee);
+    }
   }
 
   onTeamBEmployeeDelete(employee: any): void {
@@ -172,8 +180,12 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
     this.teamB.splice(indexToRemove, 1);
 
     //Add removed user back to selectable list
-    this.teamBUsers.push(employee);
-    this.teamAUsers.push(employee);
+    if (!this.teamBUsers.find((item) => item.userId === employee.userId)) {
+      this.teamBUsers.push(employee);
+    }
+    if (!this.teamAUsers.find((item) => item.userId === employee.userId)) {
+      this.teamAUsers.push(employee);
+    }
   }
 
   selectDailyConfig(): void {
