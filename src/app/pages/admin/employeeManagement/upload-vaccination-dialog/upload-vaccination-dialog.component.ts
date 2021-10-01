@@ -2,6 +2,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UserService } from 'src/app/services/user/user.service';
 
 import { Component, OnInit } from '@angular/core';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-upload-vaccination-dialog',
@@ -9,13 +10,31 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./upload-vaccination-dialog.component.css'],
 })
 export class UploadVaccinationDialogComponent implements OnInit {
+  uploadProgress: number;
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-    private userService: UserService
-  ) {}
+    private userService: UserService,
+    private afStorage: AngularFireStorage
+  ) {
+    this.uploadProgress = 0;
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
+
+  upload(event) {
+    const currentUser = localStorage.getItem('currentUser');
+    const { email } = JSON.parse(currentUser);
+    const now  = new Date();
+    const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    const fileRef = this.afStorage.ref(`Vaccination_Certs/${email}/${currentDate}`);
+    const uploadTask = fileRef.put(event.target.files[0]);
+    uploadTask.percentageChanges().subscribe((data) => this.uploadProgress = data);
+
+    console.log(this.uploadProgress);
+  }
 
   onConfirmClick() {
     this.userService
@@ -29,4 +48,5 @@ export class UploadVaccinationDialogComponent implements OnInit {
   onCloseClick() {
     this.ref.close();
   }
+
 }
