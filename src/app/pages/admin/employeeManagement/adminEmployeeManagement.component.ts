@@ -10,6 +10,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
 import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
+import { ArtDialogComponent } from './art-test-results-dialog/art-test-dialog.component';
 import { DeleteEmployeeDialogComponent } from './delete-employee-dialog/delete-employee-dialog.component';
 import { EditEmployeeDialogComponent } from './edit-employee-dialog/edit-employee-dialog.component';
 import { ShnDeclarationDialogComponent } from './shn-declaration-dialog/shn-declaration-dialog.component';
@@ -48,6 +49,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
 
   csvDownloadUrl: string;
 
+  artTestDialogRef: DynamicDialogRef;
   shnDeclarationDialogRef: DynamicDialogRef;
   editDialogRef: DynamicDialogRef;
   deleteDialogRef: DynamicDialogRef;
@@ -191,6 +193,25 @@ export class AdminEmployeeManagementComponent implements OnInit {
       } else {
         this.ngOnInit();
       }
+    });
+  }
+  openArtTestDialog(selectedUser: {
+    userId: number;
+    fullName: string;
+    email: string;
+    createdAt: string;
+    contactNumber: string;
+    isActivated: boolean;
+  }) {
+    this.artTestDialogRef = this.dialogService.open(ArtDialogComponent, {
+      header: selectedUser.fullName + "'s ART Tests",
+      width: '70%',
+      contentStyle: { 'max-height': '50vw', overflow: 'auto' },
+      data: selectedUser,
+    });
+
+    this.artTestDialogRef.onClose.subscribe(() => {
+      this.ngOnInit();
     });
   }
   openShnDeclarationDialog(selectedUser: {

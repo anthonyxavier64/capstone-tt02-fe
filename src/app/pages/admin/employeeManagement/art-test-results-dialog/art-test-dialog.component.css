@@ -1,0 +1,98 @@
+.dialog-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+h1 {
+  font-size: 32px;
+}
+.last-updated {
+  font-weight: 100;
+  margin-bottom: 20px;
+}
+.text {
+  font-size: 25px;
+  font-family: var(--primary-font);
+  color: rgba(var(--theme-primary-color), 0.8);
+  text-align: left;
+}
+.closeBtn {
+  font-family: var(--primary-font);
+  font-size: 23px;
+  font-weight: lighter;
+  text-align: center;
+  min-height: 3vw;
+  background: rgb(var(--theme-secondary-color));
+  border: none;
+  border-radius: 8px;
+  align-content: center;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+.closeBtn:hover {
+  background: rgba(var(--theme-secondary-color), 0.7);
+}
+.success-message {
+  margin-top: 16px;
+  color: green;
+}
+.success-message.hidden {
+  visibility: hidden;
+}
+.warning-message {
+  color: red;
+}
+.warning-message.hidden {
+  visibility: hidden;
+}
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.custom-file-input {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.custom-file-input::before {
+  background: rgba(var(--primary-button-color), 0.5);
+  border-radius: 8px;
+  content: "Upload MC";
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 400px;
+  font-family: var(--primary-font);
+  margin-bottom: 4px;
+  min-height: 16px;
+  outline: none;
+  padding: 8px 12px;
+  white-space: wrap;
+}
+.custom-file-input:hover::before {
+  background: rgba(var(--primary-button-color), 0.3);
+}
+.custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+.vaccination-status-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.vaccination-status {
+  border-radius: 50px;
+  width: 28px;
+  height: 28px;
+  margin-right: 8px;
+}
+.vaccination-status.vaccinated {
+  background-color: green;
+}
+.vaccination-status.unvaccinated {
+  background-color: #a50000;
+}
