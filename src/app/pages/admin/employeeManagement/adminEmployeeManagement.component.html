@@ -36,14 +36,11 @@
               pInputText
             />
             <div
-                *ngIf="
-                  fullName.touched &&
-                  fullName.value.length === 0
-                "
-                class="errorText"
-                style="color: red"
-              >
-                Full name cannot be empty.
+              *ngIf="fullName.touched && fullName.value.length === 0"
+              class="errorText"
+              style="color: red"
+            >
+              Full name cannot be empty.
             </div>
             <h3>Email Address:</h3>
             <input
@@ -56,14 +53,12 @@
               pInputText
             />
             <div
-            *ngIf="
-              emailText.touched && emailText.invalid
-            "
-            class="errorText"
-            style="color: red"
-          >
-            Email must be valid.
-          </div>
+              *ngIf="emailText.touched && emailText.invalid"
+              class="errorText"
+              style="color: red"
+            >
+              Email must be valid.
+            </div>
           </div>
         </div>
         <div fxLayout="column" fxLayoutGap="10px">
@@ -77,15 +72,14 @@
             pInputText
           />
           <div
-          *ngIf="
-            employeePosition.touched &&
-            employeePosition.value.length === 0
-          "
-          class="errorText"
-          style="color: red"
+            *ngIf="
+              employeePosition.touched && employeePosition.value.length === 0
+            "
+            class="errorText"
+            style="color: red"
           >
-          Employee position cannot be empty.
-         </div>
+            Employee position cannot be empty.
+          </div>
           <h3>Contact Number:</h3>
           <input
             type="tel"
@@ -97,13 +91,11 @@
             pInputText
           />
           <div
-          *ngIf="
-            contactNum.invalid && contactNum.touched
-          "
-          class="errorText"
-          style="color: red"
+            *ngIf="contactNum.invalid && contactNum.touched"
+            class="errorText"
+            style="color: red"
           >
-          A valid 8-digit Singapore contact number is required.
+            A valid 8-digit Singapore contact number is required.
           </div>
         </div>
         <div fxLayout="column" fxLayoutGap="10px">
@@ -220,7 +212,7 @@
               </div>
             </th>
 
-            <th style="width: 8rem">
+            <th style="width: 15rem">
               <div class="p-d-flex p-jc-between p-ai-center">Actions</div>
             </th>
           </tr>
@@ -244,8 +236,14 @@
                 fxLayoutGap="1%"
                 class="btnGroup"
               >
-              <img
-                class="actionIcon"
+                <img
+                  class="actionIcon"
+                  (click)="openShnDeclarationDialog(user)"
+                  src="../../../../assets/images/health-cert.png"
+                  style="cursor: pointer; height: 1.5em; width: 1.5em"
+                />
+                <img
+                  class="actionIcon"
                   (click)="openVaccinationDialog(user)"
                   src="../../../../assets/images/injection.png"
                   style="cursor: pointer; height: 1.5em; width: 1.5em"
