@@ -1,6 +1,3 @@
-import { MessageService } from 'primeng/api';
-import { AuthService } from 'src/app/services/user/auth.service';
-
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -8,6 +5,8 @@ import {
   OnInit,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { AuthService } from 'src/app/services/user/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +28,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.password = '';
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
@@ -39,7 +38,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.auth.login(this.email, this.password).then((response) => {
       if (!!response) {
         localStorage.setItem('currentUser', JSON.stringify(response));
-        this.router.navigateByUrl('/admin');
+        this.router.navigateByUrl('/dashboard');
 
         // The following code is only when DB does not work (ie need to cache).
         const allUsers = [
@@ -120,5 +119,5 @@ export class LoginComponent implements OnInit, AfterViewInit {
     });
   }
 
-  handleLoginPopup() { }
+  handleLoginPopup() {}
 }
