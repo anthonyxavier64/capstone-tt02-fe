@@ -13,7 +13,7 @@ import { ArtDialogComponent } from './art-test-results-dialog/art-test-dialog.co
 import { DeleteEmployeeDialogComponent } from './delete-employee-dialog/delete-employee-dialog.component';
 import { EditEmployeeDialogComponent } from './edit-employee-dialog/edit-employee-dialog.component';
 import { ShnDeclarationDialogComponent } from './shn-declaration-dialog/shn-declaration-dialog.component';
-import { UploadVaccinationDialogComponent } from './upload-vaccination-dialog/upload-vaccination-dialog.component';
+import { ViewVaccinationDialogComponent } from './view-vaccination-dialog/view-vaccination-dialog.component';
 
 export interface user {
   userId: number;
@@ -242,15 +242,12 @@ export class AdminEmployeeManagementComponent implements OnInit {
     contactNumber: string;
     isActivated: boolean;
   }) {
-    this.shnDeclarationDialogRef = this.dialogService.open(
-      UploadVaccinationDialogComponent,
-      {
-        header: selectedUser.fullName + "'s Vaccination Certificate",
-        width: '70%',
-        contentStyle: { 'max-height': '50vw', overflow: 'auto' },
-        data: selectedUser,
-      }
-    );
+    this.vaccinationDialogRef = this.dialogService.open(ViewVaccinationDialogComponent, {
+      header: selectedUser.fullName + "'s Vaccination Certificate",
+      width: '70%',
+      contentStyle: { 'max-height': '50vw', overflow: 'auto' },
+      data: selectedUser,
+    });
 
     this.vaccinationDialogRef.onClose.subscribe(() => {
       this.ngOnInit();

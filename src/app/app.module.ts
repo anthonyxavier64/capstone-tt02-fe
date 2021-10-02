@@ -53,12 +53,13 @@ import { ArtDialogComponent } from './pages/admin/employeeManagement/art-test-re
 import { DeleteEmployeeDialogComponent } from './pages/admin/employeeManagement/delete-employee-dialog/delete-employee-dialog.component';
 import { EditEmployeeDialogComponent } from './pages/admin/employeeManagement/edit-employee-dialog/edit-employee-dialog.component';
 import { ShnDeclarationDialogComponent } from './pages/admin/employeeManagement/shn-declaration-dialog/shn-declaration-dialog.component';
-import { UploadVaccinationDialogComponent } from './pages/admin/employeeManagement/upload-vaccination-dialog/upload-vaccination-dialog.component';
+import { ViewVaccinationDialogComponent } from './pages/admin/employeeManagement/view-vaccination-dialog/view-vaccination-dialog.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
 import { AlternateWorkTeamsConfigComponent } from './pages/admin/wfoManagement/alternateWorkTeamsConfig/alternateWorkTeamsConfig.component';
 import { EditExceptionDialogComponent } from './pages/admin/wfoManagement/officeQuotaConfig/edit-exception-dialog/edit-exception-dialog.component';
 import { OfficeQuotaConfigComponent } from './pages/admin/wfoManagement/officeQuotaConfig/officeQuotaConfig.component';
 import { CovidDeclarationsComponent } from './pages/covid-declarations/covid-declarations.component';
+import { UploadVaccinationDialogComponent } from './pages/covid-declarations/upload-vaccination-dialog/upload-vaccination-dialog.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { CreateNewTaskDialogComponent } from './pages/employee/create-new-task-dialog/create-new-task-dialog.component';
 import { TaskDetailDialogComponent } from './pages/employee/task-detail-dialog/task-detail-dialog.component';
@@ -116,8 +117,8 @@ export function tokenGetter() {
     CovidDeclarationsComponent,
     ShnDeclarationDialogComponent,
     ArtDialogComponent,
-    UploadVaccinationDialogComponent,
-  ],
+    ViewVaccinationDialogComponent,
+    UploadVaccinationDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
