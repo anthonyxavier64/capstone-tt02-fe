@@ -1,3 +1,4 @@
+import * as moment from 'moment'
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covidDocumentSubmission.service';
@@ -7,16 +8,18 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
-  selector: 'app-upload-vaccination-dialog',
-  templateUrl: './upload-vaccination-dialog.component.html',
-  styleUrls: ['./upload-vaccination-dialog.component.css'],
+  selector: 'app-view-vaccination-dialog',
+  templateUrl: './view-vaccination-dialog.component.html',
+  styleUrls: ['./view-vaccination-dialog.component.css'],
   providers: [MessageService],
 })
 
-export class UploadVaccinationDialogComponent implements OnInit {
+export class ViewVaccinationDialogComponent implements OnInit {
   showWarningMessage: boolean;
   uploadProgress: number;
   user: any;
+  downloadUrl: string;
+  vaccinationCerts: any[];
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
@@ -26,59 +29,22 @@ export class UploadVaccinationDialogComponent implements OnInit {
   ) {
     this.uploadProgress = -1;
     this.showWarningMessage = false;
+    this.vaccinationCerts = [];
   }
 
   ngOnInit(): void {
     this.userService.getUser(this.config.data.userId).subscribe(
       (response) => {
         this.user = response.user;
+        console.log(this.user);
       },
       (error) => {
         console.log(error);
       });
   }
 
-  upload(event) {
-    const currentDate = new Date().toString();
-
-    const fileRef = this.afStorage.ref(`Vaccination_Certs/${this.user.userId}/${currentDate}`);
-    const uploadTask = fileRef.put(event.target.files[0]);
-    uploadTask.percentageChanges().subscribe((data) => this.uploadProgress = data);
-
-    this.user.latestProofOfVaccination = currentDate.toString();
-
-    const newSubmission = { dateOfSubmission: currentDate, covidDocumentType: "PROOF_OF_VACCINATION", employeeId: this.user.userId };
-    this.covidDocumentSubmissionService
-      .createCovidDocumentSubmission(newSubmission)
-      .subscribe(
-        (response) => {
-          if (response.true) {
-            console.log("success!", response.covidDocumentSubmission);
-          } else {
-            console.log("A problem has occured", response);
-          }
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    this.userService.updateUserDetails(this.user).subscribe(
-      (response) => {
-        this.user = response.user;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
-
-  onConfirmClick() {
-    this.userService
-      .deleteUser(this.config.data.selectedUser.userId)
-      .subscribe((response) => {
-        this.config.data.confirmDelete = true;
-        this.ref.close(this.config);
-      });
+  onClickDownload() {
+    window.open(this.user.latestProofOfVaccination, '_blank');
   }
 
   onCloseClick() {

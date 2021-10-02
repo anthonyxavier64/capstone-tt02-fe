@@ -1,5 +1,6 @@
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { finalize } from 'rxjs/operators';
 import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covidDocumentSubmission.service';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -41,16 +42,31 @@ export class UploadVaccinationDialogComponent implements OnInit {
     const fileRef = this.afStorage.ref(`Vaccination_Certs/${this.user.userId}/${currentDate}`);
     const uploadTask = fileRef.put(event.target.files[0]);
     uploadTask.percentageChanges().subscribe((data) => this.uploadProgress = data);
-
-    this.user.latestProofOfVaccination = currentDate.toString();
-
+    uploadTask.snapshotChanges().pipe(
+      finalize(() => {
+        fileRef.getDownloadURL().subscribe(url => {
+          console.log(url);
+          this.user.latestProofOfVaccination = url;
+          this.userService.updateUserDetails(this.user).subscribe(
+            (response) => {
+              console.log("updated!")
+              this.user = response.user;
+              localStorage.setItem("currentUser", JSON.stringify(this.user));
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        });
+      })
+    ).subscribe();
     const newSubmission = { dateOfSubmission: currentDate, covidDocumentType: "PROOF_OF_VACCINATION", employeeId: this.user.userId };
     this.covidDocumentSubmissionService
       .createCovidDocumentSubmission(newSubmission)
       .subscribe(
         (response) => {
-          if (response.true) {
-            console.log("success!", response.covidDocumentSubmission);
+          if (response.status) {
+            console.log(response.covidDocumentSubmission);
           } else {
             console.log("A problem has occured", response);
           }
@@ -59,15 +75,6 @@ export class UploadVaccinationDialogComponent implements OnInit {
           console.log(error);
         }
       );
-    this.userService.updateUserDetails(this.user).subscribe(
-      (response) => {
-        this.user = response.user;
-        localStorage.set("currentUser", this.user);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
   }
 
   onConfirmClick() {
