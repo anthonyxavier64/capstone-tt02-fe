@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { GoalService } from 'src/app/services/goal/goal.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { UserService } from 'src/app/services/user/user.service';
+
+import { Component, OnInit } from '@angular/core';
+
+import { CreateNewTaskDialogComponent } from './../create-new-task-dialog/create-new-task-dialog.component';
 import { TaskDetailDialogComponent } from '../task-detail-dialog/task-detail-dialog.component';
-import { CreateNewTaskDialogComponent } from './../create-new-task-dialog/create-new-task-dialog.component';';
 
 @Component({
   selector: 'app-task',
@@ -50,7 +52,7 @@ export class TaskComponent implements OnInit {
       (response) => {
         this.employees = response.users;
       },
-      (error) => {}
+      (error) => { }
     );
   }
 
@@ -83,7 +85,7 @@ export class TaskComponent implements OnInit {
               this.percentageProgress = 0;
             }
           },
-          (error) => {}
+          (error) => { }
         );
     }
   }
@@ -132,7 +134,7 @@ export class TaskComponent implements OnInit {
     this.ref.onClose.subscribe((response) => this.handleGoalSelection());
   }
 
-  viewTaskArchives() {}
+  viewTaskArchives() { }
 
   handleFilter() {
     this.filteredTasks = this.tasks.filter((task) =>
