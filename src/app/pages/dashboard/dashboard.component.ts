@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit {
 
   organisedMeetings: any[];
 
+  allTasks: any[];
   weeklyTasks: any[];
   numCompleted: number;
   taskProgress: number;
@@ -49,6 +50,7 @@ export class DashboardComponent implements OnInit {
     private datePipe: DatePipe) 
     { let now = moment(); 
       this.taskProgress = 0;
+      this.weeklyTasks = [];
     }
 
   ngOnInit() {
@@ -77,11 +79,16 @@ export class DashboardComponent implements OnInit {
 
     this.taskService.getAllTasksByUser(this.user.userId).subscribe(
       response => {
-        this.weeklyTasks = response.tasks;
+        this.allTasks = response.tasks;
         this.numCompleted = 0;
 
-        for (const task of this.weeklyTasks) {
-          if (!!task.completionDate) {
+        for (const task of this.allTasks) {
+          if (moment(task.deadline).isAfter(this.startDate) && moment(task.deadline).isBefore(this.endDate)) {
+            this.weeklyTasks.push(task);
+          }
+        }
+        for (const wtask of this.weeklyTasks) {
+          if (!!wtask.completionDate) {
             this.numCompleted++;
           }
         }
