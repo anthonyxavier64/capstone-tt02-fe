@@ -132,7 +132,7 @@ h1 {
   font-size: 1.5rem;
   font-weight: 800;
   color: #003672;
-  margin: inherit;
+  margin: initial;
 }
 
 h2 {
@@ -140,7 +140,7 @@ h2 {
   font-size: 1.375rem;
   font-weight: 800;
   color: #003672;
-  margin: inherit;
+  margin: initial;
 }
 
 h3 {
@@ -156,7 +156,7 @@ p {
   color: #003672;
   font-weight: 200;
   line-height: normal;
-  margin: inherit;
+  margin: initial;
 }
 
 span {
@@ -182,7 +182,7 @@ span {
   font-size: 1.5rem;
   font-weight: 800;
   color: #003672;
-  margin: inherit;
+  margin: initial;
 }
 
 .mat-h2,
@@ -192,7 +192,7 @@ span {
   font-size: 1.375rem;
   font-weight: 800;
   color: #003672;
-  margin: inherit;
+  margin: initial;
 }
 
 .mat-h2,
@@ -222,7 +222,7 @@ span {
   color: #003672;
   font-weight: 200;
   line-height: normal;
-  margin: inherit;
+  margin: initial;
 }
 
 /* Angular Material Form Style Overrides */
