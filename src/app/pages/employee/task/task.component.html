@@ -17,6 +17,118 @@
       (onChange)="handleGoalSelection()"
     ></p-dropdown>
 
-    <div *ngIf="selectedGoal" style="display: block"></div>
+    <div *ngIf="selectedGoal" style="display: block">
+      <span class="p-input-icon-right" style="margin-top: 20px">
+        <i class="pi pi-search" (click)="handleFilter()"></i>
+        <input
+          type="text"
+          placeholder="Task Filter"
+          [(ngModel)]="filterValue"
+          pInputText
+        />
+      </span>
+
+      <div fxLayout="row" style="margin-top: 20px">
+        <span>Goal Progress</span>
+        <mat-progress-bar
+          style="margin-top: 20px"
+          [value]="percentageProgress"
+          color="accent"
+        ></mat-progress-bar>
+        <div fxLayout fxLayoutAlign="center center">
+          <span>{{ percentageProgress.toFixed(2) }}%</span>
+        </div>
+      </div>
+
+      <mat-grid-list cols="3" gutterSize="50px" style="margin-top: 20px">
+        <div *ngFor="let task of filteredTasks">
+          <mat-grid-tile>
+            <mat-card
+              style="
+                width: 100%;
+                height: 100%;
+                background-color: rgba(196, 196, 196, 0.1);
+              "
+            >
+              <mat-card-title style="text-align: center"
+                >{{ task.name }}&nbsp;<mat-checkbox
+                  color="primary"
+                  (change)="handleChange(task)"
+                  [checked]="!!task.completionDate"
+                ></mat-checkbox
+              ></mat-card-title>
+              <mat-card-subtitle style="text-align: center; margin-top: 20px">
+                <div fxLayout="column">
+                  <span> Start: {{ task.startDate | date: "dd/MM/yy" }} </span>
+                  <span> End: {{ task.deadline | date: "dd/MM/yy" }} </span>
+                </div>
+              </mat-card-subtitle>
+              <mat-card-content style="text-align: center">
+                <div fxLayout="column" fxLayoutGap="5px">
+                  <span>Personnel:</span>
+                  <div *ngIf="task.employees.length > 0">
+                    <div *ngFor="let employee of task.employees">
+                      <div fxLayout="row" fxLayoutGap="5px">
+                        <mat-icon
+                          *ngIf="employee.isVaccinated"
+                          class="green-icon"
+                          >circle</mat-icon
+                        >
+                        <mat-icon
+                          *ngIf="!employee.isVaccinated"
+                          class="grey-icon"
+                          >circle</mat-icon
+                        >
+                        <div>{{ employee.fullName }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="task.employees.length <= 0">-</div>
+                </div>
+              </mat-card-content>
+              <mat-card-actions style="text-align: center">
+                <button
+                  mat-button
+                  class="button"
+                  (click)="openTaskDetails(task)"
+                >
+                  View Details
+                </button>
+              </mat-card-actions>
+            </mat-card>
+          </mat-grid-tile>
+        </div>
+        <mat-grid-tile>
+          <mat-card
+            style="
+              width: 100%;
+              height: 100%;
+              background-color: rgba(196, 196, 196, 0.1);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            (click)="addTask()"
+          >
+            <mat-card-content>Add Task</mat-card-content>
+          </mat-card>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-card
+            style="
+              width: 100%;
+              height: 100%;
+              background-color: rgba(196, 196, 196, 0.1);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            (click)="viewTaskArchives()"
+          >
+            <mat-card-content>View Task Archives</mat-card-content>
+          </mat-card>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
   </div>
 </div>
