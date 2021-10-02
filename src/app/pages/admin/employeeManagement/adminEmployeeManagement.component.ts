@@ -120,9 +120,9 @@ export class AdminEmployeeManagementComponent implements OnInit {
       }
     );
 
-    deptInChargeOfDialogRef.afterClosed().subscribe((result) => {
-      this.inChargeOfDepartments = result;
-    });
+    // deptInChargeOfDialogRef.afterClosed().subscribe((result) => {
+    //   this.inChargeOfDepartments = result;
+    // });
   }
 
   openPartOfDialog() {
