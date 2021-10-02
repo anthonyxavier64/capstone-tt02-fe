@@ -3,6 +3,7 @@ import { GoalService } from 'src/app/services/goal/goal.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TaskDetailDialogComponent } from '../task-detail-dialog/task-detail-dialog.component';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-task',
@@ -20,11 +21,13 @@ export class TaskComponent implements OnInit {
   filterValue: string;
   filteredTasks: any[];
   ref: DynamicDialogRef | undefined;
+  employees: any[];
 
   constructor(
     private goalService: GoalService,
     private taskService: TaskService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private userService: UserService
   ) {
     this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.percentageProgress = 0;
@@ -39,6 +42,13 @@ export class TaskComponent implements OnInit {
       (error) => {
         console.log(error);
       }
+    );
+
+    this.userService.getUsers(this.user.companyId).subscribe(
+      (response) => {
+        this.employees = response.users;
+      },
+      (error) => {}
     );
   }
 
@@ -108,6 +118,7 @@ export class TaskComponent implements OnInit {
       data: {
         goal: this.selectedGoal,
         task,
+        employees: this.employees,
       },
       width: '100%',
       height: '70%',
