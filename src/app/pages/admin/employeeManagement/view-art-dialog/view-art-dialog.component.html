@@ -4,11 +4,19 @@
   <div class="vaccination-status-wrapper">
     <div
       class="vaccination-status {{
-        user.isVaccinated ? 'vaccinated' : 'unvaccinated'
+        user?.isVaccinated ? 'vaccinated' : 'unvaccinated'
       }}"
     ></div>
     <p class="text">{{ renderVaccinationStatus() }}</p>
   </div>
+  <button
+    mat-button
+    class="peach-btn"
+    disabled="{{ this.artTests[0] ? false : true }}"
+    (click)="onClickDownload()"
+  >
+    Download
+  </button>
   <div>
     <!-- <div>
       <input type="radio" id="positive" name="isPositive" value={{true}}
@@ -21,25 +29,6 @@
     </div> -->
   </div>
   <br />
-  <input
-    class="custom-file-input"
-    type="file"
-    (change)="upload($event)"
-    accept="image/*, application/pdf"
-  />
-  <progress max="100" [value]="uploadProgress"></progress>
-  <div
-    class="success-message {{ uploadProgress === 100 ? 'visible' : 'hidden' }}"
-  >
-    File successfully uploaded!
-  </div>
-  <div
-    class="warning-message {{
-      showWarningMessage && uploadProgress !== 100 ? 'visible' : 'hidden'
-    }}"
-  >
-    Please wait for your file to be uploaded!
-  </div>
 </div>
 <div
   fxLayout="row"

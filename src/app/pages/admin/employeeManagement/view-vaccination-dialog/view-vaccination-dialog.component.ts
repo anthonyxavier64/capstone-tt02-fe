@@ -20,16 +20,18 @@ export class ViewVaccinationDialogComponent implements OnInit {
   user: any;
   downloadUrl: string;
   vaccinationCerts: any[];
+  covidDocumentSubmissions: any[]
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     private userService: UserService,
-    private covidDocumentSubmissionService: CovidDocumentSubmissionService,
-    private afStorage: AngularFireStorage,
+    private covidDocumentSubmissionService: CovidDocumentSubmissionService
   ) {
     this.uploadProgress = -1;
     this.showWarningMessage = false;
     this.vaccinationCerts = [];
+    this.covidDocumentSubmissions = [];
+    this.vaccinationCerts = []
   }
 
   ngOnInit(): void {
@@ -41,6 +43,25 @@ export class ViewVaccinationDialogComponent implements OnInit {
       (error) => {
         console.log(error);
       });
+
+    this.covidDocumentSubmissionService
+      .getUserSubmissions(this.config.data.userId)
+      .subscribe(
+        response => {
+          console.log(response);
+          this.covidDocumentSubmissions = response.covidDocumentSubmissions;
+          this.vaccinationCerts = this.covidDocumentSubmissions
+            .filter((item) => item.covidDocumentType === "PROOF_OF_VACCINATION")
+            .sort((a, b) => {
+              const dateA = moment(a.dateOfSubmission);
+              const dateB = moment(b.dateOfSubmission);
+              return dateB.diff(dateA);
+            });
+        },
+        error => {
+          console.log(error);
+        }
+      );
   }
 
   onClickDownload() {
@@ -56,8 +77,8 @@ export class ViewVaccinationDialogComponent implements OnInit {
   }
 
   renderLastUpdate() {
-    if (this.user?.latestProofOfVaccination) {
-      const date = new Date(this.user.latestProofOfVaccination);
+    if (this.vaccinationCerts[0]) {
+      const date = new Date(this.vaccinationCerts[0].dateOfSubmission);
       return date;
     }
     return "NA";
