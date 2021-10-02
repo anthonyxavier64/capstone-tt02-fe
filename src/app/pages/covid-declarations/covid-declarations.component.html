@@ -1,0 +1,32 @@
+<app-navbar></app-navbar>
+<div class="card-container">
+  <mat-card class="display-card">
+    <h1>Vaccination Status</h1>
+    <mat-card class="status-display {{ vaccinationStatus() }}">
+      <h2 class="status">
+        {{ user.isVaccinated ? "Vaccinated" : "Unvaccinated" }}
+      </h2>
+    </mat-card>
+    <button class="grey-btn" (click)="openVaccinationDialog(user)">
+      Update
+    </button>
+  </mat-card>
+  <mat-card class="display-card">
+    <h1>ART / FET Test Result</h1>
+    <mat-card class="status-display {{ fetApprovalStatus() }}">
+      <h2 class="status">
+        {{ fetSubmissions[0]?.isPositive ? "Positive" : "Negative" }}
+      </h2>
+    </mat-card>
+    <button class="grey-btn" (click)="openArtTestDialog(user)">Update</button>
+  </mat-card>
+  <mat-card class="display-card">
+    <h1>Medical Certificates</h1>
+    <mat-card class="status-display {{ mcApprovalStatus() }}">
+      <h2 class="status">{{ renderMcStatus() }}</h2>
+    </mat-card>
+    <button class="grey-btn" (click)="openShnDeclarationDialog(user)">
+      Update
+    </button>
+  </mat-card>
+</div>
