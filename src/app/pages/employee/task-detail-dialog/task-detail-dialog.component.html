@@ -40,13 +40,10 @@
             >circle</mat-icon
           >
           <div>{{ task.supervisor.fullName }}</div>
-          <div>
-            <button mat-icon-button><mat-icon>delete</mat-icon></button>
-          </div>
         </div>
         <div fxLayout="column" fxLayoutGap="10px">
           <div><u>Assigned Personnel</u>:</div>
-          <div *ngFor="let employee of task.employees">
+          <div *ngFor="let employee of personnel">
             <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
               <mat-icon *ngIf="employee.isVaccinated" class="green-icon"
                 >circle</mat-icon
@@ -56,7 +53,9 @@
               >
               <div>{{ employee.fullName }}</div>
               <div>
-                <button mat-icon-button><mat-icon>delete</mat-icon></button>
+                <button mat-icon-button (click)="deleteUser(employee.userId)">
+                  <mat-icon>delete</mat-icon>
+                </button>
               </div>
             </div>
           </div>
@@ -70,7 +69,7 @@
 
   <p-dialog [(visible)]="assignPopup" [closable]="false" [showHeader]="false">
     <p-listbox
-      [options]="employees"
+      [options]="unassignedPersonnel"
       [filter]="true"
       optionLabel="fullName"
       [multiple]="true"
@@ -82,5 +81,6 @@
     </button>
   </p-dialog>
 
-  <button mat-button (click)="closeDialog()">close</button>
+  <button mat-button (click)="archive()">Archive</button>
+  <button mat-button (click)="closeDialog()">Close</button>
 </div>

@@ -56,26 +56,32 @@ export class TaskComponent implements OnInit {
 
   handleGoalSelection() {
     if (!!this.selectedGoal) {
-      console.log(this.selectedGoal.goalId);
       this.taskService
         .getAllTasksByGoalId(this.selectedGoal.goalId, this.user.userId)
         .subscribe(
           (response) => {
             this.tasks = response.tasks;
-            this.filteredTasks = this.tasks;
+
+            const temp = this.tasks.filter((task) => {
+              return task.isArchived === false;
+            });
+
+            this.filteredTasks = temp;
 
             this.numCompleted = 0;
 
-            console.log(this.tasks);
-
-            for (const task of this.tasks) {
-              if (!!task.completionDate) {
-                this.numCompleted++;
+            if (this.tasks.length > 0) {
+              for (const task of this.tasks) {
+                if (!!task.completionDate) {
+                  this.numCompleted++;
+                }
               }
-            }
 
-            this.percentageProgress =
-              (this.numCompleted / this.tasks.length) * 100;
+              this.percentageProgress =
+                (this.numCompleted / this.tasks.length) * 100;
+            } else {
+              this.percentageProgress = 0;
+            }
           },
           (error) => {}
         );
@@ -145,6 +151,18 @@ export class TaskComponent implements OnInit {
       height: '70%',
       closable: false,
       showHeader: false,
+    });
+
+    this.ref.onClose.subscribe((task: any) => {
+      if (task) {
+        for (let i = 0; i < this.tasks.length; i++) {
+          if (this.tasks[i].taskId === task.taskId) {
+            this.tasks.splice(i, 1);
+            break;
+          }
+        }
+        this.handleGoalSelection();
+      }
     });
   }
 }
