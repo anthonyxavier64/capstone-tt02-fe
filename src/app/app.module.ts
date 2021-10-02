@@ -1,8 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireStorageModule } from '@angular/fire/storage';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -30,13 +27,12 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { StyleClassModule } from 'primeng/styleclass';
 import { TableModule } from 'primeng/table';
-import { environment } from 'src/environments/environment.dev';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TOKEN_KEY } from './config';
 import { MaterialModule } from './core/material.module';
 import { PrimeNgModule } from './core/primeng.module';
-
+import { AdminGuideComponent } from './pages/admin/adminLanding/admin-guide/admin-guide.component';
 import { AdminComponent } from './pages/admin/adminLanding/admin.component';
 import { AdminAnnouncementManagementComponent } from './pages/admin/announcementManagement/adminAnnouncementManagement.component';
 import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDetails/companyDetailsManagement/adminCompanyDetailsManagement.component';
@@ -51,8 +47,10 @@ import { DeleteEmployeeDialogComponent } from './pages/admin/employeeManagement/
 import { EditEmployeeDialogComponent } from './pages/admin/employeeManagement/edit-employee-dialog/edit-employee-dialog.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
 import { AlternateWorkTeamsConfigComponent } from './pages/admin/wfoManagement/alternateWorkTeamsConfig/alternateWorkTeamsConfig.component';
+import { EditExceptionDialogComponent } from './pages/admin/wfoManagement/officeQuotaConfig/edit-exception-dialog/edit-exception-dialog.component';
 import { OfficeQuotaConfigComponent } from './pages/admin/wfoManagement/officeQuotaConfig/officeQuotaConfig.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { CreateNewTaskDialogComponent } from './pages/employee/create-new-task-dialog/create-new-task-dialog.component';
 import { TaskDetailDialogComponent } from './pages/employee/task-detail-dialog/task-detail-dialog.component';
 import { TaskComponent } from './pages/employee/task/task.component';
 import { IndexComponent } from './pages/index/index.component';
@@ -64,9 +62,6 @@ import { ChangePasswordComponent } from './pages/profile/change-password/change-
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
-import { AdminGuideComponent } from './pages/admin/adminLanding/admin-guide/admin-guide.component';
-import { EditExceptionDialogComponent } from './pages/admin/wfoManagement/officeQuotaConfig/edit-exception-dialog/edit-exception-dialog.component';
-
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -106,7 +101,8 @@ export function tokenGetter() {
     DashboardComponent,
     EditExceptionDialogComponent,
     TaskComponent,
-    TaskDetailDialogComponent
+    TaskDetailDialogComponent,
+    CreateNewTaskDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -143,16 +139,16 @@ export function tokenGetter() {
       innerStrokeWidth: 10,
       outerStrokeWidth: 10,
       space: -10,
-      innerStrokeColor: "rgb(var(--primary-button-color)",
-      outerStrokeColor: "rgb(var(--covid-button-color)",
+      innerStrokeColor: 'rgb(var(--primary-button-color)',
+      outerStrokeColor: 'rgb(var(--covid-button-color)',
       animation: true,
       animationDuration: 300,
-      titleFontSize: "1.8rem",
-      titleColor: "rgb(var(--theme-primary-color)",
-      unitsFontSize: "1.8rem",
-      unitsColor: "rgb(var(--theme-primary-color)",
-      subtitleFontSize: "1.5rem",
-      subtitleColor: "rgba(var(--theme-primary-color)",
+      titleFontSize: '1.8rem',
+      titleColor: 'rgb(var(--theme-primary-color)',
+      unitsFontSize: '1.8rem',
+      unitsColor: 'rgb(var(--theme-primary-color)',
+      subtitleFontSize: '1.5rem',
+      subtitleColor: 'rgba(var(--theme-primary-color)',
     }),
     JwtModule.forRoot({
       config: {
