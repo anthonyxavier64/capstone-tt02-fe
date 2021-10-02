@@ -1,37 +1,49 @@
 <div fxLayout="column" fxLayoutGap="30px">
   <div>
-    <u style="font-weight: bold; font-size: 30px">
+    <h1 style="font-weight: bold; font-size: 30px">
       Goal {{ goal.name }} - Task {{ task.name }}
-    </u>
+    </h1>
   </div>
   <div fxLayout="row">
     <div fxLayout="column" fxLayoutGap="20px" style="font-size: 20px">
       <div fxLayout="column" fxLayoutGap="10px">
-        <div>
-          <u>Start Date</u>:
-          {{ task.startDate | date: "dd/MM/yy" }}
+        <div
+          fxLayout="row"
+          fxLayoutAlign="space-between start"
+          fxLayoutGap="2%"
+        >
+          <label><u>Start Date</u>:</label>
+          <p>{{ task.startDate | date: "dd/MM/yy" }}</p>
         </div>
-        <div>
-          <u>Deadline</u>:
-          {{ task.deadline | date: "dd/MM/yy" }}
+        <div
+          fxLayout="row"
+          fxLayoutAlign="space-between start"
+          fxLayoutGap="2%"
+        >
+          <label><u>Deadline</u>:</label>
+          <p>
+            {{ task.deadline | date: "dd/MM/yy" }}
+          </p>
         </div>
-        <div>
-          <u>Completion Date</u>:
-          <span
-            style="font-size: 20px; color: black"
-            *ngIf="task.completionDate !== null"
-          >
-            {{ task.completionDate | date: "dd/MM/yy" }}
+        <div
+          fxLayout="row"
+          fxLayoutAlign="space-between start"
+          fxLayoutGap="2%"
+        >
+          <label><u>Completion Date</u>:</label>
+          <span *ngIf="task.completionDate !== null">
+            <p>
+              {{ task.completionDate | date: "dd/MM/yy" }}
+            </p>
           </span>
-          <span
-            style="font-size: 20px; color: black"
-            *ngIf="!task.completionDate"
-            >-</span
-          >
+          <span *ngIf="!task.completionDate"><p>-</p></span>
         </div>
       </div>
       <div fxLayout="column" fxLayoutGap="10px">
-        <div><u>Task Supervisor</u>:</div>
+        <div>
+          <label><u>Task Supervisor</u></label
+          >:
+        </div>
         <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
           <mat-icon *ngIf="task.supervisor.isVaccinated" class="green-icon"
             >circle</mat-icon
@@ -42,7 +54,10 @@
           <div>{{ task.supervisor.fullName }}</div>
         </div>
         <div fxLayout="column" fxLayoutGap="10px">
-          <div><u>Assigned Personnel</u>:</div>
+          <div>
+            <label><u>Assigned Personnel</u></label
+            >:
+          </div>
           <div *ngFor="let employee of personnel">
             <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
               <mat-icon *ngIf="employee.isVaccinated" class="green-icon"
@@ -61,7 +76,9 @@
           </div>
         </div>
         <div style="text-align: center">
-          <button mat-button (click)="toggleAssignMore()">Assign More</button>
+          <button mat-button class="peach-btn" (click)="toggleAssignMore()">
+            Assign More
+          </button>
         </div>
       </div>
     </div>
@@ -81,6 +98,8 @@
     </button>
   </p-dialog>
 
-  <button mat-button (click)="archive()">Archive</button>
-  <button mat-button (click)="closeDialog()">Close</button>
+  <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="3%">
+    <button mat-button class="grey-btn" (click)="archive()">Archive</button>
+    <button mat-button class="grey-btn" (click)="closeDialog()">Close</button>
+  </div>
 </div>

@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { GoalService } from 'src/app/services/goal/goal.service';
@@ -29,7 +30,8 @@ export class TaskComponent implements OnInit {
     private goalService: GoalService,
     private taskService: TaskService,
     private dialogService: DialogService,
-    private userService: UserService
+    private userService: UserService,
+    private location: Location
   ) {
     this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.percentageProgress = 0;
@@ -52,6 +54,10 @@ export class TaskComponent implements OnInit {
       },
       (error) => {}
     );
+  }
+
+  onBackClick(): void {
+    this.location.back();
   }
 
   handleGoalSelection() {
@@ -142,6 +148,7 @@ export class TaskComponent implements OnInit {
     this.filteredTasks = this.tasks.filter((task) =>
       task.name.toLowerCase().includes(this.filterValue.toLowerCase())
     );
+    console.log(this.filteredTasks);
   }
 
   openTaskDetails(task: any) {
