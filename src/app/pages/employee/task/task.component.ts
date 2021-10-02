@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { GoalService } from 'src/app/services/goal/goal.service';
 import { TaskService } from 'src/app/services/task/task.service';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { TaskDetailDialogComponent } from '../task-detail-dialog/task-detail-dialog.component';
 import { UserService } from 'src/app/services/user/user.service';
+import { TaskDetailDialogComponent } from '../task-detail-dialog/task-detail-dialog.component';
+import { CreateNewTaskDialogComponent } from './../create-new-task-dialog/create-new-task-dialog.component';
 
 @Component({
   selector: 'app-task',
@@ -16,6 +17,7 @@ export class TaskComponent implements OnInit {
   goals: any[];
   selectedGoal: any;
   tasks: any[];
+  newTask: any;
   numCompleted: number;
   percentageProgress: number;
   filterValue: string;
@@ -102,7 +104,26 @@ export class TaskComponent implements OnInit {
   }
 
   addTask() {
-    console.log('add');
+    this.newTask = {
+      name: '',
+      startDate: undefined,
+      deadline: undefined,
+      remarks: 'String',
+      isArchived: false,
+      complexityLevel: undefined,
+    };
+    this.ref = this.dialogService.open(CreateNewTaskDialogComponent, {
+      data: {
+        goal: this.selectedGoal,
+        task: this.newTask,
+        employees: this.employees,
+      },
+      width: '80%',
+      height: '70%',
+      showHeader: false,
+    });
+
+    this.ref.onClose.subscribe((response) => this.handleGoalSelection());
   }
 
   viewTaskArchives() {}
