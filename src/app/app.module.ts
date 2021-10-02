@@ -13,7 +13,11 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
+<<<<<<< HEAD
 import { AngularFireStorageModule } from '@angular/fire/storage'
+=======
+import { AngularFireStorageModule } from '@angular/fire/storage';
+>>>>>>> d97e142 (task details wip)
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -75,6 +79,10 @@ import { ChangePasswordComponent } from './pages/profile/change-password/change-
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
+<<<<<<< HEAD
+=======
+import { TaskDetailDialogComponent } from './pages/employee/task-detail-dialog/task-detail-dialog.component';
+>>>>>>> d97e142 (task details wip)
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);

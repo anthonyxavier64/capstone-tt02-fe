@@ -4,7 +4,7 @@ import { GoalService } from 'src/app/services/goal/goal.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { TaskDetailDialogComponent } from '../task-detail-dialog/task-detail-dialog.component';
-import { CreateNewTaskDialogComponent } from './../create-new-task-dialog/create-new-task-dialog.component';
+import { CreateNewTaskDialogComponent } from './../create-new-task-dialog/create-new-task-dialog.component';';
 
 @Component({
   selector: 'app-task',
