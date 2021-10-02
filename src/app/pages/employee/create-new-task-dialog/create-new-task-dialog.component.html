@@ -1,0 +1,165 @@
+<div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="3%">
+  <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="3%">
+    <h1 style="white-space: nowrap">{{ goal.name }} - Task:</h1>
+    <input
+      matInput
+      [(ngModel)]="taskName"
+      type="text"
+      style="height: 2vw"
+      placeholder="Insert Task Name Here"
+    />
+  </div>
+
+  <div
+    fxLayout="row"
+    fxLayoutAlign="space-around start"
+    fxLayoutGap="20%"
+    fxFlex="100%"
+  >
+    <div fxLayout="column" fxLayoutGap="15%">
+      <div fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="10%">
+        <div
+          fxLayout="column"
+          fxLayoutAlign="space-around start"
+          fxLayoutGap="3%"
+        >
+          <label style="white-space: nowrap">Start Date: </label>
+          <input
+            matInput
+            [(ngModel)]="startDate"
+            type="date"
+            style="height: 2vw"
+          />
+        </div>
+        <div
+          fxLayout="column"
+          fxLayoutAlign="space-around start"
+          fxLayoutGap="3%"
+        >
+          <label style="white-space: nowrap">Deadline: </label>
+          <input
+            matInput
+            [(ngModel)]="deadline"
+            type="date"
+            style="height: 2vw"
+          />
+        </div>
+      </div>
+      <form
+        #assignEmployeeForm="ngForm"
+        ngNativeValidate
+        name="assignEmployee"
+        (ngSubmit)="assignEmployee(assignEmployeeForm)"
+      >
+        <div
+          fxLayout="column"
+          fxLayoutAlign="space-around start"
+          fxLayoutGap="3%"
+        >
+          <label style="white-space: nowrap">Add Employees:</label>
+          <div
+            fxLayout="column"
+            fxLayoutAlign="space-around start"
+            fxLayoutGap="5%"
+          >
+            <p-dropdown
+              [options]="employees"
+              optionLabel="fullName"
+              name="selectedEmployee"
+              ngModel
+              #selectedEmployee="ngModel"
+              placeholder="Please select an employee"
+              [filter]="true"
+              filterBy="fullName"
+              [style]="{ width: '20vw' }"
+            >
+              <ng-template let-user pTemplate="item">
+                <div fxLayout="row" fxLayoutGap="3%">
+                  <img
+                    *ngIf="user.isVaccinated"
+                    src="../../../../../assets/images/vaccinatedIcon.svg"
+                  />
+                  <img
+                    *ngIf="!user.isVaccinated"
+                    src="../../../../../assets/images/unvaccinatedIcon.svg"
+                  />
+                  <div>{{ user.fullName }}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+            <button mat-button class="peach-btn" type="submit">Add</button>
+          </div>
+
+          <table
+            style="overflow: auto"
+            *ngFor="let employee of assignedEmployees"
+          >
+            <tr>
+              <div
+                *ngIf="assignedEmployees.length !== 0"
+                fxLayout="row"
+                fxLayoutAlign="space-between center"
+                fxLayoutGap="15%"
+              >
+                <div fxLayout="row" fxLayoutGap="3%">
+                  <img
+                    *ngIf="employee.isVaccinated"
+                    src="../../../../../assets/images/vaccinatedIcon.svg"
+                  />
+                  <img
+                    *ngIf="!employee.isVaccinated"
+                    src="../../../../../assets/images/unvaccinatedIcon.svg"
+                  />
+                  <p style="white-space: nowrap; font-size: 1.4vw">
+                    {{ employee.fullName }}
+                  </p>
+                </div>
+                <button
+                  mat-button
+                  style="background-color: inherit"
+                  (click)="unassignEmployee(employee)"
+                >
+                  <img
+                    style="cursor: pointer; height: 1.5em; width: 1.5em"
+                    src="../../../../assets/images/deleteIcon.png"
+                  />
+                </button>
+              </div>
+              <div *ngIf="assignedEmployees.length === 0">
+                <p>Assign employees to the task!</p>
+              </div>
+            </tr>
+          </table>
+        </div>
+      </form>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="space-around start" fxLayoutGap="3%">
+      <label>Remarks: </label>
+      <textarea
+        matInput
+        [(ngModel)]="remarks"
+        placeholder="Insert Remarks Here"
+        cols="50"
+        rows="6"
+        wrap="hard"
+      ></textarea>
+
+      <label style="white-space: nowrap">Complexity Level: </label>
+      <input
+        matInput
+        [(ngModel)]="complexity"
+        style="width: 5vw"
+        class="numberInput"
+        type="number"
+        [max]="5"
+        [min]="1"
+      />
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="3%">
+    <button mat-button class="peach-btn" (click)="createNewTask()">
+      Submit
+    </button>
+    <button mat-button class="grey-btn" (click)="onClose()">Close</button>
+  </div>
+</div>
