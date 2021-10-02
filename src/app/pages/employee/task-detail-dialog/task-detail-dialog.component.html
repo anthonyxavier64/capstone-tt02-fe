@@ -1,1 +1,31 @@
+<div fxLayout="column" fxLayoutGap="30px">
+  <div>
+    <u style="font-weight: bold; font-size: 30px">
+      Goal {{ goal.name }} - Task {{ task.name }}
+    </u>
+  </div>
+  <div fxLayout="row">
+    <div fxLayout="column" fxLayoutGap="20px" style="font-size: 20px">
+      <div fxLayout="column" fxLayoutGap="10px">
+        <div>
+          <u>Start Date</u>:
+          {{ task.startDate | date: "dd/MM/yy" }}
+        </div>
+        <div>
+          <u>Deadline</u>:
+          {{ task.deadline | date: "dd/MM/yy" }}
+        </div>
+        <div>
+          <u>Completion Date</u>:
+          <span *ngIf="task.completionDate !== null">
+            {{ task.completionDate | date: "dd/MM/yy" }}
+          </span>
+          <span *ngIf="!task.completionDate">-</span>
+        </div>
+      </div>
+      <div><u>Task Supervisor</u>:</div>
+    </div>
+  </div>
+</div>
+
 <button mat-button (click)="closeDialog()">close</button>

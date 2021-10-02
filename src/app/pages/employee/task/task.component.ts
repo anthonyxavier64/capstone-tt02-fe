@@ -106,10 +106,11 @@ export class TaskComponent implements OnInit {
   openTaskDetails(task: any) {
     this.ref = this.dialogService.open(TaskDetailDialogComponent, {
       data: {
+        goal: this.selectedGoal,
         task,
       },
       width: '100%',
-      height: '80%',
+      height: '70%',
       closable: false,
       showHeader: false,
     });
