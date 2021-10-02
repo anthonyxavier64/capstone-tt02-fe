@@ -1,7 +1,7 @@
 <p-toast></p-toast>
 <mat-spinner
   *ngIf="isLoading"
-  style="color: aquamarine; margin-left: 50%; margin-top: 30vw"
+  style="color: aquamarine; margin-left: 47%; margin-top: 20%"
   fxLayoutAlign=" center"
 ></mat-spinner>
 
@@ -214,12 +214,13 @@
                   <img
                     (click)="editException(exception)"
                     src="../../../../assets/images/editIcon.png"
+                    style="cursor: pointer; height: 1.5em; width: 1.5em"
                   />
 
                   <img
-                    class="deleteIcon"
                     (click)="deleteException(exception)"
                     src="../../../../assets/images/deleteIcon.png"
+                    style="cursor: pointer; height: 1.5em; width: 1.5em"
                   />
                 </div>
               </td>
@@ -235,7 +236,9 @@
         <div fxLayout="column" fxLayoutAlign="space-around center">
           <div
             *ngIf="
-              numEmployeesPerDay.value === '' && numEmployeesPerDay.touched
+              (numEmployeesPerDay.value === '' ||
+                numEmployeesPerDay.value === null) &&
+              numEmployeesPerDay.touched
             "
             class="errorText"
             style="color: red"
@@ -244,7 +247,8 @@
           </div>
           <div
             *ngIf="
-              numDaysAllowedPerMonth.value === '' &&
+              (numDaysAllowedPerMonth.value === '' ||
+                numDaysAllowedPerMonth.value === null) &&
               numDaysAllowedPerMonth.touched
             "
             class="errorText"

@@ -1,7 +1,7 @@
 <p-toast></p-toast>
 <mat-spinner
   *ngIf="isLoading"
-  style="color: aquamarine; margin-left: 50%; margin-top: 30vw"
+  style="color: aquamarine; margin-left: 47%; margin-top: 20%"
   fxLayoutAlign=" center"
 ></mat-spinner>
 
@@ -36,7 +36,7 @@
         >
           <div fxLayout="column" fxLayoutAlign="space-around center">
             <div
-              class="teamCardHeader"
+              class="teamACardHeader"
               fxLayout="column"
               fxLayoutAlign="space-around center"
             >
@@ -156,7 +156,7 @@
         >
           <div fxLayout="column" fxLayoutAlign="space-around center">
             <div
-              class="teamCardHeader"
+              class="teamBCardHeader"
               fxLayout="column"
               fxLayoutAlign="space-around center"
             >
@@ -269,6 +269,12 @@
           </div>
         </form>
       </div>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="space-around center">
+      <button class="peach-btn" (click)="toggleTeamMembers()">
+        Toggle Team Members
+      </button>
     </div>
 
     <div
