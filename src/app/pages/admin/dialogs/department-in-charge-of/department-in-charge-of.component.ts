@@ -1,14 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
-  MAT_DIALOG_DATA,
   MatDialog,
   MatDialogRef,
+  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-
-import { NewDepartmentComponent } from '../new-department/new-department.component';
-import { UserService } from 'src/app/services/user/user.service';
-
 import { DepartmentService } from 'src/app/services/department/department.service';
+import { NewDepartmentComponent } from '../new-department/new-department.component';
+
 @Component({
   selector: 'app-department-in-charge-of',
   templateUrl: './department-in-charge-of.component.html',
@@ -16,7 +14,6 @@ import { DepartmentService } from 'src/app/services/department/department.servic
 })
 export class DepartmentInChargeOfComponent implements OnInit {
   allDepartments: any[];
-  selectedDepartments: any[];
   user: any;
 
   constructor(
@@ -24,10 +21,7 @@ export class DepartmentInChargeOfComponent implements OnInit {
     private dialogRef: MatDialogRef<DepartmentInChargeOfComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog
-  ) {
-    this.allDepartments = [];
-    this.selectedDepartments = [];
-  }
+  ) {}
 
   ngOnInit(): void {
     const currentUser = localStorage.getItem('currentUser');
@@ -39,6 +33,12 @@ export class DepartmentInChargeOfComponent implements OnInit {
     this.departmentService.getAllDepartments(this.user.companyId).subscribe(
       (response) => {
         this.allDepartments = response.departments;
+        for (let department of this.data.inChargeOfDepartments) {
+          const indexToSelect = this.allDepartments.findIndex(
+            (item) => item.departmentId === department.departmentId
+          );
+          this.allDepartments[indexToSelect].isSelected = true;
+        }
       },
       (error) => {
         console.log(error);

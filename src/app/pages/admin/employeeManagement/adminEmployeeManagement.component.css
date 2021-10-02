@@ -1,6 +1,6 @@
 .inviteEmployeeCard {
   width: 94vw;
-  height: 20vw;
+  height: 25vw;
   background: rgb(var(--secondary-card-color));
   box-shadow: -4px -4px 4px rgba(0, 0, 0, 0.05);
   border-radius: 15px;
@@ -20,8 +20,8 @@
 }
 
 .actionIcon {
-  cursor: pointer; 
-  height: 1.5em; 
+  cursor: pointer;
+  height: 1.5em;
   width: 1.5em
 }
 
