@@ -17,7 +17,7 @@ const httpOptions = {
 export class UserService {
   baseUrl: string = environment.API_REST_URL + '/user';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   getUsers(companyId: string): Observable<any> {
     let params = new HttpParams().set('companyId', companyId);
@@ -92,5 +92,11 @@ export class UserService {
       updateDetails,
       httpOptions
     );
+  }
+
+  getUserDocuments(userId: any) {
+    return this.httpClient.get<any>(
+      `${this.baseUrl}/get-user-submissions/${userId}`, httpOptions)
+      .pipe(catchError(handleError));
   }
 }

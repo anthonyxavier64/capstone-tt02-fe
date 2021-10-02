@@ -1,19 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
 import * as moment from 'moment';
-
-import { UserService } from 'src/app/services/user/user.service';
-
 import { Announcement } from 'src/app/models/announcement';
-import { ViewAnnouncementComponent } from '../view-announcement/view-announcement.component';
 import { AnnouncementType } from 'src/app/models/announcement-type';
 import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
-
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
-
 import { TaskService } from 'src/app/services/task/task.service';
+import { UserService } from 'src/app/services/user/user.service';
+
+import { DatePipe } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+
+import { ViewAnnouncementComponent } from '../view-announcement/view-announcement.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -40,10 +38,10 @@ export class DashboardComponent implements OnInit {
   weekday = this.datePipe.transform(this.today, "EEEE");
   startDate = moment().startOf('week').toDate();
   endDate = moment().endOf('week').toDate();
-  weekProgress = parseInt(moment().startOf('week').fromNow()) / 7 * 100; 
-  
-  constructor(private router: Router, 
-    private userService: UserService, 
+  weekProgress = parseInt(moment().startOf('week').fromNow()) / 7 * 100;
+
+  constructor(private router: Router,
+    private userService: UserService,
     private announcementService: AnnouncementService,
     private meetingService: MeetingService,
     private taskService: TaskService,
@@ -141,4 +139,7 @@ export class DashboardComponent implements OnInit {
     this.taskProgress = (this.numCompleted / this.weeklyTasks.length) * 100;
   }
 
+  onCovidDeclarationsClick() {
+    this.router.navigateByUrl('/covid-declarations');
+  }
 }
