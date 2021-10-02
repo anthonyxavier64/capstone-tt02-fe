@@ -96,3 +96,8 @@ h1 {
 .vaccination-status.unvaccinated {
   background-color: #a50000;
 }
+.selection-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}

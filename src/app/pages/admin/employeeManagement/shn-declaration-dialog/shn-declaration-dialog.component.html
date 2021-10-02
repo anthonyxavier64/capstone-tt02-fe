@@ -10,7 +10,27 @@
       ></div>
       <p class="text">{{ renderVaccinationStatus() }}</p>
     </div>
-    <div>
+    <div class="selection-group">
+      <label for="start" style="margin-right: 8px">Start date:</label>
+      <input
+        type="date"
+        id="start"
+        name="start-date"
+        [value]="startDate"
+        (change)="onWriteStartDate($event)"
+        style="margin-right: 20px"
+      />
+      <label for="end" style="margin-right: 8px">End date:</label>
+      <input
+        type="date"
+        id="end"
+        name="end-date"
+        [value]="endDate"
+        (change)="onWriteEndDate($event)"
+      />
+    </div>
+    <br />
+    <div class="selection-group">
       <div>
         <input
           type="radio"
@@ -20,7 +40,9 @@
           (click)="onClickSHN()"
           checked
         />
-        <label for="stay-home-notice">Stay Home Notice</label>
+        <label for="stay-home-notice" style="margin-right: 8px"
+          >Stay Home Notice</label
+        >
       </div>
       <div>
         <input
@@ -35,7 +57,14 @@
     </div>
     <br />
     <div>
-      <input type="text" id="remarks" name="remarks" [value]="remarks" (change)="onWriteRemarks($event)"/>
+      <label for="remarks">Reason: </label>
+      <input
+        type="text"
+        id="remarks"
+        name="remarks"
+        [value]="remarks"
+        (change)="onWriteRemarks($event)"
+      />
     </div>
     <br />
     <input

@@ -10,12 +10,14 @@ import { AngularFireStorage } from '@angular/fire/storage';
   selector: 'app-shn-declaration-dialog',
   templateUrl: './shn-declaration-dialog.component.html',
   styleUrls: ['./shn-declaration-dialog.component.css'],
-  providers: [ MessageService ],
+  providers: [MessageService],
 })
 
 export class ShnDeclarationDialogComponent implements OnInit {
   covidSubmissionType: string;
   remarks: string;
+  startDate: string;
+  endDate: string;
   showWarningMessage: boolean;
   uploadProgress: number;
   user: any;
@@ -28,8 +30,10 @@ export class ShnDeclarationDialogComponent implements OnInit {
   ) {
     this.uploadProgress = -1;
     this.showWarningMessage = false;
-    this.covidSubmissionType="STAY_HOME_NOTICE";
-    
+    this.covidSubmissionType = "STAY_HOME_NOTICE";
+    this.remarks = "";
+    this.startDate = new Date().toISOString().slice(0, 10);
+    this.endDate = new Date().toISOString().slice(0, 10);
   }
 
   ngOnInit(): void {
@@ -51,16 +55,22 @@ export class ShnDeclarationDialogComponent implements OnInit {
   onWriteRemarks(event) {
     this.remarks = event.target.value;
   }
-  
-  upload(event) { 
-    const currentDate  = new Date().toString();
+  onWriteStartDate(event) {
+    this.startDate = event.target.value;
+  }
+  onWriteEndDate(event) {
+    this.endDate = event.target.value;
+  }
+
+  upload(event) {
+    const currentDate = new Date().toString();
 
     const fileRef = this.afStorage.ref(`SHN_QO_Declarations/${this.user.userId}/${currentDate}`);
     const uploadTask = fileRef.put(event.target.files[0]);
     uploadTask.percentageChanges().subscribe((data) => this.uploadProgress = data);
 
     this.user.latestMedicalCert = currentDate.toString();
-    const newSubmission = { dateOfSubmission: currentDate, remarks: this.remarks, covidDocumentType: this.covidSubmissionType, employeeId: this.user.userId };
+    const newSubmission = { dateOfSubmission: currentDate, remarks: this.remarks, startDate: this.startDate, endDate: this.endDate, covidDocumentType: this.covidSubmissionType, employeeId: this.user.userId };
     this.covidDocumentSubmissionService
       .createCovidDocumentSubmission(newSubmission)
       .subscribe(
