@@ -1,13 +1,3 @@
-import { NgCircleProgressModule } from 'ng-circle-progress';
-import { DataViewModule } from 'primeng/dataview';
-import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
-import { DialogService } from 'primeng/dynamicdialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { StyleClassModule } from 'primeng/styleclass';
-import { TableModule } from 'primeng/table';
-import { environment } from 'src/environments/environment.dev';
 
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -22,8 +12,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import {
-  MAT_FORM_FIELD_DEFAULT_OPTIONS,
   MatFormFieldModule,
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
 } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -32,7 +22,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
-
+import { NgCircleProgressModule } from 'ng-circle-progress';
+import { DataViewModule } from 'primeng/dataview';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { DialogService } from 'primeng/dynamicdialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { StyleClassModule } from 'primeng/styleclass';
+import { TableModule } from 'primeng/table';
+import { environment } from 'src/environments/environment.dev';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TOKEN_KEY } from './config';
@@ -122,10 +121,14 @@ export function tokenGetter() {
     ViewVaccinationDialogComponent,
     ViewShnDeclarationDialog,
     ViewArtComponent,
-    UploadVaccinationDialogComponent],
+    UploadVaccinationDialogComponent,
+  ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
     FormsModule,
@@ -158,16 +161,16 @@ export function tokenGetter() {
       innerStrokeWidth: 10,
       outerStrokeWidth: 10,
       space: -10,
-      innerStrokeColor: "rgb(var(--primary-button-color)",
-      outerStrokeColor: "rgb(var(--covid-button-color)",
+      innerStrokeColor: 'rgb(var(--primary-button-color)',
+      outerStrokeColor: 'rgb(var(--covid-button-color)',
       animation: true,
       animationDuration: 300,
-      titleFontSize: "1.8rem",
-      titleColor: "rgb(var(--theme-primary-color)",
-      unitsFontSize: "1.8rem",
-      unitsColor: "rgb(var(--theme-primary-color)",
-      subtitleFontSize: "1.5rem",
-      subtitleColor: "rgba(var(--theme-primary-color)",
+      titleFontSize: '1.8rem',
+      titleColor: 'rgb(var(--theme-primary-color)',
+      unitsFontSize: '1.8rem',
+      unitsColor: 'rgb(var(--theme-primary-color)',
+      subtitleFontSize: '1.5rem',
+      subtitleColor: 'rgba(var(--theme-primary-color)',
     }),
     JwtModule.forRoot({
       config: {
@@ -189,4 +192,4 @@ export function tokenGetter() {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
