@@ -45,4 +45,10 @@ export class TaskService {
       .patch<any>(this.baseUrl + '/update-task', task, httpOptions)
       .pipe(catchError(handleError));
   }
+
+  addUsersToTask(users: any, taskId: string): Observable<any> {
+    return this.httpClient
+      .post<any>(this.baseUrl + '/add-users/', { users, taskId }, httpOptions)
+      .pipe(catchError(handleError));
+  }
 }

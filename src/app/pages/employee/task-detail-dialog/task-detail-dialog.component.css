@@ -1,0 +1,17 @@
+.green-icon {
+  color: green;
+}
+
+.grey-icon {
+  color: grey;
+}
+
+.button {
+  background-color: rgba(var(--primary-button-color), 0.5);
+  font-family: var(--primary-font);
+  color: rgba(var(--theme-primary-color), 0.8);
+}
+
+.progress-bar {
+  color: rgba(var(--primary-button-color), 0.5);
+}
