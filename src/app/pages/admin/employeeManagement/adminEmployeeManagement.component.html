@@ -5,25 +5,19 @@
 >
   <app-navbar></app-navbar>
 
-  <div style="font-size: 25px">
-    <div fxLayout="row" fxLayoutAlign="space-between">
-      Welcome {{ user.fullName }}, manage your employees here:
-      <button
-        mat-raised-button
-        (click)="backButtonClicked()"
-        style="margin-right: 30px; cursor: pointer"
-      >
-        back
-      </button>
+  <div fxLayout="row" fxLayoutAlign="space-between start">
+    <h1>Welcome {{ user.fullName }}, manage your employees here:</h1>
+    <div>
+      <button mat-button class="grey-btn" (click)="onBackClick()">Back</button>
     </div>
   </div>
 
   <div fxLayout="row" class="inviteEmployeeCard">
-    <div fxLayout="column" fxLayoutAlign="space-around center" fxFlex="100">
+    <div fxLayout="column" fxLayoutAlign="space-evenly center" fxFlex="100">
       <h2 style="text-decoration: underline; text-align: center">
         Invite Employee
       </h2>
-      <div fxLayout="row" fxLayoutGap="10%" fxLayoutAlign="space-evenly center">
+      <div fxLayout="row" fxLayoutGap="8%" fxLayoutAlign="space-evenly center">
         <div fxLayout="row" fxLayoutGap="10px">
           <div fxLayout="column" fxLayoutGap="10px">
             <h3>Employee Full Name:</h3>
@@ -99,7 +93,7 @@
           </div>
         </div>
         <div fxLayout="column" fxLayoutGap="10px">
-          <h4 style="text-align: left">Associated Departments:</h4>
+          <h3 style="text-align: left">Associated Departments:</h3>
           <button mat-raised-button (click)="openInChargeOfDialog()">
             In Charge of
           </button>
@@ -108,7 +102,18 @@
           </button>
         </div>
       </div>
-      <button mat-raised-button (click)="createNewEmployee()">
+      <button
+        mat-raised-button
+        (click)="createNewEmployee()"
+        [disabled]="
+          fullName.value === '' ||
+          fullName.value === null ||
+          emailText.invalid ||
+          employeePosition.value === '' ||
+          employeePosition.value === null ||
+          contactNum.invalid
+        "
+      >
         Invite Employee
       </button>
     </div>
@@ -128,7 +133,7 @@
   </div>
 
   <div class="employeeTableCard" fxLayout="column" fxLayoutAlign=" center">
-    <h2 style="padding-top: 2vw">Existing Employees</h2>
+    <h2 style="padding-top: 2vw; padding-bottom: 2vw">Existing Employees</h2>
     <div
       style="
         max-width: 90%;
@@ -224,7 +229,7 @@
               {{ user.email }}
             </td>
             <td>
-              {{ user.createdAt }}
+              {{ user.createdAt.substring(0, 10) }}
             </td>
             <td>
               {{ user.contactNumber }}

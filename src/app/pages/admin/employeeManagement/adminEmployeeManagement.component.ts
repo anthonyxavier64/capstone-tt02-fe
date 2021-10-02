@@ -1,15 +1,12 @@
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { DepartmentService } from 'src/app/services/department/department.service';
-import { UserService } from 'src/app/services/user/user.service';
-
 import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
-
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DepartmentService } from 'src/app/services/department/department.service';
+import { UserService } from 'src/app/services/user/user.service';
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
-import { UploadEmployeeCSVComponent } from '../dialogs/upload-employee-csv/upload-employee-csv.component';
 import { ArtDialogComponent } from './art-test-results-dialog/art-test-dialog.component';
 import { DeleteEmployeeDialogComponent } from './delete-employee-dialog/delete-employee-dialog.component';
 import { EditEmployeeDialogComponent } from './edit-employee-dialog/edit-employee-dialog.component';
@@ -109,12 +106,11 @@ export class AdminEmployeeManagementComponent implements OnInit {
     this.clickHoverMenuTrigger.openMenu();
   }
 
-  backButtonClicked() {
+  onBackClick() {
     this._location.back();
   }
 
   openInChargeOfDialog() {
-    this.inChargeOfDepartments = [];
     const deptInChargeOfDialogRef = this.dialog.open(
       DepartmentInChargeOfComponent,
       {
@@ -130,7 +126,6 @@ export class AdminEmployeeManagementComponent implements OnInit {
   }
 
   openPartOfDialog() {
-    this.partOfDepartments = [];
     const deptPartOfDialogRef = this.dialog.open(DepartmentPartOfComponent, {
       width: '50%',
       height: '50%',
@@ -222,12 +217,15 @@ export class AdminEmployeeManagementComponent implements OnInit {
     contactNumber: string;
     isActivated: boolean;
   }) {
-    this.shnDeclarationDialogRef = this.dialogService.open(ShnDeclarationDialogComponent, {
-      header: selectedUser.fullName + "'s SHN/QO Declaration",
-      width: '70%',
-      contentStyle: { 'max-height': '50vw', overflow: 'auto' },
-      data: selectedUser,
-    });
+    this.shnDeclarationDialogRef = this.dialogService.open(
+      ShnDeclarationDialogComponent,
+      {
+        header: selectedUser.fullName + "'s SHN/QO Declaration",
+        width: '70%',
+        contentStyle: { 'max-height': '50vw', overflow: 'auto' },
+        data: selectedUser,
+      }
+    );
 
     this.shnDeclarationDialogRef.onClose.subscribe(() => {
       this.ngOnInit();
@@ -241,18 +239,21 @@ export class AdminEmployeeManagementComponent implements OnInit {
     contactNumber: string;
     isActivated: boolean;
   }) {
-    this.shnDeclarationDialogRef = this.dialogService.open(UploadVaccinationDialogComponent, {
-      header: selectedUser.fullName + "'s Vaccination Certificate",
-      width: '70%',
-      contentStyle: { 'max-height': '50vw', overflow: 'auto' },
-      data: selectedUser,
-    });
+    this.shnDeclarationDialogRef = this.dialogService.open(
+      UploadVaccinationDialogComponent,
+      {
+        header: selectedUser.fullName + "'s Vaccination Certificate",
+        width: '70%',
+        contentStyle: { 'max-height': '50vw', overflow: 'auto' },
+        data: selectedUser,
+      }
+    );
 
     this.shnDeclarationDialogRef.onClose.subscribe(() => {
       this.ngOnInit();
     });
   }
-  
+
   openEditEmployeeDialog(selectedUser: {
     userId: number;
     fullName: string;
