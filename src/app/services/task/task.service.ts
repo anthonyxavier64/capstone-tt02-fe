@@ -26,6 +26,14 @@ export class TaskService {
       .pipe(catchError(handleError));
   }
 
+  getAllTasksByUser(userId: string): Observable<any> {
+    return this.httpClient
+      .get<any>(
+        this.baseUrl + '/get-all-tasks-user/' + userId
+      )
+      .pipe(catchError(handleError));
+  }
+
   createTask(task: any): Observable<any> {
     return this.httpClient
       .post<any>(this.baseUrl + '/create-task', task, httpOptions)
