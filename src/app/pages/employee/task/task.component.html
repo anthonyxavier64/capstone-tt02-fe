@@ -5,18 +5,27 @@
 >
   <app-navbar></app-navbar>
 
-  <div style="font-size: 25px">
-    Welcome {{ user.fullName }}, here are your Tasks for
-    <p-dropdown
-      [options]="goals"
-      [(ngModel)]="selectedGoal"
-      optionLabel="name"
-      [filter]="true"
-      filterBy="name"
-      placeholder="Select a goal"
-      (onChange)="handleGoalSelection()"
-    ></p-dropdown>
+  <div fxLayout="row" fxLayoutAlign="space-between start">
+    <div fxLayout="row" fxLayoutGap="2%">
+      <h1 style="white-space: nowrap">
+        Welcome {{ user.fullName }}, here are your Tasks for
+      </h1>
+      <p-dropdown
+        [options]="goals"
+        [(ngModel)]="selectedGoal"
+        optionLabel="name"
+        [filter]="true"
+        filterBy="name"
+        placeholder="Select a goal"
+        (onChange)="handleGoalSelection()"
+      ></p-dropdown>
+    </div>
+    <div>
+      <button mat-button class="grey-btn" (click)="onBackClick()">Back</button>
+    </div>
+  </div>
 
+  <div>
     <div *ngIf="selectedGoal" style="display: block">
       <span class="p-input-icon-right" style="margin-top: 20px">
         <i class="pi pi-search" (click)="handleFilter()"></i>
@@ -25,6 +34,7 @@
           placeholder="Task Filter"
           [(ngModel)]="filterValue"
           pInputText
+          (change)="handleFilter()"
         />
       </span>
 
@@ -44,11 +54,9 @@
         <div *ngFor="let task of filteredTasks">
           <mat-grid-tile>
             <mat-card
-              style="
-                width: 100%;
-                height: 100%;
-                background-color: rgba(196, 196, 196, 0.1);
-              "
+              class="taskCard"
+              fxLayout="column"
+              fxLayoutAlign="space-around center"
             >
               <mat-card-title style="text-align: center"
                 >{{ task.name }}&nbsp;<mat-checkbox
@@ -89,7 +97,7 @@
               <mat-card-actions style="text-align: center">
                 <button
                   mat-button
-                  class="button"
+                  class="peach-btn"
                   (click)="openTaskDetails(task)"
                 >
                   View Details
@@ -100,14 +108,9 @@
         </div>
         <mat-grid-tile>
           <mat-card
-            style="
-              width: 100%;
-              height: 100%;
-              background-color: rgba(196, 196, 196, 0.1);
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            "
+            class="taskCard"
+            fxLayout="column"
+            fxLayoutAlign="space-around center"
             (click)="addTask()"
           >
             <mat-card-content>Add Task</mat-card-content>
@@ -115,14 +118,9 @@
         </mat-grid-tile>
         <mat-grid-tile>
           <mat-card
-            style="
-              width: 100%;
-              height: 100%;
-              background-color: rgba(196, 196, 196, 0.1);
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            "
+            class="taskCard"
+            fxLayout="column"
+            fxLayoutAlign="space-around center"
             (click)="viewTaskArchives()"
           >
             <mat-card-content>View Task Archives</mat-card-content>
