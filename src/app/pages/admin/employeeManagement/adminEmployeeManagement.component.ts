@@ -1,10 +1,12 @@
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DepartmentService } from 'src/app/services/department/department.service';
+import { UserService } from 'src/app/services/user/user.service';
+
 import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { DepartmentService } from 'src/app/services/department/department.service';
-import { UserService } from 'src/app/services/user/user.service';
+
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
 import { ArtDialogComponent } from './art-test-results-dialog/art-test-dialog.component';
@@ -48,6 +50,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
 
   artTestDialogRef: DynamicDialogRef;
   shnDeclarationDialogRef: DynamicDialogRef;
+  vaccinationDialogRef: DynamicDialogRef;
   editDialogRef: DynamicDialogRef;
   deleteDialogRef: DynamicDialogRef;
   selectedEmployee: any;
@@ -249,7 +252,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
       }
     );
 
-    this.shnDeclarationDialogRef.onClose.subscribe(() => {
+    this.vaccinationDialogRef.onClose.subscribe(() => {
       this.ngOnInit();
     });
   }

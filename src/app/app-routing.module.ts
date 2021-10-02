@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { AuthGuard } from './guards/auth.guard';
 import { AdminComponent } from './pages/admin/adminLanding/admin.component';
 import { AdminAnnouncementManagementComponent } from './pages/admin/announcementManagement/adminAnnouncementManagement.component';
@@ -10,12 +11,13 @@ import { AdminEmployeeManagementComponent } from './pages/admin/employeeManageme
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
 import { AlternateWorkTeamsConfigComponent } from './pages/admin/wfoManagement/alternateWorkTeamsConfig/alternateWorkTeamsConfig.component';
 import { OfficeQuotaConfigComponent } from './pages/admin/wfoManagement/officeQuotaConfig/officeQuotaConfig.component';
+import { CovidDeclarationsComponent } from './pages/covid-declarations/covid-declarations.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { TaskComponent } from './pages/employee/task/task.component';
 import { IndexComponent } from './pages/index/index.component';
 import { LoginComponent } from './pages/index/login/login.component';
 import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { TaskComponent } from './pages/employee/task/task.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
@@ -75,10 +77,15 @@ const routes: Routes = [
     component: TaskComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'covid-declarations',
+    component: CovidDeclarationsComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

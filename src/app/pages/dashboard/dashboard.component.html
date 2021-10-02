@@ -1,44 +1,82 @@
-<div fxLayout="column" fxLayoutGap="3%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
+<div
+  fxLayout="column"
+  fxLayoutGap="3%"
+  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+>
   <app-navbar></app-navbar>
 
-  <div fxLayout="row" fxLayoutAlign="space-between start"style="width:100%">
-  <h1>Welcome {{ user.fullName }}.</h1>
-  <button class="red-btn">Close Contacts</button>
-</div>
+  <div fxLayout="row" fxLayoutAlign="space-between start" style="width: 100%">
+    <h1>Welcome {{ user.fullName }}.</h1>
+    <div>
+      <button class="peach-btn" (click)="onCovidDeclarationsClick()">
+        Covid Declarations
+      </button>
+      &nbsp;
+      <button class="red-btn">Close Contacts</button>
+    </div>
+  </div>
 
-  <mat-card-group fxLayout="row" fxLayoutGap="5%" style="padding: 0 3vw;">
-
-    <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5%">
+  <mat-card-group fxLayout="row" fxLayoutGap="5%" style="padding: 0 3vw">
+    <mat-card
+      class="beige-block"
+      fxLayout="column"
+      fxLayoutAlign="start center"
+      fxLayoutGap="5%"
+    >
       <mat-card-title> My Weekly Tasks </mat-card-title>
-        <circle-progress 
-            [percent]="taskProgress" 
-            subtitle="{{ numCompleted }} / {{ weeklyTasks?.length || '0' }}">
-        </circle-progress>
-        <mat-card *ngFor="let task of weeklyTasks" class="general-tab" fxLayout="column" fxLayoutAlign="start start"> 
-          <h2>{{ task.name }}</h2>
-          <p>Goal {{ task.goalId }}</p>
-          <p>Start Date: {{ task.startDate | date: "shortDate" }} </p>
-          <div fxLayout="row" fxLayoutAlign="space-between start" style="width: 100%">
-            <p>Deadline: {{ task.deadline | date: "shortDate" }} </p>
-            <mat-checkbox 
+      <circle-progress
+        [percent]="taskProgress"
+        subtitle="{{ numCompleted }} / {{ weeklyTasks?.length || '0' }}"
+      >
+      </circle-progress>
+      <mat-card
+        *ngFor="let task of weeklyTasks"
+        class="general-tab"
+        fxLayout="column"
+        fxLayoutAlign="start start"
+      >
+        <h2>{{ task.name }}</h2>
+        <p>Goal {{ task.goalId }}</p>
+        <p>Start Date: {{ task.startDate | date: "shortDate" }}</p>
+        <div
+          fxLayout="row"
+          fxLayoutAlign="space-between start"
+          style="width: 100%"
+        >
+          <p>Deadline: {{ task.deadline | date: "shortDate" }}</p>
+          <mat-checkbox
             (change)="handleChange(task)"
-            [checked]="!!task.completionDate">
+            [checked]="!!task.completionDate"
+          >
           </mat-checkbox>
-          </div>
-        </mat-card>
+        </div>
+      </mat-card>
     </mat-card>
 
-    <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5%">
+    <mat-card
+      class="beige-block"
+      fxLayout="column"
+      fxLayoutAlign="center center"
+      fxLayoutGap="5%"
+    >
       <mat-card-title> My Weekly Meetings (SR3) </mat-card-title>
-      <circle-progress 
+      <circle-progress
         [percent]="weekProgress"
         title="{{ weekday }}"
         [showSubtitle]="false"
-        [showUnits]="false">
+        [showUnits]="false"
+      >
       </circle-progress>
-      <p style="text-align: center;">Start: {{ startDate | date: "shortDate" }}
-        <br/>End: {{ endDate | date: "shortDate" }}</p>
-      <mat-card  *ngFor="let omeeting of organisedMeetings" class="general-tab" fxLayout="column" fxLayoutAlign="start start"> 
+      <p style="text-align: center">
+        Start: {{ startDate | date: "shortDate" }} <br />End:
+        {{ endDate | date: "shortDate" }}
+      </p>
+      <mat-card
+        *ngFor="let omeeting of organisedMeetings"
+        class="general-tab"
+        fxLayout="column"
+        fxLayoutAlign="start start"
+      >
         <h2>{{ omeeting.title }}, DateTime</h2>
         <p>Goal</p>
         <p *ngIf="omeeting.isOnline">Online</p>
@@ -47,47 +85,86 @@
       </mat-card>
     </mat-card>
 
-    <mat-card-group fxLayout="column" fxLayoutGap="5%" style="width:100%">
-
-      <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="2%">
+    <mat-card-group fxLayout="column" fxLayoutGap="5%" style="width: 100%">
+      <mat-card
+        class="beige-block"
+        fxLayout="column"
+        fxLayoutAlign="start center"
+        fxLayoutGap="2%"
+      >
         <mat-card-title> Announcements </mat-card-title>
-        <mat-card *ngFor="let cannouncement of covidAnnouncements" class="covid-tab" fxLayout="column" fxLayoutAlign="start center"> 
+        <mat-card
+          *ngFor="let cannouncement of covidAnnouncements"
+          class="covid-tab"
+          fxLayout="column"
+          fxLayoutAlign="start center"
+        >
           <p>{{ cannouncement.title }}</p>
-          <div fxLayout="row" fxLayoutAlign="space-around center" style="width:100%">
+          <div
+            fxLayout="row"
+            fxLayoutAlign="space-around center"
+            style="width: 100%"
+          >
             <div>
-            <p>From:</p>
-            <p>Date: {{ cannouncement.date | date:'shortDate' }} </p>
+              <p>From:</p>
+              <p>Date: {{ cannouncement.date | date: "shortDate" }}</p>
+            </div>
+            <button class="grey-btn" (click)="viewAnnouncement(cannouncement)">
+              View Details
+            </button>
           </div>
-          <button class="grey-btn"
-          (click)="viewAnnouncement(cannouncement)">View Details</button>
-        </div>
         </mat-card>
-        <mat-card *ngFor="let gannouncement of generalAnnouncements" class="general-tab" fxLayout="column" fxLayoutAlign="start center"> 
+        <mat-card
+          *ngFor="let gannouncement of generalAnnouncements"
+          class="general-tab"
+          fxLayout="column"
+          fxLayoutAlign="start center"
+        >
           <p>{{ gannouncement.title }}</p>
-          <div fxLayout="row" fxLayoutAlign="space-around center" style="width:100%">
+          <div
+            fxLayout="row"
+            fxLayoutAlign="space-around center"
+            style="width: 100%"
+          >
             <div>
-            <p>From:</p>
-            <p>Date: {{ gannouncement.date | date:'shortDate' }} </p>
+              <p>From:</p>
+              <p>Date: {{ gannouncement.date | date: "shortDate" }}</p>
+            </div>
+            <button class="grey-btn" (click)="viewAnnouncement(gannouncement)">
+              View Details
+            </button>
           </div>
-          <button class="grey-btn"
-          (click)="viewAnnouncement(gannouncement)">View Details</button>
-        </div>
         </mat-card>
       </mat-card>
 
-      <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5%">
+      <mat-card
+        class="beige-block"
+        fxLayout="column"
+        fxLayoutAlign="start center"
+        fxLayoutGap="5%"
+      >
         <mat-card-title> My Meeting RSVPs (SR3) </mat-card-title>
-        <mat-card class="general-tab" fxLayout="column" fxLayoutAlign="start start"> 
+        <mat-card
+          class="general-tab"
+          fxLayout="column"
+          fxLayoutAlign="start start"
+        >
           <h2>Meeting, DateTime</h2>
           <p>Project - Goal</p>
           <p>Physical/Online</p>
-          <p>Venue: </p><br/>
-            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5%" style="width: 100%;">
-              <button class="grey-btn">Yes</button>
-              <button class="grey-btn">No</button>
-            </div>
+          <p>Venue:</p>
+          <br />
+          <div
+            fxLayout="row"
+            fxLayoutAlign="center center"
+            fxLayoutGap="5%"
+            style="width: 100%"
+          >
+            <button class="grey-btn">Yes</button>
+            <button class="grey-btn">No</button>
+          </div>
         </mat-card>
       </mat-card>
     </mat-card-group>
-
   </mat-card-group>
+</div>
