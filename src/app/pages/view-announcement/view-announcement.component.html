@@ -1,12 +1,18 @@
-<div fxLayout="column" fxLayoutGap="3%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%; min-width: 50vw;">
-
-  <h1 mat-dialog-title style="text-decoration: underline;">{{ data.title }}</h1>
+<div
+  fxLayout="column"
+  fxLayoutGap="3%"
+  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%; min-width: 50vw"
+>
+  <h1 mat-dialog-title style="text-decoration: underline">{{ data.title }}</h1>
   <div mat-dialog-content>
-    <h2>Date Posted: {{ data.date | date:"short" }}</h2>
-    <p>{{ data.description }}<p>
-  </div>
-  <div style="float:right;margin:20px;">
-    <button mat-stroked-button color="blue" [mat-dialog-close]="false">Close</button>
+    <h2>Date Posted: {{ data.date | date: "short" }}</h2>
+    <p>{{ data.description }}</p>
+    <p></p>
   </div>
 
+  <div style="float: right; margin: 20px">
+    <button mat-button class="grey-btn" [mat-dialog-close]="false">
+      Close
+    </button>
+  </div>
 </div>

@@ -1,11 +1,8 @@
-import { User } from 'src/app/models/user';
-
+import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { ActivatedRoute, Router } from '@angular/router';
-
 import { Announcement } from '../../../models/announcement';
 import { AnnouncementType } from '../../../models/announcement-type';
 import { AnnouncementService } from '../../../services/announcement/announcement.service';
@@ -36,8 +33,11 @@ export class AdminAnnouncementManagementComponent implements OnInit {
 
   panelOpenState: boolean;
 
-  constructor(private announcementService: AnnouncementService,
-    private matDialog: MatDialog) {
+  constructor(
+    private announcementService: AnnouncementService,
+    private matDialog: MatDialog,
+    private location: Location
+  ) {
     this.submitted = false;
     this.newAnnouncement = new Announcement();
     this.announcementToUpdate = new Announcement();
@@ -54,24 +54,34 @@ export class AdminAnnouncementManagementComponent implements OnInit {
       this.user = JSON.parse(currentUser);
     }
     this.announcementService.getCovidAnnouncements(this.user.userId).subscribe(
-      response => {
+      (response) => {
         this.covidAnnouncements = response.announcements;
       },
-      error => {
-        console.log('********** AdminAnnouncementManagementComponent.ts: ' + error);
+      (error) => {
+        console.log(
+          '********** AdminAnnouncementManagementComponent.ts: ' + error
+        );
       }
     );
 
-    this.announcementService.getGeneralAnnouncements(this.user.userId).subscribe(
-      response => {
-        this.generalAnnouncements = response.announcements;
-      },
-      error => {
-        console.log('********** AdminAnnouncementManagementComponent.ts: ' + error);
-      }
-    );
-
+    this.announcementService
+      .getGeneralAnnouncements(this.user.userId)
+      .subscribe(
+        (response) => {
+          this.generalAnnouncements = response.announcements;
+        },
+        (error) => {
+          console.log(
+            '********** AdminAnnouncementManagementComponent.ts: ' + error
+          );
+        }
+      );
   }
+
+  onBackClick() {
+    this.location.back();
+  }
+
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
 
   openOnMouseOver() {
@@ -88,31 +98,39 @@ export class AdminAnnouncementManagementComponent implements OnInit {
 
     if (createAnnouncementForm.invalid) {
       this.resultSuccess = false;
-      this.message = "An error has occurred while creating the new announcement";
+      this.message =
+        'An error has occurred while creating the new announcement';
     }
 
     this.resultSuccess = true;
     this.newAnnouncement.date = new Date();
-    this.newAnnouncement.announcementType = AnnouncementType[this.announcementType];
+    this.newAnnouncement.announcementType =
+      AnnouncementType[this.announcementType];
     this.newAnnouncement.senderId = this.user.userId;
     this.announcementService.createAnnouncement(this.newAnnouncement).subscribe(
-      response => {
+      (response) => {
         this.resultSuccess = response.status;
         if (response.status) {
-          if (this.newAnnouncement.announcementType === AnnouncementType.COVID_RELATED) {
+          if (
+            this.newAnnouncement.announcementType ===
+            AnnouncementType.COVID_RELATED
+          ) {
             this.covidAnnouncements.push(response.announcement);
           } else {
             this.generalAnnouncements.push(response.announcement);
           }
-          this.message = "New announcement with id " + response.announcement.announcementId + " created successfully";
-        }
-        else {
-          this.message = "An error has occured: " + response.message;
+          this.message =
+            'New announcement with id ' +
+            response.announcement.announcementId +
+            ' created successfully';
+        } else {
+          this.message = 'An error has occured: ' + response.message;
         }
       },
-      error => {
+      (error) => {
         this.resultSuccess = false;
-        this.message = "An error has occurred while creating the new announcement: " + error;
+        this.message =
+          'An error has occurred while creating the new announcement: ' + error;
       }
     );
   }
@@ -123,9 +141,9 @@ export class AdminAnnouncementManagementComponent implements OnInit {
         title: announcement?.title,
         date: announcement?.date,
         description: announcement?.description,
-      }
+      },
     });
-    viewDialog.afterClosed().subscribe(result => {
+    viewDialog.afterClosed().subscribe((result) => {
       if (result === false) {
         return;
       }
@@ -140,70 +158,99 @@ export class AdminAnnouncementManagementComponent implements OnInit {
         title: announcement?.title,
         date: announcement?.date,
         typeOfAnnouncement: announcement?.announcementType,
-        description: announcement?.description
-      }
+        description: announcement?.description,
+      },
     });
 
-    editDialog.afterClosed().subscribe(result => {
+    editDialog.afterClosed().subscribe((result) => {
       const newAnnouncement = result;
       newAnnouncement.announcementId = announcement.announcementId;
-      this.announcementService.updateAnnouncement(newAnnouncement).subscribe(response => {
-        if (!response.status) {
-          this.resultSuccess = false;
-          this.message = "An error has occurred while editing: " + response.message;
-        } else {
-          this.submitted = true;
-          this.resultSuccess = true;
-          const updatedAnnouncement = response.announcement;
-          this.message = "Announcement with id: " + updatedAnnouncement.announcementId + " updated successfully";
-          
-          if (announcement.announcementType === AnnouncementType.COVID_RELATED) {
-            var announcementIndex = this.covidAnnouncements.findIndex(existing => { existing === announcement });
-            this.covidAnnouncements.splice(announcementIndex, 1);
+      this.announcementService
+        .updateAnnouncement(newAnnouncement)
+        .subscribe((response) => {
+          if (!response.status) {
+            this.resultSuccess = false;
+            this.message =
+              'An error has occurred while editing: ' + response.message;
           } else {
-            var announcementIndex = this.generalAnnouncements.findIndex(existing => { existing === announcement });
-            this.generalAnnouncements.splice(announcementIndex, 1);
+            this.submitted = true;
+            this.resultSuccess = true;
+            const updatedAnnouncement = response.announcement;
+            this.message =
+              'Announcement with id: ' +
+              updatedAnnouncement.announcementId +
+              ' updated successfully';
+
+            if (
+              announcement.announcementType === AnnouncementType.COVID_RELATED
+            ) {
+              var announcementIndex = this.covidAnnouncements.findIndex(
+                (existing) => {
+                  existing === announcement;
+                }
+              );
+              this.covidAnnouncements.splice(announcementIndex, 1);
+            } else {
+              var announcementIndex = this.generalAnnouncements.findIndex(
+                (existing) => {
+                  existing === announcement;
+                }
+              );
+              this.generalAnnouncements.splice(announcementIndex, 1);
+            }
+
+            if (
+              updatedAnnouncement.announcementType ===
+              AnnouncementType.COVID_RELATED
+            ) {
+              this.covidAnnouncements.push(updatedAnnouncement);
+            } else {
+              this.generalAnnouncements.push(updatedAnnouncement);
+            }
           }
-          
-          if (updatedAnnouncement.announcementType === AnnouncementType.COVID_RELATED) {
-            this.covidAnnouncements.push(updatedAnnouncement);
-          } else {
-            this.generalAnnouncements.push(updatedAnnouncement);
-          }
-        } 
-      }
-    );
+        });
+    });
   }
-  )
-}
 
   deleteAnnouncement(announcement: Announcement) {
     const confirmDialog = this.matDialog.open(DeleteAnnouncementComponent, {
       data: {
         title: 'Delete Announcement Confirmation',
-        message: 'Are you sure you want to delete this announcement?'
-      }
+        message: 'Are you sure you want to delete this announcement?',
+      },
     });
-    confirmDialog.afterClosed().subscribe(result => {
+    confirmDialog.afterClosed().subscribe((result) => {
       if (result === false) {
         return;
       }
 
-      this.announcementService.deleteAnnouncement(announcement.announcementId).subscribe(response => {
-        if (!response.status) {
-          this.message = "Unable to delete announcement: " + response.message;
-          return;
-        }
-        this.message = "Announcement with id: " + announcement.announcementId + " deleted successfully";
-        if (announcement.announcementType == AnnouncementType.COVID_RELATED) {
-          var announcementIndex = this.covidAnnouncements.findIndex(existing => { existing === announcement });
-          this.covidAnnouncements.splice(announcementIndex, 1);
-        }
-        else {
-          var announcementIndex = this.generalAnnouncements.findIndex(existing => { existing === announcement });
-          this.generalAnnouncements.splice(announcementIndex, 1);
-        }
-      })
+      this.announcementService
+        .deleteAnnouncement(announcement.announcementId)
+        .subscribe((response) => {
+          if (!response.status) {
+            this.message = 'Unable to delete announcement: ' + response.message;
+            return;
+          }
+          this.message =
+            'Announcement with id: ' +
+            announcement.announcementId +
+            ' deleted successfully';
+          if (announcement.announcementType == AnnouncementType.COVID_RELATED) {
+            var announcementIndex = this.covidAnnouncements.findIndex(
+              (existing) => {
+                existing === announcement;
+              }
+            );
+            this.covidAnnouncements.splice(announcementIndex, 1);
+          } else {
+            var announcementIndex = this.generalAnnouncements.findIndex(
+              (existing) => {
+                existing === announcement;
+              }
+            );
+            this.generalAnnouncements.splice(announcementIndex, 1);
+          }
+        });
     });
   }
 }

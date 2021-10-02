@@ -48,14 +48,12 @@
             pInputText
           />
           <div
-          *ngIf="
-            emailText.touched && emailText.invalid
-          "
-          class="errorText"
-          style="color: red; font-size: small"
-        >
-          A valid email is required.
-        </div>
+            *ngIf="emailText.touched && emailText.invalid"
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            A valid email is required.
+          </div>
         </div>
         <div fxLayout="column">
           <label>HR Full Name</label>
@@ -67,15 +65,12 @@
             pInputText
           />
           <div
-          *ngIf="
-            fullName.touched &&
-            fullName.invalid
-          "
-          class="errorText"
-          style="color: red; font-size: small"
-        >
-          HR Full Name is required.
-        </div>
+            *ngIf="fullName.touched && fullName.invalid"
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            HR Full Name is required.
+          </div>
         </div>
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between " fxLayoutGap="9.4vw">
@@ -89,10 +84,13 @@
             required
             pInputText
           />
-          <div *ngIf="contactNum.invalid && contactNum.touched" 
-            class="errorText" style="color:red; font-size: small">
+          <div
+            *ngIf="contactNum.invalid && contactNum.touched"
+            class="errorText"
+            style="color: red; font-size: small"
+          >
             A valid 8-digit Singapore contact number is required.
-        </div>
+          </div>
         </div>
         <div fxLayout="column">
           <label>Number of Employees</label>
@@ -106,15 +104,12 @@
             pInputText
           />
           <div
-          *ngIf="
-            employeeNum.touched &&
-            officeName.invalid
-          "
-          class="errorText"
-          style="color: red; font-size: small"
-        >
-          A valid employee number is required.
-        </div>
+            *ngIf="employeeNum.touched && officeName.invalid"
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            A valid employee number is required.
+          </div>
         </div>
       </div>
       <div
@@ -133,15 +128,12 @@
             pInputText
           />
           <div
-          *ngIf="
-            officeName.touched &&
-            officeName.invalid
-          "
-          class="errorText"
-          style="color: red; font-size: small"
-        >
-          A valid office name is required.
-        </div>
+            *ngIf="officeName.touched && officeName.invalid"
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            A valid office name is required.
+          </div>
         </div>
         <div fxLayout="column">
           <label>Office Address</label>
@@ -153,15 +145,12 @@
             required
           ></textarea>
           <div
-          *ngIf="
-            officeAddress.touched &&
-            officeAddress.invalid
-          "
-          class="errorText"
-          style="color: red; font-size: small"
-        >
-          Office address is required.
-        </div>
+            *ngIf="officeAddress.touched && officeAddress.invalid"
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            Office address is required.
+          </div>
         </div>
       </div>
       <div
@@ -180,25 +169,19 @@
             pInputText
           />
           <div
-          *ngIf="
-            openingHour.touched &&
-            openingHour.value.length === 0
-          "
-          class="errorText"
-          style="color: red; font-size: small"
-        >
-          Office Opening Hour is required.
-        </div>
-        <div
-          *ngIf="
-            openingHour.touched &&
-            openingHour.invalid
-          "
-          class="errorText"
-          style="color: red; font-size: small"
-        >
-          Please enter a valid Opening Hour. (00:00 - 23:59)
-        </div>
+            *ngIf="openingHour.touched && openingHour.value.length === 0"
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            Office Opening Hour is required.
+          </div>
+          <div
+            *ngIf="openingHour.touched && openingHour.invalid"
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            Please enter a valid Opening Hour. (00:00 - 23:59)
+          </div>
         </div>
         <div fxLayout="column">
           <label>Office Closing Hour</label>
@@ -211,25 +194,19 @@
             pInputText
           />
           <div
-          *ngIf="
-            closingHour.touched &&
-            closingHour.value.length === 0
-          "
-          class="errorText"
-          style="color: red; font-size: small"
-        >
-          Office Closing Hour is required.
-        </div>
-        <div
-          *ngIf="
-            closingHour.touched &&
-            closingHour.invalid
-          "
-          class="errorText"
-          style="color: red; font-size: small"
-        >
-          Please enter a valid Closing Hour. (00:00 - 23:59)
-        </div>
+            *ngIf="closingHour.touched && closingHour.value.length === 0"
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            Office Closing Hour is required.
+          </div>
+          <div
+            *ngIf="closingHour.touched && closingHour.invalid"
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            Please enter a valid Closing Hour. (00:00 - 23:59)
+          </div>
         </div>
       </div>
       <div
@@ -248,15 +225,12 @@
             pInputText
           />
           <div
-          *ngIf="
-            officeCapacity.touched &&
-            officeCapacity.invalid
-          "
-          class="errorText"
-          style="color: red; font-size: small"
-        >
-          A valid Max Office Capacity is required.
-        </div>
+            *ngIf="officeCapacity.touched && officeCapacity.invalid"
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            A valid Max Office Capacity is required.
+          </div>
         </div>
         <div fxLayout="column">
           <div fxLayout="column">
@@ -267,10 +241,13 @@
               #companySize="ngModel"
               placeholder="Select a Company Size"
             ></p-dropdown>
-            <div *ngIf="companySize.errors?.required && companySize.touched"
-            class="errorText" style="color:red; font-size: small">
-          Company size is required.
-       </div>
+            <div
+              *ngIf="companySize.errors?.required && companySize.touched"
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Company size is required.
+            </div>
           </div>
         </div>
       </div>
@@ -346,7 +323,9 @@
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign=" end" fxLayoutGap="3%">
-    <button mat-button class="btn" (click)="onSignUpClick()">Sign Up</button>
-    <button mat-button class="btn" (click)="onCloseClick()">Close</button>
+    <button mat-button class="peach-btn" (click)="onSignUpClick()">
+      Sign Up
+    </button>
+    <button mat-button class="grey-btn" (click)="onCloseClick()">Close</button>
   </div>
 </div>
