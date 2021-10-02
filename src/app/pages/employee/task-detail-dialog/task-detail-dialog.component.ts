@@ -8,12 +8,15 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 })
 export class TaskDetailDialogComponent implements OnInit {
   task: any;
+  goal: any;
 
   constructor(
     private dialogConfig: DynamicDialogConfig,
     private ref: DynamicDialogRef
   ) {
     this.task = this.dialogConfig.data.task;
+    this.goal = this.dialogConfig.data.goal;
+    console.log(this.goal);
   }
 
   ngOnInit(): void {}
