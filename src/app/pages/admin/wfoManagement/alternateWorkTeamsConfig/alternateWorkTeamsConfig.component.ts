@@ -20,7 +20,7 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
   teamAUsers: any | null;
   teamBUsers: any | null;
 
-  isLoading: boolean = false;
+  isLoading: boolean = true;
   isHovering: boolean = false;
   teamA: any | null = [];
   teamB: any | null = [];
@@ -32,11 +32,6 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
   isWeeklySelected: boolean = false;
   isBiWeeklySelected: boolean = false;
   isMonthlySelected: boolean = false;
-
-  isDailyConfigFirstClicked: boolean = true;
-  isWeeklyConfigFirstClicked: boolean = true;
-  isBiweeklyConfigFirstClicked: boolean = true;
-  isMonthlyConfigFirstClicked: boolean = true;
 
   selectedConfig: String;
 
@@ -60,7 +55,6 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
           if (this.company.alternateWorkTeamsConfigurationId === null) {
             this.alternateWorkTeamsConfigurationId = null;
             this.isDailySelected = true;
-            this.isDailyConfigFirstClicked = false;
             this.isLoading = false;
 
             this.userService.getUsers(companyId).subscribe((response) => {
@@ -84,16 +78,12 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
 
                 if (this.selectedConfig === 'DAILY') {
                   this.isDailySelected = true;
-                  this.isDailyConfigFirstClicked = false;
                 } else if (this.selectedConfig === 'WEEKLY') {
                   this.isWeeklySelected = true;
-                  this.isWeeklyConfigFirstClicked = false;
                 } else if (this.selectedConfig === 'BIWEEKLY') {
                   this.isBiWeeklySelected = true;
-                  this.isBiweeklyConfigFirstClicked = false;
                 } else if (this.selectedConfig === 'MONTHLY') {
                   this.isMonthlySelected = true;
-                  this.isMonthlyConfigFirstClicked = false;
                 }
 
                 this.userService.getUsers(companyId).subscribe((response) => {
@@ -122,6 +112,8 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
                   this.teamAUsers = populateTeamAArr;
                   this.teamBUsers = populateTeamBArr;
                 });
+
+                this.isLoading = false;
               });
           }
         },
@@ -188,104 +180,48 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
     }
   }
 
+  toggleTeamMembers() {
+    const tempTeamA = this.teamA;
+    this.teamA = this.teamB;
+    this.teamB = tempTeamA;
+
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Members of Teams A and B have been swapped.',
+    });
+  }
+
   selectDailyConfig(): void {
     this.selectedConfig = 'DAILY';
-    if (this.isDailyConfigFirstClicked) {
-      this.isDailySelected = true;
-      this.isWeeklySelected = false;
-      this.isBiWeeklySelected = false;
-      this.isMonthlySelected = false;
-
-      this.isDailyConfigFirstClicked = false;
-      this.isWeeklyConfigFirstClicked = true;
-      this.isBiweeklyConfigFirstClicked = true;
-      this.isMonthlyConfigFirstClicked = true;
-    } else {
-      const tempTeamA = this.teamA;
-      this.teamA = this.teamB;
-      this.teamB = tempTeamA;
-
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Members of Teams A and B have been swapped.',
-      });
-    }
+    this.isDailySelected = true;
+    this.isWeeklySelected = false;
+    this.isBiWeeklySelected = false;
+    this.isMonthlySelected = false;
   }
 
   selectWeeklyConfig(): void {
     this.selectedConfig = 'WEEKLY';
-    if (this.isWeeklyConfigFirstClicked) {
-      this.isDailySelected = false;
-      this.isWeeklySelected = true;
-      this.isBiWeeklySelected = false;
-      this.isMonthlySelected = false;
-
-      this.isDailyConfigFirstClicked = true;
-      this.isWeeklyConfigFirstClicked = false;
-      this.isBiweeklyConfigFirstClicked = true;
-      this.isMonthlyConfigFirstClicked = true;
-    } else {
-      const tempTeamA = this.teamA;
-      this.teamA = this.teamB;
-      this.teamB = tempTeamA;
-
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Members of Teams A and B have been swapped.',
-      });
-    }
+    this.isDailySelected = false;
+    this.isWeeklySelected = true;
+    this.isBiWeeklySelected = false;
+    this.isMonthlySelected = false;
   }
 
   selectBiweeklyConfig(): void {
     this.selectedConfig = 'BIWEEKLY';
-    if (this.isBiweeklyConfigFirstClicked) {
-      this.isDailySelected = false;
-      this.isWeeklySelected = false;
-      this.isBiWeeklySelected = true;
-      this.isMonthlySelected = false;
-
-      this.isDailyConfigFirstClicked = true;
-      this.isWeeklyConfigFirstClicked = true;
-      this.isBiweeklyConfigFirstClicked = false;
-      this.isMonthlyConfigFirstClicked = true;
-    } else {
-      const tempTeamA = this.teamA;
-      this.teamA = this.teamB;
-      this.teamB = tempTeamA;
-
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Members of Teams A and B have been swapped.',
-      });
-    }
+    this.isDailySelected = false;
+    this.isWeeklySelected = false;
+    this.isBiWeeklySelected = true;
+    this.isMonthlySelected = false;
   }
 
   selectMonthlyConfig(): void {
     this.selectedConfig = 'MONTHLY';
-    if (this.isMonthlyConfigFirstClicked) {
-      this.isDailySelected = false;
-      this.isWeeklySelected = false;
-      this.isBiWeeklySelected = false;
-      this.isMonthlySelected = true;
-
-      this.isDailyConfigFirstClicked = true;
-      this.isWeeklyConfigFirstClicked = true;
-      this.isBiweeklyConfigFirstClicked = true;
-      this.isMonthlyConfigFirstClicked = false;
-    } else {
-      const tempTeamA = this.teamA;
-      this.teamA = this.teamB;
-      this.teamB = tempTeamA;
-
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Members of Teams A and B have been swapped.',
-      });
-    }
+    this.isDailySelected = false;
+    this.isWeeklySelected = false;
+    this.isBiWeeklySelected = false;
+    this.isMonthlySelected = true;
   }
 
   createAlternateWorkTeamsConfiguration() {
