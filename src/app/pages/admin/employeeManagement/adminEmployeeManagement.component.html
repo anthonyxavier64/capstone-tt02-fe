@@ -24,13 +24,14 @@
             <input
               type="text"
               placeholder="Name"
+              [(ngModel)]="currNewUserFullName"
               #fullName="ngModel"
               ngModel
               required
               pInputText
             />
             <div
-              *ngIf="fullName.touched && fullName.value.length === 0"
+              *ngIf="fullName.touched && fullName.value === ''"
               class="errorText"
               style="color: red"
             >
@@ -66,9 +67,7 @@
             pInputText
           />
           <div
-            *ngIf="
-              employeePosition.touched && employeePosition.value.length === 0
-            "
+            *ngIf="employeePosition.touched && employeePosition.value === ''"
             class="errorText"
             style="color: red"
           >
