@@ -23,10 +23,3 @@
   color: rgba(var(--theme-primary-color), 0.8);
 }
 
-.indexButton {
-  background-color: rgba(var(--primary-button-color), 0.2);
-  min-width: 8vw;
-  min-height: 3.5vw;
-  border-radius: 7px;
-  font-family: var(--primary-font);
-}

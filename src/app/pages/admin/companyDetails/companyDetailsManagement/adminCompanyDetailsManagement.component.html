@@ -7,10 +7,10 @@
   >
     <app-navbar></app-navbar>
 
-    <div fxLayout="row" fxLayoutAlign="space-between center">
-      <div class="headerText">Company Details</div>
+    <div fxLayout="row" fxLayoutAlign="space-between start">
+      <h1>Company Details</h1>
       <div>
-        <button class="backButton" mat-button (click)="handleBackButton()">
+        <button mat-button class="grey-btn" (click)="handleBackButton()">
           Back
         </button>
       </div>
@@ -84,24 +84,17 @@
           <button
             *ngIf="!editDetailsMode"
             mat-button
-            class="button"
+            class="peach-btn"
+            style="width: 15vw"
             (click)="toggleEditDetails()"
           >
             Edit Details
           </button>
           <div fxLayout="row" *ngIf="editDetailsMode" fxLayoutGap="5%">
-            <button
-              mat-button
-              class="editActionButtons"
-              (click)="saveEditDetails()"
-            >
+            <button mat-button class="peach-btn" (click)="saveEditDetails()">
               Save
             </button>
-            <button
-              mat-button
-              (click)="toggleEditDetails()"
-              class="editActionButtons"
-            >
+            <button mat-button (click)="toggleEditDetails()" class="grey-btn">
               Back
             </button>
           </div>
@@ -128,7 +121,8 @@
           </div>
           <button
             mat-button
-            class="button"
+            class="peach-btn"
+            style="width: 20vw"
             *ngIf="!editDetailsMode"
             (click)="handleConfigureOfficeSpace()"
           >
@@ -138,7 +132,8 @@
             mat-button
             *ngIf="editDetailsMode"
             [disabled]="true"
-            class="disabledButton"
+            class="peach-btn"
+            style="width: 20vw"
           >
             Configure Office Space
           </button>
@@ -146,14 +141,20 @@
             <span class="subHeaderText">Subscription Plan</span>
             <span class="contentText">{{ company.subscriptionType }}</span>
           </div>
-          <button mat-button class="button" *ngIf="!editDetailsMode">
+          <button
+            mat-button
+            class="grey-btn"
+            style="width: 20vw"
+            *ngIf="!editDetailsMode"
+          >
             Manage Subscription
           </button>
           <button
             mat-button
             *ngIf="editDetailsMode"
             [disabled]="true"
-            class="disabledButton"
+            class="grey-btn"
+            style="width: 20vw"
           >
             Manage Subscription
           </button>

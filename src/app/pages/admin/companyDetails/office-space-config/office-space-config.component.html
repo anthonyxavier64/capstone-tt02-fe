@@ -7,12 +7,15 @@
   >
     <app-navbar></app-navbar>
 
-    <div fxLayout="row" fxLayoutAlign="space-between center">
-      <div class="headerText">Office Space Configuration</div>
-      <button mat-button class="backButton" (click)="onBackClick()">
-        Back
-      </button>
+    <div fxLayout="row" fxLayoutAlign="space-between start">
+      <h1>Office Space Configuration</h1>
+      <div>
+        <button mat-button class="grey-btn" (click)="onBackClick()">
+          Back
+        </button>
+      </div>
     </div>
+
     <!-- generate number of cards to show -->
 
     <div
@@ -59,7 +62,7 @@
         >
           <button
             mat-button
-            class="editBtn"
+            class="peach-btn"
             (click)="openEditOfficeDetailsDialog()"
           >
             Edit Details
@@ -223,12 +226,12 @@
                   fxLayoutGap="3%"
                   style="margin-top: 3%"
                 >
-                  <button mat-button class="saveBtn" type="submit">
+                  <button mat-button class="peach-btn" type="submit">
                     Save Details
                   </button>
                   <button
                     mat-button
-                    class="closeBtn"
+                    class="grey-btn"
                     (click)="closeEditOfficeDetails(officeDetailsForm)"
                   >
                     Close
@@ -270,7 +273,10 @@
                     <p style="font-size: 18px">Capacity: {{ room.capacity }}</p>
                   </div>
                   <div fxLayoutAlign=" end">
-                    <img src="../../../../../assets/images/editIcon.png" />
+                    <img
+                      class="actionIcon"
+                      src="../../../../../assets/images/editIcon.png"
+                    />
                   </div>
                 </div>
               </div>
@@ -303,15 +309,15 @@
                             pInputText
                           />
                           <div
-                          *ngIf="
-                            (roomName.touched || roomName.dirty) &&
-                            roomName.value.length === 0
-                          "
-                          class="errorText"
-                          style="color: red; font-size: small"
-                        >
-                          Room name cannot be empty.
-                        </div>
+                            *ngIf="
+                              (roomName.touched || roomName.dirty) &&
+                              roomName.value.length === 0
+                            "
+                            class="errorText"
+                            style="color: red; font-size: small"
+                          >
+                            Room name cannot be empty.
+                          </div>
                         </td>
                       </tr>
                       <tr>
@@ -329,15 +335,15 @@
                             pInputText
                           />
                           <div
-                          *ngIf="
-                            (roomLocation.touched || roomLocation.dirty) &&
-                            roomLocation.value.length === 0
-                          "
-                          class="errorText"
-                          style="color: red; font-size: small"
-                        >
-                          Room location cannot be empty.
-                        </div>
+                            *ngIf="
+                              (roomLocation.touched || roomLocation.dirty) &&
+                              roomLocation.value.length === 0
+                            "
+                            class="errorText"
+                            style="color: red; font-size: small"
+                          >
+                            Room location cannot be empty.
+                          </div>
                         </td>
                       </tr>
                       <tr>
@@ -355,37 +361,38 @@
                             pInputText
                           />
                           <div
-                          *ngIf="
-                            (roomCapacity.touched || roomCapacity.dirty) &&
-                            roomCapacity.value.length == 0
-                          "
-                          class="errorText"
-                          style="color: red; font-size: small"
-                        >
-                          Room capacity cannot be empty.
-                        </div>
-                        <div
-                        *ngIf="
-                          (roomCapacity.touched || roomCapacity.dirty) &&
-                          roomCapacity.invalid
-                        "
-                        class="errorText"
-                        style="color: red; font-size: small"
-                      >
-                        Please enter a valid room capacity.
-                      </div>
+                            *ngIf="
+                              (roomCapacity.touched || roomCapacity.dirty) &&
+                              roomCapacity.value.length == 0
+                            "
+                            class="errorText"
+                            style="color: red; font-size: small"
+                          >
+                            Room capacity cannot be empty.
+                          </div>
+                          <div
+                            *ngIf="
+                              (roomCapacity.touched || roomCapacity.dirty) &&
+                              roomCapacity.invalid
+                            "
+                            class="errorText"
+                            style="color: red; font-size: small"
+                          >
+                            Please enter a valid room capacity.
+                          </div>
                         </td>
                       </tr>
                     </table>
                     <button
                       mat-button
-                      class="deleteBtn"
-                      style="padding-top: 1.5vw"
+                      class="grey-btn"
+                      style="height: 3vw"
                       (click)="deleteRoom()"
                     >
                       <p style="float: right">Delete Room</p>
                       <img
                         style="float: left"
+                        class="actionIcon"
                         src="../../../../../assets/images/deleteIcon.png"
                       />
                     </button>
@@ -396,12 +403,12 @@
                       fxLayoutGap="3%"
                       style="margin-top: 3%"
                     >
-                      <button mat-button class="saveBtn" type="submit">
+                      <button mat-button class="peach-btn" type="submit">
                         Save Details
                       </button>
                       <button
                         mat-button
-                        class="closeBtn"
+                        class="grey-btn"
                         (click)="isEditRoomDetailsOpen = false"
                       >
                         Close
@@ -414,7 +421,7 @@
           </p-dataView>
         </div>
         <div>
-          <button mat-button class="addRoomBtn" (click)="openAddRoomDialog()">
+          <button mat-button class="peach-btn" (click)="openAddRoomDialog()">
             Add Room
           </button>
         </div>
@@ -449,15 +456,14 @@
                       pInputText
                     />
                     <div
-                    *ngIf="
-                      newRoomName.touched &&
-                      newRoomName.value.length === 0
-                    "
-                    class="errorText"
-                    style="color: red; font-size: small"
-                  >
-                    Room name cannot be empty.
-                  </div>
+                      *ngIf="
+                        newRoomName.touched && newRoomName.value.length === 0
+                      "
+                      class="errorText"
+                      style="color: red; font-size: small"
+                    >
+                      Room name cannot be empty.
+                    </div>
                   </td>
                 </tr>
                 <tr>
@@ -476,15 +482,15 @@
                       pInputText
                     />
                     <div
-                    *ngIf="
-                      newRoomLocation.touched &&
-                      newRoomLocation.value.length === 0
-                    "
-                    class="errorText"
-                    style="color: red; font-size: small"
-                  >
-                    Room location cannot be empty.
-                  </div>
+                      *ngIf="
+                        newRoomLocation.touched &&
+                        newRoomLocation.value.length === 0
+                      "
+                      class="errorText"
+                      style="color: red; font-size: small"
+                    >
+                      Room location cannot be empty.
+                    </div>
                   </td>
                 </tr>
                 <tr>
@@ -503,25 +509,22 @@
                       pInputText
                     />
                     <div
-                    *ngIf="
-                      newRoomCapacity.touched &&
-                      newRoomCapacity.value.length == 0
-                    "
-                    class="errorText"
-                    style="color: red; font-size: small"
-                  >
-                    Room capacity cannot be empty.
-                  </div>
-                  <div
-                  *ngIf="
-                    newRoomCapacity.touched &&
-                    newRoomCapacity.invalid
-                  "
-                  class="errorText"
-                  style="color: red; font-size: small"
-                >
-                  Please enter a valid room capacity.
-                </div>
+                      *ngIf="
+                        newRoomCapacity.touched &&
+                        newRoomCapacity.value.length == 0
+                      "
+                      class="errorText"
+                      style="color: red; font-size: small"
+                    >
+                      Room capacity cannot be empty.
+                    </div>
+                    <div
+                      *ngIf="newRoomCapacity.touched && newRoomCapacity.invalid"
+                      class="errorText"
+                      style="color: red; font-size: small"
+                    >
+                      Please enter a valid room capacity.
+                    </div>
                   </td>
                 </tr>
               </table>
@@ -532,12 +535,12 @@
                 fxLayoutGap="3%"
                 style="margin-top: 3%"
               >
-                <button mat-button class="saveBtn" type="submit">
+                <button mat-button class="peach-btn" type="submit">
                   Save Details
                 </button>
                 <button
                   mat-button
-                  class="closeBtn"
+                  class="grey-btn"
                   (click)="isAddRoomOpen = false"
                 >
                   Close

@@ -22,11 +22,7 @@
   color: rgba(var(--theme-primary-color), 0.8);
 }
 
-.button {
-  background-color: rgba(var(--primary-button-color), 0.5);
-  font-family: var(--primary-font);
-  color: rgba(var(--theme-primary-color), 0.8);
-}
+
 
 .editActionButtons {
   background-color: rgba(var(--primary-button-color), 0.5);
@@ -38,11 +34,6 @@
   font-weight: lighter;
 }
 
-.disabledButton {
-  background-color: rgba(var(--primary-button-color), 0.2);
-  font-family: var(--primary-font);
-  color: rgba(var(--theme-primary-color), 0.2);
-}
 
 @media only screen and (max-width: 768px) {
   .headerText {
@@ -80,11 +71,6 @@
   .inputFields {
     width: 200px;
     height: 30px;
-  }
-
-  .disabledButton {
-    height: 35px;
-    width: 200px;
   }
 }
 

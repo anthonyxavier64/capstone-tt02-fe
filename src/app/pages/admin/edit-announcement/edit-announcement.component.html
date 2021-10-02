@@ -1,19 +1,42 @@
-<div class="main-wrapper" fxLayout="column" fxLayoutGap="3%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
+<div
+  class="main-wrapper"
+  fxLayout="column"
+  fxLayoutGap="3%"
+  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+>
   <h1 mat-dialog-title><b class="fontmanagement">Edit Announcement</b></h1>
 
   <div mat-dialog-content>
-    <form class="example-form" #updateAnnouncementForm="ngForm" (ngSubmit)="save(updateAnnouncementForm)">
+    <form
+      class="example-form"
+      #updateAnnouncementForm="ngForm"
+      (ngSubmit)="save(updateAnnouncementForm)"
+    >
       <div>
-        <h3 class="fontmanagement" style="font-size: 20px;"><b>Announcement ID:</b> {{announcementId}}</h3>
+        <h3 class="fontmanagement" style="font-size: 20px">
+          <b>Announcement ID:</b> {{ announcementId }}
+        </h3>
         <br />
-        <h3 class="fontmanagement" style="font-size: 20px;"><b>Date Posted:</b> {{date}}</h3>
+        <h3 class="fontmanagement" style="font-size: 20px">
+          <b>Date Posted:</b> {{ date }}
+        </h3>
         <br />
         <mat-form-field class="example-full-width">
           <mat-label>Title</mat-label>
-          <input matInput id="title" name="title" #title="ngModel" type="text" [(ngModel)]="announcementToUpdate.title"
-            required="true" />
+          <input
+            matInput
+            id="title"
+            name="title"
+            #title="ngModel"
+            type="text"
+            [(ngModel)]="announcementToUpdate.title"
+            required="true"
+          />
         </mat-form-field>
-        <mat-error *ngIf="title.invalid && (title.dirty || title.touched || submitted)" class="errorText">
+        <mat-error
+          *ngIf="title.invalid && (title.dirty || title.touched || submitted)"
+          class="errorText"
+        >
           <div *ngIf="title.errors != null && title.errors.required">
             Announcement Title is required.
           </div>
@@ -23,7 +46,12 @@
       <div>
         <mat-form-field>
           <mat-label>Announcement Type:</mat-label>
-          <mat-select id="announcementType" name="announcementType" [(ngModel)]="announcementType" required="true">
+          <mat-select
+            id="announcementType"
+            name="announcementType"
+            [(ngModel)]="announcementType"
+            required="true"
+          >
             <mat-option value="COVID_RELATED">COVID-19 Related</mat-option>
             <mat-option value="GENERAL">General</mat-option>
           </mat-select>
@@ -33,22 +61,34 @@
       <div>
         <mat-form-field class="example-full-width">
           <mat-label>Description</mat-label>
-          <textarea matInput id="description" name="description" #description="ngModel"
-            [(ngModel)]="announcementToUpdate.description" required="true"></textarea>
+          <textarea
+            matInput
+            id="description"
+            name="description"
+            #description="ngModel"
+            [(ngModel)]="announcementToUpdate.description"
+            required="true"
+          ></textarea>
         </mat-form-field>
-        <mat-error *ngIf="description.invalid && (description.dirty || description.touched || submitted)">
-          <div *ngIf="description.errors != null && description.errors.required">
+        <mat-error
+          *ngIf="
+            description.invalid &&
+            (description.dirty || description.touched || submitted)
+          "
+        >
+          <div
+            *ngIf="description.errors != null && description.errors.required"
+          >
             Announcement Description is required.
           </div>
         </mat-error>
       </div>
       <div mat-dialog-actions>
-        <button mat-raised-button color="blue" type="submit">Save</button>
-        <button mat-raised-button color="blue" [mat-dialog-close]>Cancel</button>
+        <button mat-button class="peach-btn" type="submit">Save</button>
+        <button mat-button class="grey-btn" [mat-dialog-close]>Cancel</button>
       </div>
     </form>
   </div>
-
 
   <!--
   <app-navbar></app-navbar>
@@ -104,5 +144,4 @@
       </div>
     </mat-card>
   </div>
--->
-</div>
+--></div>

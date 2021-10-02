@@ -29,11 +29,4 @@
   padding: 4%
 }
 
-.btn {
-  background-color: rgba(var(--primary-button-color), 0.2);
-  min-width: 8vw;
-  min-height: 3.5vw;
-  border-radius: 7px;
-  font-family: var(--primary-font);
-}
 

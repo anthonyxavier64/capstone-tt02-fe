@@ -46,39 +46,9 @@
   text-align: left;
 }
 
-.editBtn {
-  background-color: rgba(var(--primary-button-color), 0.5);
-  color: rgba(var(--theme-primary-color), 0.8);
-  font-size: 23px;
-  font-weight: lighter;
-  min-height: 3vw;
-  min-width: 8vw;
-  border-radius: 8px;
-}
 
-.saveBtn {
-  font-family: var(--primary-font);
-  font-size: 23px;
-  font-weight: lighter;
-  text-align: center;
-  min-width: 70%;
-  min-height: 3vw;
-  background: rgba(var(--primary-button-color), 0.5);
-  border-radius: 8px;
-  justify-content: center;
-}
 
-.closeBtn {
-  font-family: var(--primary-font);
-  font-size: 23px;
-  font-weight: lighter;
-  text-align: center;
-  min-width: 60%;
-  min-height: 3vw;
-  background: rgb(var(--theme-secondary-color));
-  border-radius: 8px;
-  align-content: center;
-}
+
 
 /***** Room Management *****/
 .roomManagementCard {
@@ -144,4 +114,10 @@
   min-width: 8vw;
   border-radius: 8px;
   margin-bottom: 2vw;
+}
+
+.actionIcon {
+  cursor: pointer;
+  height: 1.5em;
+  width: 1.5em
 }
