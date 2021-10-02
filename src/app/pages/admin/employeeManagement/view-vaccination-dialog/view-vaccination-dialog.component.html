@@ -2,10 +2,21 @@
   <h1>My Vaccination Status</h1>
   <p class="last-updated">Last updated: {{ renderLastUpdate() }}</p>
   <div class="vaccination-status-wrapper">
-    <div class="vaccination-status {{ user.isVaccinated ? 'vaccinated' : 'unvaccinated' }}"></div>
+    <div
+      class="vaccination-status {{
+        user?.isVaccinated ? 'vaccinated' : 'unvaccinated'
+      }}"
+    ></div>
     <p class="text">{{ renderVaccinationStatus() }}</p>
   </div>
-  <button mat-button class="peach-btn" (click)="onClickDownload()">Download</button>
+  <button
+    mat-button
+    class="peach-btn"
+    disabled="{{ this.vaccinationCerts[0] ? false : true }}"
+    (click)="onClickDownload()"
+  >
+    Download
+  </button>
 </div>
 <div
   fxLayout="row"

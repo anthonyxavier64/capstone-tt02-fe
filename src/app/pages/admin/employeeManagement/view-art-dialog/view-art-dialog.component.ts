@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covidDocumentSubmission.service';
@@ -7,16 +8,19 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
-  selector: 'app-art-test-dialog',
-  templateUrl: './art-test-dialog.component.html',
-  styleUrls: ['./art-test-dialog.component.css'],
-  providers: [ MessageService ],
+  selector: 'app-view-art-dialog',
+  templateUrl: './view-art-dialog.component.html',
+  styleUrls: ['./view-art-dialog.component.css'],
+  providers: [MessageService],
 })
 
-export class ArtDialogComponent implements OnInit {
+export class ViewArtComponent implements OnInit {
   showWarningMessage: boolean;
   uploadProgress: number;
   user: any;
+  covidDocumentSubmissions: any[];
+  artTests: any[]
+
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
@@ -26,6 +30,8 @@ export class ArtDialogComponent implements OnInit {
   ) {
     this.uploadProgress = -1;
     this.showWarningMessage = false;
+    this.covidDocumentSubmissions = [];
+    this.artTests = [];
   }
 
   ngOnInit(): void {
@@ -36,42 +42,25 @@ export class ArtDialogComponent implements OnInit {
       (error) => {
         console.log(error);
       });
-  }
-
-  upload(event) { 
-    const currentDate  = new Date().toString();
-
-    const fileRef = this.afStorage.ref(`ART_Results/${this.user.userId}/${currentDate}`);
-    const uploadTask = fileRef.put(event.target.files[0]);
-    uploadTask.percentageChanges().subscribe((data) => this.uploadProgress = data);
-
-    this.user.latestArtTestResult = currentDate.toString();
-    const newSubmission = { dateOfSubmission: currentDate, covidDocumentType: "ART_TEST_RESULT", employeeId: this.user.userId };
     this.covidDocumentSubmissionService
-      .createCovidDocumentSubmission(newSubmission)
+      .getUserSubmissions(this.config.data.userId)
       .subscribe(
-        (response) => {
-          if (response.true) {
-            console.log("success!");
-          } else {
-            console.log("A problem has occured", response.message);
-          }
+        response => {
+          console.log(response);
+          this.covidDocumentSubmissions = response.covidDocumentSubmissions;
+          this.artTests = this.covidDocumentSubmissions
+            .filter((item) => item.covidDocumentType === "ART_TEST_RESULT")
+            .sort((a, b) => {
+              const dateA = moment(a.dateOfSubmission);
+              const dateB = moment(b.dateOfSubmission);
+              return dateB.diff(dateA);
+            });
         },
-        (error) => {
+        error => {
           console.log(error);
         }
       );
-
-    this.userService.updateUserDetails(this.user).subscribe(
-      (response) => {
-        this.user = response.user;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );;
   }
-
   onConfirmClick() {
     this.userService
       .deleteUser(this.config.data.selectedUser.userId)
@@ -79,6 +68,9 @@ export class ArtDialogComponent implements OnInit {
         this.config.data.confirmDelete = true;
         this.ref.close(this.config);
       });
+  }
+  onClickDownload() {
+    window.open(this.user.latestArtTestResult, '_blank');
   }
 
   onCloseClick() {
@@ -90,8 +82,8 @@ export class ArtDialogComponent implements OnInit {
   }
 
   renderLastUpdate() {
-    if (this.user?.latestProofOfVaccination) {
-      const date = new Date(this.user.latestProofOfVaccination);
+    if (this.artTests[0]) {
+      const date = new Date(this.artTests[0].dateOfSubmission);
       return date;
     }
     return "NA";

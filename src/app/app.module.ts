@@ -49,16 +49,18 @@ import { DepartmentPartOfComponent } from './pages/admin/dialogs/department-part
 import { NewDepartmentComponent } from './pages/admin/dialogs/new-department/new-department.component';
 import { EditAnnouncementComponent } from './pages/admin/edit-announcement/edit-announcement.component';
 import { AdminEmployeeManagementComponent } from './pages/admin/employeeManagement/adminEmployeeManagement.component';
-import { ArtDialogComponent } from './pages/admin/employeeManagement/art-test-results-dialog/art-test-dialog.component';
 import { DeleteEmployeeDialogComponent } from './pages/admin/employeeManagement/delete-employee-dialog/delete-employee-dialog.component';
 import { EditEmployeeDialogComponent } from './pages/admin/employeeManagement/edit-employee-dialog/edit-employee-dialog.component';
-import { ShnDeclarationDialogComponent } from './pages/admin/employeeManagement/shn-declaration-dialog/shn-declaration-dialog.component';
+import { ViewArtComponent } from './pages/admin/employeeManagement/view-art-dialog/view-art-dialog.component';
+import { ViewShnDeclarationDialog } from './pages/admin/employeeManagement/view-shn-dialog/view-shn-dialog.component';
 import { ViewVaccinationDialogComponent } from './pages/admin/employeeManagement/view-vaccination-dialog/view-vaccination-dialog.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWfoManagement.component';
 import { AlternateWorkTeamsConfigComponent } from './pages/admin/wfoManagement/alternateWorkTeamsConfig/alternateWorkTeamsConfig.component';
 import { EditExceptionDialogComponent } from './pages/admin/wfoManagement/officeQuotaConfig/edit-exception-dialog/edit-exception-dialog.component';
 import { OfficeQuotaConfigComponent } from './pages/admin/wfoManagement/officeQuotaConfig/officeQuotaConfig.component';
+import { ArtDialogComponent } from './pages/covid-declarations/art-test-results-dialog/art-test-dialog.component';
 import { CovidDeclarationsComponent } from './pages/covid-declarations/covid-declarations.component';
+import { ShnDeclarationDialogComponent } from './pages/covid-declarations/shn-declaration-dialog/shn-declaration-dialog.component';
 import { UploadVaccinationDialogComponent } from './pages/covid-declarations/upload-vaccination-dialog/upload-vaccination-dialog.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { CreateNewTaskDialogComponent } from './pages/employee/create-new-task-dialog/create-new-task-dialog.component';
@@ -118,6 +120,8 @@ export function tokenGetter() {
     ShnDeclarationDialogComponent,
     ArtDialogComponent,
     ViewVaccinationDialogComponent,
+    ViewShnDeclarationDialog,
+    ViewArtComponent,
     UploadVaccinationDialogComponent],
   imports: [
     BrowserModule,

@@ -1,3 +1,4 @@
+import * as moment from 'moment'
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { finalize } from 'rxjs/operators';
@@ -22,6 +23,8 @@ export class ShnDeclarationDialogComponent implements OnInit {
   showWarningMessage: boolean;
   uploadProgress: number;
   user: any;
+  covidDocumentSubmissions: any[]
+  mcs: any[];
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
@@ -35,6 +38,8 @@ export class ShnDeclarationDialogComponent implements OnInit {
     this.remarks = "";
     this.startDate = new Date().toISOString().slice(0, 10);
     this.endDate = new Date().toISOString().slice(0, 10);
+    this.covidDocumentSubmissions = [];
+    this.mcs = []
   }
 
   ngOnInit(): void {
@@ -42,6 +47,13 @@ export class ShnDeclarationDialogComponent implements OnInit {
     if (currentUser) {
       this.user = JSON.parse(currentUser);
     }
+    this.mcs = this.covidDocumentSubmissions
+      .filter((item) => item.covidDocumentType === "SHN_MEDICAL_CERTIFICATE" || item.covidDocumentType === "QUARANTINE_ORDER")
+      .sort((a, b) => {
+        const dateA = moment(a.dateOfSubmission);
+        const dateB = moment(b.dateOfSubmission);
+        return dateB.diff(dateA);
+      });
   }
 
   onClickSHN() {
@@ -111,8 +123,8 @@ export class ShnDeclarationDialogComponent implements OnInit {
   }
 
   renderLastUpdate() {
-    if (this.user?.latestMedicalCert) {
-      const date = new Date(this.user.latestMedicalCert);
+    if (this.mcs[0]) {
+      const date = new Date(this.mcs[0].dateOfSubmission);
       return date;
     }
     return "NA";

@@ -1,0 +1,37 @@
+<form>
+  <div class="dialog-container">
+    <h1>SHN/QO Declaration</h1>
+    <p class="last-updated">Last updated: {{ renderLastUpdate() }}</p>
+    <div class="vaccination-status-wrapper">
+      <div
+        class="vaccination-status {{
+          user?.isVaccinated ? 'vaccinated' : 'unvaccinated'
+        }}"
+      ></div>
+      <p class="text">{{ renderVaccinationStatus() }}</p>
+    </div>
+    <button
+      mat-button
+      class="peach-btn"
+      disabled="{{ this.mcs[0] ? false : true }}"
+      (click)="onClickDownload()"
+    >
+      Download
+    </button>
+
+    <br />
+  </div>
+  <div
+    fxLayout="row"
+    fxLayoutAlign="center"
+    fxLayoutGap="3%"
+    style="
+      margin-top: 3%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    "
+  >
+    <button mat-button class="closeBtn" (click)="onCloseClick()">Close</button>
+  </div>
+</form>
