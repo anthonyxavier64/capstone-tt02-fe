@@ -4,6 +4,8 @@
     <input
       matInput
       [(ngModel)]="taskName"
+      #taskNameInput="ngModel"
+      class="input"
       type="text"
       style="height: 2vw"
       placeholder="Insert Task Name Here"
@@ -27,6 +29,8 @@
           <input
             matInput
             [(ngModel)]="startDate"
+            #startDateInput="ngModel"
+            class="input"
             type="date"
             style="height: 2vw"
           />
@@ -40,6 +44,8 @@
           <input
             matInput
             [(ngModel)]="deadline"
+            #deadlineInput="ngModel"
+            class="input"
             type="date"
             style="height: 2vw"
           />
@@ -58,7 +64,7 @@
         >
           <label style="white-space: nowrap">Add Employees:</label>
           <div
-            fxLayout="column"
+            fxLayout="row"
             fxLayoutAlign="space-around start"
             fxLayoutGap="5%"
           >
@@ -71,7 +77,7 @@
               placeholder="Please select an employee"
               [filter]="true"
               filterBy="fullName"
-              [style]="{ width: '20vw' }"
+              [style]="{ width: '15vw' }"
             >
               <ng-template let-user pTemplate="item">
                 <div fxLayout="row" fxLayoutGap="3%">
@@ -139,6 +145,7 @@
         matInput
         [(ngModel)]="remarks"
         placeholder="Insert Remarks Here"
+        class="input"
         cols="50"
         rows="6"
         wrap="hard"
@@ -148,16 +155,69 @@
       <input
         matInput
         [(ngModel)]="complexity"
+        #complexityInput="ngModel"
         style="width: 5vw"
-        class="numberInput"
+        class="input"
         type="number"
         [max]="5"
         [min]="1"
       />
     </div>
   </div>
+  <div>
+    <div
+      *ngIf="
+        taskNameInput.touched &&
+        (taskNameInput.value === null || taskNameInput.value === '')
+      "
+      class="errorText"
+      style="color: red"
+    >
+      Task Name cannot be empty!
+    </div>
+    <div
+      *ngIf="deadlineInput.value < startDateInput.value"
+      class="errorText"
+      style="color: red"
+    >
+      Deadline must be after Start Date!
+    </div>
+    <div
+      *ngIf="
+        complexityInput.touched &&
+        (complexityInput.value === null || complexityInput.value === undefined)
+      "
+      class="errorText"
+      style="color: red"
+    >
+      Complexity cannot be empty!
+    </div>
+    <div
+      *ngIf="
+        complexityInput.touched &&
+        (complexityInput.value < 1 || complexityInput.value > 5)
+      "
+      class="errorText"
+      style="color: red"
+    >
+      Complexity must be from 1 to 5!
+    </div>
+  </div>
   <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="3%">
-    <button mat-button class="peach-btn" (click)="createNewTask()">
+    <button
+      mat-button
+      class="peach-btn"
+      (click)="createNewTask()"
+      [disabled]="
+        taskNameInput.value === null ||
+        taskNameInput.value === '' ||
+        deadlineInput.value < startDateInput.value ||
+        complexityInput.value === null ||
+        complexityInput.value === undefined ||
+        complexityInput.value < 1 ||
+        complexityInput.value > 5
+      "
+    >
       Submit
     </button>
     <button mat-button class="grey-btn" (click)="onClose()">Close</button>
