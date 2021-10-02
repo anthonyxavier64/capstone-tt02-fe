@@ -16,7 +16,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ArtDialogComponent } from './pages/admin/employeeManagement/art-test-results-dialog/art-test-dialog.component';
+import { ArtDialogComponent } from './pages/covid-declarations/art-test-results-dialog/art-test-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { ChangePasswordComponent } from './pages/profile/change-password/change-password.component';
@@ -60,7 +60,7 @@ import { OfficeQuotaConfigComponent } from './pages/admin/wfoManagement/officeQu
 import { OfficeSpaceConfigComponent } from './pages/admin/companyDetails/office-space-config/office-space-config.component';
 import { PrimeNgModule } from './core/primeng.module';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { ShnDeclarationDialogComponent } from './pages/admin/employeeManagement/shn-declaration-dialog/shn-declaration-dialog.component';
+import { ShnDeclarationDialogComponent } from './pages/covid-declarations/shn-declaration-dialog/shn-declaration-dialog.component';
 import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 import { StyleClassModule } from 'primeng/styleclass';
 import { TOKEN_KEY } from './config';
@@ -68,9 +68,8 @@ import { TableModule } from 'primeng/table';
 import { TaskComponent } from './pages/employee/task/task.component';
 import { TaskDetailDialogComponent } from './pages/employee/task-detail-dialog/task-detail-dialog.component';
 import { TierInfoDialogComponent } from './pages/index/sign-up/tier-info-dialog/tier-info-dialog.component';
-import { UploadVaccinationDialogComponent } from './pages/admin/employeeManagement/upload-vaccination-dialog/upload-vaccination-dialog.component';
+import { UploadVaccinationDialogComponent } from './pages/covid-declarations/upload-vaccination-dialog/upload-vaccination-dialog.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
-import { ViewVaccinationDialogComponent } from './pages/admin/employeeManagement/view-vaccination-dialog/view-vaccination-dialog.component';
 import { environment } from 'src/environments/environment.dev';
 
 export function tokenGetter() {
@@ -116,7 +115,6 @@ export function tokenGetter() {
     CovidDeclarationsComponent,
     ShnDeclarationDialogComponent,
     ArtDialogComponent,
-    ViewVaccinationDialogComponent,
     UploadVaccinationDialogComponent,
   ],
   imports: [

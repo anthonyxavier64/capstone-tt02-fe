@@ -9,10 +9,10 @@ import { MatMenuTrigger } from '@angular/material/menu';
 
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
-import { ArtDialogComponent } from './art-test-results-dialog/art-test-dialog.component';
 import { DeleteEmployeeDialogComponent } from './delete-employee-dialog/delete-employee-dialog.component';
 import { EditEmployeeDialogComponent } from './edit-employee-dialog/edit-employee-dialog.component';
-import { ShnDeclarationDialogComponent } from './shn-declaration-dialog/shn-declaration-dialog.component';
+import { ViewArtComponent } from './view-art-dialog/view-art-dialog.component';
+import { ViewShnDeclarationDialog } from './view-shn-dialog/view-shn-dialog.component';
 import { ViewVaccinationDialogComponent } from './view-vaccination-dialog/view-vaccination-dialog.component';
 
 export interface user {
@@ -201,7 +201,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
     contactNumber: string;
     isActivated: boolean;
   }) {
-    this.artTestDialogRef = this.dialogService.open(ArtDialogComponent, {
+    this.artTestDialogRef = this.dialogService.open(ViewArtComponent, {
       header: selectedUser.fullName + "'s ART Tests",
       width: '70%',
       contentStyle: { 'max-height': '50vw', overflow: 'auto' },
@@ -220,15 +220,12 @@ export class AdminEmployeeManagementComponent implements OnInit {
     contactNumber: string;
     isActivated: boolean;
   }) {
-    this.shnDeclarationDialogRef = this.dialogService.open(
-      ShnDeclarationDialogComponent,
-      {
-        header: selectedUser.fullName + "'s SHN/QO Declaration",
-        width: '70%',
-        contentStyle: { 'max-height': '50vw', overflow: 'auto' },
-        data: selectedUser,
-      }
-    );
+    this.shnDeclarationDialogRef = this.dialogService.open(ViewShnDeclarationDialog, {
+      header: selectedUser.fullName + "'s SHN/QO Declaration",
+      width: '70%',
+      contentStyle: { 'max-height': '50vw', overflow: 'auto' },
+      data: selectedUser,
+    });
 
     this.shnDeclarationDialogRef.onClose.subscribe(() => {
       this.ngOnInit();

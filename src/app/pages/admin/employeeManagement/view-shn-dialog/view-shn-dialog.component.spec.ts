@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ArtDialogComponent } from './art-test-dialog.component';
+import { ViewShnDeclarationDialog } from './view-shn-dialog.component';
 
-describe('ArtDialogComponent', () => {
-  let component: ArtDialogComponent;
-  let fixture: ComponentFixture<ArtDialogComponent>;
+describe('ViewShnDeclarationDialog', () => {
+  let component: ViewShnDeclarationDialog;
+  let fixture: ComponentFixture<ViewShnDeclarationDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ArtDialogComponent ]
+      declarations: [ ViewShnDeclarationDialog ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ArtDialogComponent);
+    fixture = TestBed.createComponent(ViewShnDeclarationDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

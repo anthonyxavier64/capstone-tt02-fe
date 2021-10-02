@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { finalize } from 'rxjs/operators';
@@ -18,6 +19,8 @@ export class ArtDialogComponent implements OnInit {
   showWarningMessage: boolean;
   uploadProgress: number;
   user: any;
+  covidDocumentSubmissions: any[];
+  artTests: any[]
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
@@ -27,6 +30,8 @@ export class ArtDialogComponent implements OnInit {
   ) {
     this.uploadProgress = -1;
     this.showWarningMessage = false;
+    this.covidDocumentSubmissions = [];
+    this.artTests = [];
   }
 
   ngOnInit(): void {
@@ -34,6 +39,24 @@ export class ArtDialogComponent implements OnInit {
     if (currentUser) {
       this.user = JSON.parse(currentUser);
     }
+    this.covidDocumentSubmissionService
+      .getUserSubmissions(this.config.data.userId)
+      .subscribe(
+        response => {
+          console.log(response);
+          this.covidDocumentSubmissions = response.covidDocumentSubmissions;
+          this.artTests = this.covidDocumentSubmissions
+            .filter((item) => item.covidDocumentType === "ART_TEST_RESULT")
+            .sort((a, b) => {
+              const dateA = moment(a.dateOfSubmission);
+              const dateB = moment(b.dateOfSubmission);
+              return dateB.diff(dateA);
+            });
+        },
+        error => {
+          console.log(error);
+        }
+      );
   }
 
   upload(event) {
@@ -95,8 +118,8 @@ export class ArtDialogComponent implements OnInit {
   }
 
   renderLastUpdate() {
-    if (this.user?.latestArtTestResult) {
-      const date = new Date(this.user.latestArtTestResult);
+    if (this.artTests[0]) {
+      const date = new Date(this.artTests[0].dateOfSubmission);
       return date;
     }
     return "NA";

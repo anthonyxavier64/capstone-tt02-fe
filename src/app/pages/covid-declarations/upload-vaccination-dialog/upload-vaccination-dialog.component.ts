@@ -1,3 +1,4 @@
+import * as moment from 'moment'
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { finalize } from 'rxjs/operators';
@@ -18,6 +19,8 @@ export class UploadVaccinationDialogComponent implements OnInit {
   showWarningMessage: boolean;
   uploadProgress: number;
   user: any;
+  vaccinationCerts: any[];
+  covidDocumentSubmissions: any[]
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
@@ -27,6 +30,8 @@ export class UploadVaccinationDialogComponent implements OnInit {
   ) {
     this.uploadProgress = -1;
     this.showWarningMessage = false;
+    this.covidDocumentSubmissions = [];
+    this.vaccinationCerts = []
   }
 
   ngOnInit(): void {
@@ -34,6 +39,24 @@ export class UploadVaccinationDialogComponent implements OnInit {
     if (currentUser) {
       this.user = JSON.parse(currentUser);
     }
+    this.covidDocumentSubmissionService
+      .getUserSubmissions(this.config.data.userId)
+      .subscribe(
+        response => {
+          console.log(response);
+          this.covidDocumentSubmissions = response.covidDocumentSubmissions;
+          this.vaccinationCerts = this.covidDocumentSubmissions
+            .filter((item) => item.covidDocumentType === "PROOF_OF_VACCINATION")
+            .sort((a, b) => {
+              const dateA = moment(a.dateOfSubmission);
+              const dateB = moment(b.dateOfSubmission);
+              return dateB.diff(dateA);
+            });
+        },
+        error => {
+          console.log(error);
+        }
+      );
   }
 
   upload(event) {
@@ -95,8 +118,8 @@ export class UploadVaccinationDialogComponent implements OnInit {
   }
 
   renderLastUpdate() {
-    if (this.user?.latestProofOfVaccination) {
-      const date = new Date(this.user.latestProofOfVaccination);
+    if (this.vaccinationCerts[0]) {
+      const date = new Date(this.vaccinationCerts[0].dateOfSubmission);
       return date;
     }
     return "NA";
