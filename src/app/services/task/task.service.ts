@@ -50,4 +50,16 @@ export class TaskService {
       .post<any>(this.baseUrl + '/add-users/', { users, taskId }, httpOptions)
       .pipe(catchError(handleError));
   }
+
+  deleteUserFromTask(userId: string, taskId: string): Observable<any> {
+    return this.httpClient
+      .delete<any>(this.baseUrl + '/delete-user/' + userId + '/' + taskId)
+      .pipe(catchError(handleError));
+  }
+
+  archiveTask(taskId: string): Observable<any> {
+    return this.httpClient
+      .post(this.baseUrl + '/archive-task/' + taskId, httpOptions)
+      .pipe(catchError(handleError));
+  }
 }

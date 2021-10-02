@@ -12,8 +12,11 @@ export class TaskDetailDialogComponent implements OnInit {
   goal: any;
   assignPopup: boolean;
   filterValue: string;
-  employees: any[];
-  selectedEmployees: any[];
+  personnel: any[];
+  unassignedPersonnel: any[];
+  selectedEmployees: any[] = [];
+  taskToPassBack: any;
+  supervisor: any;
 
   constructor(
     private dialogConfig: DynamicDialogConfig,
@@ -22,15 +25,35 @@ export class TaskDetailDialogComponent implements OnInit {
   ) {
     this.task = this.dialogConfig.data.task;
     this.goal = this.dialogConfig.data.goal;
-    this.employees = this.dialogConfig.data.employees;
+
     this.assignPopup = false;
     this.filterValue = '';
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const employees = this.dialogConfig.data.employees;
+
+    this.personnel = this.task.employees.filter(
+      (emp) => emp.userId !== this.task.supervisor.userId
+    );
+
+    this.unassignedPersonnel = employees.filter((emp) => {
+      if (emp.userId === this.task.supervisor.userId) {
+        return false;
+      }
+
+      for (const person of this.personnel) {
+        if (person.userId === emp.userId) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }
 
   closeDialog() {
-    this.ref.close();
+    this.ref.close(this.taskToPassBack);
   }
 
   toggleAssignMore() {
@@ -38,16 +61,48 @@ export class TaskDetailDialogComponent implements OnInit {
 
     if (this.assignPopup === false) {
       // add employee
-      this.taskService
-        .addUsersToTask(this.selectedEmployees, this.task.taskId)
-        .subscribe(
-          (response) => {
-            console.log(response);
-          },
-          (error) => {}
-        );
+
+      if (this.selectedEmployees.length > 0) {
+        this.taskService
+          .addUsersToTask(this.selectedEmployees, this.task.taskId)
+          .subscribe(
+            (response) => {},
+            (error) => {}
+          );
+      }
     }
   }
 
-  handleSearch() {}
+  deleteUser(userId: string) {
+    this.taskService.deleteUserFromTask(userId, this.task.taskId).subscribe(
+      (response) => {
+        let employee;
+
+        for (let i = 0; i < this.personnel.length; i++) {
+          if (this.personnel[i].userId === userId) {
+            employee = this.personnel[i];
+            this.personnel.splice(i, 1);
+            break;
+          }
+        }
+        this.unassignedPersonnel = [...this.unassignedPersonnel, employee];
+
+        console.log('dsa', response.task);
+
+        this.taskToPassBack = response.task;
+      },
+      (error) => {}
+    );
+  }
+
+  archive() {
+    this.taskService.archiveTask(this.task.taskId).subscribe(
+      (response) => {
+        console.log(response.task);
+
+        this.taskToPassBack = response.task;
+      },
+      (error) => {}
+    );
+  }
 }
