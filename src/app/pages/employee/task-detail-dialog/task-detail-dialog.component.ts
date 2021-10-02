@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { TaskService } from 'src/app/services/task/task.service';
 
 @Component({
   selector: 'app-task-detail-dialog',
@@ -9,14 +10,21 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 export class TaskDetailDialogComponent implements OnInit {
   task: any;
   goal: any;
+  assignPopup: boolean;
+  filterValue: string;
+  employees: any[];
+  selectedEmployees: any[];
 
   constructor(
     private dialogConfig: DynamicDialogConfig,
-    private ref: DynamicDialogRef
+    private ref: DynamicDialogRef,
+    private taskService: TaskService
   ) {
     this.task = this.dialogConfig.data.task;
     this.goal = this.dialogConfig.data.goal;
-    console.log(this.goal);
+    this.employees = this.dialogConfig.data.employees;
+    this.assignPopup = false;
+    this.filterValue = '';
   }
 
   ngOnInit(): void {}
@@ -24,4 +32,22 @@ export class TaskDetailDialogComponent implements OnInit {
   closeDialog() {
     this.ref.close();
   }
+
+  toggleAssignMore() {
+    this.assignPopup = !this.assignPopup;
+
+    if (this.assignPopup === false) {
+      // add employee
+      this.taskService
+        .addUsersToTask(this.selectedEmployees, this.task.taskId)
+        .subscribe(
+          (response) => {
+            console.log(response);
+          },
+          (error) => {}
+        );
+    }
+  }
+
+  handleSearch() {}
 }
