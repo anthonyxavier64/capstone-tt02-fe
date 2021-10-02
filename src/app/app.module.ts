@@ -122,7 +122,8 @@ export function tokenGetter() {
     ViewVaccinationDialogComponent,
     ViewShnDeclarationDialog,
     ViewArtComponent,
-    UploadVaccinationDialogComponent],
+    UploadVaccinationDialogComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -189,4 +190,4 @@ export function tokenGetter() {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
