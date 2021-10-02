@@ -66,6 +66,14 @@ import { ChangePasswordComponent } from './pages/profile/change-password/change-
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
+<<<<<<< HEAD
+=======
+import { AdminGuideComponent } from './pages/admin/adminLanding/admin-guide/admin-guide.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { EditExceptionDialogComponent } from './pages/admin/wfoManagement/officeQuotaConfig/edit-exception-dialog/edit-exception-dialog.component';
+import { TaskComponent } from './pages/employee/task/task.component';
+import { TaskDetailDialogComponent } from './pages/employee/task-detail-dialog/task-detail-dialog.component';
+>>>>>>> f99da2b (commit for rebase)
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -101,6 +109,7 @@ export function tokenGetter() {
     DashboardComponent,
     EditExceptionDialogComponent,
     TaskComponent,
+    TaskDetailDialogComponent,
   ],
   imports: [
     BrowserModule,

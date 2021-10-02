@@ -18,15 +18,23 @@ export class TaskService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getAllTasksByGoalId(goalId: string): Observable<any> {
+  getAllTasksByGoalId(goalId: string, userId: string): Observable<any> {
     return this.httpClient
-      .get<any>(this.baseUrl + '/get-all-tasks-goal/' + goalId)
+      .get<any>(
+        this.baseUrl + '/get-all-tasks-goal-user/' + goalId + '/' + userId
+      )
       .pipe(catchError(handleError));
   }
 
   createTask(task: any): Observable<any> {
     return this.httpClient
       .post<any>(this.baseUrl + '/create-task', task, httpOptions)
+      .pipe(catchError(handleError));
+  }
+
+  updateTask(task: any): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + '/update-task', task, httpOptions)
       .pipe(catchError(handleError));
   }
 }
