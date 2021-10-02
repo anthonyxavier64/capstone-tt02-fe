@@ -1,20 +1,395 @@
+<p-toast></p-toast>
+<mat-spinner
+  *ngIf="isLoading"
+  style="color: aquamarine; margin-left: 50%; margin-top: 30vw"
+  fxLayoutAlign=" center"
+></mat-spinner>
+
 <div
+  *ngIf="!isLoading"
   fxLayout="column"
   fxLayoutGap="3%"
   style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
 >
   <app-navbar></app-navbar>
 
-  <div class="headerBackButton">
-    <div class="headerText">Office Quota Configuration</div>
+  <div fxLayout="row" fxLayoutAlign="space-between start">
+    <h1>Alternate Work Teams Configuration</h1>
     <div>
-      <button mat-button class="backButton" (click)="onBackClick()">
-        Back
-      </button>
+      <button mat-button class="grey-btn" (click)="onBackClick()">Back</button>
     </div>
   </div>
 
-  <div>
-    <ng-form> </ng-form>
+  <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="5%">
+    <div
+      fxLayout="row"
+      style="width: 75vw"
+      fxLayoutAlgin="space-around start"
+      fxLayoutGap="12%"
+    >
+      <div fxLayout="row" fxLayoutAlign="space-around start">
+        <form
+          #addEmployeeToTeamAForm="ngForm"
+          ngNativeValidate
+          name="addEmployeeToTeamAForm"
+          (ngSubmit)="addToTeamA(addEmployeeToTeamAForm)"
+        >
+          <div fxLayout="column" fxLayoutAlign="space-around center">
+            <div
+              class="teamCardHeader"
+              fxLayout="column"
+              fxLayoutAlign="space-around center"
+            >
+              <p>Team A ({{ teamA.length }} Employees)</p>
+            </div>
+
+            <div
+              class="teamCardContent"
+              fxLayout="column"
+              fxLayoutAlgin="space-around center"
+              fxLayoutGap="5%"
+            >
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <div
+                  fxLayout="column"
+                  fxLayoutAlign="space-around center"
+                  fxLayoutGap="2%"
+                >
+                  <p-dropdown
+                    [options]="teamAUsers"
+                    optionLabel="fullName"
+                    name="selectedEmployeeTeamA"
+                    ngModel
+                    #selectedEmployeeTeamA="ngModel"
+                    placeholder="Please select an employee"
+                    [filter]="true"
+                    filterBy="fullName"
+                  >
+                    <ng-template let-user pTemplate="item">
+                      <div fxLayout="row" fxLayoutGap="3%">
+                        <img
+                          *ngIf="user.isVaccinated"
+                          src="../../../../../assets/images/vaccinatedIcon.svg"
+                        />
+                        <img
+                          *ngIf="!user.isVaccinated"
+                          src="../../../../../assets/images/unvaccinatedIcon.svg"
+                        />
+                        <div>{{ user.fullName }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
+                  <div
+                    *ngIf="
+                      selectedEmployeeTeamA.control.touched &&
+                      (selectedEmployeeTeamA.control.value === null ||
+                        selectedEmployeeTeamA.control.value === '')
+                    "
+                    class="errorText"
+                    style="color: red"
+                  >
+                    Select a valid employee before adding.
+                  </div>
+                </div>
+                <button
+                  mat-button
+                  class="peach-btn"
+                  [disabled]="
+                    selectedEmployeeTeamA.control.value === null ||
+                    selectedEmployeeTeamA.control.value === ''
+                  "
+                >
+                  Add
+                </button>
+              </div>
+              <div
+                *ngIf="teamA.length === 0"
+                fxLayout="row"
+                fxLayoutAlign="space-around center"
+              >
+                <p>Please Add Employees to Team A!</p>
+              </div>
+              <div
+                *ngIf="teamA.length !== 0"
+                fxLayout="column"
+                fxLayoutAlign="space-around center"
+              >
+                <table *ngFor="let employee of teamA">
+                  <tr>
+                    <td>
+                      <div
+                        class="employeeItem"
+                        fxLayout="row"
+                        fxLayoutAlign="space-between center"
+                      >
+                        <p style="font-size: 1.3vw">
+                          {{ employee.fullName }}
+                        </p>
+                        <button
+                          mat-button
+                          style="background-color: inherit; display: none"
+                          class="deleteButton"
+                          fxLayout="row"
+                          fxLayoutAlign="space-around center"
+                          (click)="onTeamAEmployeeDelete(employee)"
+                        >
+                          <img
+                            style="height: 1vw; width: 1vw"
+                            src="../../../../../assets/images/cross.png"
+                          />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-around start" class="teamCard">
+        <form
+          #addEmployeeToTeamBForm="ngForm"
+          ngNativeValidate
+          name="addEmployeeToTeamBForm"
+          (ngSubmit)="addToTeamB(addEmployeeToTeamBForm)"
+        >
+          <div fxLayout="column" fxLayoutAlign="space-around center">
+            <div
+              class="teamCardHeader"
+              fxLayout="column"
+              fxLayoutAlign="space-around center"
+            >
+              <p>Team B ({{ teamB.length }} Employees)</p>
+            </div>
+
+            <div
+              class="teamCardContent"
+              fxLayout="column"
+              fxLayoutAlgin="space-around center"
+              fxLayoutGap="5%"
+            >
+              <div fxLayout="row" fxLayoutAlign="space-around center">
+                <div
+                  fxLayout="column"
+                  fxLayoutAlign="space-around center"
+                  fxLayoutGap="2%"
+                >
+                  <p-dropdown
+                    [options]="teamBUsers"
+                    optionLabel="fullName"
+                    name="selectedEmployeeTeamB"
+                    ngModel
+                    #selectedEmployeeTeamB="ngModel"
+                    placeholder="Please select an employee"
+                    [filter]="true"
+                    filterBy="fullName"
+                  >
+                    <ng-template let-user pTemplate="item">
+                      <div fxLayout="row" fxLayoutGap="3%">
+                        <img
+                          *ngIf="user.isVaccinated"
+                          src="../../../../../assets/images/vaccinatedIcon.svg"
+                        />
+                        <img
+                          *ngIf="!user.isVaccinated"
+                          src="../../../../../assets/images/unvaccinatedIcon.svg"
+                        />
+                        <div>{{ user.fullName }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
+                  <div
+                    *ngIf="
+                      selectedEmployeeTeamB.control.touched &&
+                      (selectedEmployeeTeamB.control.value === '' ||
+                        selectedEmployeeTeamB.control.value === null)
+                    "
+                    class="errorText"
+                    style="color: red"
+                  >
+                    Select a valid employee before adding.
+                  </div>
+                </div>
+
+                <button
+                  mat-button
+                  type="submit"
+                  class="peach-btn"
+                  [disabled]="
+                    selectedEmployeeTeamB.control.value === null ||
+                    selectedEmployeeTeamB.control.value === ''
+                  "
+                >
+                  Add
+                </button>
+              </div>
+              <div
+                *ngIf="teamB.length === 0"
+                fxLayout="row"
+                fxLayoutAlign="space-around center"
+              >
+                <p>Please Add Employees to Team B!</p>
+              </div>
+              <div
+                *ngIf="teamB.length !== 0"
+                fxLayout="column"
+                fxLayoutAlign="space-around center"
+              >
+                <table *ngFor="let employee of teamB">
+                  <tr>
+                    <td>
+                      <div
+                        class="employeeItem"
+                        fxLayout="row"
+                        fxLayoutAlign="space-between center"
+                      >
+                        <p style="font-size: 1.3vw">
+                          {{ employee.fullName }}
+                        </p>
+                        <button
+                          mat-button
+                          style="background-color: inherit; display: none"
+                          class="deleteButton"
+                          fxLayout="row"
+                          fxLayoutAlign="space-around center"
+                          (click)="onTeamBEmployeeDelete(employee)"
+                        >
+                          <img
+                            style="height: 1vw; width: 1vw"
+                            src="../../../../../assets/images/cross.png"
+                          />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div
+      class="selectConfigOptionCard"
+      fxLayout="row"
+      fxLayoutGap="4%"
+      fxLayoutAlign="space-around start"
+    >
+      <div
+        fxLayout="column"
+        fxLayoutAlign="space-around center"
+        fxLayoutGap="7%"
+      >
+        <div
+          fxLayout="column"
+          fxLayoutAlign="space-around center"
+          fxLayoutGap="3%"
+        >
+          <mat-card-title style="width: 20vw; text-align: center"
+            >Select Roster Type</mat-card-title
+          >
+          <div
+            fxLayout="row"
+            fxLayoutAlign="space-around center"
+            fxLayoutGap="12%"
+          >
+            <div
+              fxLayout="row"
+              fxLayoutAlign="space-around center"
+              fxLayoutGap="2%"
+            >
+              <div class="teamALegend"></div>
+              <p style="overflow: hidden; white-space: nowrap">Team A</p>
+            </div>
+            <div
+              fxLayout="row"
+              fxLayoutAlign="space-around center"
+              fxLayoutGap="2%"
+            >
+              <div class="teamBLegend"></div>
+              <p style="overflow: hidden; white-space: nowrap">Team B</p>
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+          <button
+            mat-button
+            style="background-color: inherit"
+            (click)="selectDailyConfig()"
+          >
+            <img
+              *ngIf="!isDailySelected"
+              class="alternateWorkTeamConfig"
+              src="../../../../../assets/images/alternateWorkTeamDailyConfig.png"
+            />
+            <img
+              *ngIf="isDailySelected"
+              class="selectedAlternateWorkTeamConfig"
+              src="../../../../../assets/images/selectedAlternateWorkTeamDailyConfig.png"
+            />
+          </button>
+        </div>
+        <div
+          fxLayout="row"
+          fxLayoutAlign="space-between center"
+          fxLayoutGap="0%"
+        >
+          <button
+            mat-button
+            style="background-color: inherit"
+            (click)="selectWeeklyConfig()"
+          >
+            <img
+              *ngIf="!isWeeklySelected"
+              class="alternateWorkTeamConfig"
+              src="../../../../../assets/images/alternateWorkTeamWeeklyConfig.png"
+            />
+            <img
+              *ngIf="isWeeklySelected"
+              class="selectedAlternateWorkTeamConfig"
+              src="../../../../../assets/images/selectedAlternateWorkTeamWeeklyConfig.png"
+            />
+          </button>
+          <button
+            mat-button
+            style="background-color: inherit"
+            (click)="selectBiweeklyConfig()"
+          >
+            <img
+              *ngIf="!isBiWeeklySelected"
+              class="alternateWorkTeamConfig"
+              src="../../../../../assets/images/alternateWorkTeamBiweeklyConfig.png"
+            />
+            <img
+              *ngIf="isBiWeeklySelected"
+              class="selectedAlternateWorkTeamConfig"
+              src="../../../../../assets/images/selectedAlternateWorkTeamBiweeklyConfig.png"
+            />
+          </button>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+          <button
+            mat-button
+            style="background-color: inherit"
+            (click)="selectMonthlyConfig()"
+          >
+            <img
+              *ngIf="!isMonthlySelected"
+              class="alternateWorkTeamMonthlyConfig"
+              src="../../../../../assets/images/alternateWorkTeamMonthlyConfig.png"
+            />
+            <img
+              *ngIf="isMonthlySelected"
+              class="selectedAlternateWorkTeamMonthlyConfig"
+              src="../../../../../assets/images/selectedAlternateWorkTeamMonthlyConfig.png"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button mat-button class="peach-btn" (click)="onSave()">Save</button>
   </div>
 </div>

@@ -78,18 +78,19 @@ export class AdminWfoManagementComponent implements OnInit {
   }
 
   onAltWorkTeamSelectClick() {
-    if (localStorage.getItem('isAlternateWorkTeamConfigured') === 'true') {
+    if (this.company.alternateWorkTeamsConfigurationId === null) {
+      this.dialog.open(NoOptionSelectedDialog, {
+        width: '50%',
+        height: '30%',
+      });
+    } else {
+      this.company.wfoArrangement = 'ALTERNATE_WORK_TEAMS';
       this.isAltWorkTeamSelectBtnClicked = true;
       this.isOfficeQuotaSelectBtnClicked = false;
       this.altWorkTeamSelectBtn = 'selectedButton';
       this.altWorkTeamsSelection = 'selectedWfoSelection';
       this.officeQuotaSelectBtn = 'selectButton';
       this.officeQuotaSelection = 'wfoSelection';
-    } else {
-      this.dialog.open(NoOptionSelectedDialog, {
-        width: '570px',
-        height: '227px',
-      });
     }
   }
 
@@ -100,6 +101,7 @@ export class AdminWfoManagementComponent implements OnInit {
         height: '30%',
       });
     } else {
+      this.company.wfoArrangement = 'OFFICE_QUOTAS';
       this.isOfficeQuotaSelectBtnClicked = true;
       this.isAltWorkTeamSelectBtnClicked = false;
       this.officeQuotaSelectBtn = 'selectedButton';
@@ -114,11 +116,6 @@ export class AdminWfoManagementComponent implements OnInit {
   }
 
   onConfigureAlternativeWorkTeamsClick() {
-    this.isAlternateWorkTeamConfigured = true;
-    localStorage.setItem(
-      'isAlternateWorkTeamConfigured',
-      JSON.stringify(this.isAlternateWorkTeamConfigured)
-    );
     this.router.navigateByUrl('/alternateWorkTeamsConfig');
   }
 }

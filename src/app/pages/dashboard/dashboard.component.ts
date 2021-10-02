@@ -11,6 +11,10 @@ import { ViewAnnouncementComponent } from '../view-announcement/view-announcemen
 import { AnnouncementType } from 'src/app/models/announcement-type';
 import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
 
+import { MeetingService } from 'src/app/services/meeting/meeting.service';
+
+import { TaskService } from 'src/app/services/task/task.service';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -23,6 +27,15 @@ export class DashboardComponent implements OnInit {
   covidAnnouncements: Announcement[];
   generalAnnouncements: Announcement[];
 
+  organisedMeetings: any[];
+
+  weeklyTasks: any[];
+  numCompleted: number;
+  taskProgress: number;
+
+  // My Weekly Tasks progress
+  
+  // My Weekly Meetings progress
   today = new Date();
   weekday = this.datePipe.transform(this.today, "EEEE");
   startDate = moment().startOf('week').toDate();
@@ -32,9 +45,13 @@ export class DashboardComponent implements OnInit {
   constructor(private router: Router, 
     private userService: UserService, 
     private announcementService: AnnouncementService,
+    private meetingService: MeetingService,
+    private taskService: TaskService,
     private matDialog: MatDialog,
     private datePipe: DatePipe) 
-    { let now = moment(); }
+    { let now = moment(); 
+      this.taskProgress = 0;
+    }
 
   ngOnInit() {
     const currentUser = localStorage.getItem('currentUser');
@@ -47,7 +64,7 @@ export class DashboardComponent implements OnInit {
         this.covidAnnouncements = response.announcements;
       },
       error => {
-        console.log('********** AdminAnnouncementManagementComponent.ts: ' + error);
+        console.log("Error obtaining covid announcements:  " + error);
       }
     );
 
@@ -56,10 +73,36 @@ export class DashboardComponent implements OnInit {
         this.generalAnnouncements = response.announcements;
       },
       error => {
-        console.log('********** AdminAnnouncementManagementComponent.ts: ' + error);
+        console.log("Error obtaining general announcements:  " + error);
       }
     );
 
+    this.taskService.getAllTasksByUser(this.user.userId).subscribe(
+      response => {
+        this.weeklyTasks = response.tasks;
+        this.numCompleted = 0;
+
+        for (const task of this.weeklyTasks) {
+          if (!!task.completionDate) {
+            this.numCompleted++;
+          }
+        }
+        this.taskProgress = (this.numCompleted / this.weeklyTasks.length) * 100;
+      },
+      error => {
+        console.log("Error obtaining user tasks:  " + error);
+      }
+    );
+
+    this.meetingService.getAllMeetingsOrganiser(this.user.userId).subscribe(
+      response => {
+        this.organisedMeetings = response.meetings;
+      },
+      error => {
+        console.log("Error obtaining organised meetings:  " + error);
+      }
+    );
+  
   }
 
   viewAnnouncement(announcement?: Announcement) {
@@ -75,6 +118,27 @@ export class DashboardComponent implements OnInit {
         return;
       }
     });
+  }
+
+  handleChange(task: any) {
+    if (!!task.completionDate) {
+      task.completionDate = null;
+      this.numCompleted--;
+    } else {
+      task.completionDate = new Date();
+      this.numCompleted++;
+    }
+
+    this.taskService.updateTask(task).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    this.taskProgress = (this.numCompleted / this.weeklyTasks.length) * 100;
   }
 
 }
