@@ -1,5 +1,6 @@
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { finalize } from 'rxjs/operators';
 import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covidDocumentSubmission.service';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -65,14 +66,31 @@ export class ShnDeclarationDialogComponent implements OnInit {
     const fileRef = this.afStorage.ref(`SHN_QO_Declarations/${this.user.userId}/${currentDate}`);
     const uploadTask = fileRef.put(event.target.files[0]);
     uploadTask.percentageChanges().subscribe((data) => this.uploadProgress = data);
-
+    uploadTask.snapshotChanges().pipe(
+      finalize(() => {
+        fileRef.getDownloadURL().subscribe(url => {
+          console.log(url);
+          this.user.latestMedicalCert = url;
+          this.userService.updateUserDetails(this.user).subscribe(
+            (response) => {
+              console.log("updated!")
+              this.user = response.user;
+              localStorage.setItem("currentUser", JSON.stringify(this.user));
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        });
+      })
+    ).subscribe();
     this.user.latestMedicalCert = currentDate.toString();
     const newSubmission = { dateOfSubmission: currentDate, remarks: this.remarks, startDate: this.startDate, endDate: this.endDate, covidDocumentType: this.covidSubmissionType, employeeId: this.user.userId };
     this.covidDocumentSubmissionService
       .createCovidDocumentSubmission(newSubmission)
       .subscribe(
         (response) => {
-          if (response.true) {
+          if (response.status) {
             console.log("success!", response.covidDocumentSubmission);
           } else {
             console.log("A problem has occured", response);
@@ -82,16 +100,6 @@ export class ShnDeclarationDialogComponent implements OnInit {
           console.log(error);
         }
       );
-
-    this.userService.updateUserDetails(this.user).subscribe(
-      (response) => {
-        this.user = response.user;
-        localStorage.set("currentUser", this.user);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );;
   }
 
   onCloseClick() {
@@ -103,8 +111,8 @@ export class ShnDeclarationDialogComponent implements OnInit {
   }
 
   renderLastUpdate() {
-    if (this.user?.latestProofOfVaccination) {
-      const date = new Date(this.user.latestProofOfVaccination);
+    if (this.user?.latestMedicalCert) {
+      const date = new Date(this.user.latestMedicalCert);
       return date;
     }
     return "NA";

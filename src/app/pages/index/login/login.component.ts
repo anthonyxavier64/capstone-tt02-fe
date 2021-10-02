@@ -1,3 +1,6 @@
+import { MessageService } from 'primeng/api';
+import { AuthService } from 'src/app/services/user/auth.service';
+
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -5,8 +8,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/user/auth.service';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +29,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.password = '';
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
@@ -119,5 +120,5 @@ export class LoginComponent implements OnInit, AfterViewInit {
     });
   }
 
-  handleLoginPopup() {}
+  handleLoginPopup() { }
 }

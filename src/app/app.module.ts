@@ -70,6 +70,7 @@ import { TaskDetailDialogComponent } from './pages/employee/task-detail-dialog/t
 import { TierInfoDialogComponent } from './pages/index/sign-up/tier-info-dialog/tier-info-dialog.component';
 import { UploadVaccinationDialogComponent } from './pages/admin/employeeManagement/upload-vaccination-dialog/upload-vaccination-dialog.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
+import { ViewVaccinationDialogComponent } from './pages/admin/employeeManagement/view-vaccination-dialog/view-vaccination-dialog.component';
 import { environment } from 'src/environments/environment.dev';
 
 export function tokenGetter() {
@@ -115,6 +116,7 @@ export function tokenGetter() {
     CovidDeclarationsComponent,
     ShnDeclarationDialogComponent,
     ArtDialogComponent,
+    ViewVaccinationDialogComponent,
     UploadVaccinationDialogComponent,
   ],
   imports: [
