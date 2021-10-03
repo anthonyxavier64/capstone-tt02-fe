@@ -200,16 +200,13 @@ export class AdminEmployeeManagementComponent implements OnInit {
     createdAt: string;
     contactNumber: string;
     isActivated: boolean;
+    isVaccinated: boolean;
   }) {
     this.artTestDialogRef = this.dialogService.open(ViewArtComponent, {
       header: selectedUser.fullName + "'s ART Tests",
       width: '70%',
       contentStyle: { 'max-height': '50vw', overflow: 'auto' },
       data: selectedUser,
-    });
-
-    this.artTestDialogRef.onClose.subscribe(() => {
-      this.ngOnInit();
     });
   }
   openShnDeclarationDialog(selectedUser: {
@@ -220,16 +217,15 @@ export class AdminEmployeeManagementComponent implements OnInit {
     contactNumber: string;
     isActivated: boolean;
   }) {
-    this.shnDeclarationDialogRef = this.dialogService.open(ViewShnDeclarationDialog, {
-      header: selectedUser.fullName + "'s SHN/QO Declaration",
-      width: '70%',
-      contentStyle: { 'max-height': '50vw', overflow: 'auto' },
-      data: selectedUser,
-    });
-
-    this.shnDeclarationDialogRef.onClose.subscribe(() => {
-      this.ngOnInit();
-    });
+    this.shnDeclarationDialogRef = this.dialogService.open(
+      ViewShnDeclarationDialog,
+      {
+        header: selectedUser.fullName + "'s SHN/QO Declaration",
+        width: '70%',
+        contentStyle: { 'max-height': '50vw', overflow: 'auto' },
+        data: selectedUser,
+      }
+    );
   }
   openVaccinationDialog(selectedUser: {
     userId: number;
@@ -239,16 +235,15 @@ export class AdminEmployeeManagementComponent implements OnInit {
     contactNumber: string;
     isActivated: boolean;
   }) {
-    this.vaccinationDialogRef = this.dialogService.open(ViewVaccinationDialogComponent, {
-      header: selectedUser.fullName + "'s Vaccination Certificate",
-      width: '70%',
-      contentStyle: { 'max-height': '50vw', overflow: 'auto' },
-      data: selectedUser,
-    });
-
-    this.vaccinationDialogRef.onClose.subscribe(() => {
-      this.ngOnInit();
-    });
+    this.vaccinationDialogRef = this.dialogService.open(
+      ViewVaccinationDialogComponent,
+      {
+        header: selectedUser.fullName + "'s Vaccination Certificate",
+        width: '70%',
+        contentStyle: { 'max-height': '50vw', overflow: 'auto' },
+        data: selectedUser,
+      }
+    );
   }
 
   openEditEmployeeDialog(selectedUser: {

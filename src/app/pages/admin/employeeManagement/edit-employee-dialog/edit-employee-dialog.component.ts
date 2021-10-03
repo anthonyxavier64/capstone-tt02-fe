@@ -31,9 +31,6 @@ export class EditEmployeeDialogComponent implements OnInit {
 
     this.userService.updateUserDetails(this.config.data).subscribe(
       (response) => {
-        console.log('Done Updating');
-        console.log(this.config.data);
-
         this.ref.close(this.config.data);
       },
       (error) => {

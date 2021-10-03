@@ -15,9 +15,10 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class CovidDocumentSubmissionService {
-  baseUrl: string = `${environment.API_REST_URL}` + '/covid-document-submission';
+  baseUrl: string =
+    `${environment.API_REST_URL}` + '/covid-document-submission';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   getUserSubmissions(userId: number): Observable<any> {
     return this.httpClient
@@ -25,13 +26,15 @@ export class CovidDocumentSubmissionService {
       .pipe(catchError(handleError));
   }
   createCovidDocumentSubmission(submission: any): Observable<any> {
-    console.log(submission);
     return this.httpClient
       .post<any>(this.baseUrl + '/create-covid-document-submission', submission)
       .pipe(catchError(handleError));
   }
   updateDocument(submission: any): Observable<any> {
-    console.log(submission);
-    return this.httpClient.patch(`${this.baseUrl}/update-covid-document-submission/${submission.covidDocumentSubmissionId}`, submission, httpOptions);
+    return this.httpClient.patch(
+      `${this.baseUrl}/update-covid-document-submission/${submission.covidDocumentSubmissionId}`,
+      submission,
+      httpOptions
+    );
   }
 }
