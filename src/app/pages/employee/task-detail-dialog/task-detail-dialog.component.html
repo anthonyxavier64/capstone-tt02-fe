@@ -1,7 +1,10 @@
 <div fxLayout="column" fxLayoutGap="30px">
   <div>
-    <h1 style="font-weight: bold; font-size: 30px">
-      Goal {{ goal.name }} - Task {{ task.name }}
+    <h1 *ngIf="task.goalId" style="font-weight: bold; font-size: 30px">
+      Goal {{ task.goalId }} - {{ task.name }}
+    </h1>
+    <h1 *ngIf="!task.goalId" style="font-weight: bold; font-size: 30px">
+      {{ task.name }}
     </h1>
   </div>
   <div fxLayout="row">

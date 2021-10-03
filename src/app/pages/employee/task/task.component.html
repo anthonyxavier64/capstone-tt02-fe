@@ -10,8 +10,28 @@
   <div fxLayout="row" fxLayoutAlign="space-between start">
     <div fxLayout="row" fxLayoutGap="2%">
       <h1 style="white-space: nowrap">
-        Welcome {{ user.fullName }}, here are your Tasks for
+        Welcome {{ user.fullName }}, view all your tasks.
       </h1>
+    </div>
+    <div>
+      <button mat-button class="grey-btn" (click)="onBackClick()">Back</button>
+    </div>
+  </div>
+
+  <div>
+    <div *ngIf="selectedGoal" style="display: block">
+      <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="2%">
+      <span class="p-input-icon-right" style="margin-top: 20px">
+        <i class="pi pi-search" (click)="handleFilter()"></i>
+        <input
+          type="text"
+          placeholder="Search Task"
+          [(ngModel)]="filterValue"
+          pInputText
+          (change)="handleFilter()"
+        />
+      </span>
+
       <p-dropdown
         [options]="goals"
         [(ngModel)]="selectedGoal"
@@ -21,29 +41,24 @@
         placeholder="Select a goal"
         (onChange)="handleGoalSelection()"
       ></p-dropdown>
+      <button
+        *ngIf="!isViewArchivedClicked && !isLoading"
+        class="peach-btn"
+        (click)="viewTaskArchives()">
+        View Task Archives
+      </button>
+      <button
+        *ngIf="isViewArchivedClicked && !isLoading"
+        class="peach-btn"
+        (click)="viewTaskArchives()">
+        View Unarchived Tasks
+      </button>
     </div>
-    <div>
-      <button mat-button class="grey-btn" (click)="onBackClick()">Back</button>
-    </div>
-  </div>
-
-  <div>
-    <div *ngIf="selectedGoal" style="display: block">
-      <span class="p-input-icon-right" style="margin-top: 20px">
-        <i class="pi pi-search" (click)="handleFilter()"></i>
-        <input
-          type="text"
-          placeholder="Task Filter"
-          [(ngModel)]="filterValue"
-          pInputText
-          (change)="handleFilter()"
-        />
-      </span>
 
       <div
         fxLayout="row"
         style="margin-top: 20px"
-        *ngIf="!isViewArchivedClicked && selectedGoal.name !== 'All Goals'"
+        *ngIf="!isViewArchivedClicked && selectedGoal.name !== 'All Tasks'"
       >
         <span>Goal Progress</span>
         <mat-progress-bar
@@ -91,6 +106,7 @@
               </mat-card-subtitle>
               <mat-card-content style="text-align: center">
                 <div fxLayout="column" fxLayoutGap="5px">
+                  <span *ngIf="task.goalId">Goal: {{ task.goalId }}</span>
                   <span>Personnel:</span>
                   <div *ngIf="task.employees.length > 0">
                     <div *ngFor="let employee of task.employees">
@@ -109,7 +125,7 @@
                       </div>
                     </div>
                   </div>
-                  <div *ngIf="task.employees.length <= 0">-</div>
+                  <div *ngIf="task.employees.length == 0">-</div>
                 </div>
               </mat-card-content>
               <mat-card-actions style="text-align: center">
@@ -124,7 +140,7 @@
             </mat-card>
           </mat-grid-tile>
         </div>
-        <mat-grid-tile *ngIf="selectedGoal.name !== 'All Goals'">
+        <mat-grid-tile>
           <mat-card
             class="taskCard"
             fxLayout="column"
@@ -132,16 +148,6 @@
             (click)="addTask()"
           >
             <mat-card-content>Add Task</mat-card-content>
-          </mat-card>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <mat-card
-            class="taskCard"
-            fxLayout="column"
-            fxLayoutAlign="space-around center"
-            (click)="viewTaskArchives()"
-          >
-            <mat-card-content>View Task Archives</mat-card-content>
           </mat-card>
         </mat-grid-tile>
       </mat-grid-list>
@@ -208,17 +214,6 @@
             </mat-card>
           </mat-grid-tile>
         </div>
-
-        <mat-grid-tile>
-          <mat-card
-            class="taskCard"
-            fxLayout="column"
-            fxLayoutAlign="space-around center"
-            (click)="viewTaskArchives()"
-          >
-            <mat-card-content>View Unarchived Tasks</mat-card-content>
-          </mat-card>
-        </mat-grid-tile>
       </mat-grid-list>
     </div>
   </div>
