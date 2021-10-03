@@ -3,13 +3,32 @@
 <div fxLayout="column" fxLayoutGap="30px">
   <div>
     <div fxLayout="row" fxLayoutGap="2%">
-      <h1 *ngIf="task.goalId" style="font-weight: bold; font-size: 30px">
-        Goal {{ task.goalId }} - {{ task.name }}
+      <h1
+        *ngIf="task.goalId && !isEditMode"
+        style="font-weight: bold; font-size: 30px"
+      >
+        Goal {{ task.goalId }} -
       </h1>
-      <h1 *ngIf="!task.goalId" style="font-weight: bold; font-size: 30px">
+      <h1 *ngIf="!isEditMode" style="font-weight: bold; font-size: 30px">
         {{ task.name }}
       </h1>
-      <div fxLayout="column" fxLayoutGap="2%" *ngIf="isEditMode">
+      <div *ngIf="isEditMode">
+        <p-dropdown
+          [options]="allGoals"
+          [(ngModel)]="updateGoal"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Select a goal"
+        ></p-dropdown>
+      </div>
+      <h1 *ngIf="isEditMode">-</h1>
+      <div
+        fxLayout="column"
+        fxLayoutAlign="center"
+        fxLayoutGap="2%"
+        *ngIf="isEditMode"
+      >
         <input
           matInput
           [(ngModel)]="updateTaskName"

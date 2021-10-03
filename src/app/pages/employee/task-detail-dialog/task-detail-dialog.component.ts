@@ -12,6 +12,7 @@ import { TaskService } from 'src/app/services/task/task.service';
 export class TaskDetailDialogComponent implements OnInit {
   task: any;
   goal: any;
+  allGoals: any;
   assignPopup: boolean;
   filterValue: string;
   personnel: any[];
@@ -25,6 +26,7 @@ export class TaskDetailDialogComponent implements OnInit {
   updateTaskName: string;
   updateStartDate: Date;
   updateDeadline: Date;
+  updateGoal: any;
 
   constructor(
     private dialogConfig: DynamicDialogConfig,
@@ -34,6 +36,8 @@ export class TaskDetailDialogComponent implements OnInit {
   ) {
     this.task = this.dialogConfig.data.task;
     this.goal = this.dialogConfig.data.goal;
+    this.allGoals = this.dialogConfig.data.allGoals;
+    this.allGoals[0] = { name: 'No Goals' };
     this.isViewArchivedClicked = this.dialogConfig.data.isArchived;
 
     this.assignPopup = false;
@@ -137,12 +141,18 @@ export class TaskDetailDialogComponent implements OnInit {
   }
 
   saveDetails(): void {
-    if (this.updateDeadline && this.updateTaskName && this.updateStartDate) {
+    if (
+      this.updateDeadline &&
+      this.updateTaskName &&
+      this.updateStartDate &&
+      this.updateGoal
+    ) {
       const updatedTask = {
         ...this.task,
         name: this.updateTaskName,
         startDate: this.updateStartDate,
         deadline: this.updateDeadline,
+        goalId: this.updateGoal.goalId,
       };
       this.taskService.updateTask(updatedTask).subscribe(
         (response) => {
