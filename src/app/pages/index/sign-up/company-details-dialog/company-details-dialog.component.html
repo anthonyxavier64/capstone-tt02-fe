@@ -1,329 +1,417 @@
-<div fxLayout="column" fxLayoutAlign="space-around start" fxLayoutGap="5%">
-  <div fxLayout="column" fxLayoutAlign="space-around start" fxLayoutGap="4%">
+<div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="5%">
+  <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="4%">
     <p class="companyDetailsTitle" style="margin-bottom: 1vw">
       Company Details
     </p>
-    <div fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="3%">
-      <div
-        fxLayout="row"
-        fxLayoutAlign="space-around start"
-        fxLayoutGap="10.6vw"
-      >
-        <div fxLayout="column">
-          <label>Company Name</label>
-          <p *ngIf="data.name !== undefined" class="paymentDetailsText">
-            {{ data.name }}
-          </p>
-          <input
-            type="text"
-            *ngIf="data.name === undefined"
-            [(ngModel)]="data.name"
-            required
-            pInputText
-          />
-        </div>
-        <div fxLayout="column">
-          <label>Company Email</label>
-          <p *ngIf="data.email !== undefined" class="paymentDetailsText">
-            {{ data.email }}
-          </p>
-          <input
-            type="text"
-            *ngIf="data.email === undefined"
-            [(ngModel)]="data.email"
-            required
-            pInputText
-          />
-        </div>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="space-between " fxLayoutGap="9.4vw">
-        <div fxLayout="column">
-          <label>HR Email</label>
-          <input
-            type="email"
-            [(ngModel)]="data.hrAdminEmail"
-            #emailText="ngModel"
-            email="true"
-            required
-            pInputText
-          />
-          <div
-            *ngIf="emailText.touched && emailText.invalid"
-            class="errorText"
-            style="color: red; font-size: small"
-          >
-            A valid email is required.
-          </div>
-        </div>
-        <div fxLayout="column">
-          <label>HR Full Name</label>
-          <input
-            type="text"
-            [(ngModel)]="data.hrAdminFullName"
-            #fullName="ngModel"
-            required
-            pInputText
-          />
-          <div
-            *ngIf="fullName.touched && fullName.invalid"
-            class="errorText"
-            style="color: red; font-size: small"
-          >
-            HR Full Name is required.
-          </div>
-        </div>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="space-between " fxLayoutGap="9.4vw">
-        <div fxLayout="column">
-          <label>Company Contact Number</label>
-          <input
-            type="tel"
-            [(ngModel)]="data.contactNumber"
-            #contactNum="ngModel"
-            pattern="[689][0-9]{7}"
-            required
-            pInputText
-          />
-          <div
-            *ngIf="contactNum.invalid && contactNum.touched"
-            class="errorText"
-            style="color: red; font-size: small"
-          >
-            A valid 8-digit Singapore contact number is required.
-          </div>
-        </div>
-        <div fxLayout="column">
-          <label>Number of Employees</label>
-          <input
-            type="number"
-            [(ngModel)]="data.numOfEmployees"
-            #employeeNum="ngModel"
-            pattern="[1-9]\d*"
-            min="0"
-            required
-            pInputText
-          />
-          <div
-            *ngIf="employeeNum.touched && officeName.invalid"
-            class="errorText"
-            style="color: red; font-size: small"
-          >
-            A valid employee number is required.
-          </div>
-        </div>
-      </div>
-      <div
-        fxLayout="row"
-        fxLayoutAlign="space-around start"
-        fxLayoutGap="10.5vw"
-      >
-        <div fxLayout="column">
-          <label>Office Name</label>
-          <input
-            type="text"
-            [(ngModel)]="data.officeName"
-            #officeName="ngModel"
-            min="0"
-            required
-            pInputText
-          />
-          <div
-            *ngIf="officeName.touched && officeName.invalid"
-            class="errorText"
-            style="color: red; font-size: small"
-          >
-            A valid office name is required.
-          </div>
-        </div>
-        <div fxLayout="column">
-          <label>Office Address</label>
-          <textarea
-            pInputTextarea
-            type="text"
-            [(ngModel)]="data.officeAddress"
-            #officeAddress="ngModel"
-            required
-          ></textarea>
-          <div
-            *ngIf="officeAddress.touched && officeAddress.invalid"
-            class="errorText"
-            style="color: red; font-size: small"
-          >
-            Office address is required.
-          </div>
-        </div>
-      </div>
-      <div
-        fxLayout="row"
-        fxLayoutAlign="space-around start"
-        fxLayoutGap="10.5vw"
-      >
-        <div fxLayout="column">
-          <label>Office Opening Hour</label>
-          <input
-            type="text"
-            [(ngModel)]="data.officeOpeningHour"
-            #openingHour="ngModel"
-            pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
-            required
-            pInputText
-          />
-          <div
-            *ngIf="openingHour.touched && openingHour.value.length === 0"
-            class="errorText"
-            style="color: red; font-size: small"
-          >
-            Office Opening Hour is required.
-          </div>
-          <div
-            *ngIf="openingHour.touched && openingHour.invalid"
-            class="errorText"
-            style="color: red; font-size: small"
-          >
-            Please enter a valid Opening Hour. (00:00 - 23:59)
-          </div>
-        </div>
-        <div fxLayout="column">
-          <label>Office Closing Hour</label>
-          <input
-            type="text"
-            [(ngModel)]="data.officeClosingHour"
-            #closingHour="ngModel"
-            pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
-            required
-            pInputText
-          />
-          <div
-            *ngIf="closingHour.touched && closingHour.value.length === 0"
-            class="errorText"
-            style="color: red; font-size: small"
-          >
-            Office Closing Hour is required.
-          </div>
-          <div
-            *ngIf="closingHour.touched && closingHour.invalid"
-            class="errorText"
-            style="color: red; font-size: small"
-          >
-            Please enter a valid Closing Hour. (00:00 - 23:59)
-          </div>
-        </div>
-      </div>
-      <div
-        fxLayout="row"
-        fxLayoutAlign="space-around start"
-        fxLayoutGap="10.5vw"
-      >
-        <div fxLayout="column">
-          <label>Office Max Capacity</label>
-          <input
-            type="number"
-            [(ngModel)]="data.officeCapacity"
-            #officeCapacity="ngModel"
-            pattern="[1-9]\d*"
-            required
-            pInputText
-          />
-          <div
-            *ngIf="officeCapacity.touched && officeCapacity.invalid"
-            class="errorText"
-            style="color: red; font-size: small"
-          >
-            A valid Max Office Capacity is required.
-          </div>
-        </div>
-        <div fxLayout="column">
+    <table class="companyDetailsTbl">
+      <tr>
+        <td>
           <div fxLayout="column">
-            <label>Company Size</label>
-            <p-dropdown
-              [options]="companySizeArr"
-              [(ngModel)]="data.companySize"
-              #companySize="ngModel"
-              placeholder="Select a Company Size"
-            ></p-dropdown>
+            <label>Company Name</label>
+            <p *ngIf="data.name !== undefined" class="paymentDetailsText">
+              {{ data.name }}
+            </p>
+          </div>
+        </td>
+        <td>
+          <div fxLayout="column">
+            <label>Company Email</label>
+            <p *ngIf="data.email !== undefined" class="paymentDetailsText">
+              {{ data.email }}
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div fxLayout="column">
+            <label>HR Email</label>
+            <input
+              type="email"
+              [(ngModel)]="data.hrAdminEmail"
+              #emailText="ngModel"
+              email="true"
+              required
+              pInputText
+              style="width: 15vw"
+            />
             <div
-              *ngIf="companySize.errors?.required && companySize.touched"
+              *ngIf="emailText.touched && emailText.invalid"
               class="errorText"
               style="color: red; font-size: small"
             >
-              Company size is required.
+              A valid email is required.
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </td>
+        <td>
+          <div fxLayout="column">
+            <label>HR Full Name</label>
+            <input
+              type="text"
+              [(ngModel)]="data.hrAdminFullName"
+              #fullName="ngModel"
+              required
+              pInputText
+              style="width: 15vw"
+            />
+            <div
+              *ngIf="fullName.touched && fullName.invalid"
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              HR Full Name is required.
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div fxLayout="column">
+            <label>Company Contact Number</label>
+            <input
+              type="tel"
+              [(ngModel)]="data.contactNumber"
+              #contactNum="ngModel"
+              pattern="[689][0-9]{7}"
+              required
+              pInputText
+              style="width: 15vw"
+            />
+            <div
+              *ngIf="contactNum.invalid && contactNum.touched"
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              A valid 8-digit Singapore<br />contact number is required.
+            </div>
+          </div>
+        </td>
+        <td>
+          <div fxLayout="column">
+            <label>Number of Employees</label>
+            <input
+              type="number"
+              [(ngModel)]="data.numOfEmployees"
+              #employeeNum="ngModel"
+              pattern="[1-9]\d*"
+              min="0"
+              required
+              pInputText
+              style="width: 15vw"
+            />
+            <div
+              *ngIf="employeeNum.touched && officeName.invalid"
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              A valid employee number is required.
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div fxLayout="column">
+            <label>Office Name</label>
+            <input
+              type="text"
+              [(ngModel)]="data.officeName"
+              #officeName="ngModel"
+              min="0"
+              required
+              pInputText
+              style="width: 15vw"
+            />
+            <div
+              *ngIf="officeName.touched && officeName.invalid"
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              A valid office name is required.
+            </div>
+          </div>
+        </td>
+        <td>
+          <div fxLayout="column">
+            <label>Office Address</label>
+            <textarea
+              pInputTextarea
+              type="text"
+              [(ngModel)]="data.officeAddress"
+              #officeAddress="ngModel"
+              required
+              [cols]="30"
+              [rows]="3"
+            ></textarea>
+            <div
+              *ngIf="officeAddress.touched && officeAddress.invalid"
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Office address is required.
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div fxLayout="column">
+            <label>Office Opening Hour</label>
+            <input
+              type="text"
+              [(ngModel)]="data.officeOpeningHour"
+              #openingHour="ngModel"
+              pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
+              required
+              pInputText
+              style="width: 15vw"
+            />
+            <div
+              *ngIf="
+                openingHour.touched &&
+                (openingHour.value === '' || openingHour.value === null)
+              "
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Office Opening Hour is required.
+            </div>
+            <div
+              *ngIf="openingHour.touched && openingHour.invalid"
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Please enter a valid Opening Hour.<br />(00:00 - 23:59)
+            </div>
+          </div>
+        </td>
+        <td>
+          <div fxLayout="column">
+            <label>Office Closing Hour</label>
+            <input
+              type="text"
+              [(ngModel)]="data.officeClosingHour"
+              #closingHour="ngModel"
+              pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
+              required
+              pInputText
+              style="width: 15vw"
+            />
+            <div
+              *ngIf="
+                closingHour.touched &&
+                (closingHour.value === '' || closingHour.value === null)
+              "
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Office Closing Hour is required.
+            </div>
+            <div
+              *ngIf="closingHour.touched && closingHour.invalid"
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Please enter a valid Closing Hour.<br />(00:00 - 23:59)
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div fxLayout="column">
+            <label>Office Max Capacity</label>
+            <input
+              type="number"
+              [(ngModel)]="data.officeCapacity"
+              #officeCapacity="ngModel"
+              pattern="[1-9]\d*"
+              required
+              pInputText
+              style="width: 15vw"
+            />
+            <div
+              *ngIf="officeCapacity.touched && officeCapacity.invalid"
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              A valid Max Office Capacity<br />is required.
+            </div>
+          </div>
+        </td>
+        <td>
+          <div fxLayout="column">
+            <div fxLayout="column">
+              <label>Company Size</label>
+              <p-dropdown
+                [options]="companySizeArr"
+                [(ngModel)]="data.companySize"
+                #companySize="ngModel"
+                placeholder="Select a Company Size"
+              ></p-dropdown>
+              <div
+                *ngIf="companySize.errors?.required && companySize.touched"
+                class="errorText"
+                style="color: red; font-size: small"
+              >
+                Company size is required.
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
   </div>
-  <div
-    fxLayout="column"
-    fxLayoutAlign="space-around start"
-    fxLayoutGap="4%"
-    style="width: 100%"
-  >
+  <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="4%">
     <p class="companyDetailsTitle">Payment Details</p>
-    <div
-      fxLayout="column"
-      fxLayoutAlign="space-around left"
-      fxLayoutGap="3%"
-      class="creditCardInfoSection"
-    >
-      <div fxLayout="row" fxLayoutAlign="space-between center">
-        <div>
-          <label>Payment Type: </label>
-          <p class="paymentDetailsText">
-            {{ data.paymentMethod }}
-          </p>
-        </div>
-        <div>
-          <label>Tier Confirmation: </label>
-          <p class="paymentDetailsText">
-            {{ data.subscriptionType }}
-          </p>
-        </div>
-      </div>
-
-      <div fxLayout="row" fxLayoutAlign="space-between center">
-        <div>
-          <label>Credit Card Number: </label>
-          <input
-            type="text"
-            [(ngModel)]="data.creditCardNumber"
-            required
-            pInputText
-            autocomplete="cc-csc"
-          />
-        </div>
-        <div>
-          <label>CVV: </label>
-          <input type="number" [(ngModel)]="data.cvv" required pInputText />
-        </div>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="space-between center">
-        <div>
-          <label>Cardholder Name: </label>
-          <input
-            type="text"
-            [(ngModel)]="data.cardHolderName"
-            required
-            pInputText
-            autocomplete="cc-csc"
-          />
-        </div>
-        <div>
-          <label>Date of Expiry: </label>
-          <input
-            type="date"
-            [(ngModel)]="data.CCDateOfExpiry"
-            style="font-family: 'Source Sans Pro'"
-            required
-            pInputText
-            autocomplete="cc-csc"
-          />
-        </div>
-      </div>
-    </div>
+    <table class="companyDetailsTbl">
+      <tr>
+        <td>
+          <div fxLayout="column">
+            <label>Payment Type: </label>
+            <p class="paymentDetailsText">
+              {{ data.paymentMethod }}
+            </p>
+          </div>
+        </td>
+        <td>
+          <div fxLayout="column">
+            <label>Tier Confirmation: </label>
+            <p class="paymentDetailsText">
+              {{ data.subscriptionType }}
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div fxLayout="column">
+            <label>Credit Card Number: </label>
+            <input
+              type="text"
+              [(ngModel)]="data.creditCardNumber"
+              required
+              #creditCardNum
+              pInputText
+              autocomplete="cc-csc"
+              style="width: 15vw"
+            />
+            <div
+              *ngIf="creditCardNum.value === '' || creditCardNum.value === null"
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Credit Card Number is required.
+            </div>
+          </div>
+        </td>
+        <td>
+          <div fxLayout="column">
+            <label>CVV: </label>
+            <input
+              type="number"
+              [(ngModel)]="data.cvv"
+              #cvvNum
+              required
+              pInputText
+              style="width: 15vw"
+            />
+            <div
+              *ngIf="cvvNum.value === '' || cvvNum.value === null"
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              CVV is required.
+            </div>
+            <div
+              *ngIf="cvvNum.value.length > 3"
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              CVV is invalid.
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div fxLayout="column">
+            <label>Cardholder Name: </label>
+            <input
+              type="text"
+              [(ngModel)]="data.cardHolderName"
+              #cardHolderNameInput
+              required
+              pInputText
+              autocomplete="cc-csc"
+              style="width: 15vw"
+            />
+          </div>
+          <div
+            *ngIf="
+              cardHolderNameInput.value === '' ||
+              cardHolderNameInput.value === null
+            "
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            Cardholder Name is required.
+          </div>
+        </td>
+        <td>
+          <div fxLayout="column">
+            <label>Date of Expiry: </label>
+            <input
+              type="date"
+              [(ngModel)]="data.CCDateOfExpiry"
+              style="font-family: 'Source Sans Pro'"
+              #dateOfExpiryInput
+              required
+              pInputText
+              autocomplete="cc-csc"
+              style="width: 15vw"
+            />
+          </div>
+          <div
+            *ngIf="
+              dateOfExpiryInput.value === '' || dateOfExpiryInput.value === null
+            "
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            Card Expiry Date is required.
+          </div>
+        </td>
+      </tr>
+    </table>
   </div>
-  <div fxLayout="row" fxLayoutAlign=" end" fxLayoutGap="3%">
-    <button mat-button class="peach-btn" (click)="onSignUpClick()">
+  <div fxLayout="row" fxLayoutAlign="space-around end" fxLayoutGap="3%">
+    <button
+      mat-button
+      class="peach-btn"
+      (click)="onSignUpClick()"
+      [disabled]="
+        emailText.value === '' ||
+        emailText.value === undefined ||
+        fullName.value === '' || fullName.value === undefined ||
+        contactNum.invalid || contactNum.value === undefined ||
+        employeeNum.value === '' || employeeNum.value === undefined ||
+        officeCapacity.value === '' || officeName.value === undefined ||
+        officeAddress.value === '' || officeAddress.value === undefined ||
+        officeName.value === '' || officeName.value === undefined ||
+        openingHour.value === '' || openingHour.value === undefined ||
+        closingHour.value === '' || closingHour.value === undefined ||
+        companySize.value === '' || companySize.value === undefined ||
+        creditCardNum.value === '' || creditCardNum.value === undefined ||
+        cvvNum.value === '' ||
+          cvvNum.value === undefined ||
+          cvvNum.value.length > 3 ||
+        cardHolderNameInput.value === '' ||
+          cardHolderNameInput.value === undefined ||
+        dateOfExpiryInput.value === '' || dateOfExpiryInput.value === undefined
+      "
+    >
       Sign Up
     </button>
     <button mat-button class="grey-btn" (click)="onCloseClick()">Close</button>

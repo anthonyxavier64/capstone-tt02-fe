@@ -5,14 +5,8 @@
   font-weight: bolder;
 }
 
-.companyInput {
-  background: #FFFFFF;
-  border: 1px solid rgb(var(--theme-primary-color));
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
-  border-radius: 6.9px;
-  width: 25vw;
-  height: 3vw;
-  text-align: center;
+.companyDetailsTbl {
+  border-spacing: 6vw 20px;
 }
 
 .paymentDetailsText {
@@ -20,13 +14,6 @@
   font-family: var(--primary-font);
   font-size: 1.8vw;
   color: rgba(var(--theme-primary-color), 0.8);
-}
-
-.creditCardInfoSection {
-  background: rgba(var(--primary-button-color), 0.2);
-  border-radius: 7px;
-  width: 100%;
-  padding: 4%
 }
 
 
