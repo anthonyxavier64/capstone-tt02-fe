@@ -105,7 +105,17 @@
         justify-content: center;
       "
     >
-      <button mat-button class="peach-btn" type="submit">Save</button>
+      <button
+        mat-button
+        class="peach-btn"
+        type="submit"
+        *ngIf="
+          vaccinationCerts[0] &&
+          vaccinationCerts[0].employeeId !== currentUser.userId
+        "
+      >
+        Save
+      </button>
       <button
         mat-button
         type="button"
