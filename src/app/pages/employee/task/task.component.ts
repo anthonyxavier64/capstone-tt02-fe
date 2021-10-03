@@ -229,6 +229,7 @@ export class TaskComponent implements OnInit {
     this.ref = this.dialogService.open(TaskDetailDialogComponent, {
       data: {
         goal: this.selectedGoal,
+        allGoals: this.goals,
         task,
         employees: this.employees,
         isArchived: this.isViewArchivedClicked,
