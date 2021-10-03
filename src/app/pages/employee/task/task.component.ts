@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { GoalService } from 'src/app/services/goal/goal.service';
 import { TaskService } from 'src/app/services/task/task.service';
@@ -11,9 +12,11 @@ import { CreateNewTaskDialogComponent } from './../create-new-task-dialog/create
   selector: 'app-task',
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.css'],
-  providers: [DialogService],
+  providers: [DialogService, MessageService],
 })
 export class TaskComponent implements OnInit {
+  isLoading: boolean = true;
+
   user: any;
   goals: any[] = [];
   selectedGoal: any;
@@ -33,6 +36,7 @@ export class TaskComponent implements OnInit {
     private taskService: TaskService,
     private dialogService: DialogService,
     private userService: UserService,
+    private messageService: MessageService,
     private location: Location
   ) {
     this.percentageProgress = 0;
@@ -40,9 +44,27 @@ export class TaskComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.populateGoalsAndTasks();
+    this.isLoading = false;
+
+    this.userService.getUsers(this.user.companyId).subscribe(
+      (response) => {
+        this.employees = response.users;
+      },
+      (error) => {}
+    );
+  }
+
+  populateGoalsAndTasks(): void {
     this.goalService.getAllGoalsByCompanyId(this.user.companyId).subscribe(
       (response) => {
+        this.tasks = [];
+        this.filteredTasks = [];
+        this.archivedTasks = [];
+        this.employees = [];
+        this.goals = [];
         this.goals.push({ name: 'All Goals' });
         this.selectedGoal = this.goals[0];
         for (let goal of response.goals) {
@@ -71,13 +93,6 @@ export class TaskComponent implements OnInit {
         console.log(error);
       }
     );
-
-    this.userService.getUsers(this.user.companyId).subscribe(
-      (response) => {
-        this.employees = response.users;
-      },
-      (error) => {}
-    );
   }
 
   onBackClick(): void {
@@ -87,12 +102,9 @@ export class TaskComponent implements OnInit {
   handleGoalSelection() {
     if (!!this.selectedGoal) {
       if (this.selectedGoal.name === 'All Goals') {
-        this.tasks = [];
-        this.filteredTasks = [];
-        this.archivedTasks = [];
-        this.employees = [];
-        this.goals = [];
-        this.ngOnInit();
+        this.isLoading = true;
+        this.populateGoalsAndTasks();
+        this.isLoading = false;
       } else {
         this.taskService
           .getAllTasksByGoalId(this.selectedGoal.goalId, this.user.userId)
