@@ -1,9 +1,4 @@
 <p-toast></p-toast>
-<mat-spinner
-  *ngIf="isLoading"
-  style="color: aquamarine; margin-left: 47%; margin-top: 20%"
-  fxLayoutAlign=" center"
-></mat-spinner>
 
 <div
   fxLayout="column"
@@ -61,12 +56,18 @@
         </div>
       </div>
 
+      <mat-spinner
+        *ngIf="isLoading"
+        style="color: aquamarine; margin-left: 47%; margin-top: 11%"
+        fxLayoutAlign=" center"
+      ></mat-spinner>
+
       <!-- HTML for non-archived tasks -->
       <mat-grid-list
         cols="3"
         gutterSize="50px"
         style="margin-top: 20px"
-        *ngIf="!isViewArchivedClicked"
+        *ngIf="!isViewArchivedClicked && !isLoading"
       >
         <div *ngFor="let task of filteredTasks">
           <mat-grid-tile>
@@ -150,7 +151,7 @@
         cols="3"
         gutterSize="50px"
         style="margin-top: 20px"
-        *ngIf="isViewArchivedClicked"
+        *ngIf="isViewArchivedClicked && !isLoading"
       >
         <div *ngFor="let task of archivedTasks">
           <mat-grid-tile>

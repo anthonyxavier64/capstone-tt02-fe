@@ -105,6 +105,7 @@ export class TaskComponent implements OnInit {
         this.populateGoalsAndTasks();
         this.isLoading = false;
       } else {
+        this.isLoading = true;
         this.taskService
           .getAllTasksByGoalId(this.selectedGoal.goalId, this.user.userId)
           .subscribe(
@@ -137,8 +138,12 @@ export class TaskComponent implements OnInit {
               } else {
                 this.percentageProgress = 0;
               }
+
+              this.isLoading = false;
             },
-            (error) => {}
+            (error) => {
+              this.isLoading = false;
+            }
           );
       }
     }
