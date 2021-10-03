@@ -254,4 +254,13 @@ export class TaskComponent implements OnInit {
       }
     });
   }
+
+  hasInfectedPersonnel(task: any) {
+    for (const employee of task.employees) {
+      if (employee.isInfected) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
