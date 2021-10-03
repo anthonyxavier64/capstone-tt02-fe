@@ -41,7 +41,7 @@
       <div
         fxLayout="row"
         style="margin-top: 20px"
-        *ngIf="!isViewArchivedClicked"
+        *ngIf="!isViewArchivedClicked && selectedGoal.name !== 'All Goals'"
       >
         <span>Goal Progress</span>
         <mat-progress-bar
@@ -116,7 +116,7 @@
             </mat-card>
           </mat-grid-tile>
         </div>
-        <mat-grid-tile>
+        <mat-grid-tile *ngIf="selectedGoal.name !== 'All Goals'">
           <mat-card
             class="taskCard"
             fxLayout="column"

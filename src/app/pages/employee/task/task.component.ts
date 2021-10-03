@@ -15,15 +15,15 @@ import { CreateNewTaskDialogComponent } from './../create-new-task-dialog/create
 })
 export class TaskComponent implements OnInit {
   user: any;
-  goals: any[];
+  goals: any[] = [];
   selectedGoal: any;
-  tasks: any[];
+  tasks: any[] = [];
   newTask: any;
   numCompleted: number;
   percentageProgress: number;
   filterValue: string;
-  filteredTasks: any[];
-  archivedTasks: any[];
+  filteredTasks: any[] = [];
+  archivedTasks: any[] = [];
   ref: DynamicDialogRef | undefined;
   employees: any[];
   isViewArchivedClicked: boolean = false;
@@ -35,15 +35,37 @@ export class TaskComponent implements OnInit {
     private userService: UserService,
     private location: Location
   ) {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.percentageProgress = 0;
     this.filterValue = '';
   }
 
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.goalService.getAllGoalsByCompanyId(this.user.companyId).subscribe(
       (response) => {
-        this.goals = response.goals;
+        this.goals.push({ name: 'All Goals' });
+        this.selectedGoal = this.goals[0];
+        for (let goal of response.goals) {
+          this.goals.push(goal);
+        }
+
+        for (let goal of this.goals) {
+          this.taskService
+            .getAllTasksByGoalId(goal.goalId, this.user.userId)
+            .subscribe(
+              (response) => {
+                const goalTasks = response.tasks;
+                for (let task of goalTasks) {
+                  if (!task.isArchived) {
+                    this.filteredTasks.push(task);
+                  } else if (task.isArchived) {
+                    this.archivedTasks.push(task);
+                  }
+                }
+              },
+              (error) => {}
+            );
+        }
       },
       (error) => {
         console.log(error);
@@ -64,41 +86,50 @@ export class TaskComponent implements OnInit {
 
   handleGoalSelection() {
     if (!!this.selectedGoal) {
-      this.taskService
-        .getAllTasksByGoalId(this.selectedGoal.goalId, this.user.userId)
-        .subscribe(
-          (response) => {
-            this.tasks = response.tasks;
+      if (this.selectedGoal.name === 'All Goals') {
+        this.tasks = [];
+        this.filteredTasks = [];
+        this.archivedTasks = [];
+        this.employees = [];
+        this.goals = [];
+        this.ngOnInit();
+      } else {
+        this.taskService
+          .getAllTasksByGoalId(this.selectedGoal.goalId, this.user.userId)
+          .subscribe(
+            (response) => {
+              this.tasks = response.tasks;
 
-            const archivedTemp = this.tasks.filter((task) => {
-              return task.isArchived === true;
-            });
+              const archivedTemp = this.tasks.filter((task) => {
+                return task.isArchived === true;
+              });
 
-            this.archivedTasks = archivedTemp;
+              this.archivedTasks = archivedTemp;
 
-            const temp = this.tasks.filter((task) => {
-              return task.isArchived === false;
-            });
+              const temp = this.tasks.filter((task) => {
+                return task.isArchived === false;
+              });
 
-            this.filteredTasks = temp;
+              this.filteredTasks = temp;
 
-            this.numCompleted = 0;
+              this.numCompleted = 0;
 
-            if (this.tasks.length > 0) {
-              for (const task of this.tasks) {
-                if (!!task.completionDate) {
-                  this.numCompleted++;
+              if (this.tasks.length > 0) {
+                for (const task of this.tasks) {
+                  if (!!task.completionDate) {
+                    this.numCompleted++;
+                  }
                 }
-              }
 
-              this.percentageProgress =
-                (this.numCompleted / this.tasks.length) * 100;
-            } else {
-              this.percentageProgress = 0;
-            }
-          },
-          (error) => {}
-        );
+                this.percentageProgress =
+                  (this.numCompleted / this.tasks.length) * 100;
+              } else {
+                this.percentageProgress = 0;
+              }
+            },
+            (error) => {}
+          );
+      }
     }
   }
 
@@ -155,9 +186,15 @@ export class TaskComponent implements OnInit {
   }
 
   handleFilter() {
-    this.filteredTasks = this.tasks.filter((task) =>
-      task.name.toLowerCase().includes(this.filterValue.toLowerCase())
-    );
+    if (!this.isViewArchivedClicked) {
+      this.filteredTasks = this.filteredTasks.filter((task) =>
+        task.name.toLowerCase().includes(this.filterValue.toLowerCase())
+      );
+    } else if (this.isViewArchivedClicked) {
+      this.archivedTasks = this.archivedTasks.filter((task) =>
+        task.name.toLowerCase().includes(this.filterValue.toLowerCase())
+      );
+    }
   }
 
   openTaskDetails(task: any) {
