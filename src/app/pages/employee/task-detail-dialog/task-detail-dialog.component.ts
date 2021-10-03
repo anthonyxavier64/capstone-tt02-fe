@@ -65,12 +65,27 @@ export class TaskDetailDialogComponent implements OnInit {
       // add employee
 
       if (this.selectedEmployees.length > 0) {
+        for (let employee of this.selectedEmployees) {
+          const indexToRemove = this.unassignedPersonnel.findIndex(
+            (item) => employee.userId === item.userId
+          );
+
+          this.unassignedPersonnel.splice(indexToRemove, 1);
+
+          this.personnel = [...this.personnel, employee];
+          this.unassignedPersonnel = [...this.unassignedPersonnel];
+        }
+
         this.taskService
           .addUsersToTask(this.selectedEmployees, this.task.taskId)
           .subscribe(
-            (response) => {},
+            (response) => {
+              this.taskToPassBack = response.task;
+            },
             (error) => {}
           );
+
+        this.selectedEmployees = [];
       }
     }
   }
@@ -98,8 +113,6 @@ export class TaskDetailDialogComponent implements OnInit {
   archive() {
     this.taskService.archiveTask(this.task.taskId).subscribe(
       (response) => {
-        console.log(response.task);
-
         this.taskToPassBack = response.task;
       },
       (error) => {}
@@ -109,8 +122,6 @@ export class TaskDetailDialogComponent implements OnInit {
   unarchive(): void {
     this.taskService.unarchiveTask(this.task.taskId).subscribe(
       (response) => {
-        console.log(response.task);
-
         this.taskToPassBack = response.task;
       },
       (error) => {}

@@ -63,7 +63,6 @@ export class TaskComponent implements OnInit {
         this.tasks = [];
         this.filteredTasks = [];
         this.archivedTasks = [];
-        this.employees = [];
         this.goals = [];
         this.goals.push({ name: 'All Goals' });
         this.selectedGoal = this.goals[0];
@@ -206,7 +205,6 @@ export class TaskComponent implements OnInit {
       this.tasks = [];
       this.filteredTasks = [];
       this.archivedTasks = [];
-      this.employees = [];
       this.handleGoalSelection();
     } else {
       if (!this.isViewArchivedClicked) {
