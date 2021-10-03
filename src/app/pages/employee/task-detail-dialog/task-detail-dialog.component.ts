@@ -67,6 +67,7 @@ export class TaskDetailDialogComponent implements OnInit {
   }
 
   closeDialog() {
+    this.dialogConfig.data.allGoals[0] = { name: 'All Tasks' };
     this.ref.close(this.taskToPassBack);
   }
 
