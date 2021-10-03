@@ -99,7 +99,22 @@
   </p-dialog>
 
   <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="3%">
-    <button mat-button class="grey-btn" (click)="archive()">Archive</button>
+    <button
+      mat-button
+      *ngIf="!isViewArchivedClicked"
+      class="grey-btn"
+      (click)="archive()"
+    >
+      Archive
+    </button>
+    <button
+      mat-button
+      *ngIf="isViewArchivedClicked"
+      class="peach-btn"
+      (click)="unarchive()"
+    >
+      Unarchive
+    </button>
     <button mat-button class="grey-btn" (click)="closeDialog()">Close</button>
   </div>
 </div>

@@ -27,9 +27,7 @@ export class TaskService {
 
   getAllTasksByUser(userId: string): Observable<any> {
     return this.httpClient
-      .get<any>(
-        this.baseUrl + '/get-all-tasks-user/' + userId
-      )
+      .get<any>(this.baseUrl + '/get-all-tasks-user/' + userId)
       .pipe(catchError(handleError));
   }
 
@@ -60,6 +58,12 @@ export class TaskService {
   archiveTask(taskId: string): Observable<any> {
     return this.httpClient
       .post(this.baseUrl + '/archive-task/' + taskId, httpOptions)
+      .pipe(catchError(handleError));
+  }
+
+  unarchiveTask(taskId: string): Observable<any> {
+    return this.httpClient
+      .post(this.baseUrl + '/unarchive-task/' + taskId, httpOptions)
       .pipe(catchError(handleError));
   }
 }
