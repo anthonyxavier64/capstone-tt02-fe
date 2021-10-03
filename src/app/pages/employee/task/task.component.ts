@@ -64,7 +64,7 @@ export class TaskComponent implements OnInit {
         this.filteredTasks = [];
         this.archivedTasks = [];
         this.goals = [];
-        this.goals.push({ name: 'All Goals' });
+        this.goals.push({ name: 'All Tasks' });
         this.selectedGoal = this.goals[0];
         for (let goal of response.goals) {
           this.goals.push(goal);
@@ -82,6 +82,7 @@ export class TaskComponent implements OnInit {
                   } else if (task.isArchived) {
                     this.archivedTasks.push(task);
                   }
+                  console.log(this.filteredTasks);
                 }
               },
               (error) => {}
@@ -100,7 +101,7 @@ export class TaskComponent implements OnInit {
 
   handleGoalSelection() {
     if (!!this.selectedGoal) {
-      if (this.selectedGoal.name === 'All Goals') {
+      if (this.selectedGoal.name === 'All Tasks') {
         this.isLoading = true;
         this.populateGoalsAndTasks();
         this.isLoading = false;
