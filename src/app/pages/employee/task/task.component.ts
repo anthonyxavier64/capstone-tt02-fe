@@ -185,6 +185,8 @@ export class TaskComponent implements OnInit {
         goal: this.selectedGoal,
         task: this.newTask,
         user: this.user,
+        selectedGoal: this.selectedGoal,
+        allGoals: this.goals,
       },
       width: '85%',
       height: '70%',

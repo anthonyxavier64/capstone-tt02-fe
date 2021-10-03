@@ -1,6 +1,21 @@
 <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="3%">
   <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="3%">
-    <h1 style="white-space: nowrap">{{ goal.name }} - Task:</h1>
+    <h1 style="white-space: nowrap" *ngIf="selectedGoal !== 'All Tasks'">
+      {{ goal.name }} - Task:
+    </h1>
+
+    <p-dropdown
+      *ngIf="selectedGoal === 'All Tasks'"
+      [options]="allGoals"
+      [(ngModel)]="chosenGoal"
+      optionLabel="name"
+      [filter]="true"
+      filterBy="name"
+      placeholder="Select a goal"
+    ></p-dropdown>
+    <h1 style="white-space: nowrap" *ngIf="selectedGoal === 'All Tasks'">
+      - Task
+    </h1>
     <input
       matInput
       [(ngModel)]="taskName"
