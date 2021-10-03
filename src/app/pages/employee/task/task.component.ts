@@ -186,14 +186,26 @@ export class TaskComponent implements OnInit {
   }
 
   handleFilter() {
-    if (!this.isViewArchivedClicked) {
-      this.filteredTasks = this.filteredTasks.filter((task) =>
-        task.name.toLowerCase().includes(this.filterValue.toLowerCase())
-      );
-    } else if (this.isViewArchivedClicked) {
-      this.archivedTasks = this.archivedTasks.filter((task) =>
-        task.name.toLowerCase().includes(this.filterValue.toLowerCase())
-      );
+    if (
+      this.filterValue === '' ||
+      this.filterValue === undefined ||
+      this.filterValue === null
+    ) {
+      this.tasks = [];
+      this.filteredTasks = [];
+      this.archivedTasks = [];
+      this.employees = [];
+      this.handleGoalSelection();
+    } else {
+      if (!this.isViewArchivedClicked) {
+        this.filteredTasks = this.filteredTasks.filter((task) =>
+          task.name.toLowerCase().includes(this.filterValue.toLowerCase())
+        );
+      } else if (this.isViewArchivedClicked) {
+        this.archivedTasks = this.archivedTasks.filter((task) =>
+          task.name.toLowerCase().includes(this.filterValue.toLowerCase())
+        );
+      }
     }
   }
 
