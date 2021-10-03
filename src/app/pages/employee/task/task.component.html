@@ -91,13 +91,20 @@
               fxLayout="column"
               fxLayoutAlign="space-around center"
             >
-              <mat-card-title style="text-align: center"
+              <mat-card-title style="text-align: center; position: relative"
                 >{{ task.name }}&nbsp;<mat-checkbox
                   color="primary"
                   (change)="handleChange(task)"
                   [checked]="!!task.completionDate"
-                ></mat-checkbox
-              ></mat-card-title>
+                ></mat-checkbox>
+              </mat-card-title>
+              <span
+                *ngIf="hasInfectedPersonnel(task)"
+                class="covid-19-indicator"
+                fxLayout
+                fxLayoutAlign="center center"
+                >C19</span
+              >
               <mat-card-subtitle style="text-align: center; margin-top: 20px">
                 <div fxLayout="column">
                   <span> Start: {{ task.startDate | date: "dd/MM/yy" }} </span>
