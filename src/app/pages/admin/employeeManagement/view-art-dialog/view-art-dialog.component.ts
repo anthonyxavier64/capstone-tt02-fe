@@ -6,6 +6,7 @@ import { UserService } from 'src/app/services/user/user.service';
 
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-view-art-dialog',
@@ -13,13 +14,17 @@ import { AngularFireStorage } from '@angular/fire/storage';
   styleUrls: ['./view-art-dialog.component.css'],
   providers: [MessageService],
 })
-
 export class ViewArtComponent implements OnInit {
   showWarningMessage: boolean;
   uploadProgress: number;
   user: any;
   covidDocumentSubmissions: any[];
-  artTests: any[]
+  artTests: any[];
+  isVaccinated: boolean;
+  documentApprovalStatus: string;
+  isSubmitted: boolean;
+  invalid: boolean;
+  currentUser: any;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -32,6 +37,10 @@ export class ViewArtComponent implements OnInit {
     this.showWarningMessage = false;
     this.covidDocumentSubmissions = [];
     this.artTests = [];
+    this.isVaccinated = this.config.data.isVaccinated;
+    this.isSubmitted = false;
+    this.invalid = false;
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   ngOnInit(): void {
@@ -41,22 +50,28 @@ export class ViewArtComponent implements OnInit {
       },
       (error) => {
         console.log(error);
-      });
+      }
+    );
     this.covidDocumentSubmissionService
       .getUserSubmissions(this.config.data.userId)
       .subscribe(
-        response => {
-          console.log(response);
+        (response) => {
           this.covidDocumentSubmissions = response.covidDocumentSubmissions;
+
           this.artTests = this.covidDocumentSubmissions
-            .filter((item) => item.covidDocumentType === "ART_TEST_RESULT")
+            .filter((item) => item.covidDocumentType === 'ART_TEST_RESULT')
             .sort((a, b) => {
               const dateA = moment(a.dateOfSubmission);
               const dateB = moment(b.dateOfSubmission);
               return dateB.diff(dateA);
             });
+
+          if (this.artTests[0]) {
+            this.documentApprovalStatus =
+              this.artTests[0].documentApprovalStatus;
+          }
         },
-        error => {
+        (error) => {
           console.log(error);
         }
       );
@@ -86,18 +101,46 @@ export class ViewArtComponent implements OnInit {
       const date = new Date(this.artTests[0].dateOfSubmission);
       return date;
     }
-    return "NA";
+    return null;
   }
   renderVaccinationStatus() {
-    if (this.user?.isVaccinated) {
-      return "Vaccinated";
+    if (this.isVaccinated) {
+      return 'Vaccinated';
     }
-    return "Not Yet Vaccinated";
+    return 'Not Yet Vaccinated';
   }
   renderVaccinationStyle() {
-    if (this.user?.isVaccinated) {
-      return "vaccinated";
+    if (this.isVaccinated) {
+      return 'vaccinated';
     }
-    return "unvaccinated";
+    return 'unvaccinated';
+  }
+
+  onSaveClick(form: NgForm) {
+    this.isSubmitted = true;
+
+    if (form.value.response === '') {
+      this.invalid = true;
+    } else {
+      if (form.value.response === 'accept') {
+        this.artTests[0].documentApprovalStatus = 'APPROVED';
+      } else {
+        this.artTests[0].documentApprovalStatus = 'REJECTED';
+      }
+
+      this.artTests[0].dateOfApproval = new Date();
+
+      this.covidDocumentSubmissionService
+        .updateDocument(this.artTests[0])
+        .subscribe(
+          (response) => {
+            this.documentApprovalStatus =
+              response.covidDocumentSubmission.documentApprovalStatus;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    }
   }
 }

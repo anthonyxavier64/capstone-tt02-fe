@@ -1,4 +1,4 @@
-import * as moment from 'moment'
+import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { finalize } from 'rxjs/operators';
@@ -14,7 +14,6 @@ import { AngularFireStorage } from '@angular/fire/storage';
   styleUrls: ['./shn-declaration-dialog.component.css'],
   providers: [MessageService],
 })
-
 export class ShnDeclarationDialogComponent implements OnInit {
   covidSubmissionType: string;
   remarks: string;
@@ -23,7 +22,7 @@ export class ShnDeclarationDialogComponent implements OnInit {
   showWarningMessage: boolean;
   uploadProgress: number;
   user: any;
-  covidDocumentSubmissions: any[]
+  covidDocumentSubmissions: any[];
   mcs: any[];
   constructor(
     public ref: DynamicDialogRef,
@@ -34,12 +33,12 @@ export class ShnDeclarationDialogComponent implements OnInit {
   ) {
     this.uploadProgress = -1;
     this.showWarningMessage = false;
-    this.covidSubmissionType = "STAY_HOME_NOTICE";
-    this.remarks = "";
+    this.covidSubmissionType = 'SHN_MEDICAL_CERTIFICATE';
+    this.remarks = '';
     this.startDate = new Date().toISOString().slice(0, 10);
     this.endDate = new Date().toISOString().slice(0, 10);
     this.covidDocumentSubmissions = [];
-    this.mcs = []
+    this.mcs = [];
   }
 
   ngOnInit(): void {
@@ -48,7 +47,11 @@ export class ShnDeclarationDialogComponent implements OnInit {
       this.user = JSON.parse(currentUser);
     }
     this.mcs = this.covidDocumentSubmissions
-      .filter((item) => item.covidDocumentType === "SHN_MEDICAL_CERTIFICATE" || item.covidDocumentType === "QUARANTINE_ORDER")
+      .filter(
+        (item) =>
+          item.covidDocumentType === 'SHN_MEDICAL_CERTIFICATE' ||
+          item.covidDocumentType === 'QUARANTINE_ORDER'
+      )
       .sort((a, b) => {
         const dateA = moment(a.dateOfSubmission);
         const dateB = moment(b.dateOfSubmission);
@@ -57,10 +60,10 @@ export class ShnDeclarationDialogComponent implements OnInit {
   }
 
   onClickSHN() {
-    this.covidSubmissionType = "STAY_HOME_NOTICE";
+    this.covidSubmissionType = 'SHN_MEDICAL_CERTIFICATE';
   }
   onClickQO() {
-    this.covidSubmissionType = "QUARANTINE_ORDER";
+    this.covidSubmissionType = 'QUARANTINE_ORDER';
   }
   onWriteRemarks(event) {
     this.remarks = event.target.value;
@@ -75,37 +78,51 @@ export class ShnDeclarationDialogComponent implements OnInit {
   upload(event) {
     const currentDate = new Date().toString();
 
-    const fileRef = this.afStorage.ref(`SHN_QO_Declarations/${this.user.userId}/${currentDate}`);
+    const fileRef = this.afStorage.ref(
+      `SHN_QO_Declarations/${this.user.userId}/${currentDate}`
+    );
     const uploadTask = fileRef.put(event.target.files[0]);
-    uploadTask.percentageChanges().subscribe((data) => this.uploadProgress = data);
-    uploadTask.snapshotChanges().pipe(
-      finalize(() => {
-        fileRef.getDownloadURL().subscribe(url => {
-          console.log(url);
-          this.user.latestMedicalCert = url;
-          this.userService.updateUserDetails(this.user).subscribe(
-            (response) => {
-              console.log("updated!")
-              this.user = response.user;
-              localStorage.setItem("currentUser", JSON.stringify(this.user));
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-        });
-      })
-    ).subscribe();
+    uploadTask
+      .percentageChanges()
+      .subscribe((data) => (this.uploadProgress = data));
+    uploadTask
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((url) => {
+            console.log(url);
+            this.user.latestMedicalCert = url;
+            this.userService.updateUserDetails(this.user).subscribe(
+              (response) => {
+                console.log('updated!');
+                this.user = response.user;
+                localStorage.setItem('currentUser', JSON.stringify(this.user));
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+          });
+        })
+      )
+      .subscribe();
     this.user.latestMedicalCert = currentDate.toString();
-    const newSubmission = { dateOfSubmission: currentDate, remarks: this.remarks, startDate: this.startDate, endDate: this.endDate, covidDocumentType: this.covidSubmissionType, employeeId: this.user.userId };
+    const newSubmission = {
+      dateOfSubmission: currentDate,
+      remarks: this.remarks,
+      startDate: this.startDate,
+      endDate: this.endDate,
+      covidDocumentType: this.covidSubmissionType,
+      employeeId: this.user.userId,
+    };
     this.covidDocumentSubmissionService
       .createCovidDocumentSubmission(newSubmission)
       .subscribe(
         (response) => {
           if (response.status) {
-            console.log("success!", response.covidDocumentSubmission);
+            console.log('success!', response.covidDocumentSubmission);
           } else {
-            console.log("A problem has occured", response);
+            console.log('A problem has occured', response);
           }
         },
         (error) => {
@@ -127,18 +144,18 @@ export class ShnDeclarationDialogComponent implements OnInit {
       const date = new Date(this.mcs[0].dateOfSubmission);
       return date;
     }
-    return "NA";
+    return 'NA';
   }
   renderVaccinationStatus() {
     if (this.user?.isVaccinated) {
-      return "Vaccinated";
+      return 'Vaccinated';
     }
-    return "Not Yet Vaccinated";
+    return 'Not Yet Vaccinated';
   }
   renderVaccinationStyle() {
     if (this.user?.isVaccinated) {
-      return "vaccinated";
+      return 'vaccinated';
     }
-    return "unvaccinated";
+    return 'unvaccinated';
   }
 }

@@ -1,4 +1,4 @@
-import * as moment from 'moment'
+import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covidDocumentSubmission.service';
@@ -6,6 +6,7 @@ import { UserService } from 'src/app/services/user/user.service';
 
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-view-shn-dialog',
@@ -13,7 +14,6 @@ import { AngularFireStorage } from '@angular/fire/storage';
   styleUrls: ['./view-shn-dialog.component.css'],
   providers: [MessageService],
 })
-
 export class ViewShnDeclarationDialog implements OnInit {
   covidSubmissionType: string;
   remarks: string;
@@ -22,8 +22,13 @@ export class ViewShnDeclarationDialog implements OnInit {
   showWarningMessage: boolean;
   uploadProgress: number;
   user: any;
-  covidDocumentSubmissions: any[]
+  covidDocumentSubmissions: any[];
   mcs: any[];
+  isVaccinated: boolean;
+  isSubmitted: boolean;
+  invalid: boolean;
+  documentApprovalStatus: string;
+  currentUser: any;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -34,12 +39,16 @@ export class ViewShnDeclarationDialog implements OnInit {
   ) {
     this.uploadProgress = -1;
     this.showWarningMessage = false;
-    this.covidSubmissionType = "STAY_HOME_NOTICE";
-    this.remarks = "";
+    this.covidSubmissionType = 'SHN_MEDICAL_CERTIFICATE';
+    this.remarks = '';
     this.startDate = new Date().toISOString().slice(0, 10);
     this.endDate = new Date().toISOString().slice(0, 10);
     this.covidDocumentSubmissions = [];
-    this.mcs = []
+    this.mcs = [];
+    this.isVaccinated = this.config.data.isVaccinated;
+    this.isSubmitted = false;
+    this.invalid = false;
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   ngOnInit(): void {
@@ -49,21 +58,42 @@ export class ViewShnDeclarationDialog implements OnInit {
       },
       (error) => {
         console.log(error);
-      });
-    this.mcs = this.covidDocumentSubmissions
-      .filter((item) => item.covidDocumentType === "SHN_MEDICAL_CERTIFICATE" || item.covidDocumentType === "QUARANTINE_ORDER")
-      .sort((a, b) => {
-        const dateA = moment(a.dateOfSubmission);
-        const dateB = moment(b.dateOfSubmission);
-        return dateB.diff(dateA);
-      });
+      }
+    );
+
+    this.covidDocumentSubmissionService
+      .getUserSubmissions(this.config.data.userId)
+      .subscribe(
+        (response) => {
+          this.covidDocumentSubmissions = response.covidDocumentSubmissions;
+
+          this.mcs = this.covidDocumentSubmissions
+            .filter(
+              (item) =>
+                item.covidDocumentType === 'SHN_MEDICAL_CERTIFICATE' ||
+                item.covidDocumentType === 'QUARANTINE_ORDER'
+            )
+            .sort((a, b) => {
+              const dateA = moment(a.dateOfSubmission);
+              const dateB = moment(b.dateOfSubmission);
+              return dateB.diff(dateA);
+            });
+
+          if (this.mcs[0]) {
+            this.documentApprovalStatus = this.mcs[0].documentApprovalStatus;
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
   onClickSHN() {
-    this.covidSubmissionType = "STAY_HOME_NOTICE";
+    this.covidSubmissionType = 'SHN_MEDICAL_CERTIFICATE';
   }
   onClickQO() {
-    this.covidSubmissionType = "QUARANTINE_ORDER";
+    this.covidSubmissionType = 'QUARANTINE_ORDER';
   }
   onWriteRemarks(event) {
     this.remarks = event.target.value;
@@ -99,18 +129,44 @@ export class ViewShnDeclarationDialog implements OnInit {
       const date = new Date(this.mcs[0].dateOfSubmission);
       return date;
     }
-    return "NA";
+    return null;
   }
   renderVaccinationStatus() {
-    if (this.user?.isVaccinated) {
-      return "Vaccinated";
+    if (this.isVaccinated) {
+      return 'Vaccinated';
     }
-    return "Not Yet Vaccinated";
+    return 'Not Yet Vaccinated';
   }
   renderVaccinationStyle() {
-    if (this.user?.isVaccinated) {
-      return "vaccinated";
+    if (this.isVaccinated) {
+      return 'vaccinated';
     }
-    return "unvaccinated";
+    return 'unvaccinated';
+  }
+
+  onSaveClick(form: NgForm) {
+    this.isSubmitted = true;
+
+    if (form.value.response === '') {
+      this.invalid = true;
+    } else {
+      if (form.value.response === 'accept') {
+        this.mcs[0].documentApprovalStatus = 'APPROVED';
+      } else {
+        this.mcs[0].documentApprovalStatus = 'REJECTED';
+      }
+
+      this.mcs[0].dateOfApproval = new Date();
+
+      this.covidDocumentSubmissionService.updateDocument(this.mcs[0]).subscribe(
+        (response) => {
+          this.documentApprovalStatus =
+            response.covidDocumentSubmission.documentApprovalStatus;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
   }
 }

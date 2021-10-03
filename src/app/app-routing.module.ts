@@ -19,8 +19,18 @@ import { LoginComponent } from './pages/index/login/login.component';
 import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 
+const user = JSON.parse(localStorage.getItem('currentUser'));
+
+let landingRoute;
+
+if (user) {
+  landingRoute = '/dashboard';
+} else {
+  landingRoute = '/index';
+}
+
 const routes: Routes = [
-  { path: '', redirectTo: '/index', pathMatch: 'full' },
+  { path: '', redirectTo: landingRoute, pathMatch: 'full' },
   { path: 'index', component: IndexComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signUp', component: SignUpComponent },
@@ -88,4 +98,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
