@@ -56,7 +56,7 @@ export class CreateNewTaskDialogComponent implements OnInit {
       )
     ) {
       this.assignedEmployees.push(assignedEmployee);
-      const indexToRemove = this.employees.find(
+      const indexToRemove = this.employees.findIndex(
         (item) => item.userId === assignedEmployee.userId
       );
       this.employees.splice(indexToRemove, 1);
@@ -70,7 +70,7 @@ export class CreateNewTaskDialogComponent implements OnInit {
   }
 
   unassignEmployee(user: any): void {
-    const indexToRemove = this.assignedEmployees.find(
+    const indexToRemove = this.assignedEmployees.findIndex(
       (item) => item.userId === user.userId
     );
     this.assignedEmployees.splice(indexToRemove, 1);
