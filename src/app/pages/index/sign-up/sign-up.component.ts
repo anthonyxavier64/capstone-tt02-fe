@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MessageService } from 'primeng/api';
 import { CompanyDetailsDialogComponent } from './company-details-dialog/company-details-dialog.component';
 import { TierInfoDialogComponent } from './tier-info-dialog/tier-info-dialog.component';
 
@@ -27,6 +28,7 @@ export interface CompanyDetailsDialogData {
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css'],
+  providers: [MessageService],
 })
 export class SignUpComponent implements OnInit {
   subscriptionTiers: string[];
@@ -56,7 +58,8 @@ export class SignUpComponent implements OnInit {
 
   constructor(
     public tierInfoDialog: MatDialog,
-    public companyDetailsDialog: MatDialog
+    public companyDetailsDialog: MatDialog,
+    private messageService: MessageService
   ) {
     this.subscriptionTiers = ['Basic', 'Standard', 'Pro'];
     this.paymentMethods = ['Credit Card'];
@@ -66,37 +69,51 @@ export class SignUpComponent implements OnInit {
 
   openTierInfo() {
     this.tierInfoDialog.open(TierInfoDialogComponent, {
-      width: '60vw',
-      height: '40vw',
+      width: '80%',
+      height: '90%',
     });
   }
 
-  openCompanyDetailsDialog() {
-    var dialogRef = this.tierInfoDialog.open(CompanyDetailsDialogComponent, {
-      width: '60vw',
-      height: '40vw',
-      data: {
-        subscriptionType: this.selectedSubscriptionTier,
-        paymentMethod: this.selectedPaymentMethod,
-        name: this.name,
-        email: this.email,
-        contactNumber: this.contactNumber,
-        officeAddress: this.officeAddress,
-        numOfEmployees: this.numOfEmployees,
-        officeName: this.officeName,
-        officeOpeningHour: this.officeOpeningHour,
-        officeClosingHour: this.officeClosingHour,
-        officeCapacity: this.officeCapacity,
-        companySize: this.companySize,
+  openCompanyDetailsDialog(emailText: any) {
+    if (
+      this.name &&
+      this.email &&
+      emailText.valid &&
+      this.selectedSubscriptionTier &&
+      this.paymentMethods
+    ) {
+      var dialogRef = this.tierInfoDialog.open(CompanyDetailsDialogComponent, {
+        width: '75%',
+        height: '90%',
+        data: {
+          subscriptionType: this.selectedSubscriptionTier,
+          paymentMethod: this.selectedPaymentMethod,
+          name: this.name,
+          email: this.email,
+          contactNumber: this.contactNumber,
+          officeAddress: this.officeAddress,
+          numOfEmployees: this.numOfEmployees,
+          officeName: this.officeName,
+          officeOpeningHour: this.officeOpeningHour,
+          officeClosingHour: this.officeClosingHour,
+          officeCapacity: this.officeCapacity,
+          companySize: this.companySize,
 
-        creditCardNumber: this.creditCardNumber,
-        cardHolderName: this.cardHolderName,
-        cvv: this.cvv,
-        CCDateOfExpiry: this.CCDateOfExpiry,
+          creditCardNumber: this.creditCardNumber,
+          cardHolderName: this.cardHolderName,
+          cvv: this.cvv,
+          CCDateOfExpiry: this.CCDateOfExpiry,
 
-        hrAdminEmail: this.hrAdminEmail,
-        hrAdminFullName: this.hrAdminFullName,
-      },
-    });
+          hrAdminEmail: this.hrAdminEmail,
+          hrAdminFullName: this.hrAdminFullName,
+        },
+      });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Please ensure that you have filled in all fields correctly.',
+      });
+    }
   }
 }

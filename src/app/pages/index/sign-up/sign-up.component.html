@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="wrapper">
   <div
     fxLayout="row"
@@ -9,15 +10,28 @@
     <mat-card style="width: 100%" *ngIf="leftSection.style.display !== 'none'">
       <mat-card-content fxLayout="column" fxLayoutGap="3%">
         <label>Company Email: </label>
-        <input pInputText required [(ngModel)]="email" #emailText="ngModel" type="email" email="true"/>
-        <div *ngIf="emailText.invalid && emailText.touched" 
-            class="errorText" style="color:red">
+        <input
+          pInputText
+          required
+          [(ngModel)]="email"
+          #emailText="ngModel"
+          type="email"
+          email="true"
+        />
+        <div
+          *ngIf="emailText.invalid && emailText.touched"
+          class="errorText"
+          style="color: red"
+        >
           A valid email is required.
         </div>
         <label>Company Name: </label>
-        <input pInputText required [(ngModel)]="name" #companyName="ngModel"/>
-        <div *ngIf="companyName.invalid && companyName.touched" 
-            class="errorText" style="color:red">
+        <input pInputText required [(ngModel)]="name" #companyName="ngModel" />
+        <div
+          *ngIf="companyName.invalid && companyName.touched"
+          class="errorText"
+          style="color: red"
+        >
           A valid name is required.
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between start">
@@ -31,7 +45,8 @@
         <mat-form-field appearance="fill">
           <mat-select
             [(ngModel)]="selectedSubscriptionTier"
-            name="subscriptionTier" #subscriptionTierSelected="ngModel"
+            name="subscriptionTier"
+            #subscriptionTierSelected="ngModel"
             required
           >
             <mat-option
@@ -41,16 +56,23 @@
               {{ subscriptionTier }}
             </mat-option>
           </mat-select>
-          <div *ngIf="subscriptionTierSelected.errors?.required && subscriptionTierSelected.touched"
-              class="errorText" style="color:red">
+          <div
+            *ngIf="
+              subscriptionTierSelected.errors?.required &&
+              subscriptionTierSelected.touched
+            "
+            class="errorText"
+            style="color: red"
+          >
             A subscription tier is required.
-         </div>
+          </div>
         </mat-form-field>
         <label>Payment Method: </label>
         <mat-form-field appearance="fill">
           <mat-select
             [(ngModel)]="selectedPaymentMethod"
-            name="paymentMethod" #paymentMethodSelected="ngModel"
+            name="paymentMethod"
+            #paymentMethodSelected="ngModel"
             required
           >
             <mat-option
@@ -60,15 +82,21 @@
               {{ paymentMethod }}
             </mat-option>
           </mat-select>
-          <div *ngIf="paymentMethodSelected.errors?.required && paymentMethodSelected.touched"
-              class="errorText" style="color:red">
+          <div
+            *ngIf="
+              paymentMethodSelected.errors?.required &&
+              paymentMethodSelected.touched
+            "
+            class="errorText"
+            style="color: red"
+          >
             A payment method is required.
-     </div>
+          </div>
         </mat-form-field>
         <button
           mat-flat-button
           color="accent"
-          (click)="openCompanyDetailsDialog()"
+          (click)="openCompanyDetailsDialog(emailText)"
         >
           Sign Up
         </button>
