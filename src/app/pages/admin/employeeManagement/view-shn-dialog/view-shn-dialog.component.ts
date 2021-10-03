@@ -160,6 +160,8 @@ export class ViewShnDeclarationDialog implements OnInit {
 
       this.covidDocumentSubmissionService.updateDocument(this.mcs[0]).subscribe(
         (response) => {
+          console.log(response);
+
           this.documentApprovalStatus =
             response.covidDocumentSubmission.documentApprovalStatus;
         },

@@ -128,6 +128,8 @@ export class ViewVaccinationDialogComponent implements OnInit {
         .updateDocument(this.vaccinationCerts[0])
         .subscribe(
           (response) => {
+            console.log(response);
+
             this.documentApprovalStatus =
               response.covidDocumentSubmission.documentApprovalStatus;
           },

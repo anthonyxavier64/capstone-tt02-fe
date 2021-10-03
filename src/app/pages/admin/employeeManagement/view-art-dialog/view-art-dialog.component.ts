@@ -134,6 +134,8 @@ export class ViewArtComponent implements OnInit {
         .updateDocument(this.artTests[0])
         .subscribe(
           (response) => {
+            console.log(response);
+
             this.documentApprovalStatus =
               response.covidDocumentSubmission.documentApprovalStatus;
           },
