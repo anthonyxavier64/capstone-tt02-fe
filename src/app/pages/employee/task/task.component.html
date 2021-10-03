@@ -38,7 +38,11 @@
         />
       </span>
 
-      <div fxLayout="row" style="margin-top: 20px">
+      <div
+        fxLayout="row"
+        style="margin-top: 20px"
+        *ngIf="!isViewArchivedClicked"
+      >
         <span>Goal Progress</span>
         <mat-progress-bar
           style="margin-top: 20px"
@@ -50,7 +54,13 @@
         </div>
       </div>
 
-      <mat-grid-list cols="3" gutterSize="50px" style="margin-top: 20px">
+      <!-- HTML for non-archived tasks -->
+      <mat-grid-list
+        cols="3"
+        gutterSize="50px"
+        style="margin-top: 20px"
+        *ngIf="!isViewArchivedClicked"
+      >
         <div *ngFor="let task of filteredTasks">
           <mat-grid-tile>
             <mat-card
@@ -124,6 +134,81 @@
             (click)="viewTaskArchives()"
           >
             <mat-card-content>View Task Archives</mat-card-content>
+          </mat-card>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <!-- HTML for Archived tasks -->
+      <mat-grid-list
+        cols="3"
+        gutterSize="50px"
+        style="margin-top: 20px"
+        *ngIf="isViewArchivedClicked"
+      >
+        <div *ngFor="let task of archivedTasks">
+          <mat-grid-tile>
+            <mat-card
+              class="taskCard"
+              fxLayout="column"
+              fxLayoutAlign="space-around center"
+            >
+              <mat-card-title style="text-align: center"
+                >{{ task.name }}&nbsp;<mat-checkbox
+                  color="primary"
+                  (change)="handleChange(task)"
+                  [checked]="!!task.completionDate"
+                ></mat-checkbox
+              ></mat-card-title>
+              <mat-card-subtitle style="text-align: center; margin-top: 20px">
+                <div fxLayout="column">
+                  <span> Start: {{ task.startDate | date: "dd/MM/yy" }} </span>
+                  <span> End: {{ task.deadline | date: "dd/MM/yy" }} </span>
+                </div>
+              </mat-card-subtitle>
+              <mat-card-content style="text-align: center">
+                <div fxLayout="column" fxLayoutGap="5px">
+                  <span>Personnel:</span>
+                  <div *ngIf="task.employees.length > 0">
+                    <div *ngFor="let employee of task.employees">
+                      <div fxLayout="row" fxLayoutGap="5px">
+                        <mat-icon
+                          *ngIf="employee.isVaccinated"
+                          class="green-icon"
+                          >circle</mat-icon
+                        >
+                        <mat-icon
+                          *ngIf="!employee.isVaccinated"
+                          class="grey-icon"
+                          >circle</mat-icon
+                        >
+                        <div>{{ employee.fullName }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="task.employees.length <= 0">-</div>
+                </div>
+              </mat-card-content>
+              <mat-card-actions style="text-align: center">
+                <button
+                  mat-button
+                  class="peach-btn"
+                  (click)="openTaskDetails(task)"
+                >
+                  View Details
+                </button>
+              </mat-card-actions>
+            </mat-card>
+          </mat-grid-tile>
+        </div>
+
+        <mat-grid-tile>
+          <mat-card
+            class="taskCard"
+            fxLayout="column"
+            fxLayoutAlign="space-around center"
+            (click)="viewTaskArchives()"
+          >
+            <mat-card-content>View Unarchived Tasks</mat-card-content>
           </mat-card>
         </mat-grid-tile>
       </mat-grid-list>

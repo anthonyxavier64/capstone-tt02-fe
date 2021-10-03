@@ -23,8 +23,10 @@ export class TaskComponent implements OnInit {
   percentageProgress: number;
   filterValue: string;
   filteredTasks: any[];
+  archivedTasks: any[];
   ref: DynamicDialogRef | undefined;
   employees: any[];
+  isViewArchivedClicked: boolean = false;
 
   constructor(
     private goalService: GoalService,
@@ -67,6 +69,12 @@ export class TaskComponent implements OnInit {
         .subscribe(
           (response) => {
             this.tasks = response.tasks;
+
+            const archivedTemp = this.tasks.filter((task) => {
+              return task.isArchived === true;
+            });
+
+            this.archivedTasks = archivedTemp;
 
             const temp = this.tasks.filter((task) => {
               return task.isArchived === false;
@@ -142,13 +150,14 @@ export class TaskComponent implements OnInit {
     this.handleGoalSelection();
   }
 
-  viewTaskArchives() {}
+  viewTaskArchives() {
+    this.isViewArchivedClicked = !this.isViewArchivedClicked;
+  }
 
   handleFilter() {
     this.filteredTasks = this.tasks.filter((task) =>
       task.name.toLowerCase().includes(this.filterValue.toLowerCase())
     );
-    console.log(this.filteredTasks);
   }
 
   openTaskDetails(task: any) {
@@ -157,6 +166,7 @@ export class TaskComponent implements OnInit {
         goal: this.selectedGoal,
         task,
         employees: this.employees,
+        isArchived: this.isViewArchivedClicked,
       },
       width: '80%',
       height: '70%',

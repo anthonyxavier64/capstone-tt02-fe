@@ -17,6 +17,7 @@ export class TaskDetailDialogComponent implements OnInit {
   selectedEmployees: any[] = [];
   taskToPassBack: any;
   supervisor: any;
+  isViewArchivedClicked: boolean;
 
   constructor(
     private dialogConfig: DynamicDialogConfig,
@@ -25,6 +26,7 @@ export class TaskDetailDialogComponent implements OnInit {
   ) {
     this.task = this.dialogConfig.data.task;
     this.goal = this.dialogConfig.data.goal;
+    this.isViewArchivedClicked = this.dialogConfig.data.isArchived;
 
     this.assignPopup = false;
     this.filterValue = '';
@@ -87,8 +89,6 @@ export class TaskDetailDialogComponent implements OnInit {
         }
         this.unassignedPersonnel = [...this.unassignedPersonnel, employee];
 
-        console.log('dsa', response.task);
-
         this.taskToPassBack = response.task;
       },
       (error) => {}
@@ -97,6 +97,17 @@ export class TaskDetailDialogComponent implements OnInit {
 
   archive() {
     this.taskService.archiveTask(this.task.taskId).subscribe(
+      (response) => {
+        console.log(response.task);
+
+        this.taskToPassBack = response.task;
+      },
+      (error) => {}
+    );
+  }
+
+  unarchive(): void {
+    this.taskService.unarchiveTask(this.task.taskId).subscribe(
       (response) => {
         console.log(response.task);
 
