@@ -14,15 +14,18 @@ import { UserService } from 'src/app/services/user/user.service';
 export class CreateNewTaskDialogComponent implements OnInit {
   user: any | null;
   goal: any | null;
+  allGoals: any | null;
   employees: any[];
   assignedEmployees: any[] = [];
   selectedEmployee: any | null;
+  selectedGoal: String;
 
   taskName: string = '';
   remarks: string = '';
   startDate: Date = undefined;
   deadline: Date = undefined;
   complexity: Number = undefined;
+  chosenGoal: any;
 
   constructor(
     private dialogConfig: DynamicDialogConfig,
@@ -30,7 +33,11 @@ export class CreateNewTaskDialogComponent implements OnInit {
     private taskService: TaskService,
     private messageService: MessageService,
     private userService: UserService
-  ) {}
+  ) {
+    this.selectedGoal = this.dialogConfig.data.selectedGoal.name;
+    this.allGoals = this.dialogConfig.data.allGoals;
+    this.allGoals[0] = { name: 'No Goals' };
+  }
 
   ngOnInit(): void {
     this.goal = this.dialogConfig.data.goal;
@@ -96,7 +103,7 @@ export class CreateNewTaskDialogComponent implements OnInit {
       complexityLevel: this.complexity,
       employees: this.assignedEmployees,
       teamIds: undefined,
-      goalId: this.goal.goalId,
+      goalId: this.chosenGoal.goalId,
       userId: this.dialogConfig.data.user.userId,
     };
 
@@ -110,6 +117,7 @@ export class CreateNewTaskDialogComponent implements OnInit {
   }
 
   onClose(): void {
+    this.dialogConfig.data.allGoals[0] = { name: 'All Tasks' };
     this.ref.close();
   }
 }
