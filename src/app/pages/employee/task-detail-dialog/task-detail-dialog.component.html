@@ -1,11 +1,36 @@
+<p-toast></p-toast>
+
 <div fxLayout="column" fxLayoutGap="30px">
   <div>
-    <h1 *ngIf="task.goalId" style="font-weight: bold; font-size: 30px">
-      Goal {{ task.goalId }} - {{ task.name }}
-    </h1>
-    <h1 *ngIf="!task.goalId" style="font-weight: bold; font-size: 30px">
-      {{ task.name }}
-    </h1>
+    <div fxLayout="row" fxLayoutGap="2%">
+      <h1 *ngIf="task.goalId" style="font-weight: bold; font-size: 30px">
+        Goal {{ task.goalId }} - {{ task.name }}
+      </h1>
+      <h1 *ngIf="!task.goalId" style="font-weight: bold; font-size: 30px">
+        {{ task.name }}
+      </h1>
+      <div fxLayout="column" fxLayoutGap="2%" *ngIf="isEditMode">
+        <input
+          matInput
+          [(ngModel)]="updateTaskName"
+          #taskNameInput="ngModel"
+          class="input"
+          type="text"
+          style="height: 2.2vw"
+          [placeholder]="task.name"
+        />
+        <div
+          *ngIf="
+            taskNameInput.touched &&
+            (taskNameInput.value === '' || taskNameInput.value === undefined)
+          "
+          class="errorText"
+          style="color: red"
+        >
+          Task Name cannot be empty.
+        </div>
+      </div>
+    </div>
   </div>
   <div fxLayout="row">
     <div fxLayout="column" fxLayoutGap="20px" style="font-size: 20px">
@@ -16,17 +41,75 @@
           fxLayoutGap="2%"
         >
           <label><u>Start Date</u>:</label>
-          <p>{{ task.startDate | date: "dd/MM/yy" }}</p>
+          <p *ngIf="!isEditMode">{{ task.startDate | date: "dd/MM/yy" }}</p>
+          <div *ngIf="isEditMode" fxLayout="column" fxLayoutGap="3%">
+            <input
+              matInput
+              [(ngModel)]="updateStartDate"
+              #startDateInput="ngModel"
+              class="input"
+              type="date"
+              style="height: 2vw"
+              [placeholder]="task.startDate"
+            />
+            <div
+              *ngIf="
+                startDateInput.touched &&
+                (startDateInput.value === '' ||
+                  startDateInput.value === undefined)
+              "
+              class="errorText"
+              style="color: red; font-size: small; white-space: nowrap"
+            >
+              Start Date must not be empty.
+            </div>
+            <div
+              *ngIf="startDateInput.touched && updateStartDate > updateDeadline"
+              class="errorText"
+              style="color: red; font-size: small; white-space: nowrap"
+            >
+              Start Date must be before deadline.
+            </div>
+          </div>
         </div>
         <div
           fxLayout="row"
-          fxLayoutAlign="space-between start"
+          fxLayoutAlign="space-between start;"
           fxLayoutGap="2%"
         >
           <label><u>Deadline</u>:</label>
-          <p>
+          <p *ngIf="!isEditMode">
             {{ task.deadline | date: "dd/MM/yy" }}
           </p>
+          <div *ngIf="isEditMode" fxLayout="column" fxLayoutGap="3%">
+            <input
+              matInput
+              [(ngModel)]="updateDeadline"
+              #deadlineInput="ngModel"
+              class="input"
+              type="date"
+              style="height: 2vw"
+              [placeholder]="task.deadline"
+            />
+            <div
+              *ngIf="
+                deadlineInput.touched &&
+                (deadlineInput.value === '' ||
+                  deadlineInput.value === undefined)
+              "
+              class="errorText"
+              style="color: red; font-size: small; white-space: nowrap"
+            >
+              Deadline Date must not be empty.
+            </div>
+            <div
+              *ngIf="deadlineInput.touched && updateStartDate > updateDeadline"
+              class="errorText"
+              style="color: red; font-size: small; white-space: nowrap"
+            >
+              Start Date must be before deadline.
+            </div>
+          </div>
         </div>
         <div
           fxLayout="row"
@@ -104,7 +187,32 @@
   <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="3%">
     <button
       mat-button
-      *ngIf="!isViewArchivedClicked"
+      *ngIf="isEditMode"
+      class="peach-btn"
+      (click)="saveDetails()"
+    >
+      Save Details
+    </button>
+    <button
+      mat-button
+      *ngIf="isEditMode"
+      class="grey-btn"
+      (click)="isEditMode = false"
+    >
+      Close
+    </button>
+
+    <button
+      mat-button
+      *ngIf="!isEditMode"
+      class="peach-btn"
+      (click)="isEditMode = true"
+    >
+      Edit Details
+    </button>
+    <button
+      mat-button
+      *ngIf="!isViewArchivedClicked && !isEditMode"
       class="grey-btn"
       (click)="archive()"
     >
@@ -112,12 +220,19 @@
     </button>
     <button
       mat-button
-      *ngIf="isViewArchivedClicked"
+      *ngIf="isViewArchivedClicked && !isEditMode"
       class="peach-btn"
       (click)="unarchive()"
     >
       Unarchive
     </button>
-    <button mat-button class="grey-btn" (click)="closeDialog()">Close</button>
+    <button
+      mat-button
+      *ngIf="!isEditMode"
+      class="grey-btn"
+      (click)="closeDialog()"
+    >
+      Close
+    </button>
   </div>
 </div>

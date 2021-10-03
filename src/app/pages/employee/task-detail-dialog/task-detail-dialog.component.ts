@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TaskService } from 'src/app/services/task/task.service';
 
@@ -6,6 +7,7 @@ import { TaskService } from 'src/app/services/task/task.service';
   selector: 'app-task-detail-dialog',
   templateUrl: './task-detail-dialog.component.html',
   styleUrls: ['./task-detail-dialog.component.css'],
+  providers: [MessageService],
 })
 export class TaskDetailDialogComponent implements OnInit {
   task: any;
@@ -18,11 +20,17 @@ export class TaskDetailDialogComponent implements OnInit {
   taskToPassBack: any;
   supervisor: any;
   isViewArchivedClicked: boolean;
+  isEditMode: boolean = false;
+
+  updateTaskName: string;
+  updateStartDate: Date;
+  updateDeadline: Date;
 
   constructor(
     private dialogConfig: DynamicDialogConfig,
     private ref: DynamicDialogRef,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private messageService: MessageService
   ) {
     this.task = this.dialogConfig.data.task;
     this.goal = this.dialogConfig.data.goal;
@@ -126,5 +134,30 @@ export class TaskDetailDialogComponent implements OnInit {
       },
       (error) => {}
     );
+  }
+
+  saveDetails(): void {
+    if (this.updateDeadline && this.updateTaskName && this.updateStartDate) {
+      const updatedTask = {
+        ...this.task,
+        name: this.updateTaskName,
+        startDate: this.updateStartDate,
+        deadline: this.updateDeadline,
+      };
+      this.taskService.updateTask(updatedTask).subscribe(
+        (response) => {
+          this.task = updatedTask;
+          this.taskToPassBack = updatedTask;
+          this.isEditMode = false;
+        },
+        (error) => {}
+      );
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Task could not be edited.',
+      });
+    }
   }
 }
