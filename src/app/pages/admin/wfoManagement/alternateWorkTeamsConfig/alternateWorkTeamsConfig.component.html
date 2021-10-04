@@ -68,12 +68,16 @@
                     <ng-template let-user pTemplate="item">
                       <div fxLayout="row" fxLayoutGap="3%">
                         <img
-                          *ngIf="user.isVaccinated"
-                          src="../../../../../assets/images/vaccinatedIcon.svg"
+                          *ngIf="user.isVaccinated && !user.isInfected"
+                          src="../../../../assets/images/vaccinatedIcon.svg"
                         />
                         <img
-                          *ngIf="!user.isVaccinated"
-                          src="../../../../../assets/images/unvaccinatedIcon.svg"
+                          *ngIf="!user.isVaccinated && !user.isInfected"
+                          src="../../../../assets/images/unvaccinatedIcon.svg"
+                        />
+                        <img
+                          *ngIf="user.isInfected"
+                          src="../../../../assets/images/covidIcon.svg"
                         />
                         <div>{{ user.fullName }}</div>
                       </div>
@@ -188,12 +192,16 @@
                     <ng-template let-user pTemplate="item">
                       <div fxLayout="row" fxLayoutGap="3%">
                         <img
-                          *ngIf="user.isVaccinated"
-                          src="../../../../../assets/images/vaccinatedIcon.svg"
+                          *ngIf="user.isVaccinated && !user.isInfected"
+                          src="../../../../assets/images/vaccinatedIcon.svg"
                         />
                         <img
-                          *ngIf="!user.isVaccinated"
-                          src="../../../../../assets/images/unvaccinatedIcon.svg"
+                          *ngIf="!user.isVaccinated && !user.isInfected"
+                          src="../../../../assets/images/unvaccinatedIcon.svg"
+                        />
+                        <img
+                          *ngIf="user.isInfected"
+                          src="../../../../assets/images/covidIcon.svg"
                         />
                         <div>{{ user.fullName }}</div>
                       </div>

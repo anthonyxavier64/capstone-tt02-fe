@@ -92,6 +92,9 @@ export class CreateNewTaskDialogComponent implements OnInit {
     //   employeeIds.push(assignedEmployee.userId);
     // }
     this.assignedEmployees.push(this.dialogConfig.data.user);
+    let goalToPassIn = this.chosenGoal
+      ? this.chosenGoal.goalId
+      : this.goal.goalId;
 
     const newTaskDetails = {
       name: this.taskName,
@@ -103,7 +106,7 @@ export class CreateNewTaskDialogComponent implements OnInit {
       complexityLevel: this.complexity,
       employees: this.assignedEmployees,
       teamIds: undefined,
-      goalId: this.chosenGoal.goalId,
+      goalId: goalToPassIn,
       userId: this.dialogConfig.data.user.userId,
     };
 
@@ -111,6 +114,7 @@ export class CreateNewTaskDialogComponent implements OnInit {
       this.taskService
         .addUsersToTask(this.assignedEmployees, response.task.taskId)
         .subscribe((response) => {
+          this.allGoals[0] = { name: 'All Tasks' };
           this.ref.close();
         });
     });
