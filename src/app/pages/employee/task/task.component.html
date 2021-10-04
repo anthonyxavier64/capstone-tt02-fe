@@ -21,39 +21,41 @@
   <div>
     <div *ngIf="selectedGoal" style="display: block">
       <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="2%">
-      <span class="p-input-icon-right" style="margin-top: 20px">
-        <i class="pi pi-search" (click)="handleFilter()"></i>
-        <input
-          type="text"
-          placeholder="Search Task"
-          [(ngModel)]="filterValue"
-          pInputText
-          (change)="handleFilter()"
-        />
-      </span>
+        <span class="p-input-icon-right" style="margin-top: 20px">
+          <i class="pi pi-search" (click)="handleFilter()"></i>
+          <input
+            type="text"
+            placeholder="Search Task"
+            [(ngModel)]="filterValue"
+            pInputText
+            (change)="handleFilter()"
+          />
+        </span>
 
-      <p-dropdown
-        [options]="goals"
-        [(ngModel)]="selectedGoal"
-        optionLabel="name"
-        [filter]="true"
-        filterBy="name"
-        placeholder="Select a goal"
-        (onChange)="handleGoalSelection()"
-      ></p-dropdown>
-      <button
-        *ngIf="!isViewArchivedClicked && !isLoading"
-        class="peach-btn"
-        (click)="viewTaskArchives()">
-        View Task Archives
-      </button>
-      <button
-        *ngIf="isViewArchivedClicked && !isLoading"
-        class="peach-btn"
-        (click)="viewTaskArchives()">
-        View Unarchived Tasks
-      </button>
-    </div>
+        <p-dropdown
+          [options]="goals"
+          [(ngModel)]="selectedGoal"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Select a goal"
+          (onChange)="handleGoalSelection()"
+        ></p-dropdown>
+        <button
+          *ngIf="!isViewArchivedClicked && !isLoading"
+          class="peach-btn"
+          (click)="viewTaskArchives()"
+        >
+          View Task Archives
+        </button>
+        <button
+          *ngIf="isViewArchivedClicked && !isLoading"
+          class="peach-btn"
+          (click)="viewTaskArchives()"
+        >
+          View Unarchived Tasks
+        </button>
+      </div>
 
       <div
         fxLayout="row"
@@ -103,8 +105,10 @@
                 class="covid-19-indicator"
                 fxLayout
                 fxLayoutAlign="center center"
-                >C19</span
-              >
+                ><img
+                  *ngIf="hasInfectedPersonnel(task)"
+                  src="../../../../assets/images/covidIconBig.svg"
+              /></span>
               <mat-card-subtitle style="text-align: center; margin-top: 20px">
                 <div fxLayout="column">
                   <span> Start: {{ task.startDate | date: "dd/MM/yy" }} </span>
@@ -118,16 +122,18 @@
                   <div *ngIf="task.employees.length > 0">
                     <div *ngFor="let employee of task.employees">
                       <div fxLayout="row" fxLayoutGap="5px">
-                        <mat-icon
-                          *ngIf="employee.isVaccinated"
-                          class="green-icon"
-                          >circle</mat-icon
-                        >
-                        <mat-icon
-                          *ngIf="!employee.isVaccinated"
-                          class="grey-icon"
-                          >circle</mat-icon
-                        >
+                        <img
+                          *ngIf="employee.isVaccinated && !employee.isInfected"
+                          src="../../../../assets/images/vaccinatedIcon.svg"
+                        />
+                        <img
+                          *ngIf="!employee.isVaccinated && !employee.isInfected"
+                          src="../../../../assets/images/unvaccinatedIcon.svg"
+                        />
+                        <img
+                          *ngIf="employee.isInfected"
+                          src="../../../../assets/images/covidIcon.svg"
+                        />
                         <div>{{ employee.fullName }}</div>
                       </div>
                     </div>

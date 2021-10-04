@@ -150,12 +150,18 @@
           >:
         </div>
         <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
-          <mat-icon *ngIf="task.supervisor.isVaccinated" class="green-icon"
-            >circle</mat-icon
-          >
-          <mat-icon *ngIf="!task.supervisor.isVaccinated" class="grey-icon"
-            >circle</mat-icon
-          >
+          <img
+            *ngIf="task.supervisor.isVaccinated && !task.supervisor.isInfected"
+            src="../../../../assets/images/vaccinatedIcon.svg"
+          />
+          <img
+            *ngIf="!task.supervisor.isVaccinated && !task.supervisor.isInfected"
+            src="../../../../assets/images/unvaccinatedIcon.svg"
+          />
+          <img
+            *ngIf="task.supervisor.isInfected"
+            src="../../../../assets/images/covidIcon.svg"
+          />
           <div>{{ task.supervisor.fullName }}</div>
         </div>
         <div fxLayout="column" fxLayoutGap="10px">
@@ -165,12 +171,18 @@
           </div>
           <div *ngFor="let employee of personnel">
             <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
-              <mat-icon *ngIf="employee.isVaccinated" class="green-icon"
-                >circle</mat-icon
-              >
-              <mat-icon *ngIf="!employee.isVaccinated" class="grey-icon"
-                >circle</mat-icon
-              >
+              <img
+                *ngIf="employee.isVaccinated && !employee.isInfected"
+                src="../../../../assets/images/vaccinatedIcon.svg"
+              />
+              <img
+                *ngIf="!employee.isVaccinated && !employee.isInfected"
+                src="../../../../assets/images/unvaccinatedIcon.svg"
+              />
+              <img
+                *ngIf="employee.isInfected"
+                src="../../../../assets/images/covidIcon.svg"
+              />
               <div>{{ employee.fullName }}</div>
               <div>
                 <button mat-icon-button (click)="deleteUser(employee.userId)">
@@ -197,6 +209,7 @@
       [multiple]="true"
       [(ngModel)]="selectedEmployees"
       [checkbox]="true"
+      optionDisabled="isInfected"
     ></p-listbox>
     <button mat-button style="width: 100%" (click)="toggleAssignMore()">
       Done
