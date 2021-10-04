@@ -1,23 +1,20 @@
-import * as moment from 'moment';
-import { Announcement } from 'src/app/models/announcement';
-import { AnnouncementType } from 'src/app/models/announcement-type';
-import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
-import { MeetingService } from 'src/app/services/meeting/meeting.service';
-import { TaskService } from 'src/app/services/task/task.service';
-import { UserService } from 'src/app/services/user/user.service';
-
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-
+import * as moment from 'moment';
+import { Announcement } from 'src/app/models/announcement';
+import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
+import { MeetingService } from 'src/app/services/meeting/meeting.service';
+import { TaskService } from 'src/app/services/task/task.service';
+import { UserService } from 'src/app/services/user/user.service';
 import { ViewAnnouncementComponent } from '../view-announcement/view-announcement.component';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class DashboardComponent implements OnInit {
   user: any | null;
@@ -33,25 +30,27 @@ export class DashboardComponent implements OnInit {
   taskProgress: number;
 
   // My Weekly Tasks progress
-  
+
   // My Weekly Meetings progress
   today = new Date();
-  weekday = this.datePipe.transform(this.today, "EEEE");
+  weekday = this.datePipe.transform(this.today, 'EEEE');
   startDate = moment().startOf('week').toDate();
   endDate = moment().endOf('week').toDate();
-  weekProgress = parseInt(moment().startOf('week').fromNow()) / 7 * 100;
+  weekProgress = (parseInt(moment().startOf('week').fromNow()) / 7) * 100;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private userService: UserService,
     private announcementService: AnnouncementService,
     private meetingService: MeetingService,
     private taskService: TaskService,
     private matDialog: MatDialog,
-    private datePipe: DatePipe) 
-    { let now = moment(); 
-      this.taskProgress = 0;
-      this.weeklyTasks = [];
-    }
+    private datePipe: DatePipe
+  ) {
+    let now = moment();
+    this.taskProgress = 0;
+    this.weeklyTasks = [];
+  }
 
   ngOnInit() {
     const currentUser = localStorage.getItem('currentUser');
@@ -59,31 +58,38 @@ export class DashboardComponent implements OnInit {
       this.user = JSON.parse(currentUser);
     }
 
-    this.announcementService.getCovidAnnouncements(this.user.userId).subscribe(
-      response => {
-        this.covidAnnouncements = response.announcements;
-      },
-      error => {
-        console.log("Error obtaining covid announcements:  " + error);
-      }
-    );
+    this.announcementService
+      .getCovidAnnouncements(this.user.companyId)
+      .subscribe(
+        (response) => {
+          this.covidAnnouncements = response.announcements;
+        },
+        (error) => {
+          console.log('Error obtaining covid announcements:  ' + error);
+        }
+      );
 
-    this.announcementService.getGeneralAnnouncements(this.user.userId).subscribe(
-      response => {
-        this.generalAnnouncements = response.announcements;
-      },
-      error => {
-        console.log("Error obtaining general announcements:  " + error);
-      }
-    );
+    this.announcementService
+      .getGeneralAnnouncements(this.user.companyId)
+      .subscribe(
+        (response) => {
+          this.generalAnnouncements = response.announcements;
+        },
+        (error) => {
+          console.log('Error obtaining general announcements:  ' + error);
+        }
+      );
 
     this.taskService.getAllTasksByUser(this.user.userId).subscribe(
-      response => {
+      (response) => {
         this.allTasks = response.tasks;
         this.numCompleted = 0;
 
         for (const task of this.allTasks) {
-          if (moment(task.deadline).isAfter(this.startDate) && moment(task.deadline).isBefore(this.endDate)) {
+          if (
+            moment(task.deadline).isAfter(this.startDate) &&
+            moment(task.deadline).isBefore(this.endDate)
+          ) {
             this.weeklyTasks.push(task);
           }
         }
@@ -94,20 +100,19 @@ export class DashboardComponent implements OnInit {
         }
         this.taskProgress = (this.numCompleted / this.weeklyTasks.length) * 100;
       },
-      error => {
-        console.log("Error obtaining user tasks:  " + error);
+      (error) => {
+        console.log('Error obtaining user tasks:  ' + error);
       }
     );
 
     this.meetingService.getAllMeetingsOrganiser(this.user.userId).subscribe(
-      response => {
+      (response) => {
         this.organisedMeetings = response.meetings;
       },
-      error => {
-        console.log("Error obtaining organised meetings:  " + error);
+      (error) => {
+        console.log('Error obtaining organised meetings:  ' + error);
       }
     );
-  
   }
 
   viewAnnouncement(announcement?: Announcement) {
@@ -116,9 +121,9 @@ export class DashboardComponent implements OnInit {
         title: announcement?.title,
         date: announcement?.date,
         description: announcement?.description,
-      }
+      },
     });
-    viewDialog.afterClosed().subscribe(result => {
+    viewDialog.afterClosed().subscribe((result) => {
       if (result === false) {
         return;
       }

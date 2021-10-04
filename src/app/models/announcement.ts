@@ -1,4 +1,4 @@
-import { AnnouncementType } from "../models/announcement-type";
+import { AnnouncementType } from '../models/announcement-type';
 
 export class Announcement {
   announcementId: number | undefined;
@@ -7,6 +7,7 @@ export class Announcement {
   date: Date | undefined;
   announcementType: AnnouncementType | undefined;
   senderId: number;
+  companyId: number;
 
   constructor(
     id?: number,

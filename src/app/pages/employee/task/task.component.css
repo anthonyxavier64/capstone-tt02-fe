@@ -28,7 +28,7 @@
 .covid-19-indicator {
   height: 50px;
   width: 50px;
-  background-color: rgba(var(--primary-button-color));
+  background-color: rgb(var(--covid-button-color));
   border-radius: 50%;
   position: absolute;
   top: 1em;

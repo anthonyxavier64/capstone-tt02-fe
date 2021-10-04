@@ -53,19 +53,21 @@ export class AdminAnnouncementManagementComponent implements OnInit {
     if (currentUser) {
       this.user = JSON.parse(currentUser);
     }
-    this.announcementService.getCovidAnnouncements(this.user.userId).subscribe(
-      (response) => {
-        this.covidAnnouncements = response.announcements;
-      },
-      (error) => {
-        console.log(
-          '********** AdminAnnouncementManagementComponent.ts: ' + error
-        );
-      }
-    );
+    this.announcementService
+      .getCovidAnnouncements(this.user.companyId)
+      .subscribe(
+        (response) => {
+          this.covidAnnouncements = response.announcements;
+        },
+        (error) => {
+          console.log(
+            '********** AdminAnnouncementManagementComponent.ts: ' + error
+          );
+        }
+      );
 
     this.announcementService
-      .getGeneralAnnouncements(this.user.userId)
+      .getGeneralAnnouncements(this.user.companyId)
       .subscribe(
         (response) => {
           this.generalAnnouncements = response.announcements;
@@ -107,6 +109,8 @@ export class AdminAnnouncementManagementComponent implements OnInit {
     this.newAnnouncement.announcementType =
       AnnouncementType[this.announcementType];
     this.newAnnouncement.senderId = this.user.userId;
+
+    this.newAnnouncement.companyId = this.user.companyId;
     this.announcementService.createAnnouncement(this.newAnnouncement).subscribe(
       (response) => {
         this.resultSuccess = response.status;
