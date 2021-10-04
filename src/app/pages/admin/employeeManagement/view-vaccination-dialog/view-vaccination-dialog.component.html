@@ -13,7 +13,7 @@
       <p class="text">{{ renderVaccinationStatus() }}</p>
     </div>
     <button
-      *ngIf="user.latestArtTestResult; else noFile"
+      *ngIf="user.latestProofOfVaccination; else noFile"
       mat-button
       class="peach-btn"
       disabled="{{ this.vaccinationCerts[0] ? false : true }}"
