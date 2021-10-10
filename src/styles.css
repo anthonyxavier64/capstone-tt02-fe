@@ -1,5 +1,3 @@
-@import "../node_modules/angular-calendar/css/angular-calendar.css";
-
 :root {
   /* Navbar */
   --navbar-background: 193, 231, 227;
@@ -324,6 +322,7 @@ span {
   padding: 1rem;
   flex-grow: 0;
 }
+/** PrimeFaces Dropdown Style Overrides **/
 .p-inputtext {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 1rem;
