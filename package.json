@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
     "@auth0/angular-jwt": "^5.0.2",
+    "angular-calendar": "^0.28.28",
     "firebase": "^7.24.0",
     "moment": "^2.29.1",
     "ng-circle-progress": "^1.6.0",
