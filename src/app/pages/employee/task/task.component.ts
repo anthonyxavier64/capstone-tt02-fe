@@ -189,7 +189,7 @@ export class TaskComponent implements OnInit {
         allGoals: this.goals,
       },
       width: '85%',
-      height: '70%',
+      height: 'auto%',
       showHeader: false,
     });
 
@@ -237,7 +237,7 @@ export class TaskComponent implements OnInit {
         isArchived: this.isViewArchivedClicked,
       },
       width: '80%',
-      height: '70%',
+      height: 'auto',
       closable: false,
       showHeader: false,
     });

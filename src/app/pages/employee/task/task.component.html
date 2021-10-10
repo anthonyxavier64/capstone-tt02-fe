@@ -99,7 +99,7 @@
                   (change)="handleChange(task)"
                   [checked]="!!task.completionDate"
                 ></mat-checkbox>
-                <h3 *ngIf="task.goalId">Goal {{ task.goalId }}</h3>
+                <h2 *ngIf="task.goalId">Goal {{ task.goalId }}</h2>
               </mat-card-title>
               <span
                 *ngIf="hasInfectedPersonnel(task)"

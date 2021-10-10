@@ -326,3 +326,11 @@ span {
   top: -1.5em;
   padding-top: 0.84375em;
 }
+
+/** PrimeFaces Dialog Style Overrides **/
+.p-dialog .p-dialog-content {
+  background: #ffffff;
+  color: #333333;
+  padding: 1rem;
+  flex-grow: 0;
+}
