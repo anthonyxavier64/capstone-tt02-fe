@@ -1,7 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
-import { UserService } from 'src/app/services/user/user.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+
+import { AdminGuideComponent } from 'src/app/pages/admin/adminLanding/admin-guide/admin-guide.component';
+import { AuthService } from 'src/app/services/user/auth.service';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-calendar',
