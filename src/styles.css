@@ -1,5 +1,3 @@
-@import "../node_modules/angular-calendar/css/angular-calendar.css";
-
 :root {
   /* Navbar */
   --navbar-background: 193, 231, 227;
@@ -9,6 +7,7 @@
   --theme-primary-color: 0, 55, 100;
   --theme-secondary-color: 229, 229, 229;
   --covid-related-color: 251, 142, 126;
+  --wfo-related-color: 0, 56, 255;
   --title-color: 0, 54, 114;
 
   /* Buttons */
@@ -17,6 +16,7 @@
   --covid-button-color: 251, 142, 126;
   --success-button-color: 107, 200, 81;
   --warn-button-color: 255, 0, 0;
+  --wfo-button-color: 0, 56, 255;
 
   /* Typography */
   --primary-font: "Source Sans Pro";
@@ -34,12 +34,29 @@
 }
 
 /* Button Styles */
-.mat-button {
+.mat-button,
+.mat-icon-button,
+.mat-stroked-button,
+.mat-flat-button {
   font-family: "Source Sans Pro", sans-serif;
-  background: rgba(0, 55, 100, 0.15);
-  color: #003672;
-  font-size: 16px;
-  font-weight: 500;
+  box-sizing: border-box;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  display: inline-block;
+  white-space: nowrap;
+  text-decoration: none;
+  vertical-align: baseline;
+  text-align: center;
+  margin: 0;
+  min-width: 64px;
+  line-height: 36px;
+  padding: 0 16px;
+  border-radius: 4px;
+  overflow: visible;
+  min-width: 6vw;
 }
 
 .grey-btn {
@@ -48,24 +65,6 @@
   color: rgb(var(--title-color));
   font-size: 16px;
   font-weight: 500;
-  box-sizing: border-box;
-  position: relative;
-  user-select: none;
-  cursor: pointer;
-  outline: none;
-  border: none;
-  display: inline-block;
-  white-space: nowrap;
-  text-decoration: none;
-  vertical-align: baseline;
-  text-align: center;
-  margin: 0;
-  min-width: 64px;
-  line-height: 36px;
-  padding: 0 16px;
-  border-radius: 4px;
-  overflow: visible;
-  min-width: 6vw;
 }
 
 .peach-btn {
@@ -74,23 +73,6 @@
   color: rgb(var(--title-color));
   font-size: 16px;
   font-weight: 500;
-  box-sizing: border-box;
-  position: relative;
-  user-select: none;
-  cursor: pointer;
-  outline: none;
-  border: none;
-  display: inline-block;
-  white-space: nowrap;
-  text-decoration: none;
-  vertical-align: baseline;
-  text-align: center;
-  margin: 0;
-  min-width: 64px;
-  line-height: 36px;
-  padding: 0 16px;
-  border-radius: 4px;
-  overflow: visible;
 }
 
 .red-btn {
@@ -99,24 +81,6 @@
   color: rgb(var(--title-color));
   font-size: 16px;
   font-weight: 500;
-  box-sizing: border-box;
-  position: relative;
-  user-select: none;
-  cursor: pointer;
-  outline: none;
-  border: none;
-  display: inline-block;
-  white-space: nowrap;
-  text-decoration: none;
-  vertical-align: baseline;
-  text-align: center;
-  margin: 0;
-  min-width: 64px;
-  line-height: 36px;
-  padding: 0 16px;
-  border-radius: 4px;
-  overflow: visible;
-  min-width: 6vw;
 }
 
 .white-btn {
@@ -126,6 +90,21 @@
   font-size: 16px;
   font-weight: 500;
   min-width: 6vw;
+}
+
+.blue-btn {
+  font-family: var(--primary-font);
+  background: rgb(var(--wfo-button-color));
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.btn-group-border {
+  border: 2px solid;
+  border-color: rgb(var(--primary-button-color));
+  padding: 0.25rem;
+  width: fit-content;
 }
 
 /* Text Style Overrides */
@@ -164,7 +143,7 @@ p {
 span {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 1.125rem;
-  color: #003672;
+  color: inherit;
   font-weight: 200;
   margin: 0;
 }
@@ -225,6 +204,13 @@ span {
   font-weight: 200;
   line-height: normal;
   margin: initial;
+}
+
+.mat-body,
+.mat-body-1,
+.mat-typography {
+  font: 400 14px / 20px "Source Sans Pro", sans-serif;
+  letter-spacing: normal;
 }
 
 /* Angular Material Form Style Overrides */
@@ -335,4 +321,123 @@ span {
   color: #333333;
   padding: 1rem;
   flex-grow: 0;
+}
+.p-inputtext {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 1rem;
+  color: rgb(var(--theme-primary-color));
+  background: #ffffff;
+  padding: 0.429rem 0.429rem;
+  border: 1px solid rgb(var(--theme-primary-color));
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 3px;
+}
+
+.p-dropdown .p-dropdown-label.p-placeholder {
+  font-family: "Source Sans Pro", sans-serif;
+  color: rgb(var(--theme-primary-color)) !important;
+  font-size: 1.125rem;
+}
+
+.p-dropdown {
+  display: inline-flex;
+  cursor: pointer;
+  position: relative;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background: #ffffff;
+  border: 1.5px solid;
+  border-color: rgb(var(--theme-primary-color));
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+  border-radius: 3px;
+}
+
+/** Angular Calendar **/
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+
+.cal-month-view {
+  background-color: #fff;
+  border: 1px solid;
+  border-color: rgb(var(--theme-primary-color), 0.2);
+  border-radius: 1rem;
+}
+
+.cal-month-view .cal-header .cal-cell {
+  padding: 5px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  white-space: nowrap;
+  color: rgb(var(--theme-primary-color));
+}
+
+.cal-month-view .cal-days {
+  border: 0;
+}
+
+.cal-month-view .cal-day-number {
+  font-size: 1.2em;
+  font-weight: 100;
+  color: rgb(var(--theme-primary-color));
+  opacity: 1;
+  margin-top: 15px;
+  margin-right: 15px;
+  float: right;
+  margin-bottom: 10px;
+}
+
+.cal-month-view .cal-days .cal-cell-row {
+  border-top: 1px solid;
+  border-top-color: rgb(var(--theme-primary-color), 0.2);
+  border-bottom: 0;
+}
+
+.cal-month-view .cal-day-cell.cal-weekend .cal-day-number {
+  color: rgb(var(--theme-primary-color), 0.5);
+}
+
+.cal-month-view .cal-day-cell.cal-today {
+  background-color: transparent;
+}
+
+.cal-month-view .cal-day-cell.cal-today .cal-day-number {
+  font-size: 1.2em;
+  background: rgb(var(--primary-card-color));
+  padding: 0.15em;
+  border-radius: 5rem;
+  font-weight: 800;
+  color: white !important;
+}
+
+.cal-week-view .cal-header.cal-today {
+  background-color: rgb(var(--primary-button-color));
+}
+
+.cal-week-view .cal-header.cal-weekend span {
+  color: rgb(var(--theme-primary-color), 0.5);
+}
+
+.cal-week-view .cal-day-headers span {
+  font-weight: 400;
+  color: rgb(var(--theme-primary-color));
+  opacity: 1;
+}
+
+.cal-week-view .cal-day-headers b {
+  color: rgb(var(--theme-primary-color));
+}
+
+.cal-week-view .cal-time {
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 200;
+  color: rgb(var(--theme-primary-color));
+  padding-top: 5px;
+  width: 70px;
+  text-align: center;
 }
