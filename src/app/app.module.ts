@@ -74,6 +74,14 @@ import { ChangePasswordComponent } from './pages/profile/change-password/change-
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
+import { CalendarComponent } from './pages/calendar/calendar.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/moment';
+import * as moment from 'moment';
+
+export function momentAdapterFactory() {
+  return adapterFactory(moment);
+};
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -122,6 +130,7 @@ export function tokenGetter() {
     ViewShnDeclarationDialog,
     ViewArtComponent,
     UploadVaccinationDialogComponent,
+    CalendarComponent,
   ],
   imports: [
     CommonModule,
@@ -178,6 +187,7 @@ export function tokenGetter() {
         allowedDomains: ['localhost:3000'],
       },
     }),
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: momentAdapterFactory }),
   ],
   providers: [
     {

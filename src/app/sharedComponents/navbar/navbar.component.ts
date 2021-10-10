@@ -58,4 +58,8 @@ export class NavbarComponent implements OnInit {
   handleTasks() {
     this.router.navigateByUrl('/task');
   }
+
+  handleCalendar() {
+    this.router.navigateByUrl('/calendar')
+  }
 }

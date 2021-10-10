@@ -18,6 +18,7 @@ import { IndexComponent } from './pages/index/index.component';
 import { LoginComponent } from './pages/index/login/login.component';
 import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { CalendarComponent } from './pages/calendar/calendar.component';
 
 const user = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -92,6 +93,11 @@ const routes: Routes = [
     component: CovidDeclarationsComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path:'calendar',
+    component: CalendarComponent,
+    canActivate: [AuthGuard],
+  }
 ];
 
 @NgModule({
