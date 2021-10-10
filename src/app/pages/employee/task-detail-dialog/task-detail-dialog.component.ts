@@ -127,6 +127,7 @@ export class TaskDetailDialogComponent implements OnInit {
     this.taskService.archiveTask(this.task.taskId).subscribe(
       (response) => {
         this.taskToPassBack = response.task;
+        this.ref.close(this.taskToPassBack);
       },
       (error) => {}
     );
@@ -136,6 +137,7 @@ export class TaskDetailDialogComponent implements OnInit {
     this.taskService.unarchiveTask(this.task.taskId).subscribe(
       (response) => {
         this.taskToPassBack = response.task;
+        this.ref.close(this.taskToPassBack);
       },
       (error) => {}
     );

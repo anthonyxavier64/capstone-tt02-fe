@@ -1,7 +1,7 @@
 .taskCard {
   width: 25vw;
   height: 28vw;
-
+  padding: 2rem;
   background: rgb(var(--secondary-card-color));
   box-shadow: -4px -4px 4px rgba(0, 0, 0, 0.05);
   border-radius: 15px;

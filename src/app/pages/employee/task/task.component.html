@@ -91,7 +91,7 @@
             <mat-card
               class="taskCard"
               fxLayout="column"
-              fxLayoutAlign="space-around center"
+              fxLayoutAlign="space-evenly center"
             >
               <mat-card-title style="text-align: center; position: relative"
                 >{{ task.name }}&nbsp;<mat-checkbox
@@ -99,6 +99,7 @@
                   (change)="handleChange(task)"
                   [checked]="!!task.completionDate"
                 ></mat-checkbox>
+                <h3 *ngIf="task.goalId">Goal {{ task.goalId }}</h3>
               </mat-card-title>
               <span
                 *ngIf="hasInfectedPersonnel(task)"
@@ -117,7 +118,6 @@
               </mat-card-subtitle>
               <mat-card-content style="text-align: center">
                 <div fxLayout="column" fxLayoutGap="5px">
-                  <span *ngIf="task.goalId">Goal: {{ task.goalId }}</span>
                   <span>Personnel:</span>
                   <div *ngIf="task.employees.length > 0">
                     <div *ngFor="let employee of task.employees">
@@ -157,7 +157,7 @@
           <mat-card
             class="taskCard"
             fxLayout="column"
-            fxLayoutAlign="space-around center"
+            fxLayoutAlign="space-evenly center"
             (click)="addTask()"
           >
             <mat-card-content>Add Task</mat-card-content>
@@ -177,7 +177,7 @@
             <mat-card
               class="taskCard"
               fxLayout="column"
-              fxLayoutAlign="space-around center"
+              fxLayoutAlign="space-evenly center"
             >
               <mat-card-title style="text-align: center"
                 >{{ task.name }}&nbsp;<mat-checkbox

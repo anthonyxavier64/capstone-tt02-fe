@@ -1,6 +1,6 @@
 <p-toast></p-toast>
 
-<div fxLayout="column" fxLayoutGap="30px">
+<div fxLayout="column" fxLayoutGap="3%"  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
   <div>
     <div fxLayout="row" fxLayoutGap="2%">
       <h1
@@ -56,10 +56,10 @@
       <div fxLayout="column" fxLayoutGap="10px">
         <div
           fxLayout="row"
-          fxLayoutAlign="space-between start"
+          fxLayoutAlign="space-between center"
           fxLayoutGap="2%"
         >
-          <label><u>Start Date</u>:</label>
+          <label>Start Date:</label>
           <p *ngIf="!isEditMode">{{ task.startDate | date: "dd/MM/yy" }}</p>
           <div *ngIf="isEditMode" fxLayout="column" fxLayoutGap="3%">
             <input
@@ -93,10 +93,10 @@
         </div>
         <div
           fxLayout="row"
-          fxLayoutAlign="space-between start;"
+          fxLayoutAlign="space-between center;"
           fxLayoutGap="2%"
         >
-          <label><u>Deadline</u>:</label>
+          <label>Deadline:</label>
           <p *ngIf="!isEditMode">
             {{ task.deadline | date: "dd/MM/yy" }}
           </p>
@@ -132,10 +132,10 @@
         </div>
         <div
           fxLayout="row"
-          fxLayoutAlign="space-between start"
+          fxLayoutAlign="space-between center"
           fxLayoutGap="2%"
         >
-          <label><u>Completion Date</u>:</label>
+          <label>Completion Date:</label>
           <span *ngIf="task.completionDate !== null">
             <p>
               {{ task.completionDate | date: "dd/MM/yy" }}
@@ -146,7 +146,7 @@
       </div>
       <div fxLayout="column" fxLayoutGap="10px">
         <div>
-          <label><u>Task Supervisor</u></label
+          <label>Task Supervisor</label
           >:
         </div>
         <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
@@ -192,7 +192,7 @@
             </div>
           </div>
         </div>
-        <div style="text-align: center">
+        <div style="text-align: left">
           <button mat-button class="peach-btn" (click)="toggleAssignMore()">
             Assign More
           </button>
