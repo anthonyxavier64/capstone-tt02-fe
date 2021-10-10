@@ -5,9 +5,10 @@ import { Router } from '@angular/router';
 import { AdminGuideComponent } from 'src/app/pages/admin/adminLanding/admin-guide/admin-guide.component';
 import { AuthService } from 'src/app/services/user/auth.service';
 
-
 import { ChangeDetectionStrategy } from '@angular/core';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
+
+import { UserService } from 'src/app/services/user/user.service';
 
 
 @Component({
@@ -18,15 +19,20 @@ import { CalendarEvent, CalendarView } from 'angular-calendar';
 })
 export class CalendarComponent implements OnInit {
 
+  user: any;
+  company: any;
   view: CalendarView = CalendarView.Month;
-
+  CalendarView = CalendarView;
   viewDate: Date = new Date();
-
   events: CalendarEvent[] = [];
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
-  ngOnInit(): void {''
+  ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
   }
 
+  setView(view: CalendarView) {
+    this.view = view;
+  }
 }
