@@ -1,3 +1,16 @@
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/moment';
+import * as moment from 'moment';
+import { NgCircleProgressModule } from 'ng-circle-progress';
+import { DataViewModule } from 'primeng/dataview';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { DialogService } from 'primeng/dynamicdialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { StyleClassModule } from 'primeng/styleclass';
+import { TableModule } from 'primeng/table';
+import { environment } from 'src/environments/environment.dev';
 
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -12,8 +25,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import {
-  MatFormFieldModule,
   MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  MatFormFieldModule,
 } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -22,16 +35,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
-import { NgCircleProgressModule } from 'ng-circle-progress';
-import { DataViewModule } from 'primeng/dataview';
-import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
-import { DialogService } from 'primeng/dynamicdialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { StyleClassModule } from 'primeng/styleclass';
-import { TableModule } from 'primeng/table';
-import { environment } from 'src/environments/environment.dev';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TOKEN_KEY } from './config';
@@ -49,7 +53,9 @@ import { NewDepartmentComponent } from './pages/admin/dialogs/new-department/new
 import { EditAnnouncementComponent } from './pages/admin/edit-announcement/edit-announcement.component';
 import { AdminEmployeeManagementComponent } from './pages/admin/employeeManagement/adminEmployeeManagement.component';
 import { DeleteEmployeeDialogComponent } from './pages/admin/employeeManagement/delete-employee-dialog/delete-employee-dialog.component';
+import { DownloadCsvDialogComponent } from './pages/admin/employeeManagement/download-csv-dialog/download-csv-dialog.component';
 import { EditEmployeeDialogComponent } from './pages/admin/employeeManagement/edit-employee-dialog/edit-employee-dialog.component';
+import { MassInviteInfoDialogComponent } from './pages/admin/employeeManagement/mass-invite-info-dialog/mass-invite-info-dialog.component';
 import { ViewArtComponent } from './pages/admin/employeeManagement/view-art-dialog/view-art-dialog.component';
 import { ViewShnDeclarationDialog } from './pages/admin/employeeManagement/view-shn-dialog/view-shn-dialog.component';
 import { ViewVaccinationDialogComponent } from './pages/admin/employeeManagement/view-vaccination-dialog/view-vaccination-dialog.component';
@@ -57,6 +63,7 @@ import { AdminWfoManagementComponent } from './pages/admin/wfoManagement/adminWf
 import { AlternateWorkTeamsConfigComponent } from './pages/admin/wfoManagement/alternateWorkTeamsConfig/alternateWorkTeamsConfig.component';
 import { EditExceptionDialogComponent } from './pages/admin/wfoManagement/officeQuotaConfig/edit-exception-dialog/edit-exception-dialog.component';
 import { OfficeQuotaConfigComponent } from './pages/admin/wfoManagement/officeQuotaConfig/officeQuotaConfig.component';
+import { CalendarComponent } from './pages/calendar/calendar.component';
 import { ArtDialogComponent } from './pages/covid-declarations/art-test-results-dialog/art-test-dialog.component';
 import { CovidDeclarationsComponent } from './pages/covid-declarations/covid-declarations.component';
 import { ShnDeclarationDialogComponent } from './pages/covid-declarations/shn-declaration-dialog/shn-declaration-dialog.component';
@@ -74,10 +81,6 @@ import { ChangePasswordComponent } from './pages/profile/change-password/change-
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
-import { CalendarComponent } from './pages/calendar/calendar.component';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/moment';
-import * as moment from 'moment';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -131,6 +134,8 @@ export function tokenGetter() {
     ViewArtComponent,
     UploadVaccinationDialogComponent,
     CalendarComponent,
+    DownloadCsvDialogComponent,
+    MassInviteInfoDialogComponent,
   ],
   imports: [
     CommonModule,

@@ -12,14 +12,24 @@
     </div>
   </div>
 
-  <div fxLayout="row" class="inviteEmployeeCard">
-    <div fxLayout="column" fxLayoutAlign="space-evenly center" fxFlex="100">
+  <div
+    fxLayout="row"
+    class="inviteEmployeeCard"
+    fxLayoutAlign="space-around center"
+  >
+    <div
+      fxLayout="column"
+      fxLayoutAlign="space-evenly center"
+      fxFlex="100"
+      fxLayoutGap="3%"
+      style="margin-left: 5vw"
+    >
       <h2 style="text-decoration: underline; text-align: center">
         Invite Employee
       </h2>
       <div fxLayout="row" fxLayoutGap="8%" fxLayoutAlign="space-evenly center">
-        <div fxLayout="row" fxLayoutGap="10px">
-          <div fxLayout="column" fxLayoutGap="10px">
+        <div fxLayout="row" fxLayoutGap="5%">
+          <div fxLayout="column" fxLayoutGap="5%">
             <h3>Employee Full Name:</h3>
             <input
               type="text"
@@ -91,7 +101,7 @@
             A valid 8-digit Singapore contact number is required.
           </div>
         </div>
-        <div fxLayout="column" fxLayoutGap="10px">
+        <div fxLayout="column" fxLayoutGap="8%">
           <h3 style="text-align: left">Associated Departments:</h3>
           <button mat-raised-button (click)="openInChargeOfDialog()">
             In Charge of
@@ -115,6 +125,57 @@
       >
         Invite Employee
       </button>
+    </div>
+    <div class="verticalDivider"></div>
+    <div
+      fxLayout="column"
+      fxLayoutAlign="space-evenly center"
+      fxFlex="100"
+      fxLayoutGap="3%"
+    >
+      <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="3%">
+        <h2
+          style="
+            text-decoration: underline;
+            text-align: center;
+            white-space: nowrap;
+          "
+        >
+          Mass Invite Employee
+        </h2>
+        <img
+          src="../../../../assets/images/infoLogo.png"
+          (click)="openMassInviteInfoDialog()"
+        />
+      </div>
+      <div
+        fxLayout="column"
+        fxLayoutAlign="space-around center"
+        fxLayoutGap="8%"
+      >
+        <button class="peach-btn">
+          <div
+            fxLayout="column"
+            fxLayoutAlign="space-around center"
+            fxLayoutGap="2%"
+            style="padding: 2% 2% 2% 2%"
+          >
+            <p style="font-size: 1.2vw">Download</p>
+            <p style="font-size: 1.2vw">Template CSV</p>
+          </div>
+        </button>
+        <button class="peach-btn">
+          <div
+            fxLayout="column"
+            fxLayoutAlign="space-around center"
+            fxLayoutGap="2%"
+            style="padding: 2% 2% 2% 2%"
+          >
+            <p style="font-size: 1.2vw">Upload</p>
+            <p style="font-size: 1.2vw">Employee CSV</p>
+          </div>
+        </button>
+      </div>
     </div>
     <!-- <mat-card fxFlex="30">
         <h2 style="text-decoration: underline; text-align: center">
