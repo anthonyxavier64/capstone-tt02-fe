@@ -179,12 +179,16 @@ export class AdminEmployeeManagementComponent implements OnInit {
         data: { company: this.company, downloadLink: this.csvDownloadUrl },
       }
     );
+
+    this.downloadCsvDialogRef.onClose.subscribe((response) => {
+      this.downloadCsvDialogRef = null;
+    });
   }
 
   openUploadCSVDialog(event) {
     const currentDate = new Date().toString();
 
-    const fileRef = this.afStorage.ref(`Employee_CSV/${currentDate}`);
+    const fileRef = this.afStorage.ref(`Employee_CSV/${currentDate}.csv`);
 
     const uploadTask = fileRef.put(event.target.files[0]);
     uploadTask
@@ -207,6 +211,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
                   summary: 'Success',
                   detail: 'Company employees have been updated.',
                 });
+                this.company = updateCompany;
               },
               (error) => {
                 this.messageService.add({
