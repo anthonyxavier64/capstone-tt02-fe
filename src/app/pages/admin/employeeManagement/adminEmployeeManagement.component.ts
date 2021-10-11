@@ -1,16 +1,15 @@
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { DepartmentService } from 'src/app/services/department/department.service';
-import { UserService } from 'src/app/services/user/user.service';
-
 import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
-
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DepartmentService } from 'src/app/services/department/department.service';
+import { UserService } from 'src/app/services/user/user.service';
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
 import { DeleteEmployeeDialogComponent } from './delete-employee-dialog/delete-employee-dialog.component';
 import { EditEmployeeDialogComponent } from './edit-employee-dialog/edit-employee-dialog.component';
+import { MassInviteInfoDialogComponent } from './mass-invite-info-dialog/mass-invite-info-dialog.component';
 import { ViewArtComponent } from './view-art-dialog/view-art-dialog.component';
 import { ViewShnDeclarationDialog } from './view-shn-dialog/view-shn-dialog.component';
 import { ViewVaccinationDialogComponent } from './view-vaccination-dialog/view-vaccination-dialog.component';
@@ -47,6 +46,8 @@ export class AdminEmployeeManagementComponent implements OnInit {
   allUsers: any;
 
   csvDownloadUrl: string;
+
+  massInviteDialogRef: DynamicDialogRef;
 
   artTestDialogRef: DynamicDialogRef;
   shnDeclarationDialogRef: DynamicDialogRef;
@@ -193,6 +194,18 @@ export class AdminEmployeeManagementComponent implements OnInit {
       }
     });
   }
+
+  openMassInviteInfoDialog(): void {
+    this.massInviteDialogRef = this.dialogService.open(
+      MassInviteInfoDialogComponent,
+      {
+        header: 'Mass Inviting Employees',
+        width: '60%',
+        contentStyle: { 'max-height': '80vw', overflow: 'auto' },
+      }
+    );
+  }
+
   openArtTestDialog(selectedUser: {
     userId: number;
     fullName: string;
