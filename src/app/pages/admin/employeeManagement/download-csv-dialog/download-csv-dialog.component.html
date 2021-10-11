@@ -1,1 +1,29 @@
-<p>download-csv-dialog works!</p>
+<div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="15%">
+  <button class="peach-btn" style="height: 5vw" (click)="downloadNewCsv()">
+    <div
+      fxLayout="column"
+      fxLayoutAlign="space-around center"
+      fxLayoutGap="2%"
+      style="padding: 2% 2% 2% 2%"
+    >
+      <p style="font-size: 1.2vw">Download New</p>
+      <p style="font-size: 1.2vw">Template CSV</p>
+    </div>
+  </button>
+  <button
+    class="peach-btn"
+    style="height: 5vw"
+    [disabled]="company.employeeCsv === null"
+    (click)="downloadExistingCsv()"
+  >
+    <div
+      fxLayout="column"
+      fxLayoutAlign="space-around center"
+      fxLayoutGap="2%"
+      style="padding: 2% 2% 2% 2%"
+    >
+      <p style="font-size: 1.2vw">Download Latest</p>
+      <p style="font-size: 1.2vw">Uploaded CSV</p>
+    </div>
+  </button>
+</div>
