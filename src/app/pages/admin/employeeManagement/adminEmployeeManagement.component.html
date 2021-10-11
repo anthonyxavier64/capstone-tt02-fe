@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div
   fxLayout="column"
   fxLayoutGap="3%"
@@ -153,7 +154,7 @@
         fxLayoutAlign="space-around center"
         fxLayoutGap="8%"
       >
-        <button class="peach-btn">
+        <button class="peach-btn" (click)="downloadCSVTemplate()">
           <div
             fxLayout="column"
             fxLayoutAlign="space-around center"
@@ -164,17 +165,38 @@
             <p style="font-size: 1.2vw">Template CSV</p>
           </div>
         </button>
-        <button class="peach-btn">
-          <div
-            fxLayout="column"
-            fxLayoutAlign="space-around center"
-            fxLayoutGap="2%"
-            style="padding: 2% 2% 2% 2%"
-          >
-            <p style="font-size: 1.2vw">Upload</p>
-            <p style="font-size: 1.2vw">Employee CSV</p>
+        <label>
+          <input
+            class="peach-btn"
+            type="file"
+            (change)="openUploadCSVDialog($event)"
+            accept=".csv"
+          />
+          <div class="peach-btn">
+            <div
+              fxLayout="column"
+              fxLayoutAlign="space-around center"
+              fxLayoutGap="2%"
+              style="padding: 2% 2% 2% 2%"
+            >
+              <p style="font-size: 1.2vw">Upload</p>
+              <p style="font-size: 1.2vw">Employee CSV</p>
+            </div>
           </div>
-        </button>
+        </label>
+        <progress
+          *ngIf="uploadProgress !== -1"
+          max="100"
+          [value]="uploadProgress"
+        ></progress>
+        <div *ngIf="uploadProgress === 100">File successfully uploaded!</div>
+        <div
+          class="warning-message {{
+            showWarningMessage && uploadProgress !== 100 ? 'visible' : 'hidden'
+          }}"
+        >
+          Please wait for your file to be uploaded!
+        </div>
       </div>
     </div>
     <!-- <mat-card fxFlex="30">

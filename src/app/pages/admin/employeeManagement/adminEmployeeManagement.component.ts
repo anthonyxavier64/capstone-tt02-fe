@@ -1,13 +1,18 @@
 import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { finalize } from 'rxjs/operators';
 import { DepartmentService } from 'src/app/services/department/department.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
+import { CompanyDetailsService } from './../../../services/company/company-details.service';
 import { DeleteEmployeeDialogComponent } from './delete-employee-dialog/delete-employee-dialog.component';
+import { DownloadCsvDialogComponent } from './download-csv-dialog/download-csv-dialog.component';
 import { EditEmployeeDialogComponent } from './edit-employee-dialog/edit-employee-dialog.component';
 import { MassInviteInfoDialogComponent } from './mass-invite-info-dialog/mass-invite-info-dialog.component';
 import { ViewArtComponent } from './view-art-dialog/view-art-dialog.component';
@@ -26,10 +31,11 @@ export interface user {
   selector: 'app-admin-employeeManagement',
   templateUrl: './adminEmployeeManagement.component.html',
   styleUrls: ['./adminEmployeeManagement.component.css'],
-  providers: [MatDialog],
+  providers: [MatDialog, MessageService],
 })
 export class AdminEmployeeManagementComponent implements OnInit {
   user;
+  company: any | undefined;
 
   currNewUserEmail: String;
   currNewUserPosition: String;
@@ -47,7 +53,10 @@ export class AdminEmployeeManagementComponent implements OnInit {
 
   csvDownloadUrl: string;
 
+  downloadCsvDialogRef: DynamicDialogRef;
   massInviteDialogRef: DynamicDialogRef;
+  uploadProgress: number;
+  showWarningMessage: boolean;
 
   artTestDialogRef: DynamicDialogRef;
   shnDeclarationDialogRef: DynamicDialogRef;
@@ -61,7 +70,10 @@ export class AdminEmployeeManagementComponent implements OnInit {
     private userService: UserService,
     private departmentService: DepartmentService,
     private dialog: MatDialog,
-    public dialogService: DialogService
+    public dialogService: DialogService,
+    private afStorage: AngularFireStorage,
+    private companyDetailsService: CompanyDetailsService,
+    private messageService: MessageService
   ) {
     this.sortField = '';
     this.partOfDepartments = [];
@@ -72,12 +84,28 @@ export class AdminEmployeeManagementComponent implements OnInit {
 
     //Mock All Users Data
     this.allUsers = [];
+
+    this.uploadProgress = -1;
+    this.showWarningMessage = false;
   }
 
   ngOnInit(): void {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.user = JSON.parse(currentUser);
+      const { companyId } = JSON.parse(currentUser);
+      this.companyDetailsService.getCompanyById(companyId).subscribe(
+        (result) => {
+          this.company = result.company;
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Company not found',
+          });
+        }
+      );
     }
     // Below is the correct code
     // this.isLoading = false;
@@ -142,18 +170,57 @@ export class AdminEmployeeManagementComponent implements OnInit {
   }
 
   downloadCSVTemplate() {
-    window.open(this.csvDownloadUrl, '_self');
+    this.downloadCsvDialogRef = this.dialogService.open(
+      DownloadCsvDialogComponent,
+      {
+        header: 'Download CSV Template',
+        width: '70%',
+        contentStyle: { 'max-height': '50vw', overflow: 'auto' },
+        data: { company: this.company, downloadLink: this.csvDownloadUrl },
+      }
+    );
   }
 
-  openUploadCSVDialog() {
-    // const uploadEmployeeCSVDialogRef = this.dialogService.open(
-    //   UploadEmployeeCSVComponent,
-    //   {
-    //     width: '70%',
-    //     height: '100%',
-    //   }
-    // );
-    // uploadEmployeeCSVDialogRef.onClose.subscribe();
+  openUploadCSVDialog(event) {
+    const currentDate = new Date().toString();
+
+    const fileRef = this.afStorage.ref(`Employee_CSV/${currentDate}`);
+
+    const uploadTask = fileRef.put(event.target.files[0]);
+    uploadTask
+      .percentageChanges()
+      .subscribe((data) => (this.uploadProgress = data));
+
+    uploadTask
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((url) => {
+            const updateCompany = {
+              ...this.company,
+              employeeCsv: url,
+            };
+            this.companyDetailsService.updateCompany(updateCompany).subscribe(
+              (response) => {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: 'Company employees have been updated.',
+                });
+              },
+              (error) => {
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail:
+                    'Unable to update company employees. Please try again.',
+                });
+              }
+            );
+          });
+        })
+      )
+      .subscribe();
   }
 
   createNewEmployee() {
