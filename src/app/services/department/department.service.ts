@@ -1,5 +1,4 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -26,14 +25,11 @@ export class DepartmentService {
       .pipe(catchError(handleError));
   }
 
-  createNewDepartment(department: any) {
-    console.log(department);
-    this.httpClient
+  createNewDepartment(department: any): Observable<any> {
+    // console.log(department);
+    return this.httpClient
       .post<any>(this.baseUrl + '/create-department', department)
-      .pipe(catchError(handleError))
-      .subscribe((response) => {
-        console.log(response);
-      });
+      .pipe(catchError(handleError));
   }
 
   // TODO: Will be updated when service is ready
