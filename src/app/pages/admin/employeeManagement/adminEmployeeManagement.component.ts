@@ -36,6 +36,7 @@ export interface user {
 export class AdminEmployeeManagementComponent implements OnInit {
   user;
   company: any | undefined;
+  departments: any | undefined;
 
   currNewUserEmail: String;
   currNewUserPosition: String;
@@ -101,6 +102,16 @@ export class AdminEmployeeManagementComponent implements OnInit {
       this.companyDetailsService.getCompanyById(companyId).subscribe(
         (result) => {
           this.company = result.company;
+          this.departmentService
+            .getAllDepartments(this.company.companyId)
+            .subscribe(
+              (response) => {
+                this.departments = response.departments;
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
         },
         (error) => {
           this.messageService.add({
@@ -207,6 +218,39 @@ export class AdminEmployeeManagementComponent implements OnInit {
         csvRecordsArray,
         headersRow.length
       );
+
+      let errorUsers = [];
+      for (let user of this.inputCsvData) {
+        this.userService.createNewUser(user).subscribe(
+          (response) => {
+            const userIndex = this.inputCsvData.findIndex(
+              (index) => index === user
+            );
+            if (userIndex === this.inputCsvData.length - 1) {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'Employees have been invited',
+              });
+            }
+            if (errorUsers.length > 0) {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail:
+                  'Unable to invite employees' +
+                  errorUsers.forEach((user) => {
+                    return user.fullName;
+                  }) +
+                  '. Please try again.',
+              });
+            }
+          },
+          (error) => {
+            errorUsers.push(user);
+          }
+        );
+      }
     };
     this.reader.onerror = function () {
       console.log('Error is occured while reading file!');
@@ -233,6 +277,14 @@ export class AdminEmployeeManagementComponent implements OnInit {
                   detail: 'Company employees have been updated.',
                 });
                 this.company = updateCompany;
+                this.userService.getUsers(this.user.companyId).subscribe(
+                  (response) => {
+                    this.allUsers = response.users;
+                  },
+                  (error) => {
+                    console.log(error);
+                  }
+                );
               },
               (error) => {
                 this.messageService.add({
@@ -261,12 +313,70 @@ export class AdminEmployeeManagementComponent implements OnInit {
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any, headerLength: any) {
     let csvArr = [];
 
+    let deptsInChargeOfIds = [];
+    let deptsPartOfIds = [];
+
     for (let i = 2; i < csvRecordsArray.length; i++) {
       let currentRecord = (<string>csvRecordsArray[i]).split(',');
-      console.log(currentRecord);
       if (currentRecord.length === headerLength) {
-        let deptInChargeOfData = (<string>currentRecord[3]).split('+');
-        let deptPartOfData = (<string>currentRecord[4]).split('+');
+        let deptInChargeOfData = (<string>currentRecord[4]).split('+');
+        let deptPartOfData = (<string>currentRecord[5]).split('+');
+
+        for (let dept of deptInChargeOfData) {
+          if (dept !== '') {
+            let existingDepartment = this.departments.find(
+              (department) => department.name === dept
+            );
+            if (
+              existingDepartment !== null &&
+              existingDepartment !== undefined
+            ) {
+              deptsInChargeOfIds.push(existingDepartment.departmentId);
+            } else {
+              let newDept = {
+                name: dept,
+                company: { companyId: this.company.companyId },
+              };
+              this.departmentService.createNewDepartment(newDept).subscribe(
+                (response) => {
+                  console.log('IN CHARGE OF DEPT CREATED', response.department);
+                  deptsInChargeOfIds.push(response.department.departmentId);
+                },
+                (error) => {
+                  console.log('Department In Charge of could not be created');
+                }
+              );
+            }
+          }
+        }
+
+        for (let dept of deptPartOfData) {
+          if (dept !== '') {
+            let existingDepartment = this.departments.find(
+              (department) => department.name === dept
+            );
+            if (
+              existingDepartment !== null &&
+              existingDepartment !== undefined
+            ) {
+              deptsPartOfIds.push(existingDepartment.departmentId);
+            } else {
+              let newDept = {
+                name: dept,
+                company: { companyId: this.company.companyId },
+              };
+              this.departmentService.createNewDepartment(newDept).subscribe(
+                (response) => {
+                  console.log('PART OF DEPT CREATED', response.department);
+                  deptsPartOfIds.push(response.department.departmentId);
+                },
+                (error) => {
+                  console.log('Department Part of could not be created');
+                }
+              );
+            }
+          }
+        }
 
         let csvRecord = {
           email: currentRecord[0].trim(),
@@ -274,9 +384,14 @@ export class AdminEmployeeManagementComponent implements OnInit {
           company: { companyId: this.company.companyId },
           password: 'password',
           contactNumber: currentRecord[2].trim(),
+          deptsInChargeOf: { deptsInChargeOf: deptsInChargeOfIds },
+          deptsPartOf: { deptsPartOf: deptsPartOfIds },
         };
 
+        console.log('Output CSV Record', csvRecord);
         csvArr.push(csvRecord);
+        deptsInChargeOfIds = [];
+        deptsPartOfIds = [];
       }
     }
     return csvArr;
