@@ -189,7 +189,7 @@ export class TaskComponent implements OnInit {
         allGoals: this.goals,
       },
       width: '85%',
-      height: 'auto%',
+      height: 'auto',
       showHeader: false,
     });
 
