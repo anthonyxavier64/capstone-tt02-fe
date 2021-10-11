@@ -57,6 +57,8 @@ export class AdminEmployeeManagementComponent implements OnInit {
   massInviteDialogRef: DynamicDialogRef;
   uploadProgress: number;
   showWarningMessage: boolean;
+  reader: FileReader;
+  inputCsvData: any[];
 
   artTestDialogRef: DynamicDialogRef;
   shnDeclarationDialogRef: DynamicDialogRef;
@@ -87,6 +89,8 @@ export class AdminEmployeeManagementComponent implements OnInit {
 
     this.uploadProgress = -1;
     this.showWarningMessage = false;
+    this.reader = new FileReader();
+    this.inputCsvData = [];
   }
 
   ngOnInit(): void {
@@ -191,6 +195,23 @@ export class AdminEmployeeManagementComponent implements OnInit {
     const fileRef = this.afStorage.ref(`Employee_CSV/${currentDate}.csv`);
 
     const uploadTask = fileRef.put(event.target.files[0]);
+
+    this.reader.readAsText(event.target.files[0]);
+    this.reader.onload = () => {
+      let csvData = this.reader.result;
+      let csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
+
+      let headersRow = this.getHeaderArray(csvRecordsArray);
+
+      this.inputCsvData = this.getDataRecordsArrayFromCSVFile(
+        csvRecordsArray,
+        headersRow.length
+      );
+    };
+    this.reader.onerror = function () {
+      console.log('Error is occured while reading file!');
+    };
+
     uploadTask
       .percentageChanges()
       .subscribe((data) => (this.uploadProgress = data));
@@ -226,6 +247,39 @@ export class AdminEmployeeManagementComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  getHeaderArray(csvRecordsArr: any) {
+    let headers = (<string>csvRecordsArr[1]).split(',');
+    let headerArray = [];
+    for (let j = 0; j < headers.length; j++) {
+      headerArray.push(headers[j]);
+    }
+    return headerArray;
+  }
+
+  getDataRecordsArrayFromCSVFile(csvRecordsArray: any, headerLength: any) {
+    let csvArr = [];
+
+    for (let i = 2; i < csvRecordsArray.length; i++) {
+      let currentRecord = (<string>csvRecordsArray[i]).split(',');
+      console.log(currentRecord);
+      if (currentRecord.length === headerLength) {
+        let deptInChargeOfData = (<string>currentRecord[3]).split('+');
+        let deptPartOfData = (<string>currentRecord[4]).split('+');
+
+        let csvRecord = {
+          email: currentRecord[0].trim(),
+          fullName: currentRecord[1].trim(),
+          company: { companyId: this.company.companyId },
+          password: 'password',
+          contactNumber: currentRecord[2].trim(),
+        };
+
+        csvArr.push(csvRecord);
+      }
+    }
+    return csvArr;
   }
 
   createNewEmployee() {
