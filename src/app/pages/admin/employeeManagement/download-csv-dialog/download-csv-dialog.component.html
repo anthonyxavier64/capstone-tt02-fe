@@ -1,5 +1,9 @@
 <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="15%">
-  <button class="peach-btn" style="height: 5vw" (click)="downloadNewCsv()">
+  <button
+    class="massInviteButtons"
+    style="height: 5vw"
+    (click)="downloadNewCsv()"
+  >
     <div
       fxLayout="column"
       fxLayoutAlign="space-around center"
@@ -11,9 +15,10 @@
     </div>
   </button>
   <button
-    class="peach-btn"
+    class="massInviteButtons"
     style="height: 5vw"
     [disabled]="company.employeeCsv === null"
+    [ngStyle]="{ opacity: company.employeeCsv === null ? '0.5' : '1' }"
     (click)="downloadExistingCsv()"
   >
     <div
