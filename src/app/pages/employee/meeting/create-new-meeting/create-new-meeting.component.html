@@ -141,7 +141,7 @@
             class="input"
             type="date"
             style="height: 2vw"
-            disabled="assignedPhysicalEmployees.length === 0 && assignedVirtualEmployees.length === 0"
+            disabled="assignedMeetingEmployees.length === 0"
           />
         </div>
         <div
@@ -160,7 +160,7 @@
             style="height: 2vw"
             min="company.officeOpeningHour"
             max="company.officeClosingHour"
-            disabled="assignedPhysicalEmployees.length === 0 && assignedVirtualEmployees.length === 0"
+            disabled="assignedMeetingEmployees.length === 0"
           />
         </div>
         <div
@@ -179,7 +179,7 @@
             style="height: 2vw"
             min="startTime"
             max="company.officeClosingHour"
-            disabled="assignedPhysicalEmployees.length === 0 && assignedVirtualEmployees.length === 0"
+            disabled="assignedMeetingEmployees.length === 0"
           />
         </div>
         <div
@@ -199,6 +199,50 @@
       </div>
       <div fxLayout="row" fxLayoutAlign="space-around start" fxLayoutGap="3%">
         <form
+          #chooseMeetingRoomForm="ngForm"
+          ngNativeValidate
+          name="chooseMeetingRoomForm"
+          (ngSubmit)="chooseMeetingRoom(chooseMeetingRoomForm)"
+        >
+          <div
+            fxLayout="column"
+            fxLayoutAlign="space-around start"
+            fxLayoutGap="3%"
+          >
+            <label style="white-space: nowrap"
+              >Choose Meeting Room (only for physical attendees):</label
+            >
+            <div
+              fxLayout="row"
+              fxLayoutAlign="space-around start"
+              fxLayoutGap="5%"
+            >
+              <p-dropdown
+                [options]="rooms"
+                optionLabel="name"
+                name="selectedRoom"
+                ngModel
+                #selectedRoom="ngModel"
+                placeholder="Please select a room"
+                [filter]="true"
+                filterBy="name"
+                [style]="{ width: '15vw' }"
+                [disabled]="assignedPhysicalEmployees.length === 0"
+              >
+                <ng-template let-room pTemplate="item">
+                  <div fxLayout="column" fxLayoutGap="3%">
+                    <div>Room Name: {{ room.name }}</div>
+                    <div>Room Capacity: {{ room.capacity }}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+              <button mat-button class="peach-btn" type="submit">Add</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-around start" fxLayoutGap="3%">
+        <form
           #assignPhysicalEmployeeForm="ngForm"
           ngNativeValidate
           name="assignPhysicalEmployee"
@@ -209,15 +253,11 @@
             fxLayoutAlign="space-around start"
             fxLayoutGap="3%"
           >
-            <label style="white-space: nowrap"
-              >Add Physical Employees (Max
-              {{ company.officeCapacity }} attendees):</label
+            <label style="white-space: pre-wrap"
+              >Assign Physical Employees <br />
+              (Office Capacity: {{ company.officeCapacity }})</label
             >
-            <div
-              fxLayout="row"
-              fxLayoutAlign="space-around start"
-              fxLayoutGap="5%"
-            >
+            <div fxLayout="row" fxLayoutAlign="space-around" fxLayoutGap="5%">
               <p-dropdown
                 [options]="assignedMeetingEmployees"
                 optionLabel="fullName"
@@ -287,7 +327,7 @@
                   </button>
                 </div>
                 <div *ngIf="assignedPhysicalEmployees.length === 0">
-                  <p>Assign employees to the task!</p>
+                  <p>Assign employees to the meeting!</p>
                 </div>
               </tr>
             </table>
@@ -305,7 +345,7 @@
             fxLayoutAlign="space-around start"
             fxLayoutGap="3%"
           >
-            <label style="white-space: nowrap">Add Virtual Employees:</label>
+            <label style="white-space: nowrap">Assign Virtual Employees:</label>
             <div
               fxLayout="row"
               fxLayoutAlign="space-around start"
@@ -379,7 +419,7 @@
                   </button>
                 </div>
                 <div *ngIf="assignedVirtualEmployees.length === 0">
-                  <p>Assign employees to the task!</p>
+                  <p>Assign employees to the meeting!</p>
                 </div>
               </tr>
             </table>
@@ -393,50 +433,6 @@
       fxLayoutGap="20%"
       fxFlex="100%"
     >
-      <div fxLayout="row" fxLayoutAlign="space-around start" fxLayoutGap="3%">
-        <form
-          #chooseMeetingRoomForm="ngForm"
-          ngNativeValidate
-          name="chooseMeetingRoomForm"
-          (ngSubmit)="chooseMeetingRoom(chooseMeetingRoomForm)"
-        >
-          <div
-            fxLayout="column"
-            fxLayoutAlign="space-around start"
-            fxLayoutGap="3%"
-          >
-            <label style="white-space: nowrap"
-              >Choose Meeting Room (only for Physical Meetings):</label
-            >
-            <div
-              fxLayout="row"
-              fxLayoutAlign="space-around start"
-              fxLayoutGap="5%"
-            >
-              <p-dropdown
-                [options]="rooms"
-                optionLabel="name"
-                name="selectedRoom"
-                ngModel
-                #selectedRoom="ngModel"
-                placeholder="Please select a room"
-                [filter]="true"
-                filterBy="name"
-                [style]="{ width: '15vw' }"
-                [disabled]="assignedPhysicalEmployees.length === 0"
-              >
-                <ng-template let-room pTemplate="item">
-                  <div fxLayout="column" fxLayoutGap="3%">
-                    <div>Room Name: {{ room.name }}</div>
-                    <div>Room Capacity: {{ room.capacity }}</div>
-                  </div>
-                </ng-template>
-              </p-dropdown>
-              <button mat-button class="peach-btn" type="submit">Add</button>
-            </div>
-          </div>
-        </form>
-      </div>
       <div
         fxLayout="column"
         fxLayoutAlign="space-around start"
@@ -450,7 +446,7 @@
           class="errorText"
           style="color: red"
         >
-          Task Name cannot be empty!
+          Meeting Title cannot be empty!
         </div>
         <div
           *ngIf="endTimeInput.value < startTimeInput.value"
