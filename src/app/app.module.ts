@@ -1,17 +1,3 @@
-import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/moment';
-import * as moment from 'moment';
-import { NgCircleProgressModule } from 'ng-circle-progress';
-import { DataViewModule } from 'primeng/dataview';
-import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
-import { DialogService } from 'primeng/dynamicdialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { StyleClassModule } from 'primeng/styleclass';
-import { TableModule } from 'primeng/table';
-import { environment } from 'src/environments/environment.dev';
-
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -25,8 +11,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import {
-  MAT_FORM_FIELD_DEFAULT_OPTIONS,
   MatFormFieldModule,
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
 } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -35,7 +21,19 @@ import { MatSelectModule } from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
-
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/moment';
+import * as moment from 'moment';
+import { NgCircleProgressModule } from 'ng-circle-progress';
+import { DataViewModule } from 'primeng/dataview';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { DialogService } from 'primeng/dynamicdialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { StyleClassModule } from 'primeng/styleclass';
+import { TableModule } from 'primeng/table';
+import { environment } from 'src/environments/environment.dev';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TOKEN_KEY } from './config';
@@ -70,6 +68,7 @@ import { ShnDeclarationDialogComponent } from './pages/covid-declarations/shn-de
 import { UploadVaccinationDialogComponent } from './pages/covid-declarations/upload-vaccination-dialog/upload-vaccination-dialog.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { CreateNewTaskDialogComponent } from './pages/employee/create-new-task-dialog/create-new-task-dialog.component';
+import { CreateNewMeetingComponent } from './pages/employee/meeting/create-new-meeting/create-new-meeting.component';
 import { TaskDetailDialogComponent } from './pages/employee/task-detail-dialog/task-detail-dialog.component';
 import { TaskComponent } from './pages/employee/task/task.component';
 import { IndexComponent } from './pages/index/index.component';
@@ -84,7 +83,7 @@ import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
-};
+}
 
 export function tokenGetter() {
   return localStorage.getItem(TOKEN_KEY);
@@ -136,6 +135,7 @@ export function tokenGetter() {
     CalendarComponent,
     DownloadCsvDialogComponent,
     MassInviteInfoDialogComponent,
+    CreateNewMeetingComponent,
   ],
   imports: [
     CommonModule,
@@ -192,7 +192,10 @@ export function tokenGetter() {
         allowedDomains: ['localhost:3000'],
       },
     }),
-    CalendarModule.forRoot({ provide: DateAdapter, useFactory: momentAdapterFactory }),
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: momentAdapterFactory,
+    }),
   ],
   providers: [
     {

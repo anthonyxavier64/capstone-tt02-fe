@@ -1,9 +1,8 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-
 import { environment } from '../../../environments/environment.dev';
 import { handleError } from '../services-util';
 
@@ -24,6 +23,16 @@ export class CompanyService {
       .post<any>(
         this.baseUrl + '/company-creation-request/create-request',
         request,
+        httpOptions
+      )
+      .pipe(catchError(handleError));
+  }
+
+  getCompany(companyId: String): Observable<any> {
+    return this.httpClient
+      .post<any>(
+        this.baseUrl + '/company/get-company',
+        { companyId },
         httpOptions
       )
       .pipe(catchError(handleError));
