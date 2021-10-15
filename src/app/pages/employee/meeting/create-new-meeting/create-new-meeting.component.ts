@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { CompanyService } from 'src/app/services/company/company.service';
+import { GoalService } from 'src/app/services/goal/goal.service';
 import { MessageService } from 'primeng/api';
 import { NgForm } from '@angular/forms';
 import { UserService } from 'src/app/services/user/user.service';
@@ -19,8 +20,10 @@ export class CreateNewMeetingComponent implements OnInit {
   allGoals: any | null;
   employees: any[];
   scheduleType = ['DAILY', 'WEEKLY', 'BIWEEKLY', 'MONTHLY'];
+  assignedMeetingEmployees: any[] = [];
   assignedPhysicalEmployees: any[] = [];
   assignedVirtualEmployees: any[] = [];
+  selectedMeetingEmployees: any | null;
   selectedPhysicalEmployees: any | null;
   selectedVirtualEmployees: any | null;
   selectedGoal: String; // Whats the diff between selectedGoal and chosenGoal?
@@ -34,10 +37,13 @@ export class CreateNewMeetingComponent implements OnInit {
   chosenGoal: any;
   chosenRoom: any; // Should this be selectedRoom or chosenRoom?
 
+  currentCapacity: any;
+
   constructor(
     private messageService: MessageService,
     private userService: UserService,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private goalService: GoalService
   ) {
     this.selectedGoal = '';
   }
@@ -62,11 +68,8 @@ export class CreateNewMeetingComponent implements OnInit {
 
     this.goal = this.allGoals[0];
 
-    console.log(currentUser);
-
     this.companyService.getCompany(JSON.parse(currentUser).companyId).subscribe(
       (response) => {
-        console.log('Company Fetched: ' + JSON.stringify(response.company));
         this.company = response.company;
         this.rooms = this.company.rooms;
       },
@@ -75,7 +78,6 @@ export class CreateNewMeetingComponent implements OnInit {
 
     this.userService.getUsers(JSON.parse(currentUser).companyId).subscribe(
       (response) => {
-        console.log('allUsers Fetched: ' + response.users);
         this.employees = response.users;
         const userIndexToRemove = this.employees.findIndex(
           (item) => item.userId === this.user.userId
@@ -84,6 +86,15 @@ export class CreateNewMeetingComponent implements OnInit {
       },
       (error) => {}
     );
+
+    this.goalService
+      .getAllGoalsByCompanyId(JSON.parse(currentUser).companyId)
+      .subscribe(
+        (response) => {
+          this.allGoals = response.goals;
+        },
+        (error) => {}
+      );
   }
 
   // Does this use a form to implement responsiveness?
@@ -98,10 +109,10 @@ export class CreateNewMeetingComponent implements OnInit {
       )
     ) {
       this.assignedPhysicalEmployees.push(assignedEmployee);
-      const indexToRemove = this.employees.findIndex(
+      const indexToRemove = this.assignedMeetingEmployees.findIndex(
         (item) => item.userId === assignedEmployee.userId
       );
-      this.employees.splice(indexToRemove, 1);
+      this.assignedMeetingEmployees.splice(indexToRemove, 1);
     } else {
       this.messageService.add({
         severity: 'error',
@@ -122,6 +133,27 @@ export class CreateNewMeetingComponent implements OnInit {
       )
     ) {
       this.assignedVirtualEmployees.push(assignedEmployee);
+      const indexToRemove = this.assignedMeetingEmployees.findIndex(
+        (item) => item.userId === assignedEmployee.userId
+      );
+      this.assignedMeetingEmployees.splice(indexToRemove, 1);
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Employee already assigned',
+      });
+    }
+  }
+
+  assignMeetingEmployee(employee: NgForm): void {
+    const assignedEmployee = employee.value.selectedMeetingEmployees;
+    if (
+      !this.assignedMeetingEmployees.find(
+        (item) => item.userId === assignedEmployee.userId
+      )
+    ) {
+      this.assignedMeetingEmployees.push(assignedEmployee);
       const indexToRemove = this.employees.findIndex(
         (item) => item.userId === assignedEmployee.userId
       );
@@ -173,6 +205,15 @@ export class CreateNewMeetingComponent implements OnInit {
       (item) => item.userId === user.userId
     );
     this.assignedVirtualEmployees.splice(indexToRemove, 1);
+
+    this.employees.push(user);
+  }
+
+  unassignMeetingEmployee(user: any): void {
+    const indexToRemove = this.assignedMeetingEmployees.findIndex(
+      (item) => item.userId === user.userId
+    );
+    this.assignedMeetingEmployees.splice(indexToRemove, 1);
 
     this.employees.push(user);
   }
