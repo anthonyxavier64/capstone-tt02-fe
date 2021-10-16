@@ -9,16 +9,29 @@
     ></div>
     <p class="text">{{ renderVaccinationStatus() }}</p>
   </div>
-  <div>
-    <!-- <div>
-      <input type="radio" id="positive" name="isPositive" value={{true}}
-             checked>
+  <div class="covid-status">
+    <div>
+      <input
+        type="radio"
+        id="positive"
+        name="isPositive"
+        value="{{ true }}"
+        [checked]="isPositive"
+        (change)="onRadioChange()"
+      />
       <label for="stay-home-notice">Positive</label>
     </div>
+    &nbsp;
     <div>
-      <input type="radio" id="negative" name="isPositive" value={{false}}>
+      <input
+        type="radio"
+        id="negative"
+        name="isPositive"
+        [checked]="!isPositive"
+        (change)="onRadioChange()"
+      />
       <label for="quarantine-order">Negative</label>
-    </div> -->
+    </div>
   </div>
   <br />
   <input

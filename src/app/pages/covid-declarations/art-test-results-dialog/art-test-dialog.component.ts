@@ -21,6 +21,7 @@ export class ArtDialogComponent implements OnInit {
   user: any;
   covidDocumentSubmissions: any[];
   artTests: any[]
+  isPositive: boolean;
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
@@ -32,6 +33,7 @@ export class ArtDialogComponent implements OnInit {
     this.showWarningMessage = false;
     this.covidDocumentSubmissions = [];
     this.artTests = [];
+    this.isPositive = false;
   }
 
   ngOnInit(): void {
@@ -59,6 +61,10 @@ export class ArtDialogComponent implements OnInit {
       );
   }
 
+  onRadioChange() {
+    this.isPositive = !this.isPositive;
+  }
+
   upload(event) {
     const currentDate = new Date().toString();
 
@@ -83,7 +89,7 @@ export class ArtDialogComponent implements OnInit {
         });
       })
     ).subscribe();
-    const newSubmission = { dateOfSubmission: currentDate, covidDocumentType: "ART_TEST_RESULT", employeeId: this.user.userId };
+    const newSubmission = { dateOfSubmission: currentDate, covidDocumentType: "ART_TEST_RESULT", employeeId: this.user.userId, isPositive: this.isPositive };
     this.covidDocumentSubmissionService
       .createCovidDocumentSubmission(newSubmission)
       .subscribe(
