@@ -408,7 +408,7 @@
           class="input"
           type="date"
           style="height: 2vw"
-          disabled="assignedMeetingEmployees.length === 0"
+          [disabled]="assignedMeetingEmployees.length === 0"
         />
       </div>
       <div
@@ -433,11 +433,15 @@
               #startTimeInput="ngModel"
               class="input"
               type="time"
-              step="3600"
+              step="900"
               style="height: 2vw"
-              min="company.officeOpeningHour"
-              max="company.officeClosingHour"
-              disabled="assignedMeetingEmployees.length === 0"
+              [min]="company.officeOpeningHour"
+              [max]="company.officeClosingHour"
+              [disabled]="
+                assignedMeetingEmployees.length === 0 &&
+                assignedPhysicalEmployees.length === 0 &&
+                assignedVirtualEmployees.length === 0
+              "
             />
           </div>
 
@@ -454,11 +458,15 @@
               #endTimeInput="ngModel"
               class="input"
               type="time"
-              step="3600"
+              step="900"
               style="height: 2vw"
-              min="startTime"
-              max="company.officeClosingHour"
-              disabled="assignedMeetingEmployees.length === 0"
+              [min]="company.officeOpeningHour"
+              [max]="company.officeClosingHour"
+              [disabled]="
+                assignedMeetingEmployees.length === 0 &&
+                assignedPhysicalEmployees.length === 0 &&
+                assignedVirtualEmployees.length === 0
+              "
             />
           </div>
         </div>
@@ -492,51 +500,49 @@
       fxLayoutAlign="space-between"
       style="width: 100%; flex-wrap: wrap"
     >
-      <form
-        #chooseMeetingRoomForm="ngForm"
-        ngNativeValidate
-        name="chooseMeetingRoomForm"
-        (ngSubmit)="chooseMeetingRoom(chooseMeetingRoomForm)"
+      <div
+        fxLayout="column"
+        fxLayoutAlign="space-around start"
+        fxLayoutGap="1%"
         style="width: 100%; flex-wrap: wrap"
       >
-        <div
-          fxLayout="column"
-          fxLayoutAlign="space-around start"
-          fxLayoutGap="1%"
+        <label style="white-space: nowrap; width: 100%"
+          >Choose Meeting Room (only for physical attendees):</label
         >
-          <label style="white-space: nowrap; width: 100%"
-            >Choose Meeting Room (only for physical attendees):</label
-          >
-          <div class="meetingRoomBox" style="overflow-y: auto">
-            <mat-grid-list cols="4" gutterSize="50px" rowHeight="1.8:1">
-              <div *ngFor="let room of rooms">
-                <mat-grid-tile>
-                  <button mat-button style="background-color: inherit">
+        <div class="meetingRoomBox" style="overflow-y: auto">
+          <mat-grid-list cols="4" gutterSize="50px" rowHeight="1.8:1">
+            <div *ngFor="let room of rooms">
+              <mat-grid-tile>
+                <button
+                  mat-button
+                  style="background-color: inherit"
+                  (click)="chooseMeetingRoom(room)"
+                >
+                  <div
+                    class="roomItem"
+                    [ngStyle]="{ opacity: room.isSelected ? '1' : '0.4' }"
+                    fxLayout="column"
+                    fxLayoutAlign="start"
+                    fxLayoutGap="2%"
+                  >
+                    <h1 style="text-align: left">{{ room.name }}</h1>
                     <div
-                      class="roomItem"
                       fxLayout="column"
-                      fxLayoutAlign="start"
-                      fxLayoutGap="2%"
+                      fxLayoutAlign="space-around start"
+                      fxLayoutGap="1%"
                     >
-                      <h1 style="text-align: left">{{ room.name }}</h1>
-                      <div
-                        fxLayout="column"
-                        fxLayoutAlign="space-around start"
-                        fxLayoutGap="1%"
-                      >
-                        <p style="font-size: 1.2vw">{{ room.location }}</p>
-                        <p style="font-size: 1.2vw">
-                          Capacity: {{ room.capacity }}
-                        </p>
-                      </div>
+                      <p style="font-size: 1.2vw">{{ room.location }}</p>
+                      <p style="font-size: 1.2vw">
+                        Capacity: {{ room.capacity }}
+                      </p>
                     </div>
-                  </button>
-                </mat-grid-tile>
-              </div>
-            </mat-grid-list>
-          </div>
+                  </div>
+                </button>
+              </mat-grid-tile>
+            </div>
+          </mat-grid-list>
         </div>
-      </form>
+      </div>
     </div>
     <div
       fxLayout="column"
@@ -544,11 +550,6 @@
       fxLayoutGap="2%"
       style="width: 100%"
     >
-      <div
-        fxLayout="column"
-        fxLayoutAlign="space-around center"
-        fxLayoutGap="3%"
-      ></div>
       <div
         fxLayout="column"
         fxLayoutAlign="space-around start"
