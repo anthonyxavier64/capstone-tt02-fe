@@ -78,24 +78,27 @@ h1 {
 .custom-file-input:active::before {
   background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
-.vaccination-status-wrapper {
+.fet-status-wrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   margin-bottom: 24px;
 }
-.vaccination-status {
+.fet-status {
   border-radius: 50px;
   width: 28px;
   height: 28px;
   margin-right: 8px;
 }
-.vaccination-status.vaccinated {
+.fet-status.green {
   background-color: green;
 }
-.vaccination-status.unvaccinated {
+.fet-status.red {
   background-color: #a50000;
+}
+.fet-status.grey {
+  background-color: grey;
 }
 .covid-status {
   display: flex;

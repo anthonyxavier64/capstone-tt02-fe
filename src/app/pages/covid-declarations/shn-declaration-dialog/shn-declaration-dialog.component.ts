@@ -132,6 +132,8 @@ export class ShnDeclarationDialogComponent implements OnInit {
         (response) => {
           if (response.status) {
             console.log('success!', response.covidDocumentSubmission);
+            this.covidDocumentSubmissions.push(response.covidDocumentSubmission);
+            this.mcs.push(response.covidDocumentSubmission);
           } else {
             console.log('A problem has occured', response);
           }
@@ -157,16 +159,22 @@ export class ShnDeclarationDialogComponent implements OnInit {
     }
     return 'NA';
   }
-  renderVaccinationStatus() {
-    if (this.user?.isVaccinated) {
-      return 'Vaccinated';
+
+  renderMcStatus() {
+    if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
+      const today = moment();
+      if (today.isAfter(this.mcs[0].startDate) && today.isBefore(this.mcs[0].endDate)) {
+        if (this.mcs[0].covidDocumentType === "SHN_MEDICAL_CERTIFICATE") {
+          return "On stay home notice";
+        } else {
+          return "On quarantine order";
+        }
+      }
     }
-    return 'Not Yet Vaccinated';
+    return "Fit for work";
   }
-  renderVaccinationStyle() {
-    if (this.user?.isVaccinated) {
-      return 'vaccinated';
-    }
-    return 'unvaccinated';
+  mcApprovalStatus() {
+    if (this.renderMcStatus() === "Fit for work") return "green";
+    return "red";
   }
 }

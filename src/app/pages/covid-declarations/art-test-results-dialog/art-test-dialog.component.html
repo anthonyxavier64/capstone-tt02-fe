@@ -1,13 +1,9 @@
 <div class="dialog-container">
   <h1>ART/FET Test Results</h1>
   <p class="last-updated">Last updated: {{ renderLastUpdate() }}</p>
-  <div class="vaccination-status-wrapper">
-    <div
-      class="vaccination-status {{
-        user?.isVaccinated ? 'vaccinated' : 'unvaccinated'
-      }}"
-    ></div>
-    <p class="text">{{ renderVaccinationStatus() }}</p>
+  <div class="fet-status-wrapper">
+    <div class="fet-status {{ fetApprovalStyle() }}"></div>
+    <p class="text">{{ renderFetApprovalStatus() }}</p>
   </div>
   <div class="covid-status">
     <div>
