@@ -95,6 +95,8 @@ export class ArtDialogComponent implements OnInit {
       .subscribe(
         (response) => {
           if (response.status) {
+            this.covidDocumentSubmissions.push(response.covidDocumentSubmission);
+            this.artTests.push(response.covidDocumentSubmission);
             console.log(response.covidDocumentSubmission);
           } else {
             console.log("A problem has occured", response);
@@ -137,7 +139,6 @@ export class ArtDialogComponent implements OnInit {
       }
       return "green";
     }
-
     return "grey";
   }
   renderFetApprovalStatus() {

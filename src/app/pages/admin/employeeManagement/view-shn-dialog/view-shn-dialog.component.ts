@@ -131,17 +131,22 @@ export class ViewShnDeclarationDialog implements OnInit {
     }
     return null;
   }
-  renderVaccinationStatus() {
-    if (this.isVaccinated) {
-      return 'Vaccinated';
+  renderMcStatus() {
+    if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
+      const today = moment();
+      if (today.isAfter(this.mcs[0].startDate) && today.isBefore(this.mcs[0].endDate)) {
+        if (this.mcs[0].covidDocumentType === "SHN_MEDICAL_CERTIFICATE") {
+          return "On stay home notice";
+        } else {
+          return "On quarantine order";
+        }
+      }
     }
-    return 'Not Yet Vaccinated';
+    return "Fit for work";
   }
-  renderVaccinationStyle() {
-    if (this.isVaccinated) {
-      return 'vaccinated';
-    }
-    return 'unvaccinated';
+  mcApprovalStatus() {
+    if (this.renderMcStatus() === "Fit for work") return "green";
+    return "red";
   }
 
   onSaveClick(form: NgForm) {
