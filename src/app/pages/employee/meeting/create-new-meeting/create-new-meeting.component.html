@@ -6,42 +6,73 @@
 >
   <app-navbar></app-navbar>
 
-  <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="3%">
-    <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="3%">
-      <p-dropdown
-        *ngIf="selectedGoal === ''"
-        [options]="allGoals"
-        [(ngModel)]="chosenGoal"
-        optionLabel="name"
-        [filter]="true"
-        filterBy="name"
-        placeholder="Select a goal (Optional)"
-      ></p-dropdown>
-      <h1 style="white-space: nowrap" *ngIf="selectedGoal === ''">
-        - Meeting Title:
-      </h1>
-      <input
-        matInput
-        [(ngModel)]="meetingTitle"
-        #meetingTitleInput="ngModel"
-        class="input"
-        type="text"
-        style="height: 2vw"
-        placeholder="Insert Meeting Title Here"
-      />
+  <div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="space-around center">
+    <mat-spinner style="color: aquamarine; margin-top: 15%"></mat-spinner>
+  </div>
+  <div
+    *ngIf="!isLoading"
+    fxLayout="column"
+    fxLayoutAlign="space-around start"
+    fxLayoutGap="3%"
+    style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+  >
+    <!-- Set Meeting goal and name -->
+    <div fxLayout="row" fxLayoutAlign="space-between start" style="width: 100%">
+      <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="3%">
+        <p-dropdown
+          *ngIf="selectedGoal === ''"
+          [options]="allGoals"
+          [(ngModel)]="chosenGoal"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Select a goal (Optional)"
+        ></p-dropdown>
+        <h1 style="white-space: nowrap" *ngIf="selectedGoal === ''">
+          - Meeting Title:
+        </h1>
+        <input
+          matInput
+          [(ngModel)]="meetingTitle"
+          #meetingTitleInput="ngModel"
+          class="input"
+          type="text"
+          placeholder="Meeting Title"
+        />
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="2%">
+        <button
+          mat-button
+          class="peach-btn"
+          (click)="createNewMeeting()"
+          [disabled]="
+            meetingTitleInput.value === null ||
+            meetingTitleInput.value === '' ||
+            endTimeInput.value < startTimeInput.value
+          "
+        >
+          Save Meeting
+        </button>
+        <button mat-button class="grey-btn" (click)="onBackClick()">
+          Back
+        </button>
+      </div>
     </div>
-    <div fxLayout="row" fxLayoutAlign="space-around start" fxLayoutGap="3%">
+
+    <!-- Set meeting assigned employees -->
+    <div
+      fxLayout="row"
+      fxLayoutAlign="space-between start"
+      fxLayoutGap="3%"
+      style="width: 100%"
+    >
       <form
         #assignMeetingEmployeeForm="ngForm"
         ngNativeValidate
         name="assignMeetingEmployee"
         (ngSubmit)="assignMeetingEmployee(assignMeetingEmployeeForm)"
       >
-        <div
-          fxLayout="column"
-          fxLayoutAlign="space-around start"
-          fxLayoutGap="3%"
-        >
+        <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="3%">
           <label style="white-space: nowrap"
             >Select employees for meeting:</label
           >
@@ -82,68 +113,288 @@
             <button mat-button class="peach-btn" type="submit">Add</button>
           </div>
 
-          <table
-            style="overflow: auto"
-            *ngFor="let meetingEmployee of assignedMeetingEmployees"
-          >
-            <tr>
-              <div
-                *ngIf="assignedMeetingEmployees.length !== 0"
-                fxLayout="row"
-                fxLayoutAlign="space-between center"
-                fxLayoutGap="15%"
-              >
-                <div fxLayout="row" fxLayoutGap="3%">
-                  <img
-                    *ngIf="meetingEmployee.isVaccinated"
-                    src="../../../../../assets/images/vaccinatedIcon.svg"
-                  />
-                  <img
-                    *ngIf="!meetingEmployee.isVaccinated"
-                    src="../../../../../assets/images/unvaccinatedIcon.svg"
-                  />
-                  <p style="white-space: nowrap; font-size: 1.4vw">
-                    {{ meetingEmployee.fullName }}
-                  </p>
-                </div>
-                <button
-                  mat-button
-                  style="background-color: inherit"
-                  (click)="unassignMeetingEmployee(meetingEmployee)"
+          <div style="height: 20vw; overflow-y: auto">
+            <table *ngFor="let meetingEmployee of assignedMeetingEmployees">
+              <tr>
+                <div
+                  *ngIf="assignedMeetingEmployees.length !== 0"
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                  fxLayoutGap="15%"
                 >
-                  <img
-                    style="cursor: pointer; height: 1.5em; width: 1.5em"
-                    src="../../../../../assets/images/deleteIcon.png"
-                  />
-                </button>
-              </div>
-              <div *ngIf="assignedMeetingEmployees.length === 0">
-                <p>Assign employees to the task!</p>
-              </div>
-            </tr>
-          </table>
+                  <div fxLayout="row" fxLayoutGap="3%">
+                    <img
+                      *ngIf="
+                        meetingEmployee.isVaccinated &&
+                        !meetingEmployee.isInfected
+                      "
+                      src="../../../../../assets/images/vaccinatedIcon.svg"
+                    />
+                    <img
+                      *ngIf="
+                        !meetingEmployee.isVaccinated &&
+                        !meetingEmployee.isInfected
+                      "
+                      src="../../../../../assets/images/unvaccinatedIcon.svg"
+                    />
+                    <img
+                      *ngIf="meetingEmployee.isInfected"
+                      src="../../../../../assets/images/covidIcon.svg"
+                    />
+                    <p style="white-space: nowrap; font-size: 1.4vw">
+                      {{ meetingEmployee.fullName }}
+                    </p>
+                  </div>
+                  <button
+                    mat-button
+                    style="background-color: inherit"
+                    (click)="unassignMeetingEmployee(meetingEmployee)"
+                  >
+                    <img
+                      style="cursor: pointer; height: 1.5em; width: 1.5em"
+                      src="../../../../../assets/images/deleteIcon.png"
+                    />
+                  </button>
+                </div>
+                <div *ngIf="assignedMeetingEmployees.length === 0">
+                  <p>Assign employees to the task!</p>
+                </div>
+              </tr>
+            </table>
+          </div>
         </div>
       </form>
+
+      <div fxLayout="column" fxLayoutAlign="space-around start">
+        <label>In-Office (Office Capacity: {{ company.officeCapacity }})</label>
+        <div
+          class="assignEmployeeBox"
+          fxLayout="row"
+          fxLayoutAlign="space-around start"
+        >
+          <form
+            #assignPhysicalEmployeeForm="ngForm"
+            ngNativeValidate
+            name="assignPhysicalEmployee"
+            (ngSubmit)="assignPhysicalEmployee(assignPhysicalEmployeeForm)"
+          >
+            <div
+              fxLayout="column"
+              fxLayoutAlign="space-around start"
+              fxLayoutGap="3%"
+            >
+              <div fxLayout="row" fxLayoutAlign="space-around" fxLayoutGap="5%">
+                <p-dropdown
+                  [options]="assignedMeetingEmployees"
+                  optionLabel="fullName"
+                  name="selectedPhysicalEmployees"
+                  ngModel
+                  #selectedPhysicalEmployees="ngModel"
+                  placeholder="Please select an employee"
+                  [filter]="true"
+                  filterBy="fullName"
+                  [style]="{ width: '15vw' }"
+                  optionDisabled="isInfected"
+                >
+                  <ng-template let-user pTemplate="item">
+                    <div fxLayout="row" fxLayoutGap="3%">
+                      <img
+                        *ngIf="user.isVaccinated && !user.isInfected"
+                        src="../../../../../assets/images/vaccinatedIcon.svg"
+                      />
+                      <img
+                        *ngIf="!user.isVaccinated && !user.isInfected"
+                        src="../../../../../assets/images/unvaccinatedIcon.svg"
+                      />
+                      <img
+                        *ngIf="user.isInfected"
+                        src="../../../../../assets/images/covidIcon.svg"
+                      />
+                      <div>{{ user.fullName }}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
+                <button mat-button class="peach-btn" type="submit">Add</button>
+              </div>
+
+              <table
+                style="overflow: auto"
+                *ngFor="let physicalEmployee of assignedPhysicalEmployees"
+              >
+                <tr>
+                  <div
+                    *ngIf="assignedPhysicalEmployees.length !== 0"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                    fxLayoutGap="15%"
+                  >
+                    <div fxLayout="row" fxLayoutGap="3%">
+                      <img
+                        *ngIf="physicalEmployee.isVaccinated"
+                        src="../../../../../assets/images/vaccinatedIcon.svg"
+                      />
+                      <img
+                        *ngIf="!physicalEmployee.isVaccinated"
+                        src="../../../../../assets/images/unvaccinatedIcon.svg"
+                      />
+                      <p style="white-space: nowrap; font-size: 1.4vw">
+                        {{ physicalEmployee.fullName }}
+                      </p>
+                    </div>
+                    <button
+                      mat-button
+                      style="background-color: inherit"
+                      (click)="unassignPhysicalEmployee(physicalEmployee)"
+                    >
+                      <img
+                        style="cursor: pointer; height: 1.5em; width: 1.5em"
+                        src="../../../../../assets/images/deleteIcon.png"
+                      />
+                    </button>
+                  </div>
+                  <div *ngIf="assignedPhysicalEmployees.length === 0">
+                    <p>Assign employees to the meeting!</p>
+                  </div>
+                </tr>
+              </table>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div fxLayout="column" fxLayoutAlign="space-around start">
+        <label>Online</label>
+        <div
+          class="assignEmployeeBox"
+          fxLayout="row"
+          fxLayoutAlign="space-around start"
+        >
+          <form
+            #assignVirtualEmployeeForm="ngForm"
+            ngNativeValidate
+            name="assignVirtualEmployee"
+            (ngSubmit)="assignVirtualEmployee(assignVirtualEmployeeForm)"
+          >
+            <div
+              fxLayout="column"
+              fxLayoutAlign="space-around start"
+              fxLayoutGap="3%"
+            >
+              <div
+                fxLayout="row"
+                fxLayoutAlign="space-around start"
+                fxLayoutGap="5%"
+              >
+                <p-dropdown
+                  [options]="assignedMeetingEmployees"
+                  optionLabel="fullName"
+                  name="selectedVirtualEmployees"
+                  ngModel
+                  #selectedVirtualEmployees="ngModel"
+                  placeholder="Please select an employee"
+                  [filter]="true"
+                  filterBy="fullName"
+                  [style]="{ width: '15vw' }"
+                >
+                  <ng-template let-user pTemplate="item">
+                    <div fxLayout="row" fxLayoutGap="3%">
+                      <img
+                        *ngIf="user.isVaccinated && !user.isInfected"
+                        src="../../../../../assets/images/vaccinatedIcon.svg"
+                      />
+                      <img
+                        *ngIf="!user.isVaccinated && !user.isInfected"
+                        src="../../../../../assets/images/unvaccinatedIcon.svg"
+                      />
+                      <img
+                        *ngIf="user.isInfected"
+                        src="../../../../../assets/images/covidIcon.svg"
+                      />
+                      <div>{{ user.fullName }}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
+                <button mat-button class="peach-btn" type="submit">Add</button>
+              </div>
+
+              <table
+                style="overflow: auto"
+                *ngFor="let virtualEmployee of assignedVirtualEmployees"
+              >
+                <tr>
+                  <div
+                    *ngIf="assignedVirtualEmployees.length !== 0"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                    fxLayoutGap="15%"
+                  >
+                    <div fxLayout="row" fxLayoutGap="3%">
+                      <img
+                        *ngIf="
+                          virtualEmployee.isVaccinated &&
+                          !virtualEmployee.isInfected
+                        "
+                        src="../../../../../assets/images/vaccinatedIcon.svg"
+                      />
+                      <img
+                        *ngIf="
+                          !virtualEmployee.isVaccinated &&
+                          !virtualEmployee.isInfected
+                        "
+                        src="../../../../../assets/images/unvaccinatedIcon.svg"
+                      />
+                      <img
+                        *ngIf="virtualEmployee.isInfected"
+                        src="../../../../../assets/images/covidIcon.svg"
+                      />
+                      <p style="white-space: nowrap; font-size: 1.4vw">
+                        {{ virtualEmployee.fullName }}
+                      </p>
+                    </div>
+                    <button
+                      mat-button
+                      style="background-color: inherit"
+                      (click)="unassignVirtualEmployee(virtualEmployee)"
+                    >
+                      <img
+                        style="cursor: pointer; height: 1.5em; width: 1.5em"
+                        src="../../../../../assets/images/deleteIcon.png"
+                      />
+                    </button>
+                  </div>
+                  <div *ngIf="assignedVirtualEmployees.length === 0">
+                    <p>Assign employees to the meeting!</p>
+                  </div>
+                </tr>
+              </table>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 
-    <div fxLayout="column" fxLayoutGap="15%">
-      <div fxLayout="row" fxLayoutAlign="space-around" fxLayoutGap="10%">
-        <div
-          fxLayout="column"
-          fxLayoutAlign="space-around start"
-          fxLayoutGap="3%"
-        >
-          <label style="white-space: nowrap">Meeting Date: </label>
-          <input
-            matInput
-            [(ngModel)]="meetingDate"
-            #meetingDateInput="ngModel"
-            class="input"
-            type="date"
-            style="height: 2vw"
-            disabled="assignedMeetingEmployees.length === 0"
-          />
-        </div>
+    <div
+      fxLayout="row"
+      fxLayoutAlign="space-between"
+      style="width: 100%"
+      fxLayoutGap="8%"
+    >
+      <div
+        fxLayout="column"
+        fxLayoutAlign="space-around start"
+        fxLayoutGap="3%"
+      >
+        <label style="white-space: nowrap">Meeting Date: </label>
+        <input
+          matInput
+          [(ngModel)]="meetingDate"
+          #meetingDateInput="ngModel"
+          class="input"
+          type="date"
+          style="height: 2vw"
+          disabled="assignedMeetingEmployees.length === 0"
+        />
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="10%">
         <div
           fxLayout="column"
           fxLayoutAlign="space-around start"
@@ -163,6 +414,8 @@
             disabled="assignedMeetingEmployees.length === 0"
           />
         </div>
+
+        <h1>-</h1>
         <div
           fxLayout="column"
           fxLayoutAlign="space-around start"
@@ -182,260 +435,84 @@
             disabled="assignedMeetingEmployees.length === 0"
           />
         </div>
+      </div>
+      <div
+        fxLayout="column"
+        fxLayoutAlign="space-around start"
+        fxLayoutGap="3%"
+      >
+        <label style="white-space: nowrap">Repetition: </label>
+        <mat-select
+          style="width: 15vw"
+          placeholder="Schedule Type (optional)"
+          [(ngModel)]="scheduleType"
+        >
+          <mat-option *ngFor="let type of scheduleType" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div
+      fxLayout="row"
+      fxLayoutAlign="space-between"
+      style="width: 100%; flex-wrap: wrap"
+    >
+      <form
+        #chooseMeetingRoomForm="ngForm"
+        ngNativeValidate
+        name="chooseMeetingRoomForm"
+        (ngSubmit)="chooseMeetingRoom(chooseMeetingRoomForm)"
+        style="width: 100%; flex-wrap: wrap"
+      >
         <div
           fxLayout="column"
           fxLayoutAlign="space-around start"
-          fxLayoutGap="3%"
+          fxLayoutGap="1%"
         >
-          <!-- <mat-select
-            placeholder="Schedule Type (optional)"
-            [(ngModel)]="scheduleType"
+          <label style="white-space: nowrap; width: 100%"
+            >Choose Meeting Room (only for physical attendees):</label
           >
-            <mat-option *ngFor="let type of scheduleType" [value]="type">
-              {{ type }}
-            </mat-option>
-          </mat-select> -->
+          <div class="meetingRoomBox" style="overflow-y: auto">
+            <mat-grid-list cols="4" gutterSize="50px" rowHeight="1.8:1">
+              <div *ngFor="let room of rooms">
+                <mat-grid-tile>
+                  <button mat-button style="background-color: inherit">
+                    <div
+                      class="roomItem"
+                      fxLayout="column"
+                      fxLayoutAlign="start"
+                      fxLayoutGap="2%"
+                    >
+                      <h1 style="text-align: left">{{ room.name }}</h1>
+                      <div
+                        fxLayout="column"
+                        fxLayoutAlign="space-around start"
+                        fxLayoutGap="1%"
+                      >
+                        <p style="font-size: 1.2vw">{{ room.location }}</p>
+                        <p style="font-size: 1.2vw">
+                          Capacity: {{ room.capacity }}
+                        </p>
+                      </div>
+                    </div>
+                  </button>
+                </mat-grid-tile>
+              </div>
+            </mat-grid-list>
+          </div>
         </div>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="space-around start" fxLayoutGap="3%">
-        <form
-          #chooseMeetingRoomForm="ngForm"
-          ngNativeValidate
-          name="chooseMeetingRoomForm"
-          (ngSubmit)="chooseMeetingRoom(chooseMeetingRoomForm)"
-        >
-          <div
-            fxLayout="column"
-            fxLayoutAlign="space-around start"
-            fxLayoutGap="3%"
-          >
-            <label style="white-space: nowrap"
-              >Choose Meeting Room (only for physical attendees):</label
-            >
-            <div
-              fxLayout="row"
-              fxLayoutAlign="space-around start"
-              fxLayoutGap="5%"
-            >
-              <p-dropdown
-                [options]="rooms"
-                optionLabel="name"
-                name="selectedRoom"
-                ngModel
-                #selectedRoom="ngModel"
-                placeholder="Please select a room"
-                [filter]="true"
-                filterBy="name"
-                [style]="{ width: '15vw' }"
-                [disabled]="assignedPhysicalEmployees.length === 0"
-              >
-                <ng-template let-room pTemplate="item">
-                  <div fxLayout="column" fxLayoutGap="3%">
-                    <div>Room Name: {{ room.name }}</div>
-                    <div>Room Capacity: {{ room.capacity }}</div>
-                  </div>
-                </ng-template>
-              </p-dropdown>
-              <button mat-button class="peach-btn" type="submit">Add</button>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="space-around start" fxLayoutGap="3%">
-        <form
-          #assignPhysicalEmployeeForm="ngForm"
-          ngNativeValidate
-          name="assignPhysicalEmployee"
-          (ngSubmit)="assignPhysicalEmployee(assignPhysicalEmployeeForm)"
-        >
-          <div
-            fxLayout="column"
-            fxLayoutAlign="space-around start"
-            fxLayoutGap="3%"
-          >
-            <label style="white-space: pre-wrap"
-              >Assign Physical Employees <br />
-              (Office Capacity: {{ company.officeCapacity }})</label
-            >
-            <div fxLayout="row" fxLayoutAlign="space-around" fxLayoutGap="5%">
-              <p-dropdown
-                [options]="assignedMeetingEmployees"
-                optionLabel="fullName"
-                name="selectedPhysicalEmployees"
-                ngModel
-                #selectedPhysicalEmployees="ngModel"
-                placeholder="Please select an employee"
-                [filter]="true"
-                filterBy="fullName"
-                [style]="{ width: '15vw' }"
-                optionDisabled="isInfected"
-              >
-                <ng-template let-user pTemplate="item">
-                  <div fxLayout="row" fxLayoutGap="3%">
-                    <img
-                      *ngIf="user.isVaccinated && !user.isInfected"
-                      src="../../../../../assets/images/vaccinatedIcon.svg"
-                    />
-                    <img
-                      *ngIf="!user.isVaccinated && !user.isInfected"
-                      src="../../../../../assets/images/unvaccinatedIcon.svg"
-                    />
-                    <img
-                      *ngIf="user.isInfected"
-                      src="../../../../../assets/images/covidIcon.svg"
-                    />
-                    <div>{{ user.fullName }}</div>
-                  </div>
-                </ng-template>
-              </p-dropdown>
-              <button mat-button class="peach-btn" type="submit">Add</button>
-            </div>
-
-            <table
-              style="overflow: auto"
-              *ngFor="let physicalEmployee of assignedPhysicalEmployees"
-            >
-              <tr>
-                <div
-                  *ngIf="assignedPhysicalEmployees.length !== 0"
-                  fxLayout="row"
-                  fxLayoutAlign="space-between center"
-                  fxLayoutGap="15%"
-                >
-                  <div fxLayout="row" fxLayoutGap="3%">
-                    <img
-                      *ngIf="physicalEmployee.isVaccinated"
-                      src="../../../../../assets/images/vaccinatedIcon.svg"
-                    />
-                    <img
-                      *ngIf="!physicalEmployee.isVaccinated"
-                      src="../../../../../assets/images/unvaccinatedIcon.svg"
-                    />
-                    <p style="white-space: nowrap; font-size: 1.4vw">
-                      {{ physicalEmployee.fullName }}
-                    </p>
-                  </div>
-                  <button
-                    mat-button
-                    style="background-color: inherit"
-                    (click)="unassignPhysicalEmployee(physicalEmployee)"
-                  >
-                    <img
-                      style="cursor: pointer; height: 1.5em; width: 1.5em"
-                      src="../../../../../assets/images/deleteIcon.png"
-                    />
-                  </button>
-                </div>
-                <div *ngIf="assignedPhysicalEmployees.length === 0">
-                  <p>Assign employees to the meeting!</p>
-                </div>
-              </tr>
-            </table>
-          </div>
-        </form>
-
-        <form
-          #assignVirtualEmployeeForm="ngForm"
-          ngNativeValidate
-          name="assignVirtualEmployee"
-          (ngSubmit)="assignVirtualEmployee(assignVirtualEmployeeForm)"
-        >
-          <div
-            fxLayout="column"
-            fxLayoutAlign="space-around start"
-            fxLayoutGap="3%"
-          >
-            <label style="white-space: nowrap">Assign Virtual Employees:</label>
-            <div
-              fxLayout="row"
-              fxLayoutAlign="space-around start"
-              fxLayoutGap="5%"
-            >
-              <p-dropdown
-                [options]="assignedMeetingEmployees"
-                optionLabel="fullName"
-                name="selectedVirtualEmployees"
-                ngModel
-                #selectedVirtualEmployees="ngModel"
-                placeholder="Please select an employee"
-                [filter]="true"
-                filterBy="fullName"
-                [style]="{ width: '15vw' }"
-              >
-                <ng-template let-user pTemplate="item">
-                  <div fxLayout="row" fxLayoutGap="3%">
-                    <img
-                      *ngIf="user.isVaccinated && !user.isInfected"
-                      src="../../../../../assets/images/vaccinatedIcon.svg"
-                    />
-                    <img
-                      *ngIf="!user.isVaccinated && !user.isInfected"
-                      src="../../../../../assets/images/unvaccinatedIcon.svg"
-                    />
-                    <img
-                      *ngIf="user.isInfected"
-                      src="../../../../../assets/images/covidIcon.svg"
-                    />
-                    <div>{{ user.fullName }}</div>
-                  </div>
-                </ng-template>
-              </p-dropdown>
-              <button mat-button class="peach-btn" type="submit">Add</button>
-            </div>
-
-            <table
-              style="overflow: auto"
-              *ngFor="let virtualEmployee of assignedVirtualEmployees"
-            >
-              <tr>
-                <div
-                  *ngIf="assignedVirtualEmployees.length !== 0"
-                  fxLayout="row"
-                  fxLayoutAlign="space-between center"
-                  fxLayoutGap="15%"
-                >
-                  <div fxLayout="row" fxLayoutGap="3%">
-                    <img
-                      *ngIf="virtualEmployee.isVaccinated"
-                      src="../../../../../assets/images/vaccinatedIcon.svg"
-                    />
-                    <img
-                      *ngIf="!virtualEmployee.isVaccinated"
-                      src="../../../../../assets/images/unvaccinatedIcon.svg"
-                    />
-                    <p style="white-space: nowrap; font-size: 1.4vw">
-                      {{ virtualEmployee.fullName }}
-                    </p>
-                  </div>
-                  <button
-                    mat-button
-                    style="background-color: inherit"
-                    (click)="unassignVirtualEmployee(virtualEmployee)"
-                  >
-                    <img
-                      style="cursor: pointer; height: 1.5em; width: 1.5em"
-                      src="../../../../../assets/images/deleteIcon.png"
-                    />
-                  </button>
-                </div>
-                <div *ngIf="assignedVirtualEmployees.length === 0">
-                  <p>Assign employees to the meeting!</p>
-                </div>
-              </tr>
-            </table>
-          </div>
-        </form>
-      </div>
+      </form>
     </div>
     <div
       fxLayout="column"
       fxLayoutAlign="space-around start"
-      fxLayoutGap="20%"
-      fxFlex="100%"
+      fxLayoutGap="2%"
+      style="width: 100%"
     >
       <div
         fxLayout="column"
-        fxLayoutAlign="space-around start"
+        fxLayoutAlign="space-around center"
         fxLayoutGap="3%"
       >
         <div
@@ -459,7 +536,8 @@
       <div
         fxLayout="column"
         fxLayoutAlign="space-around start"
-        fxLayoutGap="3%"
+        fxLayoutGap="1%"
+        style="width: 100%"
       >
         <label>Remarks: </label>
         <textarea
@@ -470,21 +548,8 @@
           cols="50"
           rows="6"
           wrap="hard"
+          style="width: 100%"
         ></textarea>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="3%">
-        <button
-          mat-button
-          class="peach-btn"
-          (click)="createNewMeeting()"
-          [disabled]="
-            meetingTitleInput.value === null ||
-            meetingTitleInput.value === '' ||
-            endTimeInput.value < startTimeInput.value
-          "
-        >
-          Submit
-        </button>
       </div>
     </div>
   </div>
