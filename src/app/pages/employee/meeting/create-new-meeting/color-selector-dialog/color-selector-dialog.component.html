@@ -1,0 +1,43 @@
+<div fxLayout="column" fxLayoutAlign="space-around center">
+  <mat-grid-list
+    cols="2"
+    gutterSize="20px"
+    rowHeight="2:1"
+    style="height: 4vw; width: 20vw"
+  >
+    <div *ngFor="let color of colors">
+      <mat-grid-tile>
+        <button
+          mat-button
+          style="
+            width: 3vw;
+            height: 2vw;
+            border-radius: 5px;
+            transition: opacity 0.2s linear;
+          "
+          [ngStyle]="{
+            opacity: color === chosenColor ? '1' : '0.3',
+            'border-width': color === chosenColor ? '3px' : '0px',
+            'background-color': color
+          }"
+          (click)="setColor(color)"
+        ></button>
+      </mat-grid-tile>
+    </div>
+  </mat-grid-list>
+  <div
+    fxLayout="column"
+    fxLayoutAlign="space-around center"
+    fxLayoutGap="5%"
+    style="margin-top: -5vw"
+  >
+    <!-- <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="2%">
+      <label style="white-space: nowrap">Or...select your own color:</label>
+      <input type="color" />
+    </div> -->
+
+    <div>
+      <button mat-button class="peach-btn" (click)="close()">Save</button>
+    </div>
+  </div>
+</div>

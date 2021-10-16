@@ -1,10 +1,12 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MessageService } from 'primeng/api';
 import { CompanyService } from 'src/app/services/company/company.service';
 import { GoalService } from 'src/app/services/goal/goal.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { ColorSelectorDialogComponent } from './color-selector-dialog/color-selector-dialog.component';
 
 @Component({
   selector: 'app-create-new-meeting',
@@ -15,6 +17,8 @@ import { UserService } from 'src/app/services/user/user.service';
 export class CreateNewMeetingComponent implements OnInit {
   user: any | null;
   goal: any | null;
+  colors: string[];
+  chosenColor: string;
   company: any | null;
   rooms: any[];
   allGoals: any | null;
@@ -50,9 +54,21 @@ export class CreateNewMeetingComponent implements OnInit {
     private messageService: MessageService,
     private userService: UserService,
     private companyService: CompanyService,
-    private goalService: GoalService
+    private goalService: GoalService,
+    private colorSelectorDialog: MatDialog
   ) {
     this.selectedGoal = '';
+    this.colors = [
+      'rgb(255, 166, 135)',
+      'rgb(135, 224, 255)',
+      'rgb(255, 226, 135)',
+      'rgb(135, 164, 255)',
+      'rgb(135, 255, 226)',
+      'rgb(135, 255, 166)',
+      'rgb(204, 191, 149)',
+      'rgb(164, 149, 204)',
+    ];
+    this.chosenColor = 'rgb(255, 166, 135)';
   }
 
   ngOnInit(): void {
@@ -124,6 +140,24 @@ export class CreateNewMeetingComponent implements OnInit {
 
   onBackClick() {
     this._location.back();
+  }
+
+  openColorSelector(): void {
+    var dialogRef = this.colorSelectorDialog.open(
+      ColorSelectorDialogComponent,
+      {
+        width: '30%',
+        height: '40%',
+        data: {
+          colors: this.colors,
+          chosen: this.chosenColor,
+        },
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((response) => {
+      this.chosenColor = response.data;
+    });
   }
 
   assignMeetingEmployee(employee: NgForm): void {

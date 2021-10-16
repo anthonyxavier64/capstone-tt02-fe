@@ -80,6 +80,7 @@ import { ChangePasswordComponent } from './pages/profile/change-password/change-
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
+import { ColorSelectorDialogComponent } from './pages/employee/meeting/create-new-meeting/color-selector-dialog/color-selector-dialog.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -136,6 +137,7 @@ export function tokenGetter() {
     DownloadCsvDialogComponent,
     MassInviteInfoDialogComponent,
     CreateNewMeetingComponent,
+    ColorSelectorDialogComponent,
   ],
   imports: [
     CommonModule,
