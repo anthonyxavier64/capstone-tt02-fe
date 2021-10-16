@@ -42,4 +42,5 @@
   width: 12vw;
   height: 8vw;
   padding: 2% 2% 2% 8%;
+  transition:opacity 0.2s linear;
 }

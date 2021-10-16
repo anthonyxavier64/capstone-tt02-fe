@@ -66,7 +66,6 @@ export class CreateNewMeetingComponent implements OnInit {
         .subscribe((response) => {
           this.isLoading = true;
           this.user = response.user;
-          console.log(this.user);
           this.isUserFetched = true;
           this.userService
             .getUsers(JSON.parse(currentUser).companyId)
@@ -74,7 +73,6 @@ export class CreateNewMeetingComponent implements OnInit {
               (response) => {
                 this.isLoading = true;
                 this.employees = response.users;
-                console.log(this.employees);
                 const userIndexToRemove = this.employees.findIndex(
                   (item) => item.userId === this.user.userId
                 );
@@ -97,8 +95,10 @@ export class CreateNewMeetingComponent implements OnInit {
       (response) => {
         this.isLoading = true;
         this.company = response.company;
-        console.log(this.company);
         this.rooms = this.company.rooms;
+        this.rooms.forEach((room) => {
+          room = { ...room, isSelected: false };
+        });
         this.isCompanyFetched = true;
         if (
           this.isUserFetched &&
@@ -195,28 +195,12 @@ export class CreateNewMeetingComponent implements OnInit {
     }
   }
 
-  chooseMeetingRoom(room: NgForm): void {
-    const assignedEmployee = room.value.selectedRoom;
-    if (
-      !this.assignedPhysicalEmployees.find(
-        (item) => item.userId === assignedEmployee.userId
-      ) &&
-      !this.assignedVirtualEmployees.find(
-        (item) => item.userId === assignedEmployee.userId
-      )
-    ) {
-      this.assignedVirtualEmployees.push(assignedEmployee);
-      const indexToRemove = this.employees.findIndex(
-        (item) => item.userId === assignedEmployee.userId
-      );
-      this.employees.splice(indexToRemove, 1);
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Employee already assigned',
-      });
-    }
+  chooseMeetingRoom(room: any): void {
+    this.chosenRoom = room;
+    this.rooms.forEach((room) => {
+      room.isSelected = false;
+    });
+    room.isSelected = true;
   }
 
   unassignPhysicalEmployee(user: any): void {
