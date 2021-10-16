@@ -1,13 +1,15 @@
-import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { Announcement } from 'src/app/models/announcement';
 import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { UserService } from 'src/app/services/user/user.service';
+
+import { DatePipe } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+
 import { ViewAnnouncementComponent } from '../view-announcement/view-announcement.component';
 
 @Component({
@@ -40,14 +42,12 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private userService: UserService,
     private announcementService: AnnouncementService,
     private meetingService: MeetingService,
     private taskService: TaskService,
     private matDialog: MatDialog,
     private datePipe: DatePipe
   ) {
-    let now = moment();
     this.taskProgress = 0;
     this.weeklyTasks = [];
   }

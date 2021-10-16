@@ -32,7 +32,6 @@ export class CovidDeclarationsComponent implements OnInit {
 
   constructor(private router: Router,
     private covidDocumentSubmissionService: CovidDocumentSubmissionService,
-    private dialog: MatDialog,
     public dialogService: DialogService) {
     this.covidDocumentSubmissions = [];
     this.fetSubmissions = [];
@@ -50,14 +49,15 @@ export class CovidDeclarationsComponent implements OnInit {
             console.log(response);
             this.covidDocumentSubmissions = response.covidDocumentSubmissions;
             this.fetSubmissions = this.covidDocumentSubmissions
-              .filter((item) => item.covidDocumentType === "ART_TEST_RESULT")
+              .filter((item) => item.covidDocumentType === "ART_TEST_RESULT" && item.documentApprovalStatus === "APPROVED")
               .sort((a, b) => {
                 const dateA = moment(a.dateOfSubmission);
                 const dateB = moment(b.dateOfSubmission);
                 return dateB.diff(dateA);
               });
+            console.log(this.fetSubmissions);
             this.mcs = this.covidDocumentSubmissions
-              .filter((item) => item.covidDocumentType === "SHN_MEDICAL_CERTIFICATE" || item.covidDocumentType === "QUARANTINE_ORDER")
+              .filter((item) => (item.covidDocumentType === "SHN_MEDICAL_CERTIFICATE" || item.covidDocumentType === "QUARANTINE_ORDER") && item.documentApprovalStatus === "APPROVED")
               .sort((a, b) => {
                 const dateA = moment(a.dateOfSubmission);
                 const dateB = moment(b.dateOfSubmission);
