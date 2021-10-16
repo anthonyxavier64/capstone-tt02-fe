@@ -19,7 +19,8 @@ export class CreateNewMeetingComponent implements OnInit {
   rooms: any[];
   allGoals: any | null;
   employees: any[];
-  scheduleType = ['DAILY', 'WEEKLY', 'BIWEEKLY', 'MONTHLY'];
+  scheduleType = ['Daily', 'Weekly', 'Biweekly', 'Monthly'];
+  selectedScheduleType: string;
   assignedMeetingEmployees: any[] = [];
   assignedPhysicalEmployees: any[] = [];
   assignedVirtualEmployees: any[] = [];
@@ -125,6 +126,29 @@ export class CreateNewMeetingComponent implements OnInit {
     this._location.back();
   }
 
+  assignMeetingEmployee(employee: NgForm): void {
+    const assignedEmployee = employee.value.selectedMeetingEmployees;
+    if (
+      !this.assignedMeetingEmployees.find(
+        (item) => item.userId === assignedEmployee.userId
+      )
+    ) {
+      this.assignedMeetingEmployees.push(assignedEmployee);
+      const indexToRemove = this.employees.findIndex(
+        (item) => item.userId === assignedEmployee.userId
+      );
+      this.employees.splice(indexToRemove, 1);
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Employee already assigned',
+      });
+    }
+
+    employee.resetForm();
+  }
+
   // Does this use a form to implement responsiveness?
   assignPhysicalEmployee(employee: NgForm): void {
     const assignedEmployee = employee.value.selectedPhysicalEmployees;
@@ -148,6 +172,7 @@ export class CreateNewMeetingComponent implements OnInit {
         detail: 'Employee already assigned',
       });
     }
+    employee.resetForm();
   }
 
   assignVirtualEmployee(employee: NgForm): void {
@@ -172,27 +197,8 @@ export class CreateNewMeetingComponent implements OnInit {
         detail: 'Employee already assigned',
       });
     }
-  }
 
-  assignMeetingEmployee(employee: NgForm): void {
-    const assignedEmployee = employee.value.selectedMeetingEmployees;
-    if (
-      !this.assignedMeetingEmployees.find(
-        (item) => item.userId === assignedEmployee.userId
-      )
-    ) {
-      this.assignedMeetingEmployees.push(assignedEmployee);
-      const indexToRemove = this.employees.findIndex(
-        (item) => item.userId === assignedEmployee.userId
-      );
-      this.employees.splice(indexToRemove, 1);
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Employee already assigned',
-      });
-    }
+    employee.resetForm();
   }
 
   chooseMeetingRoom(room: any): void {
@@ -231,6 +237,8 @@ export class CreateNewMeetingComponent implements OnInit {
   }
 
   createNewMeeting(): void {
+    this.selectedScheduleType = this.selectedScheduleType.toUpperCase();
+
     // Following code is to pass in employee id instead of employee object
     // const employeeIds = [];
     // for (let assignedEmployee of this.assignedEmployees) {

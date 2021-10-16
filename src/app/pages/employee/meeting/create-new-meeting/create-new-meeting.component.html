@@ -103,7 +103,7 @@
               optionLabel="fullName"
               name="selectedMeetingEmployees"
               ngModel
-              #selectedPhysicalEmployees="ngModel"
+              #selectedMeetingEmployees="ngModel"
               placeholder="Please select an employee"
               [filter]="true"
               filterBy="fullName"
@@ -127,7 +127,17 @@
                 </div>
               </ng-template>
             </p-dropdown>
-            <button mat-button class="peach-btn" type="submit">Add</button>
+            <button
+              mat-button
+              class="peach-btn"
+              type="submit"
+              [disabled]="
+                selectedMeetingEmployees.value === '' ||
+                selectedMeetingEmployees.value === null
+              "
+            >
+              Add
+            </button>
           </div>
 
           <div style="height: 20vw; overflow-y: auto">
@@ -231,7 +241,17 @@
                     </div>
                   </ng-template>
                 </p-dropdown>
-                <button mat-button class="peach-btn" type="submit">Add</button>
+                <button
+                  mat-button
+                  class="peach-btn"
+                  type="submit"
+                  [disabled]="
+                    selectedPhysicalEmployees.value === '' ||
+                    selectedPhysicalEmployees.value === null
+                  "
+                >
+                  Add
+                </button>
               </div>
 
               <table
@@ -330,7 +350,17 @@
                     </div>
                   </ng-template>
                 </p-dropdown>
-                <button mat-button class="peach-btn" type="submit">Add</button>
+                <button
+                  mat-button
+                  class="peach-btn"
+                  type="submit"
+                  [disabled]="
+                    selectedVirtualEmployees.value === '' ||
+                    selectedVirtualEmployees.value === null
+                  "
+                >
+                  Add
+                </button>
               </div>
 
               <table
@@ -487,7 +517,7 @@
         <mat-select
           style="width: 15vw"
           placeholder="Schedule Type (optional)"
-          [(ngModel)]="scheduleType"
+          [(ngModel)]="selectedScheduleType"
         >
           <mat-option *ngFor="let type of scheduleType" [value]="type">
             {{ type }}
