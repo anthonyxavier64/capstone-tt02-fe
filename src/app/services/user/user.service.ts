@@ -74,12 +74,6 @@ export class UserService {
       .pipe(catchError(handleError));
   }
 
-  updateVaccinationCertificate(data: any): Observable<any> {
-    return this.httpClient
-      .patch<any>(this.baseUrl + '/update-vaccination-certificate', data, httpOptions)
-      .pipe(catchError(handleError));
-  }
-
   getUser(userId: number): Observable<any> {
     return this.httpClient
       .get<any>(`${this.baseUrl}/get-user/${userId}`, httpOptions)
