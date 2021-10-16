@@ -120,7 +120,7 @@ export class ArtDialogComponent implements OnInit {
   renderLastUpdate() {
     if (this.artTests[0]) {
       const date = new Date(this.artTests[0].dateOfSubmission);
-      return date;
+      return date.toLocaleDateString();
     }
     return "NA";
   }
