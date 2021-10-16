@@ -208,13 +208,13 @@ export class AdminEmployeeManagementComponent implements OnInit {
     const uploadTask = fileRef.put(event.target.files[0]);
 
     this.reader.readAsText(event.target.files[0]);
-    this.reader.onload = async () => {
+    this.reader.onload = () => {
       let csvData = this.reader.result;
       let csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
 
       let headersRow = this.getHeaderArray(csvRecordsArray);
 
-      this.inputCsvData = await this.getDataRecordsArrayFromCSVFile(
+      this.inputCsvData = this.getDataRecordsArrayFromCSVFile(
         csvRecordsArray,
         headersRow.length
       );
@@ -310,10 +310,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
     return headerArray;
   }
 
-  async getDataRecordsArrayFromCSVFile(
-    csvRecordsArray: any,
-    headerLength: any
-  ) {
+  getDataRecordsArrayFromCSVFile(csvRecordsArray: any, headerLength: any) {
     let csvArr = [];
 
     let deptsInChargeOfIds = [];
@@ -325,8 +322,61 @@ export class AdminEmployeeManagementComponent implements OnInit {
         let deptInChargeOfData = (<string>currentRecord[4]).split('+');
         let deptPartOfData = (<string>currentRecord[5]).split('+');
 
-        deptsInChargeOfIds = await this.allocateDepartments(deptInChargeOfData);
-        deptsPartOfIds = await this.allocateDepartments(deptPartOfData);
+        for (let dept of deptInChargeOfData) {
+          if (dept !== '') {
+            let existingDepartment = this.departments.find(
+              (department) => department.name === dept
+            );
+            if (
+              existingDepartment !== null &&
+              existingDepartment !== undefined
+            ) {
+              deptsInChargeOfIds.push(existingDepartment.departmentId);
+            } else {
+              let newDept = {
+                name: dept,
+                company: { companyId: this.company.companyId },
+              };
+              this.departmentService.createNewDepartment(newDept).subscribe(
+                (response) => {
+                  console.log('IN CHARGE OF DEPT CREATED', response.department);
+                  deptsInChargeOfIds.push(response.department.departmentId);
+                },
+                (error) => {
+                  console.log('Department In Charge of could not be created');
+                }
+              );
+            }
+          }
+        }
+
+        for (let dept of deptPartOfData) {
+          if (dept !== '') {
+            let existingDepartment = this.departments.find(
+              (department) => department.name === dept
+            );
+            if (
+              existingDepartment !== null &&
+              existingDepartment !== undefined
+            ) {
+              deptsPartOfIds.push(existingDepartment.departmentId);
+            } else {
+              let newDept = {
+                name: dept,
+                company: { companyId: this.company.companyId },
+              };
+              this.departmentService.createNewDepartment(newDept).subscribe(
+                (response) => {
+                  console.log('PART OF DEPT CREATED', response.department);
+                  deptsPartOfIds.push(response.department.departmentId);
+                },
+                (error) => {
+                  console.log('Department Part of could not be created');
+                }
+              );
+            }
+          }
+        }
 
         let csvRecord = {
           email: currentRecord[0].trim(),
@@ -338,36 +388,13 @@ export class AdminEmployeeManagementComponent implements OnInit {
           deptsPartOf: { deptsPartOf: deptsPartOfIds },
         };
 
+        console.log('Output CSV Record', csvRecord);
         csvArr.push(csvRecord);
         deptsInChargeOfIds = [];
         deptsPartOfIds = [];
       }
     }
     return csvArr;
-  }
-
-  async allocateDepartments(csvDepartments: string[]): Promise<number[]> {
-    let deptIdArray = [];
-    for (let dept of csvDepartments) {
-      if (dept !== '') {
-        let existingDepartment = this.departments.find(
-          (department) => department.name === dept
-        );
-        if (existingDepartment !== null && existingDepartment !== undefined) {
-          deptIdArray.push(existingDepartment.departmentId);
-        } else {
-          let newDept = {
-            name: dept,
-            company: { companyId: this.company.companyId },
-          };
-          let retVal = await this.departmentService
-            .createNewDepartment(newDept)
-            .toPromise();
-          deptIdArray.push(retVal.department.departmentId);
-        }
-      }
-    }
-    return deptIdArray;
   }
 
   createNewEmployee() {
