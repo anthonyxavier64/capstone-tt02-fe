@@ -1,9 +1,9 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-
+import { NgForm } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { CompanyService } from 'src/app/services/company/company.service';
 import { GoalService } from 'src/app/services/goal/goal.service';
-import { MessageService } from 'primeng/api';
-import { NgForm } from '@angular/forms';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -39,7 +39,13 @@ export class CreateNewMeetingComponent implements OnInit {
 
   currentCapacity: any;
 
+  isLoading: boolean;
+  isCompanyFetched: boolean;
+  isUsersFetched: boolean;
+  isUserFetched: boolean;
+
   constructor(
+    private _location: Location,
     private messageService: MessageService,
     private userService: UserService,
     private companyService: CompanyService,
@@ -49,40 +55,58 @@ export class CreateNewMeetingComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
+    this.isCompanyFetched = false;
+    this.isUserFetched = false;
+    this.isUserFetched = false;
     const currentUser = localStorage.getItem('currentUser');
-    console.log(currentUser);
     if (currentUser) {
       this.userService
         .getUser(JSON.parse(currentUser).userId)
         .subscribe((response) => {
-          console.log(response.user);
+          this.isLoading = true;
           this.user = response.user;
           console.log(this.user);
+          this.isUserFetched = true;
+          this.userService
+            .getUsers(JSON.parse(currentUser).companyId)
+            .subscribe(
+              (response) => {
+                this.isLoading = true;
+                this.employees = response.users;
+                console.log(this.employees);
+                const userIndexToRemove = this.employees.findIndex(
+                  (item) => item.userId === this.user.userId
+                );
+                this.employees.splice(userIndexToRemove, 1);
+                this.isUsersFetched = true;
+                if (
+                  this.isUserFetched &&
+                  this.isCompanyFetched &&
+                  this.isUsersFetched
+                ) {
+                  this.isLoading = false;
+                }
+              },
+              (error) => {}
+            );
         });
     }
 
-    this.allGoals = []; //Fetch using Goal service later
-    this.allGoals[0] = { name: 'No Goals' };
-    this.allGoals[1] = { name: 'Test1' };
-    this.allGoals[2] = { name: 'Test2' };
-
-    this.goal = this.allGoals[0];
-
     this.companyService.getCompany(JSON.parse(currentUser).companyId).subscribe(
       (response) => {
+        this.isLoading = true;
         this.company = response.company;
+        console.log(this.company);
         this.rooms = this.company.rooms;
-      },
-      (error) => {}
-    );
-
-    this.userService.getUsers(JSON.parse(currentUser).companyId).subscribe(
-      (response) => {
-        this.employees = response.users;
-        const userIndexToRemove = this.employees.findIndex(
-          (item) => item.userId === this.user.userId
-        );
-        this.employees.splice(userIndexToRemove, 1);
+        this.isCompanyFetched = true;
+        if (
+          this.isUserFetched &&
+          this.isCompanyFetched &&
+          this.isUsersFetched
+        ) {
+          this.isLoading = false;
+        }
       },
       (error) => {}
     );
@@ -95,6 +119,10 @@ export class CreateNewMeetingComponent implements OnInit {
         },
         (error) => {}
       );
+  }
+
+  onBackClick() {
+    this._location.back();
   }
 
   // Does this use a form to implement responsiveness?
