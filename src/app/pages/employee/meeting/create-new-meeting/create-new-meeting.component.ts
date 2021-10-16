@@ -8,6 +8,24 @@ import { GoalService } from 'src/app/services/goal/goal.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { ColorSelectorDialogComponent } from './color-selector-dialog/color-selector-dialog.component';
 
+//USE THIS STRUCTURE
+// updatedDataStructure: {attachedUserId: string, date: Date, startTime:String, endTime:String}[]
+
+// LOGIC FOR ASSIGNING
+// blockout: {date: Date, time: {startTIme:time, endTime: time}[]}[]
+// - if out of range --> Create new {startTIme:time, endTime: time}
+// - if within range
+//   - 1: it overlaps with the start time -> replace start time with the new earlier start time
+//   - 2: overlaps with end time -> replace end time with new later end time
+//   - 3: if completely within range -> do nothing
+
+// employeeA --> meeting 17oct 9am
+// employeeB --> meeting 17oct 10am
+
+// 3 lists -> access foreach user --> check what dates they cannot make it and what timing of the date --> add the date into blockout
+// --> add the time to the specific blockout date
+
+// --> run through all objects inside blockout --> delete time/date if no rooms are available
 @Component({
   selector: 'app-create-new-meeting',
   templateUrl: './create-new-meeting.component.html',
@@ -148,9 +166,10 @@ export class CreateNewMeetingComponent implements OnInit {
       {
         width: '30%',
         height: '40%',
+        disableClose: true,
         data: {
           colors: this.colors,
-          chosen: this.chosenColor,
+          chosenColor: this.chosenColor,
         },
       }
     );

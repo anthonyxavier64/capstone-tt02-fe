@@ -13,10 +13,10 @@ export class ColorSelectorDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ColorSelectorDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { colors: string[]; chosen: string }
+    public data: { colors: string[]; chosenColor: string }
   ) {
     this.colors = data.colors;
-    this.chosenColor = data.chosen;
+    this.chosenColor = data.chosenColor;
   }
 
   ngOnInit(): void {}
@@ -26,7 +26,8 @@ export class ColorSelectorDialogComponent implements OnInit {
   }
 
   close(): void {
-    this.data.chosen = this.chosenColor;
-    this.dialogRef.close({ data: this.chosenColor });
+    this.dialogRef.close({
+      data: this.chosenColor ? this.chosenColor : this.data.chosenColor,
+    });
   }
 }
