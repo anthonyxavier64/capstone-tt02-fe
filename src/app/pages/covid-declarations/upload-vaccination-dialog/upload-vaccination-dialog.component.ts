@@ -70,7 +70,8 @@ export class UploadVaccinationDialogComponent implements OnInit {
         fileRef.getDownloadURL().subscribe(url => {
           console.log(url);
           this.user.latestProofOfVaccination = url;
-          this.userService.updateUserDetails(this.user).subscribe(
+          const sendData = {user: this.user, certificate: event.target.files[0]}
+          this.userService.updateVaccinationCertificate(sendData).subscribe(
             (response) => {
               console.log("updated!")
               this.user = response.user;
