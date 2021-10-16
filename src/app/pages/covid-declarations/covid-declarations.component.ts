@@ -46,7 +46,6 @@ export class CovidDeclarationsComponent implements OnInit {
         .getUserSubmissions(this.user.userId)
         .subscribe(
           response => {
-            console.log(response);
             this.covidDocumentSubmissions = response.covidDocumentSubmissions;
             this.fetSubmissions = this.covidDocumentSubmissions
               .filter((item) => item.covidDocumentType === "ART_TEST_RESULT" && item.documentApprovalStatus === "APPROVED")
@@ -55,7 +54,6 @@ export class CovidDeclarationsComponent implements OnInit {
                 const dateB = moment(b.dateOfSubmission);
                 return dateB.diff(dateA);
               });
-            console.log(this.fetSubmissions);
             this.mcs = this.covidDocumentSubmissions
               .filter((item) => (item.covidDocumentType === "SHN_MEDICAL_CERTIFICATE" || item.covidDocumentType === "QUARANTINE_ORDER") && item.documentApprovalStatus === "APPROVED")
               .sort((a, b) => {
