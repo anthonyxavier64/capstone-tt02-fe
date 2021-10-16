@@ -103,19 +103,23 @@ export class ViewArtComponent implements OnInit {
     }
     return null;
   }
-  renderVaccinationStatus() {
-    if (this.isVaccinated) {
-      return 'Vaccinated';
+  fetApprovalStyle() {
+    if (this.artTests[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
+      if (this.artTests[0].isPositive) {
+        return "red";
+      }
+      return "green";
     }
-    return 'Not Yet Vaccinated';
+    return "grey";
   }
-  renderVaccinationStyle() {
-    if (this.isVaccinated) {
-      return 'vaccinated';
+  renderFetApprovalStatus() {
+    if (this.artTests[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
+      if (this.artTests[0].isPositive) {
+        return "Positive";
+      }
     }
-    return 'unvaccinated';
+    return "Negative";
   }
-
   onSaveClick(form: NgForm) {
     this.isSubmitted = true;
 
