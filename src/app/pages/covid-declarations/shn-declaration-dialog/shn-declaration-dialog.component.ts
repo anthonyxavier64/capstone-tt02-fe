@@ -46,17 +46,28 @@ export class ShnDeclarationDialogComponent implements OnInit {
     if (currentUser) {
       this.user = JSON.parse(currentUser);
     }
-    this.mcs = this.covidDocumentSubmissions
-      .filter(
-        (item) =>
-          item.covidDocumentType === 'SHN_MEDICAL_CERTIFICATE' ||
-          item.covidDocumentType === 'QUARANTINE_ORDER'
-      )
-      .sort((a, b) => {
-        const dateA = moment(a.dateOfSubmission);
-        const dateB = moment(b.dateOfSubmission);
-        return dateB.diff(dateA);
-      });
+    this.covidDocumentSubmissionService
+      .getUserSubmissions(this.config.data.userId)
+      .subscribe(
+        response => {
+          console.log(response);
+          this.covidDocumentSubmissions = response.covidDocumentSubmissions;
+          this.mcs = this.covidDocumentSubmissions
+            .filter(
+              (item) =>
+                item.covidDocumentType === 'SHN_MEDICAL_CERTIFICATE' ||
+                item.covidDocumentType === 'QUARANTINE_ORDER'
+            )
+            .sort((a, b) => {
+              const dateA = moment(a.dateOfSubmission);
+              const dateB = moment(b.dateOfSubmission);
+              return dateB.diff(dateA);
+            });
+        },
+        error => {
+          console.log(error);
+        }
+      );
   }
 
   onClickSHN() {
@@ -142,7 +153,7 @@ export class ShnDeclarationDialogComponent implements OnInit {
   renderLastUpdate() {
     if (this.mcs[0]) {
       const date = new Date(this.mcs[0].dateOfSubmission);
-      return date;
+      return date.toLocaleDateString();
     }
     return 'NA';
   }

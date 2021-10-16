@@ -120,7 +120,7 @@ export class UploadVaccinationDialogComponent implements OnInit {
   renderLastUpdate() {
     if (this.vaccinationCerts[0]) {
       const date = new Date(this.vaccinationCerts[0].dateOfSubmission);
-      return date;
+      return date.toLocaleDateString();
     }
     return "NA";
   }
