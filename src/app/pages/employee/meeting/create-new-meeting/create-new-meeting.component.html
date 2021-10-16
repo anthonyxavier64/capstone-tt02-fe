@@ -444,7 +444,11 @@
           class="input"
           type="date"
           style="height: 2vw"
-          [disabled]="assignedMeetingEmployees.length === 0"
+          [disabled]="
+            assignedMeetingEmployees.length === 0 &&
+            assignedVirtualEmployees.length === 0 &&
+            assignedPhysicalEmployees.length === 0
+          "
         />
       </div>
       <div
