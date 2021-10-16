@@ -31,14 +31,31 @@
         <h1 style="white-space: nowrap" *ngIf="selectedGoal === ''">
           - Meeting Title:
         </h1>
-        <input
-          matInput
-          [(ngModel)]="meetingTitle"
-          #meetingTitleInput="ngModel"
-          class="input"
-          type="text"
-          placeholder="Meeting Title"
-        />
+        <div
+          fxLayout="column"
+          fxLayoutAlign="space-around center"
+          fxLayoutGap="1%"
+        >
+          <input
+            matInput
+            [(ngModel)]="meetingTitle"
+            #meetingTitleInput="ngModel"
+            class="input"
+            type="text"
+            placeholder="Meeting Title"
+          />
+          <div
+            *ngIf="
+              meetingTitleInput.touched &&
+              (meetingTitleInput.value === null ||
+                meetingTitleInput.value === '')
+            "
+            class="errorText"
+            style="color: red"
+          >
+            Meeting Title cannot be empty!
+          </div>
+        </div>
       </div>
       <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="2%">
         <button
@@ -394,46 +411,63 @@
           disabled="assignedMeetingEmployees.length === 0"
         />
       </div>
-      <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="10%">
+      <div
+        fxLayout="column"
+        fxLayoutAlign="space-around center"
+        fxLayoutGap="1%"
+      >
         <div
-          fxLayout="column"
-          fxLayoutAlign="space-around start"
-          fxLayoutGap="3%"
+          fxLayout="row"
+          fxLayoutAlign="space-around center"
+          fxLayoutGap="10%"
         >
-          <label style="white-space: nowrap">Meeting Start: </label>
-          <input
-            matInput
-            [(ngModel)]="startTime"
-            #startTimeInput="ngModel"
-            class="input"
-            type="time"
-            step="3600"
-            style="height: 2vw"
-            min="company.officeOpeningHour"
-            max="company.officeClosingHour"
-            disabled="assignedMeetingEmployees.length === 0"
-          />
-        </div>
+          <div
+            fxLayout="column"
+            fxLayoutAlign="space-around start"
+            fxLayoutGap="3%"
+          >
+            <label style="white-space: nowrap">Meeting Start: </label>
+            <input
+              matInput
+              [(ngModel)]="startTime"
+              #startTimeInput="ngModel"
+              class="input"
+              type="time"
+              step="3600"
+              style="height: 2vw"
+              min="company.officeOpeningHour"
+              max="company.officeClosingHour"
+              disabled="assignedMeetingEmployees.length === 0"
+            />
+          </div>
 
-        <h1>-</h1>
+          <h1>-</h1>
+          <div
+            fxLayout="column"
+            fxLayoutAlign="space-around start"
+            fxLayoutGap="3%"
+          >
+            <label style="white-space: nowrap">Meeting End: </label>
+            <input
+              matInput
+              [(ngModel)]="endTime"
+              #endTimeInput="ngModel"
+              class="input"
+              type="time"
+              step="3600"
+              style="height: 2vw"
+              min="startTime"
+              max="company.officeClosingHour"
+              disabled="assignedMeetingEmployees.length === 0"
+            />
+          </div>
+        </div>
         <div
-          fxLayout="column"
-          fxLayoutAlign="space-around start"
-          fxLayoutGap="3%"
+          *ngIf="endTimeInput.value < startTimeInput.value"
+          class="errorText"
+          style="color: red"
         >
-          <label style="white-space: nowrap">Meeting End: </label>
-          <input
-            matInput
-            [(ngModel)]="endTime"
-            #endTimeInput="ngModel"
-            class="input"
-            type="time"
-            step="3600"
-            style="height: 2vw"
-            min="startTime"
-            max="company.officeClosingHour"
-            disabled="assignedMeetingEmployees.length === 0"
-          />
+          The Meeting timing is set incorrectly!
         </div>
       </div>
       <div
@@ -514,25 +548,7 @@
         fxLayout="column"
         fxLayoutAlign="space-around center"
         fxLayoutGap="3%"
-      >
-        <div
-          *ngIf="
-            meetingTitleInput.touched &&
-            (meetingTitleInput.value === null || meetingTitleInput.value === '')
-          "
-          class="errorText"
-          style="color: red"
-        >
-          Meeting Title cannot be empty!
-        </div>
-        <div
-          *ngIf="endTimeInput.value < startTimeInput.value"
-          class="errorText"
-          style="color: red"
-        >
-          The Meeting timing is set incorrectly!
-        </div>
-      </div>
+      ></div>
       <div
         fxLayout="column"
         fxLayoutAlign="space-around start"
