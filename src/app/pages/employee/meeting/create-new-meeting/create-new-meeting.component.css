@@ -44,3 +44,9 @@
   padding: 2% 2% 2% 8%;
   transition:opacity 0.2s linear;
 }
+
+.colorSelector {
+  transition:background-color 0.2s linear;
+  height: 2.3vw;
+  width: 1vw
+}

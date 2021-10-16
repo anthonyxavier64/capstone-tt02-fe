@@ -1,7 +1,7 @@
 <div
   class="main-wrapper"
   fxLayout="column"
-  fxLayoutGap="3%"
+  fxLayoutGap="1%"
   style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
 >
   <app-navbar></app-navbar>
@@ -18,7 +18,7 @@
   >
     <!-- Set Meeting goal and name -->
     <div fxLayout="row" fxLayoutAlign="space-between start" style="width: 100%">
-      <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="3%">
+      <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="2%">
         <p-dropdown
           *ngIf="selectedGoal === ''"
           [options]="allGoals"
@@ -56,6 +56,12 @@
             Meeting Title cannot be empty!
           </div>
         </div>
+        <button
+          mat-button
+          class="colorSelector"
+          [ngStyle]="{ 'background-color': chosenColor }"
+          (click)="openColorSelector()"
+        ></button>
       </div>
       <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="2%">
         <button
