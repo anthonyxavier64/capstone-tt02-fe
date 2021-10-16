@@ -558,6 +558,7 @@
                   mat-button
                   style="background-color: inherit"
                   (click)="chooseMeetingRoom(room)"
+                  [disabled]="assignedPhysicalEmployees.length === 0"
                 >
                   <div
                     class="roomItem"

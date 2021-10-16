@@ -250,6 +250,11 @@ export class CreateNewMeetingComponent implements OnInit {
     this.assignedPhysicalEmployees.splice(indexToRemove, 1);
 
     this.employees.push(user);
+    if (this.assignedPhysicalEmployees.length === 0) {
+      this.rooms.forEach((room) => {
+        room.isSelected = false;
+      });
+    }
   }
 
   unassignVirtualEmployee(user: any): void {
