@@ -69,9 +69,7 @@
           class="peach-btn"
           (click)="createNewMeeting()"
           [disabled]="
-            meetingTitleInput.value === null ||
-            meetingTitleInput.value === '' ||
-            endTimeInput.value < startTimeInput.value
+            meetingTitleInput.value === null || meetingTitleInput.value === ''
           "
         >
           Save Meeting
@@ -426,30 +424,66 @@
     </div>
 
     <div
+      *ngIf="
+        assignedMeetingEmployees.length !== 0 &&
+        assignedPhysicalEmployees.length === 0 &&
+        assignedVirtualEmployees.length === 0
+      "
       fxLayout="row"
-      fxLayoutAlign="space-between"
+      fxLayoutAlign="space-between center"
       style="width: 100%"
-      fxLayoutGap="8%"
+      fxLayoutGap="3%"
     >
       <div
         fxLayout="column"
         fxLayoutAlign="space-around start"
         fxLayoutGap="3%"
       >
-        <label style="white-space: nowrap">Meeting Date: </label>
-        <input
-          matInput
-          [(ngModel)]="meetingDate"
-          #meetingDateInput="ngModel"
-          class="input"
-          type="date"
-          style="height: 2vw"
-          [disabled]="
-            assignedMeetingEmployees.length === 0 &&
-            assignedVirtualEmployees.length === 0 &&
-            assignedPhysicalEmployees.length === 0
-          "
-        />
+        <!-- <label style="white-space: nowrap">Meeting Date: </label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [(ngModel)]="meetingDate"
+            #meetingDateInput="ngModel"
+            class="input"
+            type="date"
+            style="height: 2vw"
+            [disabled]="
+              assignedMeetingEmployees.length === 0 &&
+              assignedVirtualEmployees.length === 0 &&
+              assignedPhysicalEmployees.length === 0
+            "
+          /> -->
+        <mat-form-field appearance="outline">
+          <mat-label style="white-space: nowrap">Meeting Date:</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [matDatepickerFilter]="filter"
+            [disabled]="
+              assignedMeetingEmployees.length === 0 &&
+              assignedVirtualEmployees.length === 0 &&
+              assignedPhysicalEmployees.length === 0
+            "
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-label style="white-space: nowrap">Duration (Mins): </mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="meetingDuration"
+            #meetingDurationInput="ngModel"
+            [min]="0"
+          />
+        </mat-form-field>
       </div>
       <div
         fxLayout="column"
@@ -459,14 +493,29 @@
         <div
           fxLayout="row"
           fxLayoutAlign="space-around center"
-          fxLayoutGap="10%"
+          fxLayoutGap="1%"
         >
           <div
             fxLayout="column"
             fxLayoutAlign="space-around start"
             fxLayoutGap="3%"
           >
-            <label style="white-space: nowrap">Meeting Start: </label>
+            <mat-form-field>
+              <mat-label style="white-space: nowrap">Meeting Start: </mat-label>
+              <input
+                matInput
+                [(ngModel)]="startTime"
+                #startTimeInput="ngModel"
+                type="time"
+                step="900"
+                [disabled]="
+                  assignedMeetingEmployees.length === 0 &&
+                  assignedPhysicalEmployees.length === 0 &&
+                  assignedVirtualEmployees.length === 0
+                "
+              />
+            </mat-form-field>
+            <!-- <label style="white-space: nowrap">Meeting Start: </label>
             <input
               matInput
               [(ngModel)]="startTime"
@@ -482,7 +531,7 @@
                 assignedPhysicalEmployees.length === 0 &&
                 assignedVirtualEmployees.length === 0
               "
-            />
+            /> -->
           </div>
 
           <h1>-</h1>
@@ -491,7 +540,29 @@
             fxLayoutAlign="space-around start"
             fxLayoutGap="3%"
           >
-            <label style="white-space: nowrap">Meeting End: </label>
+            <mat-form-field>
+              <mat-label style="white-space: nowrap">Meeting End: </mat-label>
+              <!-- <input
+                matInput
+                [(ngModel)]="endTime"
+                #endTimeInput="ngModel"
+                type="time"
+                step="900"
+                [disabled]="
+                  assignedMeetingEmployees.length === 0 &&
+                  assignedPhysicalEmployees.length === 0 &&
+                  assignedVirtualEmployees.length === 0
+                "
+              /> -->
+              <input
+                matInput
+                type="time"
+                [disabled]="true"
+                [(ngModel)]="endTime"
+                #endTimeInput="ngModel"
+              />
+            </mat-form-field>
+            <!-- <label style="white-space: nowrap">Meeting End: </label>
             <input
               matInput
               [(ngModel)]="endTime"
@@ -507,7 +578,7 @@
                 assignedPhysicalEmployees.length === 0 &&
                 assignedVirtualEmployees.length === 0
               "
-            />
+            /> -->
           </div>
         </div>
         <div
@@ -518,13 +589,13 @@
           The Meeting timing is set incorrectly!
         </div>
       </div>
-      <div
+      <!-- <div
         fxLayout="column"
         fxLayoutAlign="space-around start"
         fxLayoutGap="3%"
-      >
-        <!-- THE CODE BELOW IS FOR REPETITION DROPDOWN -->
-        <!-- <label style="white-space: nowrap">Repetition: </label>
+      > -->
+      <!-- THE CODE BELOW IS FOR REPETITION DROPDOWN -->
+      <!-- <label style="white-space: nowrap">Repetition: </label>
         <mat-select
           style="width: 15vw"
           placeholder="Schedule Type (optional)"
@@ -534,9 +605,14 @@
             {{ type }}
           </mat-option>
         </mat-select> -->
-      </div>
+      <!-- </div> -->
     </div>
     <div
+      *ngIf="
+        meetingDate !== undefined &&
+        meetingDuration !== undefined &&
+        startTime !== undefined
+      "
       fxLayout="row"
       fxLayoutAlign="space-between"
       style="width: 100%; flex-wrap: wrap"
@@ -587,6 +663,11 @@
       </div>
     </div>
     <div
+      *ngIf="
+        meetingDate !== undefined &&
+        meetingDuration !== undefined &&
+        startTime !== undefined
+      "
       fxLayout="column"
       fxLayoutAlign="space-around start"
       fxLayoutGap="2%"

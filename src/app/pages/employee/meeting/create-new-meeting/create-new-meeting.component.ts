@@ -56,6 +56,7 @@ export class CreateNewMeetingComponent implements OnInit {
   remarks: string = '';
   meetingDate: Date = undefined;
   startTime: Date = undefined;
+  meetingDuration: number = undefined;
   endTime: Date = undefined;
   chosenScheduleType: any | null;
   chosenGoal: any;
@@ -78,6 +79,7 @@ export class CreateNewMeetingComponent implements OnInit {
   unassign: string = 'UNASSIGN';
   assign: string = 'ASSIGN';
   allInvolvedEmployees: string[] = [];
+  datesToDisable: Date[] = [];
 
   constructor(
     private _location: Location,
@@ -122,7 +124,6 @@ export class CreateNewMeetingComponent implements OnInit {
                 var involvedMeetings = response.meetings;
                 for (let meeting of involvedMeetings) {
                   var meetingStartTime = new Date(meeting.startTime);
-                  var date = meetingStartTime.toLocaleDateString();
                   var startTime = meetingStartTime.toLocaleTimeString();
                   var endTime = new Date(
                     meetingStartTime.getTime() + meeting.durationInMins * 60000
@@ -130,7 +131,7 @@ export class CreateNewMeetingComponent implements OnInit {
                   var blockoutItem = {
                     userId: this.user.userId,
                     meetingId: meeting.meetingId,
-                    date: new Date(date),
+                    date: meetingStartTime,
                     startTime: startTime,
                     endTime: endTime,
                   };
@@ -219,7 +220,7 @@ export class CreateNewMeetingComponent implements OnInit {
     });
   }
 
-  assignMeetingEmployee(employee: NgForm): void {
+  async assignMeetingEmployee(employee: NgForm): Promise<void> {
     const assignedEmployee = employee.value.selectedMeetingEmployees;
     if (
       !this.assignedMeetingEmployees.find(
@@ -241,11 +242,11 @@ export class CreateNewMeetingComponent implements OnInit {
 
     employee.resetForm();
 
-    this.generateNewRecommendation(this.assign);
+    await this.generateNewRecommendation(this.assign);
   }
 
   // Does this use a form to implement responsiveness?
-  assignPhysicalEmployee(employee: NgForm): void {
+  async assignPhysicalEmployee(employee: NgForm): Promise<void> {
     const assignedEmployee = employee.value.selectedPhysicalEmployees;
     if (
       !this.assignedPhysicalEmployees.find(
@@ -269,10 +270,10 @@ export class CreateNewMeetingComponent implements OnInit {
     }
     employee.resetForm();
 
-    this.generateNewRecommendation(this.assign);
+    await this.generateNewRecommendation(this.assign);
   }
 
-  assignVirtualEmployee(employee: NgForm): void {
+  async assignVirtualEmployee(employee: NgForm): Promise<void> {
     const assignedEmployee = employee.value.selectedVirtualEmployees;
     if (
       !this.assignedPhysicalEmployees.find(
@@ -297,7 +298,7 @@ export class CreateNewMeetingComponent implements OnInit {
 
     employee.resetForm();
 
-    this.generateNewRecommendation(this.assign);
+    await this.generateNewRecommendation(this.assign);
   }
 
   chooseMeetingRoom(room: any): void {
@@ -308,7 +309,7 @@ export class CreateNewMeetingComponent implements OnInit {
     room.isSelected = true;
   }
 
-  unassignPhysicalEmployee(user: any): void {
+  async unassignPhysicalEmployee(user: any): Promise<void> {
     const indexToRemove = this.assignedPhysicalEmployees.findIndex(
       (item) => item.userId === user.userId
     );
@@ -321,10 +322,10 @@ export class CreateNewMeetingComponent implements OnInit {
       });
     }
 
-    this.generateNewRecommendation(this.unassign, user.userId);
+    await this.generateNewRecommendation(this.unassign, user.userId);
   }
 
-  unassignVirtualEmployee(user: any): void {
+  async unassignVirtualEmployee(user: any): Promise<void> {
     const indexToRemove = this.assignedVirtualEmployees.findIndex(
       (item) => item.userId === user.userId
     );
@@ -332,10 +333,10 @@ export class CreateNewMeetingComponent implements OnInit {
 
     this.employees.push(user);
 
-    this.generateNewRecommendation(this.unassign, user.userId);
+    await this.generateNewRecommendation(this.unassign, user.userId);
   }
 
-  unassignMeetingEmployee(user: any): void {
+  async unassignMeetingEmployee(user: any): Promise<void> {
     const indexToRemove = this.assignedMeetingEmployees.findIndex(
       (item) => item.userId === user.userId
     );
@@ -343,13 +344,14 @@ export class CreateNewMeetingComponent implements OnInit {
 
     this.employees.push(user);
 
-    this.generateNewRecommendation(this.unassign, user.userId);
+    await this.generateNewRecommendation(this.unassign, user.userId);
   }
 
-  generateNewRecommendation(
+  async generateNewRecommendation(
     methodType: string,
     employeeUnassignedId?: string
-  ): void {
+  ): Promise<void> {
+    //LOGIC TO HANDLE ASSIGNING/UNASSIGNING EMPLOYEES INVOLVED FOR ALL 3 COLUMNS
     if (methodType === 'ASSIGN') {
       for (let employee of this.assignedMeetingEmployees) {
         if (!this.allInvolvedEmployees.includes(employee.userId)) {
@@ -382,38 +384,37 @@ export class CreateNewMeetingComponent implements OnInit {
 
     console.log(this.allInvolvedEmployees);
 
+    //LOGIC TO FETCH ALL MEETING TIMES OF INVOLVED EMPLOYEES
     if (methodType === 'ASSIGN') {
       for (let employeeId of this.allInvolvedEmployees) {
         if (
           this.blockoutDates.find((item) => item.userId === employeeId) ===
           undefined
         ) {
-          this.meetingService
+          var findMeetings = await this.meetingService
             .getAllMeetingsByParticipantId(employeeId)
-            .subscribe(
-              (response) => {
-                var involvedMeetings = response.meetings;
-                for (let meeting of involvedMeetings) {
-                  var meetingStartTime = new Date(meeting.startTime);
-                  var date = meetingStartTime.toLocaleDateString();
-                  var startTime = meetingStartTime.toLocaleTimeString();
-                  var endTime = new Date(
-                    meetingStartTime.getTime() + meeting.durationInMins * 60000
-                  ).toLocaleTimeString();
-                  var blockoutItem = {
-                    userId: employeeId,
-                    meetingId: meeting.meetingId,
-                    date: new Date(date),
-                    startTime: startTime,
-                    endTime: endTime,
-                  };
+            .toPromise();
 
-                  this.blockoutDates.push(blockoutItem);
-                }
-                console.log(employeeId, this.blockoutDates);
-              },
-              (error) => {}
-            );
+          var involvedMeetings = findMeetings.meetings;
+
+          for (let meeting of involvedMeetings) {
+            var meetingStartTime = new Date(meeting.startTime);
+
+            var startTime = meetingStartTime.toLocaleTimeString();
+            var endTime = new Date(
+              meetingStartTime.getTime() + meeting.durationInMins * 60000
+            ).toLocaleTimeString();
+            var blockoutItem = {
+              userId: employeeId,
+              meetingId: meeting.meetingId,
+              date: meetingStartTime,
+              startTime: startTime,
+              endTime: endTime,
+            };
+
+            this.blockoutDates.push(blockoutItem);
+          }
+          console.log(employeeId, this.blockoutDates);
         }
       }
     } else if (methodType === 'UNASSIGN') {
@@ -425,7 +426,31 @@ export class CreateNewMeetingComponent implements OnInit {
         );
       }
     }
+
+    // LOGIC TO UPDATE THE BLOCKED OUT DATES
+    this.blockoutDates.forEach((item) => {
+      var itemDate = new Date(item.date);
+
+      if (
+        this.datesToDisable.find(
+          (item) => item.getDate() === itemDate.getDate()
+        ) === undefined
+      ) {
+        this.datesToDisable.push(itemDate);
+      }
+    });
   }
+
+  filter = (d: Date | null): boolean => {
+    const day = (d || new Date()).getDay();
+    // Prevent Saturday and Sunday from being selected.
+
+    return (
+      day !== 0 && day !== 6
+      // && this.datesToDisable.find((item) => item.getDate() === d.getDate()) ===
+      //   undefined
+    );
+  };
 
   createNewMeeting(): void {
     this.selectedScheduleType = this.selectedScheduleType.toUpperCase();
