@@ -1,4 +1,5 @@
 import { AdminGuideComponent } from 'src/app/pages/admin/adminLanding/admin-guide/admin-guide.component';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 import { AuthService } from 'src/app/services/user/auth.service';
 
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -38,23 +39,39 @@ const tempNotificationData = [
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  notificationData: any
+  unreadNotifications: any[]
+  readNotifications: any[]
   numUnread: number
+  user: any
   constructor(
     private router: Router,
     private auth: AuthService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private notificationService: NotificationService
   ) {
-    this.notificationData = tempNotificationData;
+    this.unreadNotifications = [];
+    this.readNotifications = [];
   }
 
   ngOnInit(): void {
-    this.notificationData.sort((first, second) => {
-      if (first.isRead == second.isRead) second.notificationDate - first.notificationDate;
-      if (first.isRead) return 1;
-      return -1;
-    })
-    this.numUnread = this.notificationData.reduce((total, notif) => (!notif.isRead ? total + 1 : total), 0);
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.notificationService
+      .getUnreadNotifications(this.user.userId).subscribe((response) => {
+        console.log(response);
+        this.unreadNotifications = response.sortedUnreadNotifications;
+        this.numUnread = this.unreadNotifications.length;
+      },
+        (error) => {
+          console.log(error);
+        }
+      );
+    this.notificationService.getReadNotifications(this.user.userId).subscribe((response) => {
+      console.log(response);
+      this.readNotifications = response.readNotifications;
+    },
+      (error) => {
+        console.log(error);
+      });
   }
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
 
@@ -111,6 +128,8 @@ export class NavbarComponent implements OnInit {
     return "";
   }
   onClickNotification(notification: any) {
+    notification.isRead = true;
+
     if (notification.taskId) {
       this.router.navigateByUrl('/task');
     } else if (notification.meetingId) {

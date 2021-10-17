@@ -68,8 +68,17 @@
     </button>
     <mat-menu class="notificationDropList" #notificationMenu="matMenu">
       <button
-        *ngFor="let notification of notificationData"
-        class="workDropListItem"
+        *ngFor="let notification of unreadNotifications"
+        class="workDropListItem {{ notification.isRead ? 'read' : 'unread' }}"
+        mat-menu-item
+        (click)="onClickNotification(notification)"
+      >
+        <img class="defaultIcon" src="{{ chooseIcon(notification) }}" />
+        <p class="workDropListItemText">{{ notification.message }}</p>
+      </button>
+      <button
+        *ngFor="let notification of readNotifications"
+        class="workDropListItem {{ notification.isRead ? 'read' : 'unread' }}"
         mat-menu-item
         (click)="onClickNotification(notification)"
       >
