@@ -9,8 +9,9 @@
     >
       <mat-icon class="homeIcon">home</mat-icon>
     </button>
-    <button class="navbarItem" mat-button
-    (click)="onDashboardClick()">Dashboard</button>
+    <button class="navbarItem" mat-button (click)="onDashboardClick()">
+      Dashboard
+    </button>
     <button
       class="navbarItem"
       mat-button
@@ -36,7 +37,9 @@
       </button>
     </mat-menu>
 
-    <button class="navbarItem" mat-button (click)="handleCalendar()">Calendar</button>
+    <button class="navbarItem" mat-button (click)="handleCalendar()">
+      Calendar
+    </button>
     <button class="navbarItem" mat-button>Feedback</button>
     <button class="navbarItem" mat-button>My Employees</button>
   </div>
@@ -49,6 +52,11 @@
   >
     <button
       mat-button
+      [matBadge]="numUnread"
+      matBadgeSize="medium"
+      matBadgePosition="before"
+      matBadgeColor="warn"
+      [matBadgeHidden]="numUnread <= 0"
       [matMenuTriggerFor]="notificationMenu"
       #clickMenuTrigger="matMenuTrigger"
       class="navbarItem"
@@ -58,22 +66,18 @@
         src="../../../assets/images/notificationIcon.png"
       />
     </button>
-    <mat-menu class="workDropList" #notificationMenu="matMenu">
-      <button class="workDropListItem" mat-menu-item (click)="openDialog()">
-        <img class="goalIcon" src="../../../assets/images/goalIcon.png" />
-        <p class="workDropListItemText">Startup Guide</p>
-        <img class="arrowIcon" src="../../../assets/images/arrowIcon.png" />
-      </button>
+    <mat-menu class="notificationDropList" #notificationMenu="matMenu">
       <button
+        *ngFor="let notification of notificationData"
         class="workDropListItem"
         mat-menu-item
-        onClick="window.open('https://www.who.int/news-room/q-a-detail/coronavirus-disease-covid-19-health-and-safety-in-the-workplace')"
+        (click)="onClickNotification(notification)"
       >
-        <img class="goalIcon" src="../../../assets/images/goalIcon.png" />
-        <p class="workDropListItemText">WHO Covid Resources</p>
-        <img class="arrowIcon" src="../../../assets/images/arrowIcon.png" />
+        <img class="defaultIcon" src="{{ chooseIcon(notification) }}" />
+        <p class="workDropListItemText">{{ notification.message }}</p>
       </button>
     </mat-menu>
+
     <button
       class="profileIcon"
       mat-fab
@@ -87,12 +91,27 @@
         mat-menu-item
         (click)="onProfileLogoClick()"
       >
-        <div fxLayout="row" fxLayoutGap="18%">
-          <img class="goalIcon" src="../../../assets/images/profileIcon.png" />
-          <p class="workDropListItemText">My Profile</p>
-        </div>
+        <img class="goalIcon" src="../../../assets/images/profileIcon.png" />
+        <p class="workDropListItemText">My Profile</p>
       </button>
       <hr class="itemDivider" />
+      <button class="workDropListItem" mat-menu-item (click)="openDialog()">
+        <img class="goalIcon" src="../../../assets/images/goalIcon.png" />
+        <p class="workDropListItemText">Startup Guide</p>
+        <img class="arrowIcon" src="../../../assets/images/arrowIcon.png" />
+      </button>
+      <hr class="itemDivider" />
+      <button
+        class="workDropListItem"
+        mat-menu-item
+        onClick="window.open('https://www.who.int/news-room/q-a-detail/coronavirus-disease-covid-19-health-and-safety-in-the-workplace')"
+      >
+        <img class="goalIcon" src="../../../assets/images/goalIcon.png" />
+        <p class="workDropListItemText">WHO Covid Resources</p>
+        <img class="arrowIcon" src="../../../assets/images/arrowIcon.png" />
+      </button>
+      <hr class="itemDivider" />
+
       <button class="workDropListItem" mat-menu-item (click)="onLogoutClick()">
         <div fxLayout="row" fxLayoutAlign=" center" fxLayoutGap="2%">
           <img class="logoutIcon" src="../../../assets/images/logoutIcon.png" />
