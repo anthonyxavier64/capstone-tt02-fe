@@ -123,6 +123,15 @@
 
     <div style="text-align: center">
       <h1>{{ viewDate | calendarDate: view + "ViewTitle":"en" }}</h1>
+      <div
+        class="btn-arrow"
+        mwlCalendarNextView
+        [view]="view"
+        [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()"
+      >
+        >
+      </div>
     </div>
 
     <ng-template #customCellTemplate let-day="day" let-locale="locale">
@@ -134,6 +143,14 @@
           day.date | calendarDate: "monthViewDayNumber":locale
         }}</span>
       </div>
+      <button
+        mat-button
+        *ngFor="let event of day.events"
+        class="cal-event-btn"
+        (click)="viewMeeting()"
+      >
+        {{ event.title }}
+      </button>
     </ng-template>
 
     <div [ngSwitch]="view">

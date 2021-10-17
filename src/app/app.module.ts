@@ -88,6 +88,7 @@ import { TierInfoDialogComponent } from './pages/index/sign-up/tier-info-dialog/
 import { UploadVaccinationDialogComponent } from './pages/covid-declarations/upload-vaccination-dialog/upload-vaccination-dialog.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { ViewArtComponent } from './pages/admin/employeeManagement/view-art-dialog/view-art-dialog.component';
+import { ViewMeetingDetailsDialogComponent } from './pages/calendar/view-meeting-details-dialog/view-meeting-details-dialog.component';
 import { ViewShnDeclarationDialog } from './pages/admin/employeeManagement/view-shn-dialog/view-shn-dialog.component';
 import { ViewVaccinationDialogComponent } from './pages/admin/employeeManagement/view-vaccination-dialog/view-vaccination-dialog.component';
 import { adapterFactory } from 'angular-calendar/date-adapters/moment';
@@ -150,6 +151,7 @@ export function tokenGetter() {
     CreateNewMeetingComponent,
     ColorSelectorDialogComponent,
     AccountActivationComponent,
+    ViewMeetingDetailsDialogComponent,
   ],
   imports: [
     CommonModule,
