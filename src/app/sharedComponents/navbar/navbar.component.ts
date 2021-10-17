@@ -3,35 +3,9 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { AuthService } from 'src/app/services/user/auth.service';
 
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatBadgeModule } from '@angular/material/badge';
 import { MatDialog } from '@angular/material/dialog';
-import { FitTileStyler } from '@angular/material/grid-list/tile-styler';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
-
-const tempNotificationData = [
-  {
-    notificationId: 1,
-    message: "Samantha has assigned you to task 1",
-    isRead: false,
-    taskId: 1,
-    notificationDate: new Date()
-  },
-  {
-    notificationId: 2,
-    message: "Emily has invited you to a meeting",
-    isRead: false,
-    meetingId: 1,
-    notificationDate: new Date()
-  },
-  {
-    notificationId: 3,
-    message: "Your employee Clarence is on SHN",
-    isRead: false,
-    covidDocumentSubmissionId: 1,
-    notificationDate: new Date()
-  }
-];
 
 @Component({
   selector: 'app-navbar',
@@ -124,12 +98,25 @@ export class NavbarComponent implements OnInit {
       return "../../../assets/images/to-do-list.png";
     } else if (notification.covidDocumentSubmissionId) {
       return "../../../assets/images/stethoscope.png";
+    } else if (notification.commentId) {
+      return "../../../assets/images/bubble-chat.png";
     }
     return "";
   }
   onClickNotification(notification: any) {
-    notification.isRead = true;
-
+    if (!notification.isRead) {
+      notification.isRead = true;
+      this.notificationService.updateNotification(notification).subscribe((response) => {
+        this.unreadNotifications = this.unreadNotifications
+          .filter((item) => { item.notificationId != notification.notificationId });
+        this.readNotifications.push(response.notification);
+        this.readNotifications = this.readNotifications
+          .sort((first, second) => second.notificationDate - first.notificationDate);
+      },
+        (error) => {
+          console.log(error);
+        })
+    }
     if (notification.taskId) {
       this.router.navigateByUrl('/task');
     } else if (notification.meetingId) {
