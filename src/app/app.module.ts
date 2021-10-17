@@ -9,6 +9,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import {
   MatFormFieldModule,
@@ -68,6 +70,7 @@ import { ShnDeclarationDialogComponent } from './pages/covid-declarations/shn-de
 import { UploadVaccinationDialogComponent } from './pages/covid-declarations/upload-vaccination-dialog/upload-vaccination-dialog.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { CreateNewTaskDialogComponent } from './pages/employee/create-new-task-dialog/create-new-task-dialog.component';
+import { ColorSelectorDialogComponent } from './pages/employee/meeting/create-new-meeting/color-selector-dialog/color-selector-dialog.component';
 import { CreateNewMeetingComponent } from './pages/employee/meeting/create-new-meeting/create-new-meeting.component';
 import { TaskDetailDialogComponent } from './pages/employee/task-detail-dialog/task-detail-dialog.component';
 import { TaskComponent } from './pages/employee/task/task.component';
@@ -80,7 +83,6 @@ import { ChangePasswordComponent } from './pages/profile/change-password/change-
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
-import { ColorSelectorDialogComponent } from './pages/employee/meeting/create-new-meeting/color-selector-dialog/color-selector-dialog.component';
 import { AccountActivationComponent } from './pages/admin/account-activation/account-activation/account-activation.component';
 
 export function momentAdapterFactory() {
@@ -159,6 +161,7 @@ export function tokenGetter() {
     MatButtonModule,
     MatSelectModule,
     MatIconModule,
+    MatNativeDateModule,
     MatMenuModule,
     MatCardModule,
     MatButtonModule,
@@ -166,6 +169,7 @@ export function tokenGetter() {
     MatSelectModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
+    MatDatepickerModule,
     PrimeNgModule,
     TableModule,
     InputTextareaModule,
