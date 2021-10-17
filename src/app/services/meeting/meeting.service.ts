@@ -1,5 +1,5 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.dev';
@@ -10,7 +10,7 @@ const httpOptions = {
 };
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MeetingService {
   baseUrl: string = `${environment.API_REST_URL}` + '/meeting';
@@ -25,5 +25,11 @@ export class MeetingService {
       .pipe(catchError(handleError));
   }
 
-
+  getAllMeetingsByParticipantId(participantId: string): Observable<any> {
+    return this.httpClient
+      .get<any>(
+        this.baseUrl + '/get-all-meetings-user-partipant/' + participantId
+      )
+      .pipe(catchError(handleError));
+  }
 }

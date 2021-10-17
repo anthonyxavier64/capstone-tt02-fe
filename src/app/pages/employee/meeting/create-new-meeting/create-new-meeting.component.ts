@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MessageService } from 'primeng/api';
 import { CompanyService } from 'src/app/services/company/company.service';
 import { GoalService } from 'src/app/services/goal/goal.service';
+import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { ColorSelectorDialogComponent } from './color-selector-dialog/color-selector-dialog.component';
 
@@ -72,6 +73,7 @@ export class CreateNewMeetingComponent implements OnInit {
     private messageService: MessageService,
     private userService: UserService,
     private companyService: CompanyService,
+    private meetingService: MeetingService,
     private goalService: GoalService,
     private colorSelectorDialog: MatDialog
   ) {
@@ -108,6 +110,19 @@ export class CreateNewMeetingComponent implements OnInit {
               (response) => {
                 this.isLoading = true;
                 this.employees = response.users;
+                for (let employee of this.employees) {
+                  console.log('THIS IS ENTERED');
+                  this.meetingService
+                    .getAllMeetingsByParticipantId(employee.userId)
+                    .subscribe(
+                      (response) => {
+                        console.log(response);
+                      },
+                      (error) => {
+                        console.log(error);
+                      }
+                    );
+                }
                 const userIndexToRemove = this.employees.findIndex(
                   (item) => item.userId === this.user.userId
                 );
