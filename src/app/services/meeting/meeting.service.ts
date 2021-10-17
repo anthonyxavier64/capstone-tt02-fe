@@ -1,4 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -20,6 +21,12 @@ export class MeetingService {
   createNewMeeting(meeting: any): Observable<any> {
     return this.httpClient
       .post<any>(`${this.baseUrl}/create-meeting`, meeting, httpOptions)
+      .pipe(catchError(handleError));
+  }
+
+  getAllCompanyMeetings(companyId: string): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + '/get-all-meetings/' + companyId)
       .pipe(catchError(handleError));
   }
 
