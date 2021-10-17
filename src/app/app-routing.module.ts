@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
+import { AccountActivationComponent } from './pages/admin/account-activation/account-activation/account-activation.component';
 import { AdminComponent } from './pages/admin/adminLanding/admin.component';
 import { AdminAnnouncementManagementComponent } from './pages/admin/announcementManagement/adminAnnouncementManagement.component';
 import { AdminCompanyDetailsManagementComponent } from './pages/admin/companyDetails/companyDetailsManagement/adminCompanyDetailsManagement.component';
@@ -101,6 +102,10 @@ const routes: Routes = [
     path: 'create-meeting',
     component: CreateNewMeetingComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'account-activation',
+    component: AccountActivationComponent,
   },
 ];
 
