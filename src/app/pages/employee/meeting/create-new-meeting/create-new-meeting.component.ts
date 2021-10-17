@@ -68,6 +68,17 @@ export class CreateNewMeetingComponent implements OnInit {
   isUsersFetched: boolean;
   isUserFetched: boolean;
 
+  blockoutDates: {
+    userId: string;
+    meetingId: number;
+    date: Date;
+    startTime: string;
+    endTime: string;
+  }[] = [];
+  unassign: string = 'UNASSIGN';
+  assign: string = 'ASSIGN';
+  allInvolvedEmployees: string[] = [];
+
   constructor(
     private _location: Location,
     private messageService: MessageService,
@@ -103,6 +114,32 @@ export class CreateNewMeetingComponent implements OnInit {
         .subscribe((response) => {
           this.isLoading = true;
           this.user = response.user;
+          this.allInvolvedEmployees.push(this.user.userId);
+          this.meetingService
+            .getAllMeetingsByParticipantId(this.user.userId)
+            .subscribe(
+              (response) => {
+                var involvedMeetings = response.meetings;
+                for (let meeting of involvedMeetings) {
+                  var meetingStartTime = new Date(meeting.startTime);
+                  var date = meetingStartTime.toLocaleDateString();
+                  var startTime = meetingStartTime.toLocaleTimeString();
+                  var endTime = new Date(
+                    meetingStartTime.getTime() + meeting.durationInMins * 60000
+                  ).toLocaleTimeString();
+                  var blockoutItem = {
+                    userId: this.user.userId,
+                    meetingId: meeting.meetingId,
+                    date: new Date(date),
+                    startTime: startTime,
+                    endTime: endTime,
+                  };
+
+                  this.blockoutDates.push(blockoutItem);
+                }
+              },
+              (error) => {}
+            );
           this.isUserFetched = true;
           this.userService
             .getUsers(JSON.parse(currentUser).companyId)
@@ -110,19 +147,7 @@ export class CreateNewMeetingComponent implements OnInit {
               (response) => {
                 this.isLoading = true;
                 this.employees = response.users;
-                for (let employee of this.employees) {
-                  console.log('THIS IS ENTERED');
-                  this.meetingService
-                    .getAllMeetingsByParticipantId(employee.userId)
-                    .subscribe(
-                      (response) => {
-                        console.log(response);
-                      },
-                      (error) => {
-                        console.log(error);
-                      }
-                    );
-                }
+
                 const userIndexToRemove = this.employees.findIndex(
                   (item) => item.userId === this.user.userId
                 );
@@ -215,6 +240,8 @@ export class CreateNewMeetingComponent implements OnInit {
     }
 
     employee.resetForm();
+
+    this.generateNewRecommendation(this.assign);
   }
 
   // Does this use a form to implement responsiveness?
@@ -241,6 +268,8 @@ export class CreateNewMeetingComponent implements OnInit {
       });
     }
     employee.resetForm();
+
+    this.generateNewRecommendation(this.assign);
   }
 
   assignVirtualEmployee(employee: NgForm): void {
@@ -267,6 +296,8 @@ export class CreateNewMeetingComponent implements OnInit {
     }
 
     employee.resetForm();
+
+    this.generateNewRecommendation(this.assign);
   }
 
   chooseMeetingRoom(room: any): void {
@@ -289,6 +320,8 @@ export class CreateNewMeetingComponent implements OnInit {
         room.isSelected = false;
       });
     }
+
+    this.generateNewRecommendation(this.unassign, user.userId);
   }
 
   unassignVirtualEmployee(user: any): void {
@@ -298,6 +331,8 @@ export class CreateNewMeetingComponent implements OnInit {
     this.assignedVirtualEmployees.splice(indexToRemove, 1);
 
     this.employees.push(user);
+
+    this.generateNewRecommendation(this.unassign, user.userId);
   }
 
   unassignMeetingEmployee(user: any): void {
@@ -307,6 +342,89 @@ export class CreateNewMeetingComponent implements OnInit {
     this.assignedMeetingEmployees.splice(indexToRemove, 1);
 
     this.employees.push(user);
+
+    this.generateNewRecommendation(this.unassign, user.userId);
+  }
+
+  generateNewRecommendation(
+    methodType: string,
+    employeeUnassignedId?: string
+  ): void {
+    if (methodType === 'ASSIGN') {
+      for (let employee of this.assignedMeetingEmployees) {
+        if (!this.allInvolvedEmployees.includes(employee.userId)) {
+          this.allInvolvedEmployees.push(employee.userId);
+        }
+      }
+
+      for (let employee of this.assignedPhysicalEmployees) {
+        if (!this.allInvolvedEmployees.includes(employee.userId)) {
+          this.allInvolvedEmployees.push(employee.userId);
+        }
+      }
+
+      for (let employee of this.assignedVirtualEmployees) {
+        if (!this.allInvolvedEmployees.includes(employee.userId)) {
+          this.allInvolvedEmployees.push(employee.userId);
+        }
+      }
+    }
+
+    if (
+      methodType === 'UNASSIGN' &&
+      this.allInvolvedEmployees.includes(employeeUnassignedId)
+    ) {
+      var indexToRemove = this.allInvolvedEmployees.findIndex(
+        (item) => item === employeeUnassignedId
+      );
+      this.allInvolvedEmployees.splice(indexToRemove, 1);
+    }
+
+    console.log(this.allInvolvedEmployees);
+
+    if (methodType === 'ASSIGN') {
+      for (let employeeId of this.allInvolvedEmployees) {
+        if (
+          this.blockoutDates.find((item) => item.userId === employeeId) ===
+          undefined
+        ) {
+          this.meetingService
+            .getAllMeetingsByParticipantId(employeeId)
+            .subscribe(
+              (response) => {
+                var involvedMeetings = response.meetings;
+                for (let meeting of involvedMeetings) {
+                  var meetingStartTime = new Date(meeting.startTime);
+                  var date = meetingStartTime.toLocaleDateString();
+                  var startTime = meetingStartTime.toLocaleTimeString();
+                  var endTime = new Date(
+                    meetingStartTime.getTime() + meeting.durationInMins * 60000
+                  ).toLocaleTimeString();
+                  var blockoutItem = {
+                    userId: employeeId,
+                    meetingId: meeting.meetingId,
+                    date: new Date(date),
+                    startTime: startTime,
+                    endTime: endTime,
+                  };
+
+                  this.blockoutDates.push(blockoutItem);
+                }
+                console.log(employeeId, this.blockoutDates);
+              },
+              (error) => {}
+            );
+        }
+      }
+    } else if (methodType === 'UNASSIGN') {
+      if (
+        this.blockoutDates.find((item) => item.userId === employeeUnassignedId)
+      ) {
+        this.blockoutDates = this.blockoutDates.filter(
+          (item) => item.userId !== employeeUnassignedId
+        );
+      }
+    }
   }
 
   createNewMeeting(): void {
