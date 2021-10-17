@@ -7,6 +7,11 @@
   border-radius: 15px;
 }
 
+.defaultIcon {
+  height: 2em;
+  width: 2em;
+}
+
 .notificationIcon {
   height: 1.8vw;
   width: 1.9vw;
@@ -35,6 +40,13 @@
   font-family: var(--primary-font);
   text-align: center;
   font-size: 1.1vw;
+}
+
+::ng-deep .notificationDropList {
+  background-color: rgb(var(--navbar-droplist));
+  min-width: 500px !important;
+  max-height: 500px !important;
+  overflow-y: auto !important;
 }
 
 ::ng-deep .workDropList {

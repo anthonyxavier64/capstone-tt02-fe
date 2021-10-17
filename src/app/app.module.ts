@@ -59,6 +59,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { LoginComponent } from './pages/index/login/login.component';
 import { MassInviteInfoDialogComponent } from './pages/admin/employeeManagement/mass-invite-info-dialog/mass-invite-info-dialog.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -167,13 +168,11 @@ export function tokenGetter() {
     MaterialModule,
     MatFormFieldModule,
     MatCheckboxModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatSelectModule,
     MatIconModule,
     MatNativeDateModule,
     MatMenuModule,
     MatCardModule,
+    MatBadgeModule,
     MatButtonModule,
     MatDialogModule,
     MatSelectModule,
@@ -240,4 +239,4 @@ export function tokenGetter() {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
