@@ -40,4 +40,9 @@ export class NotificationService {
       .post<any>(this.baseUrl + '/create-notification', notification)
       .pipe(catchError(handleError));
   }
+  updateNotification(notification: any): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + '/update-notification', notification, httpOptions)
+      .pipe(catchError(handleError));
+  }
 }
