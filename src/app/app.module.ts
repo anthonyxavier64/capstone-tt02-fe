@@ -81,6 +81,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
 import { ColorSelectorDialogComponent } from './pages/employee/meeting/create-new-meeting/color-selector-dialog/color-selector-dialog.component';
+import { AccountActivationComponent } from './pages/admin/account-activation/account-activation/account-activation.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -138,6 +139,7 @@ export function tokenGetter() {
     MassInviteInfoDialogComponent,
     CreateNewMeetingComponent,
     ColorSelectorDialogComponent,
+    AccountActivationComponent,
   ],
   imports: [
     CommonModule,
