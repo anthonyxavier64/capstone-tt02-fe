@@ -1,13 +1,17 @@
-import { CalendarEvent, CalendarView } from 'angular-calendar';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import * as moment from 'moment';
 
-import { AdminGuideComponent } from 'src/app/pages/admin/adminLanding/admin-guide/admin-guide.component';
-import { AuthService } from 'src/app/services/user/auth.service';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { CalendarEvent, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user/user.service';
 
+moment.updateLocale('en', {
+  week: {
+    dow: DAYS_OF_WEEK.MONDAY,
+    doy: 0,
+  },
+});
 @Component({
   selector: 'app-calendar',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,7 +24,15 @@ export class CalendarComponent implements OnInit {
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
   viewDate: Date = new Date();
-  events: CalendarEvent[] = [];
+  activeDayIsOpen: boolean = true;
+
+  events: CalendarEvent[] = [
+    {
+      title: 'Has custom class',
+      start: new Date(),
+      cssClass: 'my-custom-class',
+    },
+  ];
 
   constructor(private router: Router, private userService: UserService) {}
 
@@ -34,5 +46,23 @@ export class CalendarComponent implements OnInit {
 
   scheduleMeeting(): void {
     this.router.navigateByUrl('/create-meeting');
+  }
+
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    if (moment(date).isSame(this.viewDate.getMonth())) {
+      if (
+        (moment(this.viewDate).isSame(date) && this.activeDayIsOpen === true) ||
+        events.length === 0
+      ) {
+        this.activeDayIsOpen = false;
+      } else {
+        this.activeDayIsOpen = true;
+      }
+      this.viewDate = date;
+    }
+  }
+
+  closeOpenMonthViewDay() {
+    this.activeDayIsOpen = false;
   }
 }

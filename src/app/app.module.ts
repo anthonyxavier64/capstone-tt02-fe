@@ -1,6 +1,12 @@
 import * as moment from 'moment';
 
-import { CalendarModule, DateAdapter } from 'angular-calendar';
+import {
+  CalendarDateFormatter,
+  CalendarModule,
+  CalendarMomentDateFormatter,
+  DateAdapter,
+  MOMENT,
+} from 'angular-calendar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MAT_FORM_FIELD_DEFAULT_OPTIONS,
@@ -202,10 +208,18 @@ export function tokenGetter() {
         allowedDomains: ['localhost:3000'],
       },
     }),
-    CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: momentAdapterFactory,
-    }),
+    CalendarModule.forRoot(
+      {
+        provide: DateAdapter,
+        useFactory: momentAdapterFactory,
+      },
+      {
+        dateFormatter: {
+          provide: CalendarDateFormatter,
+          useClass: CalendarMomentDateFormatter,
+        },
+      }
+    ),
   ],
   providers: [
     {
@@ -217,6 +231,10 @@ export function tokenGetter() {
       useValue: { appearance: 'outline' },
     },
     DialogService,
+    {
+      provide: MOMENT,
+      useValue: moment,
+    },
   ],
   bootstrap: [AppComponent],
 })
