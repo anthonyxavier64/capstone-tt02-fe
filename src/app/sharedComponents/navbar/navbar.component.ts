@@ -6,47 +6,60 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { TaskDetailDialogComponent } from 'src/app/pages/employee/task-detail-dialog/task-detail-dialog.component';
+import { TaskService } from 'src/app/services/task/task.service';
+import { GoalService } from 'src/app/services/goal/goal.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
+  providers: [DialogService],
 })
 export class NavbarComponent implements OnInit {
-  unreadNotifications: any[]
-  readNotifications: any[]
-  numUnread: number
-  user: any
+  unreadNotifications: any[];
+  readNotifications: any[];
+  numUnread: number;
+  user: any;
+  ref: DynamicDialogRef | undefined;
+
   constructor(
     private router: Router,
     private auth: AuthService,
     public dialog: MatDialog,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private dialogService: DialogService,
+    private taskService: TaskService,
+    private goalService: GoalService,
+    private userService: UserService
   ) {
     this.unreadNotifications = [];
     this.readNotifications = [];
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   ngOnInit(): void {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
-    this.notificationService
-      .getUnreadNotifications(this.user.userId).subscribe((response) => {
-        console.log(response);
+    this.notificationService.getUnreadNotifications(this.user.userId).subscribe(
+      (response) => {
         this.unreadNotifications = response.sortedUnreadNotifications;
         this.numUnread = this.unreadNotifications.length;
       },
-        (error) => {
-          console.log(error);
-        }
-      );
-    this.notificationService.getReadNotifications(this.user.userId).subscribe((response) => {
-      console.log(response);
-      this.readNotifications = response.readNotifications;
-    },
       (error) => {
         console.log(error);
-      });
+      }
+    );
+    this.notificationService.getReadNotifications(this.user.userId).subscribe(
+      (response) => {
+        this.readNotifications = response.readNotifications;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
+
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
 
   onCompanyLogoClick() {
@@ -89,36 +102,88 @@ export class NavbarComponent implements OnInit {
   }
 
   handleCalendar() {
-    this.router.navigateByUrl('/calendar')
+    this.router.navigateByUrl('/calendar');
   }
   chooseIcon(notification: any) {
     if (notification.taskId) {
-      return "../../../assets/images/online-meeting.png";
+      return '../../../assets/images/online-meeting.png';
     } else if (notification.meetingId) {
-      return "../../../assets/images/to-do-list.png";
+      return '../../../assets/images/to-do-list.png';
     } else if (notification.covidDocumentSubmissionId) {
-      return "../../../assets/images/stethoscope.png";
+      return '../../../assets/images/stethoscope.png';
     } else if (notification.commentId) {
-      return "../../../assets/images/bubble-chat.png";
+      return '../../../assets/images/bubble-chat.png';
     }
-    return "";
+    return '';
   }
   onClickNotification(notification: any) {
     if (!notification.isRead) {
       notification.isRead = true;
-      this.notificationService.updateNotification(notification).subscribe((response) => {
-        this.unreadNotifications = this.unreadNotifications
-          .filter((item) => { item.notificationId != notification.notificationId });
-        this.readNotifications.push(response.notification);
-        this.readNotifications = this.readNotifications
-          .sort((first, second) => second.notificationDate - first.notificationDate);
-      },
+      this.notificationService.updateNotification(notification).subscribe(
+        (response) => {
+          this.unreadNotifications = this.unreadNotifications.filter((item) => {
+            item.notificationId != notification.notificationId;
+          });
+          this.readNotifications.push(response.notification);
+          this.readNotifications = this.readNotifications.sort(
+            (first, second) => second.notificationDate - first.notificationDate
+          );
+        },
         (error) => {
           console.log(error);
-        })
+        }
+      );
     }
     if (notification.taskId) {
-      this.router.navigateByUrl('/task');
+      this.taskService.getTaskById(notification.taskId).subscribe(
+        (response) => {
+          const task = response.task;
+
+          this.goalService
+            .getAllGoalsByCompanyId(this.user.companyId)
+            .subscribe(
+              (response) => {
+                const goals = response.goals;
+
+                const goal = goals.filter(
+                  (goal) => goal.goalId === task.goalId
+                );
+
+                this.userService.getUsers(this.user.companyId).subscribe(
+                  (response) => {
+                    const employees = response.users;
+
+                    this.ref = this.dialogService.open(
+                      TaskDetailDialogComponent,
+                      {
+                        data: {
+                          goal,
+                          allGoals: goals,
+                          task,
+                          employees,
+                          isArchived: task.isArchived,
+                        },
+                        width: '80%',
+                        height: 'auto',
+                        closable: false,
+                        showHeader: false,
+                      }
+                    );
+                  },
+                  (error) => {
+                    throw new Error(error);
+                  }
+                );
+              },
+              (error) => {
+                throw new Error(error);
+              }
+            );
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     } else if (notification.meetingId) {
       this.router.navigateByUrl('/meeting');
     } else if (notification.covidDocumentSubmissionId) {

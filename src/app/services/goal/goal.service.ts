@@ -23,4 +23,10 @@ export class GoalService {
       .get<any>(this.baseUrl + '/get-all-goals/' + companyId)
       .pipe(catchError(handleError));
   }
+
+  getGoalById(goalId: string): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + '/get-goal/' + goalId)
+      .pipe(catchError(handleError));
+  }
 }
