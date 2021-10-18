@@ -29,8 +29,6 @@ export class DashboardComponent implements OnInit {
   numCompleted: number;
   taskProgress: number;
 
-  // My Weekly Tasks progress
-
   // My Weekly Meetings progress
   today = new Date();
   weekday = this.datePipe.transform(this.today, 'EEEE');
