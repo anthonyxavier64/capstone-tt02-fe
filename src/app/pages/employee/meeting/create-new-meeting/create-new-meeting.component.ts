@@ -456,155 +456,179 @@ export class CreateNewMeetingComponent implements OnInit {
       'minutes'
     );
 
+    var closingHour = format + ' ' + this.company.officeClosingHour;
+    var closingHourMoment = moment(closingHour, 'DD-MM-YYYY hh:mm:ss');
+
     var blockoutTimingsOnDate = await this.blockoutDates.filter((item) => {
       return item.date.toLocaleDateString() === selected.toLocaleDateString();
     });
     console.log(blockoutTimingsOnDate);
-
-    for (let i = 0; i < blockoutTimingsOnDate.length; i++) {
-      if (!generatedTimeFinalized) {
-        // Current item meeting start and end time
-        var itemDate = blockoutTimingsOnDate[i].date.toLocaleDateString();
-        var itemDateFormatted = itemDate.split('/').join('-');
-        var itemStartTime =
-          itemDateFormatted + ' ' + blockoutTimingsOnDate[i].startTime;
-        var itemEndTime =
-          itemDateFormatted + ' ' + blockoutTimingsOnDate[i].endTime;
-        var itemStartTimeMoment = moment(itemStartTime, 'DD-MM-YYYY hh:mm:ss');
-        var itemEndTimeMoment = moment(itemEndTime, 'DD-MM-YYYY hh:mm:ss');
-
-        // Next item meeting start and end time
-
-        console.log('INDEX', i);
-
-        var closingHour = format + ' ' + this.company.officeClosingHour;
-        var closingHourMoment = moment(closingHour, 'DD-MM-YYYY hh:mm:ss');
-
-        // If the iteration has reached the last meeting of the day
-        if (i === blockoutTimingsOnDate.length - 1) {
-          console.log('LAST INDEX', i);
-          var newStartTimeToMutate = startTime.toDate().toLocaleString();
-          var newEndTime = moment(
-            newStartTimeToMutate,
+    if (blockoutTimingsOnDate.length !== 0) {
+      for (let i = 0; i < blockoutTimingsOnDate.length; i++) {
+        if (!generatedTimeFinalized) {
+          // Current item meeting start and end time
+          var itemDate = blockoutTimingsOnDate[i].date.toLocaleDateString();
+          var itemDateFormatted = itemDate.split('/').join('-');
+          var itemStartTime =
+            itemDateFormatted + ' ' + blockoutTimingsOnDate[i].startTime;
+          var itemEndTime =
+            itemDateFormatted + ' ' + blockoutTimingsOnDate[i].endTime;
+          var itemStartTimeMoment = moment(
+            itemStartTime,
             'DD-MM-YYYY hh:mm:ss'
-          ).add(this.meetingDuration, 'minutes');
+          );
+          var itemEndTimeMoment = moment(itemEndTime, 'DD-MM-YYYY hh:mm:ss');
 
-          console.log(newEndTime.toLocaleString());
-          if (
-            newEndTime.isBetween(itemStartTimeMoment, itemEndTimeMoment) ||
-            newEndTime.isSameOrAfter(itemEndTimeMoment)
-          ) {
-            console.log('LAST INDEX AFTER FINAL MEETING');
-            var finalStartTime = itemEndTimeMoment;
-            var finalEndTime = moment(
-              finalStartTime.toDate().toLocaleString(),
+          // Next item meeting start and end time
+
+          // If the iteration has reached the last meeting of the day
+          if (i === blockoutTimingsOnDate.length - 1) {
+            console.log('LAST INDEX', i);
+            var newStartTimeToMutate = startTime.toDate().toLocaleString();
+            var newEndTime = moment(
+              newStartTimeToMutate,
               'DD-MM-YYYY hh:mm:ss'
             ).add(this.meetingDuration, 'minutes');
 
-            if (finalEndTime.isSameOrBefore(closingHourMoment)) {
-              startTime = finalStartTime;
-              generatedTimeFinalized = true;
-            } else {
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail:
-                  'No available timeslots for the day. Please select another day!',
-              });
-            }
-          }
-        } else {
-          // Variables for next assumed start time after moving past the first
-          var newStartTime = itemEndTimeMoment;
-          var newStartTimeToMutate = itemEndTimeMoment
-            .toDate()
-            .toLocaleString();
-          var newEndTime = moment(
-            newStartTimeToMutate,
-            'DD-MM-YYYY hh:mm:ss'
-          ).add(this.meetingDuration, 'minutes');
+            console.log(newEndTime.toLocaleString());
+            if (
+              newEndTime.isBetween(itemStartTimeMoment, itemEndTimeMoment) ||
+              newEndTime.isSameOrAfter(itemEndTimeMoment)
+            ) {
+              console.log('LAST INDEX AFTER FINAL MEETING');
+              var finalStartTime = itemEndTimeMoment;
+              var finalEndTime = moment(
+                finalStartTime.toDate().toLocaleString(),
+                'DD-MM-YYYY hh:mm:ss'
+              ).add(this.meetingDuration, 'minutes');
 
-          // Variables for next meeting on the list
-          var nextItemDate =
-            blockoutTimingsOnDate[i + 1].date.toLocaleDateString();
-          var nextItemDateFormatted = nextItemDate.split('/').join('-');
-          var nextItemStartTime =
-            nextItemDateFormatted +
-            ' ' +
-            blockoutTimingsOnDate[i + 1].startTime;
-          var nextItemEndTime =
-            nextItemDateFormatted + ' ' + blockoutTimingsOnDate[i + 1].endTime;
-
-          var nextItemStartTimeMoment = moment(
-            nextItemStartTime,
-            'DD-MM-YYYY hh:mm:ss'
-          );
-          var nextItemEndTimeMoment = moment(
-            nextItemEndTime,
-            'DD-MM-YYYY hh:mm:ss'
-          );
-
-          // If end time of meeting to be created clashes with the start of next meeting,
-          // skip, otherwise, set the startTime of item to be created to be the endtime of the currentItem
-
-          console.log(i, 'THIS IS ENTERED');
-          console.log('NEW END TIME', newEndTime.toLocaleString());
-          console.log(
-            'NEXT ITEM START',
-            nextItemStartTimeMoment.toLocaleString()
-          );
-          console.log('NEW ITEM END', nextItemEndTimeMoment.toLocaleString());
-
-          if (
-            !newEndTime.isBetween(
-              nextItemStartTimeMoment,
-              nextItemEndTimeMoment
-            )
-          ) {
-            console.log('IS NOT BETWEEN NEXT ITEM');
-
-            if (newEndTime.isSameOrAfter(nextItemEndTimeMoment)) {
-              console.log('EXCEED THE NEXT MEETING');
-              var itemAfterNewEndTime = blockoutTimingsOnDate.find((item) => {
-                var itemToFind = item.date.toLocaleDateString();
-                var itemToFindDateFormatted = itemToFind.split('/').join('-');
-                var itemToFindStartTime =
-                  itemToFindDateFormatted + ' ' + item.startTime;
-                var itemToFindStartTimeMoment = moment(
-                  itemToFindStartTime,
-                  'DD-MM-YYYY hh:mm:ss'
-                );
-                return itemToFindStartTimeMoment.isAfter(newEndTime);
-              });
-              if (itemAfterNewEndTime) {
-                console.log('AFTER EXCEEDED NEXT MEETING, ITEM FOUND');
-                var itemFoundDate =
-                  itemAfterNewEndTime.date.toLocaleDateString();
-                var itemFoundDateFormatted = itemFoundDate.split('/').join('-');
-                var itemFoundStartTime =
-                  itemFoundDateFormatted + ' ' + itemAfterNewEndTime.startTime;
-                var itemFoundStartTimeMoment = moment(
-                  itemFoundStartTime,
-                  'DD-MM-YYYY hh:mm:ss'
-                );
-                startTime = itemFoundStartTimeMoment;
+              if (finalEndTime.isSameOrBefore(closingHourMoment)) {
+                startTime = finalStartTime;
+                generatedTimeFinalized = true;
+              } else {
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail:
+                    'No available timeslots for the day. Please select another day!',
+                });
               }
-            } else {
-              console.log('NO MEETINGS OVERLAPPED');
-              startTime = newStartTime;
-              generatedTimeFinalized = true;
             }
-          } else if (
-            newEndTime.isBetween(
-              nextItemStartTimeMoment,
-              nextItemEndTimeMoment
-            ) &&
-            newEndTime !== nextItemEndTimeMoment
-          ) {
-            console.log('IS BETWEEN NEXT ITEM');
-            startTime = nextItemEndTimeMoment;
+          } else {
+            // Variables for next assumed start time after moving past the first
+            var newStartTime = itemEndTimeMoment;
+            var newStartTimeToMutate = itemEndTimeMoment
+              .toDate()
+              .toLocaleString();
+            var newEndTime = moment(
+              newStartTimeToMutate,
+              'DD-MM-YYYY hh:mm:ss'
+            ).add(this.meetingDuration, 'minutes');
+
+            // Variables for next meeting on the list
+            var nextItemDate =
+              blockoutTimingsOnDate[i + 1].date.toLocaleDateString();
+            var nextItemDateFormatted = nextItemDate.split('/').join('-');
+            var nextItemStartTime =
+              nextItemDateFormatted +
+              ' ' +
+              blockoutTimingsOnDate[i + 1].startTime;
+            var nextItemEndTime =
+              nextItemDateFormatted +
+              ' ' +
+              blockoutTimingsOnDate[i + 1].endTime;
+
+            var nextItemStartTimeMoment = moment(
+              nextItemStartTime,
+              'DD-MM-YYYY hh:mm:ss'
+            );
+            var nextItemEndTimeMoment = moment(
+              nextItemEndTime,
+              'DD-MM-YYYY hh:mm:ss'
+            );
+
+            // If end time of meeting to be created clashes with the start of next meeting,
+            // skip, otherwise, set the startTime of item to be created to be the endtime of the currentItem
+
+            console.log(i, 'THIS IS ENTERED');
+            console.log('NEW END TIME', newEndTime.toLocaleString());
+            console.log(
+              'NEXT ITEM START',
+              nextItemStartTimeMoment.toLocaleString()
+            );
+            console.log('NEW ITEM END', nextItemEndTimeMoment.toLocaleString());
+
+            if (
+              !newEndTime.isBetween(
+                nextItemStartTimeMoment,
+                nextItemEndTimeMoment
+              )
+            ) {
+              console.log('IS NOT BETWEEN NEXT ITEM');
+
+              if (newEndTime.isSameOrAfter(nextItemEndTimeMoment)) {
+                console.log('EXCEED THE NEXT MEETING');
+                var itemAfterNewEndTime = blockoutTimingsOnDate.find((item) => {
+                  var itemToFind = item.date.toLocaleDateString();
+                  var itemToFindDateFormatted = itemToFind.split('/').join('-');
+                  var itemToFindStartTime =
+                    itemToFindDateFormatted + ' ' + item.startTime;
+                  var itemToFindStartTimeMoment = moment(
+                    itemToFindStartTime,
+                    'DD-MM-YYYY hh:mm:ss'
+                  );
+                  return itemToFindStartTimeMoment.isAfter(newEndTime);
+                });
+                if (itemAfterNewEndTime) {
+                  console.log('AFTER EXCEEDED NEXT MEETING, ITEM FOUND');
+                  var itemFoundDate =
+                    itemAfterNewEndTime.date.toLocaleDateString();
+                  var itemFoundDateFormatted = itemFoundDate
+                    .split('/')
+                    .join('-');
+                  var itemFoundStartTime =
+                    itemFoundDateFormatted +
+                    ' ' +
+                    itemAfterNewEndTime.startTime;
+                  var itemFoundStartTimeMoment = moment(
+                    itemFoundStartTime,
+                    'DD-MM-YYYY hh:mm:ss'
+                  );
+                  startTime = itemFoundStartTimeMoment;
+                }
+              } else {
+                console.log('NO MEETINGS OVERLAPPED');
+                startTime = newStartTime;
+                generatedTimeFinalized = true;
+              }
+            } else if (
+              newEndTime.isBetween(
+                nextItemStartTimeMoment,
+                nextItemEndTimeMoment
+              ) &&
+              newEndTime !== nextItemEndTimeMoment
+            ) {
+              console.log('IS BETWEEN NEXT ITEM');
+              startTime = nextItemEndTimeMoment;
+            }
           }
         }
+      }
+    } else {
+      console.log('ELSE BLOCK');
+      console.log(endTime.toLocaleString());
+      console.log(closingHourMoment.toLocaleString());
+      if (!endTime.isSameOrBefore(closingHourMoment)) {
+        console.log('ERROR');
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail:
+            'No available timeslots for the day. Please select another day!',
+        });
+      } else {
+        console.log('CORRECT');
+        generatedTimeFinalized = true;
       }
     }
 
