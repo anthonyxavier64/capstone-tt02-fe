@@ -272,7 +272,7 @@ export class UpdateMeetingDialogComponent implements OnInit {
     this.employees.push(user);
   }
 
-  createNewMeeting(): void {
+  confirmUpdate(): void {
     this.selectedScheduleType = this.selectedScheduleType.toUpperCase();
 
     // Following code is to pass in employee id instead of employee object
