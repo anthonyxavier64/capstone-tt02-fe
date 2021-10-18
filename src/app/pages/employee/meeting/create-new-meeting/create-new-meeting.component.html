@@ -424,11 +424,6 @@
     </div>
 
     <div
-      *ngIf="
-        assignedMeetingEmployees.length !== 0 &&
-        assignedPhysicalEmployees.length === 0 &&
-        assignedVirtualEmployees.length === 0
-      "
       fxLayout="row"
       fxLayoutAlign="space-between center"
       style="width: 100%"
@@ -439,25 +434,12 @@
         fxLayoutAlign="space-around start"
         fxLayoutGap="3%"
       >
-        <!-- <label style="white-space: nowrap">Meeting Date: </label>
-          <input
-            matInput
-            [matDatepicker]="picker"
-            [(ngModel)]="meetingDate"
-            #meetingDateInput="ngModel"
-            class="input"
-            type="date"
-            style="height: 2vw"
-            [disabled]="
-              assignedMeetingEmployees.length === 0 &&
-              assignedVirtualEmployees.length === 0 &&
-              assignedPhysicalEmployees.length === 0
-            "
-          /> -->
         <mat-form-field appearance="outline">
           <mat-label style="white-space: nowrap">Meeting Date:</mat-label>
           <input
             matInput
+            [(ngModel)]="meetingDate"
+            #meetingDateInput="ngModel"
             [matDatepicker]="picker"
             [matDatepickerFilter]="filter"
             [disabled]="
@@ -482,6 +464,8 @@
             [(ngModel)]="meetingDuration"
             #meetingDurationInput="ngModel"
             [min]="0"
+            [disabled]="meetingDate === undefined"
+            (change)="generateTimeRecommendation(meetingDateInput)"
           />
         </mat-form-field>
       </div>
@@ -507,7 +491,8 @@
                 [(ngModel)]="startTime"
                 #startTimeInput="ngModel"
                 type="time"
-                step="900"
+                min="company.officeOpeningHour.toString()"
+                max="company.officeOpeningHour.toString()"
                 [disabled]="
                   assignedMeetingEmployees.length === 0 &&
                   assignedPhysicalEmployees.length === 0 &&
@@ -515,23 +500,6 @@
                 "
               />
             </mat-form-field>
-            <!-- <label style="white-space: nowrap">Meeting Start: </label>
-            <input
-              matInput
-              [(ngModel)]="startTime"
-              #startTimeInput="ngModel"
-              class="input"
-              type="time"
-              step="900"
-              style="height: 2vw"
-              [min]="company.officeOpeningHour"
-              [max]="company.officeClosingHour"
-              [disabled]="
-                assignedMeetingEmployees.length === 0 &&
-                assignedPhysicalEmployees.length === 0 &&
-                assignedVirtualEmployees.length === 0
-              "
-            /> -->
           </div>
 
           <h1>-</h1>
@@ -542,43 +510,17 @@
           >
             <mat-form-field>
               <mat-label style="white-space: nowrap">Meeting End: </mat-label>
-              <!-- <input
-                matInput
-                [(ngModel)]="endTime"
-                #endTimeInput="ngModel"
-                type="time"
-                step="900"
-                [disabled]="
-                  assignedMeetingEmployees.length === 0 &&
-                  assignedPhysicalEmployees.length === 0 &&
-                  assignedVirtualEmployees.length === 0
-                "
-              /> -->
+
               <input
                 matInput
                 type="time"
                 [disabled]="true"
                 [(ngModel)]="endTime"
                 #endTimeInput="ngModel"
+                min="company.officeOpeningHour"
+                max="company.officeOpeningHour"
               />
             </mat-form-field>
-            <!-- <label style="white-space: nowrap">Meeting End: </label>
-            <input
-              matInput
-              [(ngModel)]="endTime"
-              #endTimeInput="ngModel"
-              class="input"
-              type="time"
-              step="900"
-              style="height: 2vw"
-              [min]="company.officeOpeningHour"
-              [max]="company.officeClosingHour"
-              [disabled]="
-                assignedMeetingEmployees.length === 0 &&
-                assignedPhysicalEmployees.length === 0 &&
-                assignedVirtualEmployees.length === 0
-              "
-            /> -->
           </div>
         </div>
         <div
@@ -608,11 +550,6 @@
       <!-- </div> -->
     </div>
     <div
-      *ngIf="
-        meetingDate !== undefined &&
-        meetingDuration !== undefined &&
-        startTime !== undefined
-      "
       fxLayout="row"
       fxLayoutAlign="space-between"
       style="width: 100%; flex-wrap: wrap"
@@ -638,7 +575,13 @@
                 >
                   <div
                     class="roomItem"
-                    [ngStyle]="{ opacity: room.isSelected ? '1' : '0.4' }"
+                    [ngStyle]="{
+                      'background-color': room.isSelected
+                        ? 'rgba(255, 166, 135, 0.6)'
+                        : '#FFFFFF',
+                      opacity:
+                        assignedPhysicalEmployees.length === 0 ? '0.4' : '1'
+                    }"
                     fxLayout="column"
                     fxLayoutAlign="start"
                     fxLayoutGap="2%"
@@ -663,11 +606,6 @@
       </div>
     </div>
     <div
-      *ngIf="
-        meetingDate !== undefined &&
-        meetingDuration !== undefined &&
-        startTime !== undefined
-      "
       fxLayout="column"
       fxLayoutAlign="space-around start"
       fxLayoutGap="2%"
