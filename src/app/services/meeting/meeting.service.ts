@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import { DateAdapter } from 'angular-calendar';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -39,10 +40,16 @@ export class MeetingService {
   }
 
   getAllMeetingsByParticipantId(participantId: string): Observable<any> {
+    return this.httpClient.get<any>(
+      this.baseUrl + '/get-all-meetings-user-partipant/' + participantId
+    );
+  }
+
+  getMeetingByTitleDate(title: string, startTime: Date): Observable<any> {
+    console.log(title);
+    console.log(startTime);
     return this.httpClient
-      .get<any>(
-        this.baseUrl + '/get-all-meetings-user-partipant/' + participantId
-      )
+      .get<any>(this.baseUrl + '/get-meeting' + '/' + title + '/' + startTime)
       .pipe(catchError(handleError));
   }
 }
