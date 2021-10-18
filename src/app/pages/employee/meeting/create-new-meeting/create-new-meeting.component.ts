@@ -42,9 +42,9 @@ export class CreateNewMeetingComponent implements OnInit {
   meetingTitle: string = '';
   remarks: string = '';
   meetingDate: Date = undefined;
-  startTime: Date = undefined;
+  startTime: Date | string = undefined;
   meetingDuration: number = undefined;
-  endTime: Date = undefined;
+  endTime: Date | string = undefined;
   chosenScheduleType: any | null;
   chosenGoal: any;
   chosenRoom: any; // Should this be selectedRoom or chosenRoom?
@@ -476,10 +476,7 @@ export class CreateNewMeetingComponent implements OnInit {
         // Next item meeting start and end time
 
         console.log('INDEX', i);
-        // if (
-        //   startTime.isBetween(itemStartTimeMoment, itemEndTimeMoment) ||
-        //   startTime.isSameOrAfter(itemStartTimeMoment)
-        // ) {
+
         var closingHour = format + ' ' + this.company.officeClosingHour;
         var closingHourMoment = moment(closingHour, 'DD-MM-YYYY hh:mm:ss');
 
@@ -607,49 +604,35 @@ export class CreateNewMeetingComponent implements OnInit {
             console.log('IS BETWEEN NEXT ITEM');
             startTime = nextItemEndTimeMoment;
           }
-          // else if (
-          //   newEndTime.isAfter(nextItemEndTimeMoment) ||
-          //   newEndTime === nextItemEndTimeMoment
-          // ) {
-          //   console.log('EXCEED THE NEXT MEETING');
-          //   var itemAfterNewEndTime = blockoutTimingsOnDate.find((item) => {
-          //     var itemToFind = item.date.toLocaleDateString();
-          //     var itemToFindDateFormatted = itemToFind.split('/').join('-');
-          //     var itemToFindStartTime =
-          //       itemToFindDateFormatted + ' ' + item.startTime;
-          //     var itemToFindStartTimeMoment = moment(
-          //       itemToFindStartTime,
-          //       'DD-MM-YYYY hh:mm:ss'
-          //     );
-          //     return itemToFindStartTimeMoment.isAfter(newEndTime);
-          //   });
-          //   if (itemAfterNewEndTime) {
-          //     console.log('AFTER EXCEEDED NEXT MEETING, ITEM FOUND');
-          //     var itemFoundDate =
-          //       itemAfterNewEndTime.date.toLocaleDateString();
-          //     var itemFoundDateFormatted = itemFoundDate
-          //       .split('/')
-          //       .join('-');
-          //     var itemFoundStartTime =
-          //       itemFoundDateFormatted +
-          //       ' ' +
-          //       itemAfterNewEndTime.startTime;
-          //     var itemFoundStartTimeMoment = moment(
-          //       itemFoundStartTime,
-          //       'DD-MM-YYYY hh:mm:ss'
-          //     );
-          //     startTime = itemFoundStartTimeMoment;
-          //   }
-          // }
         }
-        // }
       }
     }
 
     if (generatedTimeFinalized) {
-      this.startTime = startTime.toDate();
+      var updatedEndTime = startTime.toDate().toLocaleString();
+      var updatedEndTimeToBind = moment(
+        updatedEndTime,
+        'DD-MM-YYYY hh:mm:ss'
+      ).add(this.meetingDuration, 'minutes');
+      this.startTime = startTime.format().substring(11, 16);
+      this.endTime = updatedEndTimeToBind.format().substring(11, 16);
     }
     console.log('FINAL', startTime.toDate().toLocaleTimeString());
+  }
+
+  timeInputChange(timeInput: NgModel) {
+    var meetingDateInput = this.meetingDate.toLocaleDateString();
+    var formattedMeetingDate = meetingDateInput.split('/').join('-');
+    var formattedMeetingDateWithTime =
+      formattedMeetingDate + ' ' + timeInput.value;
+
+    var inputTimeMoment = moment(
+      formattedMeetingDateWithTime,
+      'DD-MM-YYYY hh:mm'
+    );
+    var outputTimeMoment = inputTimeMoment.add(this.meetingDuration, 'minutes');
+
+    this.endTime = outputTimeMoment.format().substring(11, 16);
   }
 
   createNewMeeting(): void {
