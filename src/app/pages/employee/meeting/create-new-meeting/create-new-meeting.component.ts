@@ -445,6 +445,7 @@ export class CreateNewMeetingComponent implements OnInit {
   };
 
   async generateTimeRecommendation(meetingDateInput: NgModel): Promise<void> {
+    var generatedTimeFinalized: boolean = false;
     var selected: Date = meetingDateInput.value;
     var dateSelected = selected.toLocaleDateString();
     var format = dateSelected.split('/').join('-');
@@ -461,35 +462,59 @@ export class CreateNewMeetingComponent implements OnInit {
     console.log(blockoutTimingsOnDate);
 
     for (let i = 0; i < blockoutTimingsOnDate.length; i++) {
-      var generatedTimeFinalized: boolean = false;
+      if (!generatedTimeFinalized) {
+        // Current item meeting start and end time
+        var itemDate = blockoutTimingsOnDate[i].date.toLocaleDateString();
+        var itemDateFormatted = itemDate.split('/').join('-');
+        var itemStartTime =
+          itemDateFormatted + ' ' + blockoutTimingsOnDate[i].startTime;
+        var itemEndTime =
+          itemDateFormatted + ' ' + blockoutTimingsOnDate[i].endTime;
+        var itemStartTimeMoment = moment(itemStartTime, 'DD-MM-YYYY hh:mm:ss');
+        var itemEndTimeMoment = moment(itemEndTime, 'DD-MM-YYYY hh:mm:ss');
 
-      // Current item meeting start and end time
-      var itemDate = blockoutTimingsOnDate[i].date.toLocaleDateString();
-      var itemDateFormatted = itemDate.split('/').join('-');
-      var itemStartTime =
-        itemDateFormatted + ' ' + blockoutTimingsOnDate[i].startTime;
-      var itemEndTime =
-        itemDateFormatted + ' ' + blockoutTimingsOnDate[i].endTime;
-      var itemStartTimeMoment = moment(itemStartTime, 'DD-MM-YYYY hh:mm:ss');
-      var itemEndTimeMoment = moment(itemEndTime, 'DD-MM-YYYY hh:mm:ss');
+        // Next item meeting start and end time
 
-      // Next item meeting start and end time
-
-      if (startTime.isBetween(itemStartTimeMoment, itemEndTimeMoment)) {
+        console.log('INDEX', i);
+        // if (
+        //   startTime.isBetween(itemStartTimeMoment, itemEndTimeMoment) ||
+        //   startTime.isSameOrAfter(itemStartTimeMoment)
+        // ) {
         var closingHour = format + ' ' + this.company.officeClosingHour;
         var closingHourMoment = moment(closingHour, 'DD-MM-YYYY hh:mm:ss');
 
         // If the iteration has reached the last meeting of the day
         if (i === blockoutTimingsOnDate.length - 1) {
-          if (endTime.isBefore(closingHourMoment)) {
-            startTime = itemEndTimeMoment;
-          } else {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail:
-                'No available timeslots for the day. Please select another day!',
-            });
+          console.log('LAST INDEX', i);
+          var newStartTimeToMutate = startTime.toDate().toLocaleString();
+          var newEndTime = moment(
+            newStartTimeToMutate,
+            'DD-MM-YYYY hh:mm:ss'
+          ).add(this.meetingDuration, 'minutes');
+
+          console.log(newEndTime.toLocaleString());
+          if (
+            newEndTime.isBetween(itemStartTimeMoment, itemEndTimeMoment) ||
+            newEndTime.isSameOrAfter(itemEndTimeMoment)
+          ) {
+            console.log('LAST INDEX AFTER FINAL MEETING');
+            var finalStartTime = itemEndTimeMoment;
+            var finalEndTime = moment(
+              finalStartTime.toDate().toLocaleString(),
+              'DD-MM-YYYY hh:mm:ss'
+            ).add(this.meetingDuration, 'minutes');
+
+            if (finalEndTime.isSameOrBefore(closingHourMoment)) {
+              startTime = finalStartTime;
+              generatedTimeFinalized = true;
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail:
+                  'No available timeslots for the day. Please select another day!',
+              });
+            }
           }
         } else {
           // Variables for next assumed start time after moving past the first
@@ -533,22 +558,96 @@ export class CreateNewMeetingComponent implements OnInit {
           );
           console.log('NEW ITEM END', nextItemEndTimeMoment.toLocaleString());
 
-          if (!generatedTimeFinalized) {
-            if (
-              !newEndTime.isBetween(
-                nextItemStartTimeMoment,
-                nextItemEndTimeMoment
-              )
-            ) {
-              console.log('IS NOT BETWEEN NEXT ITEM');
-              startTime = newStartTime;
+          if (
+            !newEndTime.isBetween(
+              nextItemStartTimeMoment,
+              nextItemEndTimeMoment
+            )
+          ) {
+            console.log('IS NOT BETWEEN NEXT ITEM');
+
+            if (newEndTime.isSameOrAfter(nextItemEndTimeMoment)) {
+              console.log('EXCEED THE NEXT MEETING');
+              var itemAfterNewEndTime = blockoutTimingsOnDate.find((item) => {
+                var itemToFind = item.date.toLocaleDateString();
+                var itemToFindDateFormatted = itemToFind.split('/').join('-');
+                var itemToFindStartTime =
+                  itemToFindDateFormatted + ' ' + item.startTime;
+                var itemToFindStartTimeMoment = moment(
+                  itemToFindStartTime,
+                  'DD-MM-YYYY hh:mm:ss'
+                );
+                return itemToFindStartTimeMoment.isAfter(newEndTime);
+              });
+              if (itemAfterNewEndTime) {
+                console.log('AFTER EXCEEDED NEXT MEETING, ITEM FOUND');
+                var itemFoundDate =
+                  itemAfterNewEndTime.date.toLocaleDateString();
+                var itemFoundDateFormatted = itemFoundDate.split('/').join('-');
+                var itemFoundStartTime =
+                  itemFoundDateFormatted + ' ' + itemAfterNewEndTime.startTime;
+                var itemFoundStartTimeMoment = moment(
+                  itemFoundStartTime,
+                  'DD-MM-YYYY hh:mm:ss'
+                );
+                startTime = itemFoundStartTimeMoment;
+              }
             } else {
-              console.log('IS BETWEEN NEXT ITEM');
-              startTime = nextItemEndTimeMoment;
+              console.log('NO MEETINGS OVERLAPPED');
+              startTime = newStartTime;
+              generatedTimeFinalized = true;
             }
+          } else if (
+            newEndTime.isBetween(
+              nextItemStartTimeMoment,
+              nextItemEndTimeMoment
+            ) &&
+            newEndTime !== nextItemEndTimeMoment
+          ) {
+            console.log('IS BETWEEN NEXT ITEM');
+            startTime = nextItemEndTimeMoment;
           }
+          // else if (
+          //   newEndTime.isAfter(nextItemEndTimeMoment) ||
+          //   newEndTime === nextItemEndTimeMoment
+          // ) {
+          //   console.log('EXCEED THE NEXT MEETING');
+          //   var itemAfterNewEndTime = blockoutTimingsOnDate.find((item) => {
+          //     var itemToFind = item.date.toLocaleDateString();
+          //     var itemToFindDateFormatted = itemToFind.split('/').join('-');
+          //     var itemToFindStartTime =
+          //       itemToFindDateFormatted + ' ' + item.startTime;
+          //     var itemToFindStartTimeMoment = moment(
+          //       itemToFindStartTime,
+          //       'DD-MM-YYYY hh:mm:ss'
+          //     );
+          //     return itemToFindStartTimeMoment.isAfter(newEndTime);
+          //   });
+          //   if (itemAfterNewEndTime) {
+          //     console.log('AFTER EXCEEDED NEXT MEETING, ITEM FOUND');
+          //     var itemFoundDate =
+          //       itemAfterNewEndTime.date.toLocaleDateString();
+          //     var itemFoundDateFormatted = itemFoundDate
+          //       .split('/')
+          //       .join('-');
+          //     var itemFoundStartTime =
+          //       itemFoundDateFormatted +
+          //       ' ' +
+          //       itemAfterNewEndTime.startTime;
+          //     var itemFoundStartTimeMoment = moment(
+          //       itemFoundStartTime,
+          //       'DD-MM-YYYY hh:mm:ss'
+          //     );
+          //     startTime = itemFoundStartTimeMoment;
+          //   }
+          // }
         }
+        // }
       }
+    }
+
+    if (generatedTimeFinalized) {
+      this.startTime = startTime.toDate();
     }
     console.log('FINAL', startTime.toDate().toLocaleTimeString());
   }
