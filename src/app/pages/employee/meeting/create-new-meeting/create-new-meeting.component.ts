@@ -403,7 +403,6 @@ export class CreateNewMeetingComponent implements OnInit {
 
             this.blockoutDates.push(blockoutItem);
           }
-          console.log(employeeId, this.blockoutDates);
         }
       }
     } else if (methodType === 'UNASSIGN') {
@@ -445,22 +444,25 @@ export class CreateNewMeetingComponent implements OnInit {
     );
   };
 
-  generateTimeRecommendation(meetingDateInput: NgModel): void {
+  async generateTimeRecommendation(meetingDateInput: NgModel): Promise<void> {
     var selected: Date = meetingDateInput.value;
     var dateSelected = selected.toLocaleDateString();
     var format = dateSelected.split('/').join('-');
     var momentInput = format + ' ' + this.company.officeOpeningHour;
-    console.log(momentInput);
     var startTime = moment(momentInput, 'DD-MM-YYYY hh:mm:ss');
-    var endTime = startTime.add(this.meetingDuration, 'minutes');
-    console.log(startTime);
-    console.log(endTime);
-
-    var blockoutTimingsOnDate = this.blockoutDates.filter(
-      (item) => item.date !== selected
+    var endTime = moment(momentInput, 'DD-MM-YYYY hh:mm:ss').add(
+      this.meetingDuration,
+      'minutes'
     );
 
+    var blockoutTimingsOnDate = await this.blockoutDates.filter((item) => {
+      return item.date.toLocaleDateString() === selected.toLocaleDateString();
+    });
+    console.log(blockoutTimingsOnDate);
+
     for (let i = 0; i < blockoutTimingsOnDate.length; i++) {
+      var generatedTimeFinalized: boolean = false;
+
       // Current item meeting start and end time
       var itemDate = blockoutTimingsOnDate[i].date.toLocaleDateString();
       var itemDateFormatted = itemDate.split('/').join('-');
@@ -473,11 +475,10 @@ export class CreateNewMeetingComponent implements OnInit {
 
       // Next item meeting start and end time
 
-      console.log(itemStartTimeMoment);
-      console.log(itemEndTimeMoment);
       if (startTime.isBetween(itemStartTimeMoment, itemEndTimeMoment)) {
         var closingHour = format + ' ' + this.company.officeClosingHour;
         var closingHourMoment = moment(closingHour, 'DD-MM-YYYY hh:mm:ss');
+
         // If the iteration has reached the last meeting of the day
         if (i === blockoutTimingsOnDate.length - 1) {
           if (endTime.isBefore(closingHourMoment)) {
@@ -491,12 +492,27 @@ export class CreateNewMeetingComponent implements OnInit {
             });
           }
         } else {
-          var nextItemDate = blockoutTimingsOnDate[i].date.toLocaleDateString();
+          // Variables for next assumed start time after moving past the first
+          var newStartTime = itemEndTimeMoment;
+          var newStartTimeToMutate = itemEndTimeMoment
+            .toDate()
+            .toLocaleString();
+          var newEndTime = moment(
+            newStartTimeToMutate,
+            'DD-MM-YYYY hh:mm:ss'
+          ).add(this.meetingDuration, 'minutes');
+
+          // Variables for next meeting on the list
+          var nextItemDate =
+            blockoutTimingsOnDate[i + 1].date.toLocaleDateString();
           var nextItemDateFormatted = nextItemDate.split('/').join('-');
           var nextItemStartTime =
-            nextItemDateFormatted + ' ' + blockoutTimingsOnDate[i].startTime;
+            nextItemDateFormatted +
+            ' ' +
+            blockoutTimingsOnDate[i + 1].startTime;
           var nextItemEndTime =
-            nextItemDateFormatted + ' ' + blockoutTimingsOnDate[i].endTime;
+            nextItemDateFormatted + ' ' + blockoutTimingsOnDate[i + 1].endTime;
+
           var nextItemStartTimeMoment = moment(
             nextItemStartTime,
             'DD-MM-YYYY hh:mm:ss'
@@ -508,14 +524,33 @@ export class CreateNewMeetingComponent implements OnInit {
 
           // If end time of meeting to be created clashes with the start of next meeting,
           // skip, otherwise, set the startTime of item to be created to be the endtime of the currentItem
-          if (
-            !endTime.isBetween(nextItemStartTimeMoment, nextItemEndTimeMoment)
-          ) {
-            startTime = itemEndTimeMoment;
+
+          console.log(i, 'THIS IS ENTERED');
+          console.log('NEW END TIME', newEndTime.toLocaleString());
+          console.log(
+            'NEXT ITEM START',
+            nextItemStartTimeMoment.toLocaleString()
+          );
+          console.log('NEW ITEM END', nextItemEndTimeMoment.toLocaleString());
+
+          if (!generatedTimeFinalized) {
+            if (
+              !newEndTime.isBetween(
+                nextItemStartTimeMoment,
+                nextItemEndTimeMoment
+              )
+            ) {
+              console.log('IS NOT BETWEEN NEXT ITEM');
+              startTime = newStartTime;
+            } else {
+              console.log('IS BETWEEN NEXT ITEM');
+              startTime = nextItemEndTimeMoment;
+            }
           }
         }
       }
     }
+    console.log('FINAL', startTime.toDate().toLocaleTimeString());
   }
 
   createNewMeeting(): void {
