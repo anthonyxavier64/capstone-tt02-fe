@@ -87,6 +87,7 @@ import { TableModule } from 'primeng/table';
 import { TaskComponent } from './pages/employee/task/task.component';
 import { TaskDetailDialogComponent } from './pages/employee/task-detail-dialog/task-detail-dialog.component';
 import { TierInfoDialogComponent } from './pages/index/sign-up/tier-info-dialog/tier-info-dialog.component';
+import { UpdateMeetingDialogComponent } from './pages/employee/meeting/update-meeting-dialog/update-meeting-dialog.component';
 import { UploadVaccinationDialogComponent } from './pages/covid-declarations/upload-vaccination-dialog/upload-vaccination-dialog.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { ViewArtComponent } from './pages/admin/employeeManagement/view-art-dialog/view-art-dialog.component';
@@ -154,6 +155,7 @@ export function tokenGetter() {
     ColorSelectorDialogComponent,
     AccountActivationComponent,
     ViewMeetingDetailsDialogComponent,
+    UpdateMeetingDialogComponent,
   ],
   imports: [
     CommonModule,
