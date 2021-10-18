@@ -273,8 +273,6 @@ export class UpdateMeetingDialogComponent implements OnInit {
   }
 
   confirmUpdate(): void {
-    this.selectedScheduleType = this.selectedScheduleType.toUpperCase();
-
     // Following code is to pass in employee id instead of employee object
     // const employeeIds = [];
     // for (let assignedEmployee of this.assignedEmployees) {
