@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import { CalendarEvent, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
+import { CompanyService } from 'src/app/services/company/company.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { Router } from '@angular/router';
@@ -36,16 +37,25 @@ export class CalendarComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private meetingService: MeetingService,
+    private companyService: CompanyService,
     public dialog: MatDialog
   ) {}
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('currentUser'));
 
+    this.companyService.getCompany(this.user.companyId).subscribe(
+      (response) => {
+        this.company = response.company;
+      },
+      (error) => {
+        console.log('Error obtaining company:  ' + error);
+      }
+    );
+
     this.meetingService.getAllCompanyMeetings(this.user.companyId).subscribe(
       (response) => {
         this.meetings = response.meetings;
-        console.log(this.meetings);
         this.events = this.meetings.map((m: any) => {
           return {
             title: m.title,
@@ -87,10 +97,13 @@ export class CalendarComponent implements OnInit {
     this.activeDayIsOpen = false;
   }
 
-  viewMeeting(): void {
+  viewMeeting(event: any) {
     let dialogRef = this.dialog.open(ViewMeetingDetailsDialogComponent, {
       width: '250px',
-      data: 'test',
+      data: {
+        title: event.title,
+        startTime: event.start,
+      },
       panelClass: 'meeting-card',
     });
 
