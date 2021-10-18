@@ -17,6 +17,12 @@ export class MeetingService {
 
   constructor(private httpClient: HttpClient) {}
 
+  createNewMeeting(meeting: any): Observable<any> {
+    return this.httpClient
+      .post<any>(`${this.baseUrl}/create-meeting`, meeting, httpOptions)
+      .pipe(catchError(handleError));
+  }
+
   getAllMeetingsOrganiser(organiserId: string): Observable<any> {
     return this.httpClient
       .get<any>(

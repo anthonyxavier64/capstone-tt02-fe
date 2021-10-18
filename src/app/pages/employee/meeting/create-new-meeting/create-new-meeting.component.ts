@@ -626,6 +626,62 @@ export class CreateNewMeetingComponent implements OnInit {
   }
 
   createNewMeeting(): void {
+    if (
+      this.selectedGoal ||
+      this.meetingTitle ||
+      this.chosenColor ||
+      this.assignedPhysicalEmployees ||
+      this.assignedVirtualEmployees ||
+      this.meetingDate ||
+      this.meetingDuration ||
+      this.startTime ||
+      this.chosenRoom
+    ) {
+      var startDateTime = this.convertDateToMoment(
+        this.meetingDate,
+        this.startTime.toString()
+      ).toDate();
+      console.log(startDateTime);
+      var assignedPhysicalEmployeeIds = [];
+      var assignedVirtualEmployeeIds = [];
+      this.assignedPhysicalEmployees.forEach((item) =>
+        assignedPhysicalEmployeeIds.push(item.userId)
+      );
+      this.assignedVirtualEmployees.forEach((item) =>
+        assignedVirtualEmployeeIds.push(item.userId)
+      );
+
+      let meeting = {
+        title: this.meetingTitle,
+        color: this.chosenColor,
+        remarks: this.remarks,
+        durationInMins: this.meetingDuration,
+        startTime: startDateTime,
+        organiserId: this.user.userId,
+        physicalRsvpIds: assignedPhysicalEmployeeIds,
+        virtualRsvpIds: assignedVirtualEmployeeIds,
+        roomId: this.chosenRoom.roomId,
+        companyId: this.company.companyId,
+      };
+
+      this.meetingService.createNewMeeting(meeting).subscribe(
+        (response) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Meeting successfully created!',
+          });
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Meeting could not be created. Please try again!',
+          });
+        }
+      );
+    }
+
     // Following code is to pass in employee id instead of employee object
     // const employeeIds = [];
     // for (let assignedEmployee of this.assignedEmployees) {
