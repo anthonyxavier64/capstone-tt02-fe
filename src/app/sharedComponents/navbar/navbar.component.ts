@@ -128,6 +128,7 @@ export class NavbarComponent implements OnInit {
           this.readNotifications = this.readNotifications.sort(
             (first, second) => second.notificationDate - first.notificationDate
           );
+          this.numUnread--;
         },
         (error) => {
           console.log(error);
