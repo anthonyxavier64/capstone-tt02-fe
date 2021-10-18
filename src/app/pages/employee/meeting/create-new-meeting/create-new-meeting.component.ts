@@ -1,7 +1,8 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, NgModel } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { CompanyService } from 'src/app/services/company/company.service';
 import { GoalService } from 'src/app/services/goal/goal.service';
@@ -9,24 +10,10 @@ import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { ColorSelectorDialogComponent } from './color-selector-dialog/color-selector-dialog.component';
 
-//USE THIS STRUCTURE
-// updatedDataStructure: {attachedUserId: string, date: Date, startTime:String, endTime:String}[]
-
-// LOGIC FOR ASSIGNING
-// blockout: {date: Date, time: {startTIme:time, endTime: time}[]}[]
-// - if out of range --> Create new {startTIme:time, endTime: time}
-// - if within range
-//   - 1: it overlaps with the start time -> replace start time with the new earlier start time
-//   - 2: overlaps with end time -> replace end time with new later end time
-//   - 3: if completely within range -> do nothing
-
-// employeeA --> meeting 17oct 9am
-// employeeB --> meeting 17oct 10am
-
-// 3 lists -> access foreach user --> check what dates they cannot make it and what timing of the date --> add the date into blockout
-// --> add the time to the specific blockout date
-
-// --> run through all objects inside blockout --> delete time/date if no rooms are available
+moment.defineLocale('en-foo', {
+  parentLocale: 'sg',
+  /* */
+});
 @Component({
   selector: 'app-create-new-meeting',
   templateUrl: './create-new-meeting.component.html',
@@ -80,6 +67,8 @@ export class CreateNewMeetingComponent implements OnInit {
   assign: string = 'ASSIGN';
   allInvolvedEmployees: string[] = [];
   datesToDisable: Date[] = [];
+
+  startTimePlaceholder: string;
 
   constructor(
     private _location: Location,
@@ -427,6 +416,10 @@ export class CreateNewMeetingComponent implements OnInit {
       }
     }
 
+    // SORT BLOCKOUT DATE BY MEETING START TIME
+    this.blockoutDates.sort((a, b) => (a.startTime < b.startTime ? -1 : 1));
+    console.log(this.blockoutDates);
+
     // LOGIC TO UPDATE THE BLOCKED OUT DATES
     this.blockoutDates.forEach((item) => {
       var itemDate = new Date(item.date);
@@ -452,9 +445,80 @@ export class CreateNewMeetingComponent implements OnInit {
     );
   };
 
-  createNewMeeting(): void {
-    this.selectedScheduleType = this.selectedScheduleType.toUpperCase();
+  generateTimeRecommendation(meetingDateInput: NgModel): void {
+    var selected: Date = meetingDateInput.value;
+    var dateSelected = selected.toLocaleDateString();
+    var format = dateSelected.split('/').join('-');
+    var momentInput = format + ' ' + this.company.officeOpeningHour;
+    console.log(momentInput);
+    var startTime = moment(momentInput, 'DD-MM-YYYY hh:mm:ss');
+    var endTime = startTime.add(this.meetingDuration, 'minutes');
+    console.log(startTime);
+    console.log(endTime);
 
+    var blockoutTimingsOnDate = this.blockoutDates.filter(
+      (item) => item.date !== selected
+    );
+
+    for (let i = 0; i < blockoutTimingsOnDate.length; i++) {
+      // Current item meeting start and end time
+      var itemDate = blockoutTimingsOnDate[i].date.toLocaleDateString();
+      var itemDateFormatted = itemDate.split('/').join('-');
+      var itemStartTime =
+        itemDateFormatted + ' ' + blockoutTimingsOnDate[i].startTime;
+      var itemEndTime =
+        itemDateFormatted + ' ' + blockoutTimingsOnDate[i].endTime;
+      var itemStartTimeMoment = moment(itemStartTime, 'DD-MM-YYYY hh:mm:ss');
+      var itemEndTimeMoment = moment(itemEndTime, 'DD-MM-YYYY hh:mm:ss');
+
+      // Next item meeting start and end time
+
+      console.log(itemStartTimeMoment);
+      console.log(itemEndTimeMoment);
+      if (startTime.isBetween(itemStartTimeMoment, itemEndTimeMoment)) {
+        var closingHour = format + ' ' + this.company.officeClosingHour;
+        var closingHourMoment = moment(closingHour, 'DD-MM-YYYY hh:mm:ss');
+        // If the iteration has reached the last meeting of the day
+        if (i === blockoutTimingsOnDate.length - 1) {
+          if (endTime.isBefore(closingHourMoment)) {
+            startTime = itemEndTimeMoment;
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail:
+                'No available timeslots for the day. Please select another day!',
+            });
+          }
+        } else {
+          var nextItemDate = blockoutTimingsOnDate[i].date.toLocaleDateString();
+          var nextItemDateFormatted = nextItemDate.split('/').join('-');
+          var nextItemStartTime =
+            nextItemDateFormatted + ' ' + blockoutTimingsOnDate[i].startTime;
+          var nextItemEndTime =
+            nextItemDateFormatted + ' ' + blockoutTimingsOnDate[i].endTime;
+          var nextItemStartTimeMoment = moment(
+            nextItemStartTime,
+            'DD-MM-YYYY hh:mm:ss'
+          );
+          var nextItemEndTimeMoment = moment(
+            nextItemEndTime,
+            'DD-MM-YYYY hh:mm:ss'
+          );
+
+          // If end time of meeting to be created clashes with the start of next meeting,
+          // skip, otherwise, set the startTime of item to be created to be the endtime of the currentItem
+          if (
+            !endTime.isBetween(nextItemStartTimeMoment, nextItemEndTimeMoment)
+          ) {
+            startTime = itemEndTimeMoment;
+          }
+        }
+      }
+    }
+  }
+
+  createNewMeeting(): void {
     // Following code is to pass in employee id instead of employee object
     // const employeeIds = [];
     // for (let assignedEmployee of this.assignedEmployees) {

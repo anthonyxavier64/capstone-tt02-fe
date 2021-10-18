@@ -42,7 +42,7 @@
   width: 12vw;
   height: 8vw;
   padding: 2% 2% 2% 8%;
-  transition:opacity 0.2s linear;
+  transition:opacity 0.2s linear, background-color 0.2s linear;
 }
 
 .colorSelector {
