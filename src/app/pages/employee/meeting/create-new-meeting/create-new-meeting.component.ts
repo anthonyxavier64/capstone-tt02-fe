@@ -110,7 +110,12 @@ export class CreateNewMeetingComponent implements OnInit {
             .getAllMeetingsByParticipantId(this.user.userId)
             .subscribe(
               (response) => {
-                var involvedMeetings = response.meetings;
+                var physicalMeetings = response.physicalMeetings;
+                var virtualMeetings = response.virtualMeetings;
+                var involvedMeetings = [];
+                physicalMeetings.forEach((item) => involvedMeetings.push(item));
+                virtualMeetings.forEach((item) => involvedMeetings.push(item));
+
                 for (let meeting of involvedMeetings) {
                   var meetingStartTime = new Date(meeting.startTime);
                   var startTime = meetingStartTime.toLocaleTimeString();
@@ -382,7 +387,12 @@ export class CreateNewMeetingComponent implements OnInit {
             .getAllMeetingsByParticipantId(employeeId)
             .toPromise();
 
-          var involvedMeetings = findMeetings.meetings;
+          var physicalMeetings = findMeetings.physicalMeetings;
+          var virtualMeetings = findMeetings.virtualMeetings;
+          var involvedMeetings = [];
+          physicalMeetings.forEach((item) => involvedMeetings.push(item));
+          virtualMeetings.forEach((item) => involvedMeetings.push(item));
+          console.log(involvedMeetings);
 
           for (let meeting of involvedMeetings) {
             var meetingStartTime = new Date(meeting.startTime);
