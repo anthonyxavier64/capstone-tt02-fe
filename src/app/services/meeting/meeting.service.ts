@@ -62,9 +62,6 @@ export class MeetingService {
     );
   }
 
-  // can go to controller pls jahahha
-
-  // whats the diff
   getAllMeetingsParticipant(participantId: string): Observable<any> {
     return this.httpClient
       .get<any>(
@@ -103,5 +100,11 @@ export class MeetingService {
     return this.httpClient.get<any>(
       this.baseUrl + '/get-meeting-attendees/' + meetingId
     );
+  }
+
+  updateMeeting(meeting: any): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + '/update-meeting', meeting)
+      .pipe(catchError(handleError));
   }
 }
