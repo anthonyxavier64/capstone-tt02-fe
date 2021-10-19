@@ -47,6 +47,7 @@ export class CalendarComponent implements OnInit {
     this.companyService.getCompany(this.user.companyId).subscribe(
       (response) => {
         this.company = response.company;
+        console.log(this.company);
       },
       (error) => {
         console.log('Error obtaining company:  ' + error);
@@ -63,7 +64,6 @@ export class CalendarComponent implements OnInit {
             color: m.color,
           };
         });
-        console.log(this.events);
       },
       (error) => {
         console.log('Error obtaining meetings:  ' + error);
@@ -99,10 +99,10 @@ export class CalendarComponent implements OnInit {
 
   viewMeeting(event: any) {
     let dialogRef = this.dialog.open(ViewMeetingDetailsDialogComponent, {
-      width: '250px',
       data: {
         title: event.title,
         startTime: event.start,
+        user: this.user,
       },
       panelClass: 'meeting-card',
     });

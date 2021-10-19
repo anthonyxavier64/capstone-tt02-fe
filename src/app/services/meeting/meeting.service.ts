@@ -46,8 +46,6 @@ export class MeetingService {
   }
 
   getMeetingByTitleDate(title: string, startTime: Date): Observable<any> {
-    console.log(title);
-    console.log(startTime);
     return this.httpClient
       .get<any>(this.baseUrl + '/get-meeting' + '/' + title + '/' + startTime)
       .pipe(catchError(handleError));

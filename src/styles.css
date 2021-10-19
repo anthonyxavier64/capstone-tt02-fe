@@ -285,6 +285,7 @@ span {
 
 .meeting-card .mat-dialog-container {
   padding: 1rem;
+  width: 14vw;
 }
 
 .mat-dialog-content {
