@@ -10,6 +10,23 @@
     fxLayoutGap="2%"
     style="width: 100%; height: 100%; padding: 0 2%"
   >
+    <ng-template #customCellTemplate let-day="day" let-locale="locale">
+      <div class="cal-cell-top">
+        <span class="cal-day-number">{{
+          day.date | calendarDate: "monthViewDayNumber":locale
+        }}</span>
+      </div>
+      <button
+        mat-button
+        *ngFor="let event of day.events"
+        class="cal-event-btn"
+        [ngStyle]="{ 'background-color': event.color }"
+        (click)="viewMeeting(event)"
+      >
+        {{ event.title }}
+      </button>
+    </ng-template>
+
     <div
       fxLayout="row"
       fxLayoutAlign="space-between center"
