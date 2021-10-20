@@ -76,70 +76,27 @@
         + Schedule Meeting
       </button>
     </div>
-    <mat-checkbox>In-Office</mat-checkbox>
-    <mat-checkbox>Online</mat-checkbox>
-    <mat-checkbox>My Meetings Only</mat-checkbox>
-    <p-dropdown placeholder="Groups / Attendees"></p-dropdown>
-  </div>
-  <button  mat-button class="peach-btn">+ Schedule Meeting</button>
-</div>
-
-<div style="text-align: center;">
-  <h1>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h1>
-</div>
-
-<ng-template #customCellTemplate let-day="day" let-locale="locale">
-  <div class="cal-cell-top">
-    <span class="cal-day-badge" *ngIf="day.badgeTotal > 0"
-      >{{ day.badgeTotal }}</span
-    >
-      <h1>{{ user.fullName }}'s Company Name Calendar</h1>
-      <button mat-button class="blue-btn">Work From Office</button>
-    </div>
 
     <div
       fxLayout="row"
-      fxLayoutAlign="space-between center"
+      fxLayoutAlign="center center"
+      fxLayoutGap="3%"
       style="width: 100%; height: 100%"
     >
       <div
-        fxLayout="row"
-        fxLayoutAlign="left center"
-        fxLayoutGap="2%"
-        style="width: 80%"
+        class="btn-arrow"
+        mwlCalendarPreviousView
+        [view]="view"
+        [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()"
       >
-        <div class="btn-group-border">
-          <button
-            mat-button
-            [ngClass]="{ 'peach-btn': view == CalendarView.Month }"
-            (click)="setView(CalendarView.Month)"
-            [class.active]="view === CalendarView.Month"
-            style="color: rgb(var(--theme-primary-color))"
-          >
-            Month
-          </button>
-          <button
-            mat-button
-            [ngClass]="{ 'peach-btn': view == CalendarView.Week }"
-            (click)="setView(CalendarView.Week)"
-            [class.active]="view === CalendarView.Week"
-            style="color: rgb(var(--theme-primary-color))"
-          >
-            Week
-          </button>
-        </div>
-        <mat-checkbox>In-Office</mat-checkbox>
-        <mat-checkbox>Online</mat-checkbox>
-        <mat-checkbox>My Meetings Only</mat-checkbox>
-        <p-dropdown placeholder="Groups / Attendees"></p-dropdown>
+        <
       </div>
-      <button (click)="scheduleMeeting()" mat-button class="peach-btn">
-        + Schedule Meeting
-      </button>
-    </div>
 
-    <div style="text-align: center">
-      <h1>{{ viewDate | calendarDate: view + "ViewTitle":"en" }}</h1>
+      <div style="text-align: center">
+        <h1>{{ viewDate | calendarDate: view + "ViewTitle":"en" }}</h1>
+      </div>
+
       <div
         class="btn-arrow"
         mwlCalendarNextView
@@ -150,26 +107,6 @@
         >
       </div>
     </div>
-
-    <ng-template #customCellTemplate let-day="day" let-locale="locale">
-      <div class="cal-cell-top">
-        <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{
-          day.badgeTotal
-        }}</span>
-        <span class="cal-day-number">{{
-          day.date | calendarDate: "monthViewDayNumber":locale
-        }}</span>
-      </div>
-      <button
-        mat-button
-        *ngFor="let event of day.events"
-        class="cal-event-btn"
-        [ngStyle]="{ 'background-color': event.color }"
-        (click)="viewMeeting(event)"
-      >
-        {{ event.title }}
-      </button>
-    </ng-template>
 
     <div [ngSwitch]="view">
       <mwl-calendar-month-view
