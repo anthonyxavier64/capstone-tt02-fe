@@ -472,6 +472,12 @@ export class CreateNewMeetingComponent implements OnInit {
     nextEarliestStartTime = undefined,
     meetingDateInput = undefined,
   }): Promise<void> {
+    this.rooms.forEach((item) => {
+      item.isSelected = false;
+      item['isAvailable'] = true;
+      return item;
+    });
+
     var generatedTimeFinalized: boolean = false;
 
     var selected: Date;
@@ -494,10 +500,14 @@ export class CreateNewMeetingComponent implements OnInit {
       var startTime = this.convertDateToMoment(selected, nextEarliestStartTime);
     }
 
+    console.log(startTime);
+
     var endTime = this.convertDateToMoment(
       selected,
       this.company.officeOpeningHour
     ).add(this.meetingDuration, 'minutes');
+
+    console.log(endTime);
 
     var closingHour = this.convertDateToMoment(
       selected,
@@ -537,10 +547,16 @@ export class CreateNewMeetingComponent implements OnInit {
 
           // If the iteration has reached the last meeting of the day
           if (i === blockoutTimingsOnDate.length - 1) {
+            console.log('LAST ITEM');
             var newEndTime = this.calculateEndTime(
               startTime,
               this.meetingDuration
             );
+
+            if (!startTime.isBetween(itemStartTimeMoment, itemEndTimeMoment)) {
+              generatedTimeFinalized = true;
+              this.checkMeetingRoomClashes(startTime, newEndTime, meetings);
+            }
 
             if (
               newEndTime.isBetween(itemStartTimeMoment, itemEndTimeMoment) ||
@@ -553,12 +569,16 @@ export class CreateNewMeetingComponent implements OnInit {
               );
 
               if (finalEndTime.isSameOrBefore(closingHour)) {
+                console.log('LAST ITEM BEFORE CLOSING HOURS');
                 startTime = newStartTime;
                 endTime = finalEndTime;
 
                 this.checkMeetingRoomClashes(startTime, endTime, meetings);
+                console.log('1');
+
                 generatedTimeFinalized = true;
               } else {
+                console.log('EXCEED CLOSING HOUR');
                 this.messageService.add({
                   severity: 'error',
                   summary: 'Error',
@@ -569,6 +589,7 @@ export class CreateNewMeetingComponent implements OnInit {
             }
           } else {
             // Variables for next assumed start time after moving past the first
+            console.log('NOT LAST ITEM');
             if (endTime.isBetween(itemStartTimeMoment, itemEndTimeMoment)) {
               var newStartTime = itemEndTimeMoment;
             } else {
@@ -599,7 +620,9 @@ export class CreateNewMeetingComponent implements OnInit {
                 nextItemEndTimeMoment
               )
             ) {
+              console.log('NOT IN BETWEEN NEXT ITEM');
               if (newEndTime.isSameOrAfter(nextItemEndTimeMoment)) {
+                console.log('EXCEEDS NEXT ITEM');
                 var itemAfterNewEndTime = blockoutTimingsOnDate.find((item) => {
                   var itemToFindStartTimeMoment = this.convertDateToMoment(
                     item.date,
@@ -613,8 +636,14 @@ export class CreateNewMeetingComponent implements OnInit {
                     itemAfterNewEndTime.startTime
                   );
                   startTime = itemFoundStartTimeMoment;
+                  endTime = this.calculateEndTime(
+                    startTime,
+                    this.meetingDuration
+                  );
+                  this.checkMeetingRoomClashes(startTime, endTime, meetings);
                 }
               } else {
+                console.log('NO OVERLAP');
                 var finalEndTime = this.calculateEndTime(
                   newStartTime,
                   this.meetingDuration
@@ -623,6 +652,8 @@ export class CreateNewMeetingComponent implements OnInit {
                 endTime = finalEndTime;
 
                 this.checkMeetingRoomClashes(startTime, endTime, meetings);
+                console.log('2');
+
                 generatedTimeFinalized = true;
               }
             } else if (
@@ -633,6 +664,7 @@ export class CreateNewMeetingComponent implements OnInit {
               ) &&
               newEndTime !== nextItemEndTimeMoment
             ) {
+              console.log('SET NEXT ITEM');
               startTime = nextItemEndTimeMoment;
             }
           }
@@ -648,6 +680,8 @@ export class CreateNewMeetingComponent implements OnInit {
         });
       } else {
         this.checkMeetingRoomClashes(startTime, endTime, meetings);
+        console.log('3');
+
         generatedTimeFinalized = true;
 
         // get meetings for the date
@@ -677,8 +711,18 @@ export class CreateNewMeetingComponent implements OnInit {
       timeInput.value.concat(':00')
     );
 
+    this.generateTimeRecommendation({
+      meetingDate: this.meetingDate,
+      nextEarliestStartTime: inputTimeMoment.toDate().toLocaleTimeString(),
+    });
+
+    var startTimeMoment = this.convertDateToMoment(
+      this.meetingDate,
+      this.startTime.toLocaleString()
+    );
+
     var outputTimeMoment = this.calculateEndTime(
-      inputTimeMoment,
+      startTimeMoment,
       this.meetingDuration
     );
 
@@ -847,10 +891,6 @@ export class CreateNewMeetingComponent implements OnInit {
         nextEarliestStartTime: nextEarliestStartTime
           .toDate()
           .toLocaleTimeString(),
-      });
-
-      this.rooms.forEach((item) => {
-        return (item['isAvailable'] = true);
       });
     }
   }
