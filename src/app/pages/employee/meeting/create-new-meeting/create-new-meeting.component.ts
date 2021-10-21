@@ -672,6 +672,8 @@ export class CreateNewMeetingComponent implements OnInit {
         virtualRsvpIds: assignedVirtualEmployeeIds,
         roomId: this.chosenRoom.roomId,
         companyId: this.company.companyId,
+        isVirtual: this.assignedVirtualEmployees.length > 0 ? true : false,
+        isPhysical: this.assignedPhysicalEmployees.length > 0 ? true : false,
       };
 
       this.meetingService.createNewMeeting(meeting).subscribe(
