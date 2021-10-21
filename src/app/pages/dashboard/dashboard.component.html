@@ -59,7 +59,7 @@
       fxLayoutAlign="start center"
       fxLayoutGap="5%"
     >
-      <mat-card-title> My Weekly Meetings (SR3) </mat-card-title>
+      <mat-card-title> My Weekly Meetings </mat-card-title>
       <circle-progress
         [percent]="weekProgress"
         title="{{ weekday }}"
@@ -72,15 +72,27 @@
         {{ endDate | date: "shortDate" }}
       </p>
       <mat-card
-        *ngFor="let meeting of weeklyMeetings"
+        *ngFor="let pMeet of physicalMeetings"
         class="general-tab"
         fxLayout="column"
         fxLayoutAlign="start start"
       >
-        <h2>{{ meeting.title }}</h2>
-        <p>{{ meeting.startTime | date: "shortDate" }}</p>
-        <p>{{ meeting.startTime | date: "shortTime" }}</p>
-        <p>Venue</p>
+        <h2>{{ pMeet.title }}</h2>
+        <p>{{ pMeet.startTime | date: "shortDate" }}</p>
+        <p>{{ pMeet.startTime | date: "shortTime" }}</p>
+        <p>Room {{ pMeet.roomId }}</p>
+      </mat-card>
+
+      <mat-card
+        *ngFor="let vMeet of virtualMeetings"
+        class="general-tab"
+        fxLayout="column"
+        fxLayoutAlign="start start"
+      >
+        <h2>{{ vMeet.title }}</h2>
+        <p>{{ vMeet.startTime | date: "shortDate" }}</p>
+        <p>{{ vMeet.startTime | date: "shortTime" }}</p>
+        <p>Online</p>
       </mat-card>
     </mat-card>
 
@@ -160,7 +172,7 @@
           <h2>{{ pRsvp.title }}</h2>
           <p>{{ pRsvp.startTime | date: "shortDate" }}</p>
           <p>{{ pRsvp.startTime | date: "shortTime" }}</p>
-          <p>Venue</p>
+          <p>Room {{ pRsvp.roomId }}</p>
           <br />
           <div
             fxLayout="row"
@@ -188,7 +200,7 @@
           <h2>{{ vRsvp.title }}</h2>
           <p>{{ vRsvp.startTime | date: "shortDate" }}</p>
           <p>{{ vRsvp.startTime | date: "shortTime" }}</p>
-          <p>Venue</p>
+          <p>Online</p>
           <br />
           <div
             fxLayout="row"

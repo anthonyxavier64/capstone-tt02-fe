@@ -22,9 +22,8 @@ export class DashboardComponent implements OnInit {
   covidAnnouncements: Announcement[];
   generalAnnouncements: Announcement[];
 
-  oMeetings: any[] = [];
-  pMeetings: any[] = [];
-  weeklyMeetings: any[] = [];
+  physicalMeetings: any[] = [];
+  virtualMeetings: any[] = [];
 
   physicalRsvps: any[] = [];
   virtualRsvps: any[] = [];
@@ -108,45 +107,24 @@ export class DashboardComponent implements OnInit {
       }
     );
 
-    this.meetingService.getAllMeetingsOrganiser(this.user.userId).subscribe(
-      (response) => {
-        this.oMeetings = response.meetings;
-
-        for (const meeting of this.oMeetings) {
-          if (
-            moment(meeting.startTime).isAfter(this.startDate) &&
-            moment(meeting.startTime).isBefore(this.endDate)
-          ) {
-            this.weeklyMeetings.push(meeting);
-          }
-        }
-      },
-      (error) => {
-        console.log('Error obtaining organised meetings:  ' + error);
-      }
-    );
-
     this.meetingService.getAllMeetingsParticipant(this.user.userId).subscribe(
       (response) => {
         for (const meeting of response.physicalMeetings) {
-          this.pMeetings.push(meeting);
-        }
-
-        for (const meeting of response.virtualMeetings) {
-          this.pMeetings.push(meeting);
-        }
-
-        for (const meeting of this.pMeetings) {
           if (
             moment(meeting.startTime).isAfter(this.startDate) &&
             moment(meeting.startTime).isBefore(this.endDate)
           ) {
-            this.weeklyMeetings.push(meeting);
+            this.physicalMeetings.push(meeting);
           }
         }
 
-        for (const meeting of this.weeklyMeetings) {
-          console.log(meeting);
+        for (const meeting of response.virtualMeetings) {
+          if (
+            moment(meeting.startTime).isAfter(this.startDate) &&
+            moment(meeting.startTime).isBefore(this.endDate)
+          ) {
+            this.virtualMeetings.push(meeting);
+          }
         }
       },
       (error) => {
@@ -215,6 +193,7 @@ export class DashboardComponent implements OnInit {
       .rsvpToMeeting(meetingId, isPhysicalRSVP, userId)
       .subscribe(
         (response) => {
+          console.log('helloz');
           this.ngOnInit();
         },
         (error) => {
