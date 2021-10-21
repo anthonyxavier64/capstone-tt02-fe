@@ -16,7 +16,9 @@ export class NavbarComponent implements OnInit {
   unreadNotifications: any[]
   readNotifications: any[]
   numUnread: number
-  user: any
+  user: any;
+  accessRight: string;
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -29,6 +31,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.accessRight = this.user.accessRight;
     this.notificationService
       .getUnreadNotifications(this.user.userId).subscribe((response) => {
         console.log(response);
@@ -46,7 +49,7 @@ export class NavbarComponent implements OnInit {
       (error) => {
         console.log(error);
       });
-  }
+    }
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
 
   onCompanyLogoClick() {
