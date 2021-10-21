@@ -78,8 +78,8 @@
         fxLayoutAlign="start start"
       >
         <h2>{{ meeting.title }}</h2>
-        <h3>{{ meeting.startTime | date: "shortDate" }}</h3>
-        <h3>{{ meeting.startTime | date: "shortTime" }}</h3>
+        <p>{{ meeting.startTime | date: "shortDate" }}</p>
+        <p>{{ meeting.startTime | date: "shortTime" }}</p>
         <p>Venue</p>
       </mat-card>
     </mat-card>
@@ -150,16 +150,17 @@
         fxLayoutAlign="start center"
         fxLayoutGap="5%"
       >
-        <mat-card-title> My Meeting RSVPs (SR3) </mat-card-title>
+        <mat-card-title> My Meeting RSVPs </mat-card-title>
         <mat-card
           class="general-tab"
           fxLayout="column"
           fxLayoutAlign="start start"
+          *ngFor="let pRsvp of physicalRsvps"
         >
-          <h2>Meeting, DateTime</h2>
-          <p>Project - Goal</p>
-          <p>Physical/Online</p>
-          <p>Venue:</p>
+          <h2>{{ pRsvp.title }}</h2>
+          <p>{{ pRsvp.startTime | date: "shortDate" }}</p>
+          <p>{{ pRsvp.startTime | date: "shortTime" }}</p>
+          <p>Venue</p>
           <br />
           <div
             fxLayout="row"
@@ -167,7 +168,41 @@
             fxLayoutGap="5%"
             style="width: 100%"
           >
-            <button mat-button class="grey-btn">Yes</button>
+            <button
+              mat-button
+              class="grey-btn"
+              (click)="acceptRsvp(pRsvp.meetingId, true, user.userId)"
+            >
+              Yes
+            </button>
+            <button mat-button class="grey-btn">No</button>
+          </div>
+        </mat-card>
+
+        <mat-card
+          class="general-tab"
+          fxLayout="column"
+          fxLayoutAlign="start start"
+          *ngFor="let vRsvp of virtualRsvps"
+        >
+          <h2>{{ vRsvp.title }}</h2>
+          <p>{{ vRsvp.startTime | date: "shortDate" }}</p>
+          <p>{{ vRsvp.startTime | date: "shortTime" }}</p>
+          <p>Venue</p>
+          <br />
+          <div
+            fxLayout="row"
+            fxLayoutAlign="center center"
+            fxLayoutGap="5%"
+            style="width: 100%"
+          >
+            <button
+              mat-button
+              class="grey-btn"
+              (click)="acceptRsvp(vRsvp.meetingId, false, user.userId)"
+            >
+              Yes
+            </button>
             <button mat-button class="grey-btn">No</button>
           </div>
         </mat-card>

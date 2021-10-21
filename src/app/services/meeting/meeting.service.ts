@@ -58,4 +58,24 @@ export class MeetingService {
       )
       .pipe(catchError(handleError));
   }
+
+  getAllMeetingsRsvp(userId: string): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + '/get-all-meetings-user-rsvp/' + userId)
+      .pipe(catchError(handleError));
+  }
+
+  rsvpToMeeting(
+    meetingId: string,
+    isPhysicalRSVP: boolean,
+    userId: string
+  ): Observable<any> {
+    return this.httpClient
+      .patch<any>(this.baseUrl + '/rsvp-to-meeting', {
+        meetingId,
+        isPhysicalRSVP,
+        userId,
+      })
+      .pipe(catchError(handleError));
+  }
 }

@@ -26,6 +26,9 @@ export class DashboardComponent implements OnInit {
   pMeetings: any[] = [];
   weeklyMeetings: any[] = [];
 
+  physicalRsvps: any[] = [];
+  virtualRsvps: any[] = [];
+
   allTasks: any[] = [];
   weeklyTasks: any[] = [];
   numCompleted: number;
@@ -150,6 +153,21 @@ export class DashboardComponent implements OnInit {
         console.log('Error obtaining organised meetings:  ' + error);
       }
     );
+
+    this.meetingService.getAllMeetingsRsvp(this.user.userId).subscribe(
+      (response) => {
+        for (const meeting of response.physicalRsvps) {
+          this.physicalRsvps.push(meeting);
+        }
+
+        for (const meeting of response.virtualRsvps) {
+          this.virtualRsvps.push(meeting);
+        }
+      },
+      (error) => {
+        console.log('Error obtaining organised meetings:  ' + error);
+      }
+    );
   }
 
   viewAnnouncement(announcement?: Announcement) {
@@ -190,5 +208,20 @@ export class DashboardComponent implements OnInit {
 
   onCovidDeclarationsClick() {
     this.router.navigateByUrl('/covid-declarations');
+  }
+
+  acceptRsvp(meetingId: string, isPhysicalRSVP: boolean, userId: string) {
+    this.meetingService
+      .rsvpToMeeting(meetingId, isPhysicalRSVP, userId)
+      .subscribe(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+
+    this.ngOnInit();
   }
 }
