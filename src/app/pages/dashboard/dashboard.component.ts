@@ -215,13 +215,11 @@ export class DashboardComponent implements OnInit {
       .rsvpToMeeting(meetingId, isPhysicalRSVP, userId)
       .subscribe(
         (response) => {
-          console.log(response);
+          this.ngOnInit();
         },
         (error) => {
           console.log(error);
         }
       );
-
-    this.ngOnInit();
   }
 }
