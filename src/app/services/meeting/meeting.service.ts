@@ -46,8 +46,16 @@ export class MeetingService {
   }
 
   getMeetingByTitleDate(title: string, startTime: Date): Observable<any> {
+    return this.httpClient.get<any>(
+      this.baseUrl + '/get-meeting' + '/' + title + '/' + startTime
+    );
+  }
+
+  getAllMeetingsParticipant(participantId: string): Observable<any> {
     return this.httpClient
-      .get<any>(this.baseUrl + '/get-meeting' + '/' + title + '/' + startTime)
+      .get<any>(
+        this.baseUrl + '/get-all-meetings-user-participant/' + participantId
+      )
       .pipe(catchError(handleError));
   }
 }

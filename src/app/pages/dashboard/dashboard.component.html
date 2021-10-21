@@ -72,15 +72,14 @@
         {{ endDate | date: "shortDate" }}
       </p>
       <mat-card
-        *ngFor="let omeeting of organisedMeetings"
+        *ngFor="let meeting of weeklyMeetings"
         class="general-tab"
         fxLayout="column"
         fxLayoutAlign="start start"
       >
-        <h2>{{ omeeting.title }}, DateTime</h2>
-        <p>Goal</p>
-        <p *ngIf="omeeting.isOnline">Online</p>
-        <p *ngIf="!omeeting.isOnline">Physical</p>
+        <h2>{{ meeting.title }}</h2>
+        <h3>{{ meeting.startTime | date: "shortDate" }}</h3>
+        <h3>{{ meeting.startTime | date: "shortTime" }}</h3>
         <p>Venue</p>
       </mat-card>
     </mat-card>
