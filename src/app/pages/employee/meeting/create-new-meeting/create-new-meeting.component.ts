@@ -467,14 +467,33 @@ export class CreateNewMeetingComponent implements OnInit {
     );
   }
 
-  async generateTimeRecommendation(meetingDateInput: NgModel): Promise<void> {
+  async generateTimeRecommendation({
+    meetingDate = undefined,
+    nextEarliestStartTime = undefined,
+    meetingDateInput = undefined,
+  }): Promise<void> {
     var generatedTimeFinalized: boolean = false;
 
-    var selected: Date = meetingDateInput.value;
-    var startTime = this.convertDateToMoment(
-      selected,
-      this.company.officeOpeningHour
-    );
+    var selected: Date;
+
+    if (meetingDateInput) {
+      selected = meetingDateInput.value;
+      this.meetingDate = selected;
+    } else {
+      selected = meetingDate;
+    }
+
+    var date = moment(selected).format('YYYY-MM-DD');
+
+    if (!nextEarliestStartTime) {
+      var startTime = this.convertDateToMoment(
+        selected,
+        this.company.officeOpeningHour
+      );
+    } else {
+      var startTime = this.convertDateToMoment(selected, nextEarliestStartTime);
+    }
+
     var endTime = this.convertDateToMoment(
       selected,
       this.company.officeOpeningHour
@@ -488,6 +507,20 @@ export class CreateNewMeetingComponent implements OnInit {
     var blockoutTimingsOnDate = await this.blockoutDates.filter((item) => {
       return item.date.toLocaleDateString() === selected.toLocaleDateString();
     });
+
+    var meetings = [];
+
+    const response = await this.meetingService
+      .getAllMeetingsByDate(this.company.companyId, date)
+      .toPromise();
+
+    if (response.meetings) {
+      meetings = response.meetings;
+    } else {
+      // error
+      console.log(response);
+    }
+
     if (blockoutTimingsOnDate.length !== 0) {
       for (let i = 0; i < blockoutTimingsOnDate.length; i++) {
         if (!generatedTimeFinalized) {
@@ -513,7 +546,6 @@ export class CreateNewMeetingComponent implements OnInit {
               newEndTime.isBetween(itemStartTimeMoment, itemEndTimeMoment) ||
               newEndTime.isSameOrAfter(itemEndTimeMoment)
             ) {
-              console.log('LAST INDEX AFTER FINAL MEETING');
               var newStartTime = itemEndTimeMoment;
               var finalEndTime = this.calculateEndTime(
                 itemEndTimeMoment,
@@ -522,6 +554,9 @@ export class CreateNewMeetingComponent implements OnInit {
 
               if (finalEndTime.isSameOrBefore(closingHour)) {
                 startTime = newStartTime;
+                endTime = finalEndTime;
+
+                this.checkMeetingRoomClashes(startTime, endTime, meetings);
                 generatedTimeFinalized = true;
               } else {
                 this.messageService.add({
@@ -534,7 +569,11 @@ export class CreateNewMeetingComponent implements OnInit {
             }
           } else {
             // Variables for next assumed start time after moving past the first
-            var newStartTime = itemEndTimeMoment;
+            if (endTime.isBetween(itemStartTimeMoment, itemEndTimeMoment)) {
+              var newStartTime = itemEndTimeMoment;
+            } else {
+              var newStartTime = startTime;
+            }
 
             var newEndTime = this.calculateEndTime(
               itemEndTimeMoment,
@@ -560,10 +599,7 @@ export class CreateNewMeetingComponent implements OnInit {
                 nextItemEndTimeMoment
               )
             ) {
-              console.log('IS NOT BETWEEN NEXT ITEM');
-
               if (newEndTime.isSameOrAfter(nextItemEndTimeMoment)) {
-                console.log('EXCEED THE NEXT MEETING');
                 var itemAfterNewEndTime = blockoutTimingsOnDate.find((item) => {
                   var itemToFindStartTimeMoment = this.convertDateToMoment(
                     item.date,
@@ -572,7 +608,6 @@ export class CreateNewMeetingComponent implements OnInit {
                   return itemToFindStartTimeMoment.isAfter(newEndTime);
                 });
                 if (itemAfterNewEndTime) {
-                  console.log('AFTER EXCEEDED NEXT MEETING, ITEM FOUND');
                   var itemFoundStartTimeMoment = this.convertDateToMoment(
                     itemAfterNewEndTime.date,
                     itemAfterNewEndTime.startTime
@@ -580,18 +615,24 @@ export class CreateNewMeetingComponent implements OnInit {
                   startTime = itemFoundStartTimeMoment;
                 }
               } else {
-                console.log('NO MEETINGS OVERLAPPED');
+                var finalEndTime = this.calculateEndTime(
+                  newStartTime,
+                  this.meetingDuration
+                );
                 startTime = newStartTime;
+                endTime = finalEndTime;
+
+                this.checkMeetingRoomClashes(startTime, endTime, meetings);
                 generatedTimeFinalized = true;
               }
             } else if (
+              newEndTime &&
               newEndTime.isBetween(
                 nextItemStartTimeMoment,
                 nextItemEndTimeMoment
               ) &&
               newEndTime !== nextItemEndTimeMoment
             ) {
-              console.log('IS BETWEEN NEXT ITEM');
               startTime = nextItemEndTimeMoment;
             }
           }
@@ -606,7 +647,17 @@ export class CreateNewMeetingComponent implements OnInit {
             'No available timeslots for the day. Please select another day!',
         });
       } else {
+        this.checkMeetingRoomClashes(startTime, endTime, meetings);
         generatedTimeFinalized = true;
+
+        // get meetings for the date
+        // any meetings clashes with selected time (earliest recommended time) (start/end time is within time given)
+
+        // if clashes, then check the rooms
+        // if all rooms booked, move to next interval
+        // check if next interval is in blockout times
+        // if it is, then move to next interval
+        // if not then repeat the process of checking against meetings
       }
     }
 
@@ -618,7 +669,6 @@ export class CreateNewMeetingComponent implements OnInit {
       this.startTime = startTime.format().substring(11, 16);
       this.endTime = updatedEndTimeToBind.format().substring(11, 16);
     }
-    console.log('FINAL', startTime.toDate().toLocaleTimeString());
   }
 
   timeInputChange(timeInput: NgModel) {
@@ -724,5 +774,84 @@ export class CreateNewMeetingComponent implements OnInit {
     //       this.ref.close();
     //     });
     // });
+  }
+
+  async checkMeetingRoomClashes(startTime, endTime, meetings) {
+    // checking room clashes
+    startTime = startTime.set('second', 0);
+    endTime = endTime.set('second', 0);
+
+    let unavailableRoomCount = 0;
+    let nextEarliestStartTime = startTime;
+
+    if (meetings.length > 0) {
+      const meetingDateTime = new Date(meetings[0].startTime);
+      const meetingTime = meetingDateTime.toLocaleTimeString();
+
+      const meetingStartTime = this.convertDateToMoment(
+        meetingDateTime,
+        meetingTime
+      );
+
+      let meetingEndTime = moment(meetingStartTime, 'DD-MM-YYYY hh:mm:ss').add(
+        meetings[0].durationInMins,
+        'minutes'
+      );
+
+      meetingEndTime = meetingEndTime.set('second', 0);
+
+      nextEarliestStartTime = meetingEndTime;
+    }
+
+    for (const meeting of meetings) {
+      //const inputStartTime = meeting.startTime.toLocaleDateString();
+
+      const meetingDateTime = new Date(meeting.startTime);
+      const meetingTime = meetingDateTime.toLocaleTimeString();
+
+      const meetingStartTime = this.convertDateToMoment(
+        meetingDateTime,
+        meetingTime
+      ).set('second', 0);
+
+      const meetingEndTime = moment(meetingStartTime, 'DD-MM-YYYY hh:mm:ss')
+        .add(meeting.durationInMins, 'minutes')
+        .set('second', 0);
+
+      if (
+        meetingStartTime.isBetween(startTime, endTime, undefined, '[]') ||
+        meetingEndTime.isBetween(startTime, endTime, undefined, '()')
+      ) {
+        const room = meeting.room;
+
+        if (room) {
+          for (let i = 0; i < this.rooms.length; i++) {
+            if (this.rooms[i].roomId === room.roomId) {
+              this.rooms[i]['isAvailable'] = false;
+
+              unavailableRoomCount++;
+
+              if (meetingEndTime.isBefore(nextEarliestStartTime)) {
+                nextEarliestStartTime = meetingEndTime;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    if (unavailableRoomCount === this.rooms.length) {
+      // move to next time slot
+      this.generateTimeRecommendation({
+        meetingDate: this.meetingDate,
+        nextEarliestStartTime: nextEarliestStartTime
+          .toDate()
+          .toLocaleTimeString(),
+      });
+
+      this.rooms.forEach((item) => {
+        return (item['isAvailable'] = true);
+      });
+    }
   }
 }
