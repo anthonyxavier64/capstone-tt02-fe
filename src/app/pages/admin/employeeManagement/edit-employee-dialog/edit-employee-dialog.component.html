@@ -70,6 +70,15 @@
         <td class="text">
           {{ config.data.createdAt }}
         </td>
+        <th class="text">
+          <label>Admin Status:</label>
+        </th>
+        <td class="text">
+          <mat-checkbox [(ngModel)]="isAdmin" 
+            name="isAdmin"
+            [disabled]="this.user.userId === config.data.userId">
+          </mat-checkbox>
+        </td>
       </tr>
     </table>
 

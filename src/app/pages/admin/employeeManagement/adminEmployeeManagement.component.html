@@ -111,6 +111,12 @@
             Part Of
           </button>
         </div>
+        <div fxLayout="column" fxLayoutGap="8%">
+          <h3 style="text-align: left">Admin?</h3>
+          <mat-checkbox [(ngModel)]="currNewUserIsAdmin" 
+            name="currNewUserIsAdmin">
+        </mat-checkbox>
+        </div>
       </div>
       <button
         mat-raised-button
@@ -330,6 +336,7 @@
                 />
                 <img
                   class="actionIcon"
+                  *ngIf="user === this.user"
                   (click)="openEditEmployeeDialog(user)"
                   src="../../../../assets/images/editIcon.png"
                   style="cursor: pointer; height: 1.5em; width: 1.5em"

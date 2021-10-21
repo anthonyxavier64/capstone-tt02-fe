@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-
-import { NgForm } from '@angular/forms';
 import { UserService } from 'src/app/services/user/user.service';
+
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-employee-dialog',
@@ -10,6 +10,10 @@ import { UserService } from 'src/app/services/user/user.service';
   styleUrls: ['./edit-employee-dialog.component.css'],
 })
 export class EditEmployeeDialogComponent implements OnInit {
+  
+  user: any;
+  isAdmin: boolean;
+
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
@@ -18,7 +22,17 @@ export class EditEmployeeDialogComponent implements OnInit {
     console.log(config.data);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.user = JSON.parse(currentUser);
+    }
+    if (this.config.data.accessRight === 'ADMIN') {
+      this.isAdmin = true;
+    } else if (this.config.data.accessRight === 'GENERAL') {
+      this.isAdmin = false;
+    }
+  }
 
   saveDetails(form: NgForm) {
     var formValue = form.value;
@@ -27,6 +41,12 @@ export class EditEmployeeDialogComponent implements OnInit {
     }
     if (formValue.contactNumber !== '') {
       this.config.data.contactNumber = formValue.contactNumber;
+    }
+    if (formValue.isAdmin === true) {
+      this.config.data.accessRight = 'ADMIN';
+    }
+    if (formValue.isAdmin === false) {
+      this.config.data.accessRight = 'GENERAL';
     }
 
     this.userService.updateUserDetails(this.config.data).subscribe(
