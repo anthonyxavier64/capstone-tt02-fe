@@ -22,10 +22,12 @@ export class DashboardComponent implements OnInit {
   covidAnnouncements: Announcement[];
   generalAnnouncements: Announcement[];
 
-  organisedMeetings: any[];
+  oMeetings: any[] = [];
+  pMeetings: any[] = [];
+  weeklyMeetings: any[] = [];
 
-  allTasks: any[];
-  weeklyTasks: any[];
+  allTasks: any[] = [];
+  weeklyTasks: any[] = [];
   numCompleted: number;
   taskProgress: number;
 
@@ -47,7 +49,6 @@ export class DashboardComponent implements OnInit {
   ) {
     let now = moment();
     this.taskProgress = 0;
-    this.weeklyTasks = [];
   }
 
   ngOnInit() {
@@ -91,6 +92,7 @@ export class DashboardComponent implements OnInit {
             this.weeklyTasks.push(task);
           }
         }
+
         for (const wtask of this.weeklyTasks) {
           if (!!wtask.completionDate) {
             this.numCompleted++;
@@ -105,7 +107,44 @@ export class DashboardComponent implements OnInit {
 
     this.meetingService.getAllMeetingsOrganiser(this.user.userId).subscribe(
       (response) => {
-        this.organisedMeetings = response.meetings;
+        this.oMeetings = response.meetings;
+
+        for (const meeting of this.oMeetings) {
+          if (
+            moment(meeting.startTime).isAfter(this.startDate) &&
+            moment(meeting.startTime).isBefore(this.endDate)
+          ) {
+            this.weeklyMeetings.push(meeting);
+          }
+        }
+      },
+      (error) => {
+        console.log('Error obtaining organised meetings:  ' + error);
+      }
+    );
+
+    this.meetingService.getAllMeetingsParticipant(this.user.userId).subscribe(
+      (response) => {
+        for (const meeting of response.physicalMeetings) {
+          this.pMeetings.push(meeting);
+        }
+
+        for (const meeting of response.virtualMeetings) {
+          this.pMeetings.push(meeting);
+        }
+
+        for (const meeting of this.pMeetings) {
+          if (
+            moment(meeting.startTime).isAfter(this.startDate) &&
+            moment(meeting.startTime).isBefore(this.endDate)
+          ) {
+            this.weeklyMeetings.push(meeting);
+          }
+        }
+
+        for (const meeting of this.weeklyMeetings) {
+          console.log(meeting);
+        }
       },
       (error) => {
         console.log('Error obtaining organised meetings:  ' + error);
