@@ -41,7 +41,7 @@ export class MeetingService {
 
   getAllMeetingsByParticipantId(participantId: string): Observable<any> {
     return this.httpClient.get<any>(
-      this.baseUrl + '/get-all-meetings-user-partipant/' + participantId
+      this.baseUrl + '/get-all-meetings-user-participant/' + participantId
     );
   }
 
@@ -51,6 +51,9 @@ export class MeetingService {
     );
   }
 
+  // can go to controller pls jahahha
+
+  // whats the diff
   getAllMeetingsParticipant(participantId: string): Observable<any> {
     return this.httpClient
       .get<any>(
