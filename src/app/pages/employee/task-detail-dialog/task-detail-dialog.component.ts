@@ -124,13 +124,21 @@ export class TaskDetailDialogComponent implements OnInit {
   }
 
   archive() {
-    this.taskService.archiveTask(this.task.taskId).subscribe(
-      (response) => {
-        this.taskToPassBack = response.task;
-        this.ref.close(this.taskToPassBack);
-      },
-      (error) => {}
-    );
+    if (this.task.completionDate !== null) {
+      this.taskService.archiveTask(this.task.taskId).subscribe(
+        (response) => {
+          this.taskToPassBack = response.task;
+          this.ref.close(this.taskToPassBack);
+        },
+        (error) => {}
+      );
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Please complete the task before archiving it.',
+      });
+    }
   }
 
   unarchive(): void {
@@ -138,6 +146,19 @@ export class TaskDetailDialogComponent implements OnInit {
       (response) => {
         this.taskToPassBack = response.task;
         this.ref.close(this.taskToPassBack);
+      },
+      (error) => {}
+    );
+    this.task.completionDate = null;
+    const updatedTask = {
+      ...this.task,
+      completionDate: this.task.completionDate,
+    };
+    this.taskService.updateTask(updatedTask).subscribe(
+      (response) => {
+        this.task = updatedTask;
+        this.taskToPassBack = updatedTask;
+        this.isEditMode = false;
       },
       (error) => {}
     );
@@ -155,6 +176,7 @@ export class TaskDetailDialogComponent implements OnInit {
         name: this.updateTaskName,
         startDate: this.updateStartDate,
         deadline: this.updateDeadline,
+        completionDate: this.task.completionDate,
         goalId: this.updateGoal.goalId,
       };
       this.taskService.updateTask(updatedTask).subscribe(
