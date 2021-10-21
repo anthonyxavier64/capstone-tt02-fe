@@ -43,6 +43,7 @@
         ></p-dropdown>
         <button
           *ngIf="!isViewArchivedClicked && !isLoading"
+          mat-button
           class="peach-btn"
           (click)="viewTaskArchives()"
         >
@@ -50,6 +51,7 @@
         </button>
         <button
           *ngIf="isViewArchivedClicked && !isLoading"
+          mat-button
           class="peach-btn"
           (click)="viewTaskArchives()"
         >
