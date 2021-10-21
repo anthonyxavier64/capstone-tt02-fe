@@ -36,4 +36,10 @@ export class RoomService {
       .post<any>(this.baseUrl + '/delete-room', { roomId }, httpOptions)
       .pipe(catchError(handleError));
   }
+
+  getRoomById(roomId: string): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + '/get-room' + '/' + roomId)
+      .pipe(catchError(handleError));
+  }
 }
