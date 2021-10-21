@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import * as moment from 'moment';
 
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
+import { RoomService } from 'src/app/services/room/room.service';
 
 @Component({
   selector: 'app-view-meeting-details-dialog',
@@ -21,13 +22,15 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
   end: any;
   meeting: any;
   user: any;
+  room: any;
 
   isOrganiser: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<ViewMeetingDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private meetingService: MeetingService
+    private meetingService: MeetingService,
+    private roomService: RoomService
   ) {}
 
   ngOnInit() {
@@ -46,6 +49,15 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
         if (this.user.userId == this.meeting.organiserId) {
           this.isOrganiser = true;
         }
+
+        this.roomService.getRoomById(this.meeting.roomId).subscribe(
+          (response) => {
+            this.room = response.room;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
       },
       (error) => {
         console.log(error);
