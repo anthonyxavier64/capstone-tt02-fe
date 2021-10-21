@@ -73,7 +73,7 @@
             [breakpoints]="{ '150vw': '75vw' }"
             [draggable]="false"
             [resizable]="false"
-            [style]="{ width: '50vw', height: '35vw', color: '#FAF9F6' }"
+            [style]="{ width: '50vw', height: '28.3vw', color: '#FAF9F6' }"
             (onHide)="closeEditOfficeDetails(officeDetailsForm)"
           >
             <form
@@ -247,17 +247,18 @@
         <mat-card-title class="roomManagementHeading"
           >Room Management</mat-card-title
         >
+
         <div class="roomItemContainer">
-          <p-dataView [value]="rooms" layout="grid">
-            <ng-template
-              let-room
-              pTemplate="gridItem"
-              style="border: 1px solid"
-            >
-              <div class="overridePrime">
-                <div
-                  fxLayout="row"
-                  fxLayoutAlign="space-between"
+          <mat-grid-list
+            cols="3"
+            gutterSize="20px"
+            rowHeight="1.4:1"
+            style="width: 50vw"
+          >
+            <div *ngFor="let room of rooms">
+              <mat-grid-tile>
+                <button
+                  mat-button
                   class="roomItem card"
                   (click)="openEditRoomDetailsDialog(room)"
                 >
@@ -272,166 +273,171 @@
                     <p style="font-size: 18px">Location: {{ room.location }}</p>
                     <p style="font-size: 18px">Capacity: {{ room.capacity }}</p>
                   </div>
-                  <div fxLayoutAlign=" end">
+                  <div fxLayoutAlign="end">
                     <img
                       class="actionIcon"
                       src="../../../../../assets/images/editIcon.png"
                     />
                   </div>
-                </div>
-              </div>
-              <p-dialog
-                header="Edit Room Details"
-                [(visible)]="isEditRoomDetailsOpen"
-                [breakpoints]="{ '150vw': '75vw' }"
-                [draggable]="false"
-                [resizable]="false"
-                [style]="{ width: '50vw', height: '32.5vw', color: '#FAF9F6' }"
-              >
-                <form
-                  #roomDetailsForm="ngForm"
-                  name="roomDetailsForm"
-                  (ngSubmit)="submitRoomDetailsForm(roomDetailsForm)"
-                >
-                  <div fxLayout="column" fxLayoutAlign="space-around center">
-                    <table class="companyDetailsTbl">
-                      <tr>
-                        <th class="text">
-                          <label for="name">Room Name:</label>
-                        </th>
-                        <td class="text">
-                          <input
-                            type="text"
-                            placeholder="Room Name"
-                            name="name"
-                            #roomName="ngModel"
-                            ngModel
-                            pInputText
-                          />
-                          <div
-                            *ngIf="
-                              (roomName.touched || roomName.dirty) &&
-                              roomName.value.length === 0
-                            "
-                            class="errorText"
-                            style="color: red; font-size: small"
-                          >
-                            Room name cannot be empty.
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th class="text">
-                          <label for="location">Room Location:</label>
-                        </th>
-                        <td class="text">
-                          <input
-                            type="text"
-                            placeholder="Room Location"
-                            name="location"
-                            style="width: 15vw"
-                            #roomLocation="ngModel"
-                            ngModel
-                            pInputText
-                          />
-                          <div
-                            *ngIf="
-                              (roomLocation.touched || roomLocation.dirty) &&
-                              roomLocation.value.length === 0
-                            "
-                            class="errorText"
-                            style="color: red; font-size: small"
-                          >
-                            Room location cannot be empty.
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th class="text">
-                          <label>Room Capacity:</label>
-                        </th>
-                        <td class="text">
-                          <input
-                            type="number"
-                            placeholder="Room Capacity"
-                            name="capacity"
-                            #roomCapacity="ngModel"
-                            pattern="[1-9]\d*"
-                            ngModel
-                            pInputText
-                          />
-                          <div
-                            *ngIf="
-                              (roomCapacity.touched || roomCapacity.dirty) &&
-                              roomCapacity.value.length == 0
-                            "
-                            class="errorText"
-                            style="color: red; font-size: small"
-                          >
-                            Room capacity cannot be empty.
-                          </div>
-                          <div
-                            *ngIf="
-                              (roomCapacity.touched || roomCapacity.dirty) &&
-                              roomCapacity.invalid
-                            "
-                            class="errorText"
-                            style="color: red; font-size: small"
-                          >
-                            Please enter a valid room capacity.
-                          </div>
-                        </td>
-                      </tr>
-                    </table>
-                    <button
-                      mat-button
-                      class="grey-btn"
-                      style="height: 3vw"
-                      (click)="deleteRoom()"
-                    >
-                      <p style="float: right">Delete Room</p>
-                      <img
-                        style="float: left"
-                        class="actionIcon"
-                        src="../../../../../assets/images/deleteIcon.png"
-                      />
-                    </button>
-
-                    <div
-                      fxLayout="row"
-                      fxLayoutAlign="center"
-                      fxLayoutGap="3%"
-                      style="margin-top: 3%"
-                    >
-                      <button mat-button class="peach-btn" type="submit">
-                        Save Details
-                      </button>
-                      <button
-                        mat-button
-                        class="grey-btn"
-                        (click)="isEditRoomDetailsOpen = false"
-                      >
-                        Close
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </p-dialog>
-            </ng-template>
-          </p-dataView>
+                </button>
+              </mat-grid-tile>
+            </div>
+          </mat-grid-list>
         </div>
         <div>
-          <button mat-button class="peach-btn" (click)="openAddRoomDialog()">
+          <button
+            mat-button
+            class="peach-btn"
+            style="margin-bottom: 2vw; margin-top: 1vw"
+            (click)="openAddRoomDialog()"
+          >
             Add Room
           </button>
         </div>
+        <p-dialog
+          header="Edit Room Details"
+          [(visible)]="isEditRoomDetailsOpen"
+          [breakpoints]="{ '150vw': '75vw' }"
+          [draggable]="false"
+          [resizable]="false"
+          [style]="{ width: '50vw', height: '27.1vw', color: '#FAF9F6' }"
+        >
+          <form
+            #roomDetailsForm="ngForm"
+            name="roomDetailsForm"
+            (ngSubmit)="submitRoomDetailsForm(roomDetailsForm)"
+          >
+            <div fxLayout="column" fxLayoutAlign="space-around center">
+              <table class="companyDetailsTbl">
+                <tr>
+                  <th class="text">
+                    <label for="name">Room Name:</label>
+                  </th>
+                  <td class="text">
+                    <input
+                      type="text"
+                      placeholder="Room Name"
+                      name="name"
+                      #roomName="ngModel"
+                      ngModel
+                      pInputText
+                    />
+                    <div
+                      *ngIf="
+                        (roomName.touched || roomName.dirty) &&
+                        roomName.value.length === 0
+                      "
+                      class="errorText"
+                      style="color: red; font-size: small"
+                    >
+                      Room name cannot be empty.
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text">
+                    <label for="location">Room Location:</label>
+                  </th>
+                  <td class="text">
+                    <input
+                      type="text"
+                      placeholder="Room Location"
+                      name="location"
+                      style="width: 15vw"
+                      #roomLocation="ngModel"
+                      ngModel
+                      pInputText
+                    />
+                    <div
+                      *ngIf="
+                        (roomLocation.touched || roomLocation.dirty) &&
+                        roomLocation.value.length === 0
+                      "
+                      class="errorText"
+                      style="color: red; font-size: small"
+                    >
+                      Room location cannot be empty.
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text">
+                    <label>Room Capacity:</label>
+                  </th>
+                  <td class="text">
+                    <input
+                      type="number"
+                      placeholder="Room Capacity"
+                      name="capacity"
+                      #roomCapacity="ngModel"
+                      pattern="[1-9]\d*"
+                      ngModel
+                      pInputText
+                    />
+                    <div
+                      *ngIf="
+                        (roomCapacity.touched || roomCapacity.dirty) &&
+                        roomCapacity.value.length == 0
+                      "
+                      class="errorText"
+                      style="color: red; font-size: small"
+                    >
+                      Room capacity cannot be empty.
+                    </div>
+                    <div
+                      *ngIf="
+                        (roomCapacity.touched || roomCapacity.dirty) &&
+                        roomCapacity.invalid
+                      "
+                      class="errorText"
+                      style="color: red; font-size: small"
+                    >
+                      Please enter a valid room capacity.
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              <button
+                mat-button
+                class="grey-btn"
+                style="height: 3vw"
+                (click)="deleteRoom()"
+              >
+                <p style="float: right">Delete Room</p>
+                <img
+                  style="float: left"
+                  class="actionIcon"
+                  src="../../../../../assets/images/deleteIcon.png"
+                />
+              </button>
+
+              <div
+                fxLayout="row"
+                fxLayoutAlign="center"
+                fxLayoutGap="3%"
+                style="margin-top: 3%"
+              >
+                <button mat-button class="peach-btn" type="submit">
+                  Save Details
+                </button>
+                <button
+                  mat-button
+                  class="grey-btn"
+                  (click)="isEditRoomDetailsOpen = false"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </form>
+        </p-dialog>
         <p-dialog
           header="Add a New Room"
           [(visible)]="isAddRoomOpen"
           [breakpoints]="{ '150vw': '75vw' }"
           [draggable]="false"
           [resizable]="false"
-          [style]="{ width: '50vw', height: '30vw', color: '#FAF9F6' }"
+          [style]="{ width: '50vw', height: '24.4vw', color: '#FAF9F6' }"
         >
           <form
             #addRoomForm="ngForm"
