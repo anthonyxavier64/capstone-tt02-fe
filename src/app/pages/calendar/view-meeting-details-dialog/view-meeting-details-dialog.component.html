@@ -71,7 +71,12 @@
     <p>{{ meeting.remarks }}</p>
   </div>
 
-  <button mat-button class="peach-btn" *ngIf="isOrganiser">
+  <button
+    mat-button
+    class="peach-btn"
+    *ngIf="isOrganiser"
+    (click)="editMeeting(meeting)"
+  >
     <img
       class="actionIcon"
       src="../../../../assets/images/editIcon.png"
