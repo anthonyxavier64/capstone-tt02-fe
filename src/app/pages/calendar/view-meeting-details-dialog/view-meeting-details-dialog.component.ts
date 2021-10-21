@@ -24,7 +24,9 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
   user: any;
   room: any;
   physicalAttendees: any[] = [];
+  pAttCount: any = 0;
   virtualAttendees: any[] = [];
+  vAttCount: any = 0;
   isOrganiser: boolean;
 
   constructor(
@@ -43,6 +45,7 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
     this.meetingService.getMeetingByTitleDate(this.title, this.start).subscribe(
       (response) => {
         this.meeting = response.meeting;
+
         this.end = moment(this.meeting.startTime)
           .add(this.meeting.durationInMins, 'minutes')
           .toDate();
@@ -51,31 +54,36 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
           this.isOrganiser = true;
         }
 
+        console.log('room');
+        this.roomService.getRoomById(this.meeting.roomId).subscribe(
+          (response) => {
+            this.room = response.room;
+            console.log(this.room);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+
+        console.log('meeting');
         this.meetingService
           .getMeetingAttendees(this.meeting.meetingId)
           .subscribe(
             (response) => {
               for (const attendees of response.physicalAttendees) {
                 this.physicalAttendees.push(attendees);
+                this.pAttCount++;
               }
 
               for (const attendees of response.virtualAttendees) {
                 this.virtualAttendees.push(attendees);
+                this.vAttCount++;
               }
             },
             (error) => {
               console.log(error);
             }
           );
-
-        this.roomService.getRoomById(this.meeting.roomId).subscribe(
-          (response) => {
-            this.room = response.room;
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
       },
       (error) => {
         console.log(error);
