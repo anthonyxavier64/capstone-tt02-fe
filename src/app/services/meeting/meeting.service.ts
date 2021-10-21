@@ -70,12 +70,18 @@ export class MeetingService {
     isPhysicalRSVP: boolean,
     userId: string
   ): Observable<any> {
+    return this.httpClient.patch<any>(this.baseUrl + '/rsvp-to-meeting', {
+      meetingId,
+      isPhysicalRSVP,
+      userId,
+    });
+  }
+
+  getAllMeetingsByDate(companyId: string, date: string): Observable<any> {
     return this.httpClient
-      .patch<any>(this.baseUrl + '/rsvp-to-meeting', {
-        meetingId,
-        isPhysicalRSVP,
-        userId,
-      })
+      .get<any>(
+        this.baseUrl + '/get-meetings-by-date/' + companyId + '/' + date
+      )
       .pipe(catchError(handleError));
   }
 
