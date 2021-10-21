@@ -5,7 +5,9 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
+
 import * as moment from 'moment';
+import { UpdateMeetingDialogComponent } from '../../employee/meeting/update-meeting-dialog/update-meeting-dialog.component';
 
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { RoomService } from 'src/app/services/room/room.service';
@@ -33,7 +35,8 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<ViewMeetingDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private meetingService: MeetingService,
-    private roomService: RoomService
+    private roomService: RoomService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -89,5 +92,20 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  editMeeting(event: any) {
+    let dialogRef = this.dialog.open(UpdateMeetingDialogComponent, {
+      data: {
+        title: event.title,
+        startTime: event.start,
+        user: this.user,
+      },
+      panelClass: 'meeting-card',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // this.message = result;
+    });
   }
 }
