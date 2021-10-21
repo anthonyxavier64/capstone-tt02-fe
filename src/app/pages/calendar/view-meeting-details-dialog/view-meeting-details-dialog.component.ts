@@ -23,7 +23,8 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
   meeting: any;
   user: any;
   room: any;
-
+  physicalAttendees: any[] = [];
+  virtualAttendees: any[] = [];
   isOrganiser: boolean;
 
   constructor(
@@ -49,6 +50,23 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
         if (this.user.userId == this.meeting.organiserId) {
           this.isOrganiser = true;
         }
+
+        this.meetingService
+          .getMeetingAttendees(this.meeting.meetingId)
+          .subscribe(
+            (response) => {
+              for (const attendees of response.physicalAttendees) {
+                this.physicalAttendees.push(attendees);
+              }
+
+              for (const attendees of response.virtualAttendees) {
+                this.virtualAttendees.push(attendees);
+              }
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
 
         this.roomService.getRoomById(this.meeting.roomId).subscribe(
           (response) => {
