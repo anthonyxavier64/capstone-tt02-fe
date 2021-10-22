@@ -29,7 +29,10 @@
           filterBy="name"
           placeholder=" Current Goal: {{ chosenGoal.name }}"
         ></p-dropdown>
-        <h1 style="white-space: nowrap" *ngIf="selectedGoal === ''">
+        <h1
+          style="white-space: nowrap"
+          *ngIf="selectedGoal === '' && chosenGoal !== null"
+        >
           - Meeting Title:
         </h1>
         <p-dropdown
@@ -90,7 +93,10 @@
             invalidTime
           "
         >
-          Save Meeting
+          Update Meeting
+        </button>
+        <button mat-button class="peach-btn" (click)="deleteMeeting()">
+          Delete Meeting
         </button>
         <button mat-button class="grey-btn" (click)="onBackClick()">
           Back
@@ -501,7 +507,7 @@
                     <button
                       mat-button
                       style="background-color: inherit"
-                      (click)="unassignPhysicalEmployee(physicalEmployee)"
+                      (click)="unassignPhysicalAttendee(physicalEmployee)"
                     >
                       <img
                         style="cursor: pointer; height: 1.5em; width: 1.5em"
@@ -573,7 +579,7 @@
                     <button
                       mat-button
                       style="background-color: inherit"
-                      (click)="unassignVirtualEmployee(virtualEmployee)"
+                      (click)="unassignVirtualAttendee(virtualEmployee)"
                     >
                       <img
                         style="cursor: pointer; height: 1.5em; width: 1.5em"
