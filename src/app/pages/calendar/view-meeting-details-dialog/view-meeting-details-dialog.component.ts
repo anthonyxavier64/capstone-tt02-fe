@@ -97,6 +97,6 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
 
   editMeeting() {
     this.dialogRef.close();
-    this.router.navigateByUrl('/update-meeting');
+    this.router.navigateByUrl('/update-meeting/' + this.meeting.meetingId);
   }
 }
