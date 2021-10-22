@@ -611,6 +611,11 @@ export class CreateNewMeetingComponent implements OnInit {
 
                 var isClashed: boolean = true;
 
+                endTime = this.calculateEndTime(
+                  startTime,
+                  this.meetingDuration
+                );
+
                 while (isClashed) {
                   var itemClash = blockoutTimingsOnDate.find((item) => {
                     var itemToFindStartTimeMoment = this.convertDateToMoment(
@@ -634,12 +639,23 @@ export class CreateNewMeetingComponent implements OnInit {
                         itemToFindEndTimeMoment,
                         undefined,
                         '(]'
+                      ) ||
+                      itemToFindStartTimeMoment.isBetween(
+                        startTime,
+                        endTime,
+                        undefined,
+                        '[)'
+                      ) ||
+                      itemToFindEndTimeMoment.isBetween(
+                        startTime,
+                        endTime,
+                        undefined,
+                        '(]'
                       )
                     );
                   });
 
                   if (itemClash) {
-                    console.log(itemClash);
                     var itemFoundEndTimeMoment = this.convertDateToMoment(
                       itemClash.date,
                       itemClash.endTime
