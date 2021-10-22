@@ -361,7 +361,15 @@ span {
   border-radius: 3px;
 }
 
-.p-dropdown .p-dropdown-label.p-placeholder {
+.p-dropdown .p-dropdown-label {
+  background: transparent;
+  border: 0 none;
+  font-family: "Source Sans Pro", sans-serif;
+  color: rgb(var(--theme-primary-color)) !important;
+  font-size: 1.125rem;
+}
+
+.p-dropdown .p-dropdown-label .p-placeholder {
   font-family: "Source Sans Pro", sans-serif;
   color: rgb(var(--theme-primary-color)) !important;
   font-size: 1.125rem;
@@ -380,6 +388,21 @@ span {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
     box-shadow 0.2s;
   border-radius: 3px;
+}
+
+/** PrimeFaces Multiselect Style Overrides **/
+.p-multiselect .p-multiselect-label {
+  background: transparent;
+  border: 0 none;
+  font-family: "Source Sans Pro", sans-serif;
+  color: rgb(var(--theme-primary-color)) !important;
+  font-size: 1.125rem;
+}
+
+.p-multiselect .p-multiselect-label .p-placeholder {
+  font-family: "Source Sans Pro", sans-serif;
+  color: rgb(var(--theme-primary-color)) !important;
+  font-size: 1.125rem;
 }
 
 /** Angular Calendar **/

@@ -6,6 +6,7 @@ import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { ListboxModule } from 'primeng/listbox';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   exports: [
@@ -15,6 +16,7 @@ import { ListboxModule } from 'primeng/listbox';
     DropdownModule,
     DialogModule,
     ListboxModule,
+    MultiSelectModule,
   ],
 })
 export class PrimeNgModule {}
