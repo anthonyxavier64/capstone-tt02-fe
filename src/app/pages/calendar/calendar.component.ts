@@ -1,12 +1,14 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { CalendarEvent, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
 import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { CompanyService } from 'src/app/services/company/company.service';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UserService } from 'src/app/services/user/user.service';
+
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+
 import { ViewMeetingDetailsDialogComponent } from './view-meeting-details-dialog/view-meeting-details-dialog.component';
 
 moment.updateLocale('en', {
@@ -30,6 +32,8 @@ export class CalendarComponent implements OnInit {
   CalendarView = CalendarView;
   viewDate: Date = new Date();
   activeDayIsOpen: boolean = true;
+  currentPeriodStart: Date;
+  currentPeriodEnd: Date;
 
   meetings: any[];
   userMeetings: any[] = [];
@@ -48,7 +52,7 @@ export class CalendarComponent implements OnInit {
     private meetingService: MeetingService,
     private companyService: CompanyService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit() {
     // if (localStorage.getItem('isPhysicalSettings')) {
@@ -78,6 +82,32 @@ export class CalendarComponent implements OnInit {
         console.log('Error obtaining company:  ' + error);
       }
     );
+  }
+  beforeMonthViewRender(e: any) {
+    console.log("New Month");
+
+    this.currentPeriodStart = e.period.start;
+    this.currentPeriodEnd = e.period.end;
+
+    this.meetingService.getMeetingsByDate(this.user.companyId, this.currentPeriodStart, this.currentPeriodEnd)
+      .subscribe(
+        (response) => {
+          this.meetings = response.meetings;
+          console.log(response.meetings);
+          this.events = this.meetings.map((m: any) => {
+            return {
+              title: m.title,
+              start: new Date(m.startTime),
+              color: m.color,
+            };
+          });
+        },
+        (error) => {
+          console.log('Error obtaining meetings:  ' + error);
+        }
+      );
+  }
+  viewWfoMode() {
 
     this.userService.getUsers(this.user.companyId).subscribe(
       (response) => {
