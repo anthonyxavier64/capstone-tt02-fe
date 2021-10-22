@@ -867,7 +867,6 @@ export class CreateNewMeetingComponent implements OnInit {
 
   createNewMeeting(): void {
     if (
-      this.chosenGoal ||
       this.meetingTitle ||
       this.chosenColor ||
       this.assignedPhysicalEmployees ||
@@ -889,6 +888,8 @@ export class CreateNewMeetingComponent implements OnInit {
         assignedVirtualEmployeeIds.push(item.userId)
       );
 
+      console.log(this.chosenGoal);
+
       let meeting = {
         title: this.meetingTitle,
         color: this.chosenColor,
@@ -902,7 +903,7 @@ export class CreateNewMeetingComponent implements OnInit {
         companyId: this.company.companyId,
         isVirtual: this.assignedVirtualEmployees.length > 0 ? true : false,
         isPhysical: this.assignedPhysicalEmployees.length > 0 ? true : false,
-        goalId: this.chosenGoal.goalId,
+        goalId: this.chosenGoal ? this.chosenGoal.goalId : null,
       };
 
       this.meetingService.createNewMeeting(meeting).subscribe(
