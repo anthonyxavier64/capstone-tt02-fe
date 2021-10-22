@@ -1,0 +1,15 @@
+.cal-wfo-circle {
+  height: 0.6em;
+  width: 0.6em;
+  border: 2px solid rgb(65, 105, 225);
+  border-radius: 50%;
+}
+.cal-wfo-circle.filled {
+  background-color: rgb(65, 105, 225);
+}
+.wfo-selector {
+  float: left;
+  margin-left: 10%;
+  margin-top: 10%;
+  cursor: pointer;
+}
