@@ -109,7 +109,7 @@ export class CreateNewMeetingComponent implements OnInit {
           this.user = response.user;
           this.allInvolvedEmployees.push(this.user.userId);
           this.meetingService
-            .getAllMeetingsByParticipantId(this.user.userId)
+            .getAllMeetingsParticipant(this.user.userId)
             .subscribe(
               (response) => {
                 var physicalMeetings = response.physicalMeetings;
@@ -386,7 +386,7 @@ export class CreateNewMeetingComponent implements OnInit {
           undefined
         ) {
           var findMeetings = await this.meetingService
-            .getAllMeetingsByParticipantId(employeeId)
+            .getAllMeetingsParticipant(employeeId)
             .toPromise();
 
           var physicalMeetings = findMeetings.physicalMeetings;
@@ -629,26 +629,6 @@ export class CreateNewMeetingComponent implements OnInit {
               console.log('NOT IN BETWEEN NEXT ITEM');
               if (newEndTime.isSameOrAfter(nextItemEndTimeMoment)) {
                 console.log('EXCEEDS NEXT ITEM');
-
-                // var itemAfterNewEndTime = blockoutTimingsOnDate.find((item) => {
-                //   var itemToFindStartTimeMoment = this.convertDateToMoment(
-                //     item.date,
-                //     item.startTime
-                //   );
-                //   return itemToFindStartTimeMoment.isAfter(newEndTime);
-                // });
-                // if (itemAfterNewEndTime) {
-                //   var itemFoundStartTimeMoment = this.convertDateToMoment(
-                //     itemAfterNewEndTime.date,
-                //     itemAfterNewEndTime.startTime
-                //   );
-                //   startTime = itemFoundStartTimeMoment;
-                //   endTime = this.calculateEndTime(
-                //     startTime,
-                //     this.meetingDuration
-                //   );
-                //   this.checkMeetingRoomClashes(startTime, endTime, meetings);
-                // }
 
                 var isClashed: boolean = true;
 

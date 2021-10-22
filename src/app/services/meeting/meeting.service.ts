@@ -39,11 +39,7 @@ export class MeetingService {
       .pipe(catchError(handleError));
   }
 
-  getAllMeetingsByParticipantId(participantId: string): Observable<any> {
-    return this.httpClient.get<any>(
-      this.baseUrl + '/get-all-meetings-user-participant/' + participantId
-    );
-  }
+
 
   getMeetingByTitleDate(title: string, startTime: Date): Observable<any> {
     return this.httpClient.get<any>(
