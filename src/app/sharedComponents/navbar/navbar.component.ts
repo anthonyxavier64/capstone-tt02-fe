@@ -11,6 +11,7 @@ import { TaskDetailDialogComponent } from 'src/app/pages/employee/task-detail-di
 import { TaskService } from 'src/app/services/task/task.service';
 import { GoalService } from 'src/app/services/goal/goal.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covidDocumentSubmission.service';
 
 @Component({
   selector: 'app-navbar',
@@ -33,7 +34,8 @@ export class NavbarComponent implements OnInit {
     private dialogService: DialogService,
     private taskService: TaskService,
     private goalService: GoalService,
-    private userService: UserService
+    private userService: UserService,
+    private covidDocumentSubmissionService: CovidDocumentSubmissionService
   ) {
     this.unreadNotifications = [];
     this.readNotifications = [];
@@ -186,9 +188,27 @@ export class NavbarComponent implements OnInit {
         }
       );
     } else if (notification.meetingId) {
-      this.router.navigateByUrl('/meeting');
+      // this.router.navigateByUrl('/meeting');
+      // open edit meeting details dialog
     } else if (notification.covidDocumentSubmissionId) {
-      this.router.navigateByUrl('/adminEmployeeManagement');
+      this.covidDocumentSubmissionService
+        .getCovidDocumentSubissionById(notification.covidDocumentSubmissionId)
+        .subscribe(
+          (response) => {
+            // open submission dialog
+
+            const submssion = response.submission;
+
+            if (submssion.covidDocumentType === 'PROOF_OF_VACCINATION') {
+            } else if (submssion.covidDocumentType === 'ART_TEST_RESULT') {
+            } else {
+            }
+          },
+          (error) => {
+            // toast
+            console.log(error);
+          }
+        );
     }
   }
 }
