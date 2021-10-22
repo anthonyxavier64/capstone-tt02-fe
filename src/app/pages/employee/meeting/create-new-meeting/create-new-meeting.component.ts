@@ -509,15 +509,21 @@ export class CreateNewMeetingComponent implements OnInit {
       this.company.officeOpeningHour
     ).add(this.meetingDuration, 'minutes');
 
+    var officeOpeningHour = this.convertDateToMoment(
+      selected,
+      this.company.officeOpeningHour
+    ).set('second', 0);
+
     var closingHour = this.convertDateToMoment(
       selected,
       this.company.officeClosingHour
-    );
+    ).set('second', 0);
 
     var blockoutTimingsOnDate = await this.blockoutDates.filter((item) => {
       return item.date.toLocaleDateString() === selected.toLocaleDateString();
     });
 
+    console.log(blockoutTimingsOnDate);
     var meetings = [];
 
     const response = await this.meetingService
@@ -682,8 +688,22 @@ export class CreateNewMeetingComponent implements OnInit {
                   this.checkMeetingRoomClashes(startTime, endTime, meetings);
                   console.log('2');
 
+                  if (
+                    startTime.isAfter(closingHour) ||
+                    endTime.isAfter(closingHour) ||
+                    startTime.isBefore(officeOpeningHour) ||
+                    endTime.isBefore(officeOpeningHour)
+                  ) {
+                    this.messageService.add({
+                      severity: 'error',
+                      summary: 'Error',
+                      detail: 'Meeting time cannot be out of working hours!',
+                    });
+                    this.invalidTime = true;
+                  } else {
+                    this.invalidTime = false;
+                  }
                   generatedTimeFinalized = true;
-                  this.invalidTime = false;
                 } else {
                   this.messageService.add({
                     severity: 'error',
@@ -804,9 +824,25 @@ export class CreateNewMeetingComponent implements OnInit {
         this.invalidTime = true;
         generatedTimeFinalized = true;
       } else {
-        this.checkMeetingRoomClashes(startTime, endTime, meetings);
         console.log('3');
 
+        this.checkMeetingRoomClashes(startTime, endTime, meetings);
+
+        if (
+          startTime.isAfter(closingHour) ||
+          endTime.isAfter(closingHour) ||
+          startTime.isBefore(officeOpeningHour) ||
+          endTime.isBefore(officeOpeningHour)
+        ) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Meeting time cannot be out of working hours!',
+          });
+          this.invalidTime = true;
+        } else {
+          this.invalidTime = false;
+        }
         generatedTimeFinalized = true;
 
         // get meetings for the date
@@ -827,12 +863,18 @@ export class CreateNewMeetingComponent implements OnInit {
       );
       this.startTime = startTime.format().substring(11, 16);
       this.endTime = updatedEndTimeToBind.format().substring(11, 16);
-      if (updatedEndTimeToBind.isSameOrBefore(closingHour)) {
+      if (
+        updatedEndTimeToBind.isSameOrBefore(closingHour) &&
+        startTime.isSameOrAfter(officeOpeningHour)
+      ) {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
           detail: 'Earliest meeting time generated!',
         });
+        this.invalidTime = false;
+      } else {
+        this.invalidTime = true;
       }
     }
   }
@@ -924,37 +966,6 @@ export class CreateNewMeetingComponent implements OnInit {
         }
       );
     }
-
-    // Following code is to pass in employee id instead of employee object
-    // const employeeIds = [];
-    // for (let assignedEmployee of this.assignedEmployees) {
-    //   employeeIds.push(assignedEmployee.userId);
-    // }
-    // this.assignedEmployees.push(this.dialogConfig.data.user);
-    // let goalToPassIn = this.chosenGoal
-    //   ? this.chosenGoal.goalId
-    //   : this.goal.goalId;
-    // const newTaskDetails = {
-    //   name: this.taskName,
-    //   startDate: this.startDate,
-    //   deadline: this.deadline,
-    //   completionDate: undefined,
-    //   remarks: this.remarks,
-    //   isArchived: false,
-    //   complexityLevel: this.complexity,
-    //   employees: this.assignedEmployees,
-    //   teamIds: undefined,
-    //   goalId: goalToPassIn,
-    //   userId: this.dialogConfig.data.user.userId,
-    // };
-    // this.taskService.createTask(newTaskDetails).subscribe((response) => {
-    //   this.taskService
-    //     .addUsersToTask(this.assignedEmployees, response.task.taskId)
-    //     .subscribe((response) => {
-    //       this.allGoals[0] = { name: 'All Tasks' };
-    //       this.ref.close();
-    //     });
-    // });
   }
 
   async checkMeetingRoomClashes(startTime, endTime, meetings) {
