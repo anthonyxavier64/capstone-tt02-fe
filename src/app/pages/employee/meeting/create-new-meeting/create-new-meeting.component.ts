@@ -504,8 +504,6 @@ export class CreateNewMeetingComponent implements OnInit {
       var startTime = this.convertDateToMoment(selected, nextEarliestStartTime);
     }
 
-    console.log('INPUT START TIME', startTime);
-
     var endTime = this.convertDateToMoment(
       selected,
       this.company.officeOpeningHour
@@ -631,29 +629,93 @@ export class CreateNewMeetingComponent implements OnInit {
               console.log('NOT IN BETWEEN NEXT ITEM');
               if (newEndTime.isSameOrAfter(nextItemEndTimeMoment)) {
                 console.log('EXCEEDS NEXT ITEM');
-                var itemAfterNewEndTime = blockoutTimingsOnDate.find((item) => {
-                  var itemToFindStartTimeMoment = this.convertDateToMoment(
-                    item.date,
-                    item.startTime
-                  );
-                  return itemToFindStartTimeMoment.isAfter(newEndTime);
-                });
-                if (itemAfterNewEndTime) {
-                  var itemFoundStartTimeMoment = this.convertDateToMoment(
-                    itemAfterNewEndTime.date,
-                    itemAfterNewEndTime.startTime
-                  );
-                  startTime = itemFoundStartTimeMoment;
-                  endTime = this.calculateEndTime(
-                    startTime,
-                    this.meetingDuration
-                  );
+
+                // var itemAfterNewEndTime = blockoutTimingsOnDate.find((item) => {
+                //   var itemToFindStartTimeMoment = this.convertDateToMoment(
+                //     item.date,
+                //     item.startTime
+                //   );
+                //   return itemToFindStartTimeMoment.isAfter(newEndTime);
+                // });
+                // if (itemAfterNewEndTime) {
+                //   var itemFoundStartTimeMoment = this.convertDateToMoment(
+                //     itemAfterNewEndTime.date,
+                //     itemAfterNewEndTime.startTime
+                //   );
+                //   startTime = itemFoundStartTimeMoment;
+                //   endTime = this.calculateEndTime(
+                //     startTime,
+                //     this.meetingDuration
+                //   );
+                //   this.checkMeetingRoomClashes(startTime, endTime, meetings);
+                // }
+
+                var isClashed: boolean = true;
+
+                while (isClashed) {
+                  var itemClash = blockoutTimingsOnDate.find((item) => {
+                    var itemToFindStartTimeMoment = this.convertDateToMoment(
+                      item.date,
+                      item.startTime
+                    );
+                    var itemToFindEndTimeMoment = this.convertDateToMoment(
+                      item.date,
+                      item.endTime
+                    );
+
+                    return (
+                      startTime.isBetween(
+                        itemToFindStartTimeMoment,
+                        itemToFindEndTimeMoment,
+                        undefined,
+                        '[)'
+                      ) ||
+                      endTime.isBetween(
+                        itemToFindStartTimeMoment,
+                        itemToFindEndTimeMoment,
+                        undefined,
+                        '(]'
+                      )
+                    );
+                  });
+
+                  if (itemClash) {
+                    var itemFoundEndTimeMoment = this.convertDateToMoment(
+                      itemClash.date,
+                      itemClash.endTime
+                    );
+                    startTime = itemFoundEndTimeMoment;
+                    endTime = this.calculateEndTime(
+                      startTime,
+                      this.meetingDuration
+                    );
+                  } else {
+                    isClashed = false;
+                  }
+                }
+
+                endTime = this.calculateEndTime(
+                  startTime,
+                  this.meetingDuration
+                );
+                if (!endTime.isAfter(closingHour)) {
                   this.checkMeetingRoomClashes(startTime, endTime, meetings);
+                  console.log('2');
+
+                  generatedTimeFinalized = true;
+                  this.invalidTime = false;
+                } else {
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail:
+                      'No available timeslots for the day. Please select another day!',
+                  });
+                  this.invalidTime = true;
+                  generatedTimeFinalized = true;
                 }
               } else {
                 console.log('NO OVERLAP');
-
-                console.log('START END', startTime, endTime);
 
                 if (!startTime.isSameOrAfter(nextItemEndTimeMoment)) {
                   var finalEndTime = this.calculateEndTime(
@@ -674,7 +736,6 @@ export class CreateNewMeetingComponent implements OnInit {
                   var isClashed: boolean = true;
 
                   while (isClashed) {
-                    console.log('CLASH CHECK START TIME', startTime);
                     var itemClash = blockoutTimingsOnDate.find((item) => {
                       var itemToFindStartTimeMoment = this.convertDateToMoment(
                         item.date,
@@ -715,11 +776,27 @@ export class CreateNewMeetingComponent implements OnInit {
                     }
                   }
                 }
+                endTime = this.calculateEndTime(
+                  startTime,
+                  this.meetingDuration
+                );
 
-                this.checkMeetingRoomClashes(startTime, endTime, meetings);
-                console.log('2');
+                if (!endTime.isAfter(closingHour)) {
+                  this.checkMeetingRoomClashes(startTime, endTime, meetings);
+                  console.log('2');
 
-                generatedTimeFinalized = true;
+                  generatedTimeFinalized = true;
+                  this.invalidTime = false;
+                } else {
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail:
+                      'No available timeslots for the day. Please select another day!',
+                  });
+                  this.invalidTime = true;
+                  generatedTimeFinalized = true;
+                }
               }
             } else if (
               newEndTime &&
@@ -790,7 +867,6 @@ export class CreateNewMeetingComponent implements OnInit {
       timeInput.value.concat(':00')
     );
 
-    console.log(inputTimeMoment);
     this.generateTimeRecommendation({
       meetingDate: this.meetingDate,
       nextEarliestStartTime: inputTimeMoment.toDate().toLocaleTimeString(),
@@ -856,6 +932,7 @@ export class CreateNewMeetingComponent implements OnInit {
             summary: 'Success',
             detail: 'Meeting successfully created!',
           });
+          console.log(response);
         },
         (error) => {
           this.messageService.add({
