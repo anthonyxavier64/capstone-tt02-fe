@@ -39,11 +39,7 @@ export class MeetingService {
       .pipe(catchError(handleError));
   }
 
-  getAllMeetingsByParticipantId(participantId: string): Observable<any> {
-    return this.httpClient.get<any>(
-      this.baseUrl + '/get-all-meetings-user-partipant/' + participantId
-    );
-  }
+
 
   getMeetingByTitleDate(title: string, startTime: Date): Observable<any> {
     return this.httpClient.get<any>(
@@ -51,6 +47,9 @@ export class MeetingService {
     );
   }
 
+  // can go to controller pls jahahha
+
+  // whats the diff
   getAllMeetingsParticipant(participantId: string): Observable<any> {
     return this.httpClient
       .get<any>(
@@ -70,12 +69,24 @@ export class MeetingService {
     isPhysicalRSVP: boolean,
     userId: string
   ): Observable<any> {
+    return this.httpClient.patch<any>(this.baseUrl + '/rsvp-to-meeting', {
+      meetingId,
+      isPhysicalRSVP,
+      userId,
+    });
+  }
+
+  getAllMeetingsByDate(companyId: string, date: string): Observable<any> {
     return this.httpClient
-      .patch<any>(this.baseUrl + '/rsvp-to-meeting', {
-        meetingId,
-        isPhysicalRSVP,
-        userId,
-      })
+      .get<any>(
+        this.baseUrl + '/get-meetings-by-date/' + companyId + '/' + date
+      )
       .pipe(catchError(handleError));
+  }
+
+  getMeetingAttendees(meetingId: string): Observable<any> {
+    return this.httpClient.get<any>(
+      this.baseUrl + '/get-meeting-attendees/' + meetingId
+    );
   }
 }

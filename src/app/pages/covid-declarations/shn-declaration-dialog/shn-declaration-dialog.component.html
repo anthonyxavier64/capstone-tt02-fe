@@ -2,13 +2,9 @@
   <div class="dialog-container">
     <h1>SHN/QO Declaration</h1>
     <p class="last-updated">Last updated: {{ renderLastUpdate() }}</p>
-    <div class="vaccination-status-wrapper">
-      <div
-        class="vaccination-status {{
-          user?.isVaccinated ? 'vaccinated' : 'unvaccinated'
-        }}"
-      ></div>
-      <p class="text">{{ renderVaccinationStatus() }}</p>
+    <div class="art-status-wrapper">
+      <div class="art-status {{ mcApprovalStatus() }}"></div>
+      <p class="text">{{ renderMcStatus() }}</p>
     </div>
     <div class="selection-group">
       <label for="start" style="margin-right: 8px">Start date:</label>

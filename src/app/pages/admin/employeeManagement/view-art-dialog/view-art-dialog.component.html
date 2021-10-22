@@ -4,13 +4,9 @@
     <p class="last-updated" *ngIf="renderLastUpdate()">
       Last updated: {{ renderLastUpdate() | date: "dd/MM/yyyy" }}
     </p>
-    <div class="vaccination-status-wrapper">
-      <div
-        class="vaccination-status {{
-          user?.isVaccinated ? 'vaccinated' : 'unvaccinated'
-        }}"
-      ></div>
-      <p class="text">{{ renderVaccinationStatus() }}</p>
+    <div class="art-status-wrapper">
+      <div class="art-status {{ fetApprovalStyle() }}"></div>
+      <p class="text">{{ renderFetApprovalStatus() }}</p>
     </div>
     <button
       *ngIf="user.latestArtTestResult; else noFile"

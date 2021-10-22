@@ -1,24 +1,33 @@
 <div class="dialog-container">
   <h1>ART/FET Test Results</h1>
   <p class="last-updated">Last updated: {{ renderLastUpdate() }}</p>
-  <div class="vaccination-status-wrapper">
-    <div
-      class="vaccination-status {{
-        user?.isVaccinated ? 'vaccinated' : 'unvaccinated'
-      }}"
-    ></div>
-    <p class="text">{{ renderVaccinationStatus() }}</p>
+  <div class="fet-status-wrapper">
+    <div class="fet-status {{ fetApprovalStyle() }}"></div>
+    <p class="text">{{ renderFetApprovalStatus() }}</p>
   </div>
-  <div>
-    <!-- <div>
-      <input type="radio" id="positive" name="isPositive" value={{true}}
-             checked>
+  <div class="covid-status">
+    <div>
+      <input
+        type="radio"
+        id="positive"
+        name="isPositive"
+        value="{{ true }}"
+        [checked]="isPositive"
+        (change)="onRadioChange()"
+      />
       <label for="stay-home-notice">Positive</label>
     </div>
+    &nbsp;
     <div>
-      <input type="radio" id="negative" name="isPositive" value={{false}}>
+      <input
+        type="radio"
+        id="negative"
+        name="isPositive"
+        [checked]="!isPositive"
+        (change)="onRadioChange()"
+      />
       <label for="quarantine-order">Negative</label>
-    </div> -->
+    </div>
   </div>
   <br />
   <input

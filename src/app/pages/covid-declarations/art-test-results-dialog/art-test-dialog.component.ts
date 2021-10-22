@@ -21,6 +21,7 @@ export class ArtDialogComponent implements OnInit {
   user: any;
   covidDocumentSubmissions: any[];
   artTests: any[]
+  isPositive: boolean;
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
@@ -32,6 +33,7 @@ export class ArtDialogComponent implements OnInit {
     this.showWarningMessage = false;
     this.covidDocumentSubmissions = [];
     this.artTests = [];
+    this.isPositive = false;
   }
 
   ngOnInit(): void {
@@ -59,6 +61,10 @@ export class ArtDialogComponent implements OnInit {
       );
   }
 
+  onRadioChange() {
+    this.isPositive = !this.isPositive;
+  }
+
   upload(event) {
     const currentDate = new Date().toString();
 
@@ -83,12 +89,14 @@ export class ArtDialogComponent implements OnInit {
         });
       })
     ).subscribe();
-    const newSubmission = { dateOfSubmission: currentDate, covidDocumentType: "ART_TEST_RESULT", employeeId: this.user.userId };
+    const newSubmission = { dateOfSubmission: currentDate, covidDocumentType: "ART_TEST_RESULT", employeeId: this.user.userId, isPositive: this.isPositive };
     this.covidDocumentSubmissionService
       .createCovidDocumentSubmission(newSubmission)
       .subscribe(
         (response) => {
           if (response.status) {
+            this.covidDocumentSubmissions.push(response.covidDocumentSubmission);
+            this.artTests.push(response.covidDocumentSubmission);
             console.log(response.covidDocumentSubmission);
           } else {
             console.log("A problem has occured", response);
@@ -120,20 +128,25 @@ export class ArtDialogComponent implements OnInit {
   renderLastUpdate() {
     if (this.artTests[0]) {
       const date = new Date(this.artTests[0].dateOfSubmission);
-      return date;
+      return date.toLocaleDateString();
     }
     return "NA";
   }
-  renderVaccinationStatus() {
-    if (this.user?.isVaccinated) {
-      return "Vaccinated";
+  fetApprovalStyle() {
+    if (this.artTests[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
+      if (this.artTests[0].isPositive) {
+        return "red";
+      }
+      return "green";
     }
-    return "Not Yet Vaccinated";
+    return "grey";
   }
-  renderVaccinationStyle() {
-    if (this.user?.isVaccinated) {
-      return "vaccinated";
+  renderFetApprovalStatus() {
+    if (this.artTests[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
+      if (this.artTests[0].isPositive) {
+        return "Positive";
+      }
     }
-    return "unvaccinated";
+    return "Negative";
   }
 }

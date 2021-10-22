@@ -31,43 +31,44 @@
   </div>
 
   <div
-    fxLayout="row"
-    fxLayoutGap="5%"
-    fxLayoutAlign="flex-start center"
+    fxLayout="column"
+    fxLayoutGap="2%"
+    fxLayoutAlign="start start"
     style="width: 100%; height: 100%"
   >
-    <h3>In Office (0):</h3>
-    <p></p>
+    <h3>In Office ({{ pAttCount }}):</h3>
+    <p *ngFor="let pAtt of physicalAttendees">{{ pAtt.fullName }}</p>
+  </div>
+
+  <div
+    fxLayout="column"
+    fxLayoutGap="2%"
+    fxLayoutAlign="start start"
+    style="width: 100%; height: 100%"
+  >
+    <h3>Online ({{ vAttCount }}):</h3>
+    <p *ngFor="let vAtt of virtualAttendees">{{ vAtt.fullName }}</p>
   </div>
 
   <div
     fxLayout="row"
     fxLayoutGap="5%"
-    fxLayoutAlign="flex-start center"
+    fxLayoutAlign="flex-start left"
     style="width: 100%; height: 100%"
-  >
-    <h3>Online (0):</h3>
-    <p></p>
-  </div>
-
-  <div
-    fxLayout="row"
-    fxLayoutGap="5%"
-    fxLayoutAlign="flex-start center"
-    style="width: 100%; height: 100%"
+    *ngIf="room"
   >
     <h3>Location:</h3>
-    <p></p>
+    <p>{{ room.name }}</p>
   </div>
 
   <div
     fxLayout="row"
     fxLayoutGap="5%"
-    fxLayoutAlign="flex-start center"
+    fxLayoutAlign="flex-start left"
     style="width: 100%; height: 100%"
   >
     <h3>Remarks:</h3>
-    <p></p>
+    <p>{{ meeting.remarks }}</p>
   </div>
 
   <button mat-button class="peach-btn" *ngIf="isOrganiser">

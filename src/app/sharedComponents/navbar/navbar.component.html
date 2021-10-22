@@ -6,6 +6,7 @@
       color="basic"
       (click)="onCompanyLogoClick()"
       fxLayoutAlign="space-around center"
+      *ngIf="accessRight === 'ADMIN'"
     >
       <mat-icon class="homeIcon">home</mat-icon>
     </button>

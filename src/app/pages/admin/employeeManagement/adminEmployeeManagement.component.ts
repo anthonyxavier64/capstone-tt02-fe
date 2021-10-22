@@ -42,6 +42,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
   currNewUserPosition: String;
   currNewUserFullName: String;
   currNewUserContactNumber: String;
+  currNewUserIsAdmin: boolean;
 
   isLoading: boolean = false;
   sortField: string;
@@ -378,6 +379,12 @@ export class AdminEmployeeManagementComponent implements OnInit {
           }
         }
 
+        if (currentRecord[6].trim() === 'Yes') {
+          this.currNewUserIsAdmin = true;
+        } else if (currentRecord[6].trim() === 'No') {
+          this.currNewUserIsAdmin = false;
+        }
+
         let csvRecord = {
           email: currentRecord[0].trim(),
           fullName: currentRecord[1].trim(),
@@ -386,6 +393,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
           contactNumber: currentRecord[2].trim(),
           deptsInChargeOf: { deptsInChargeOf: deptsInChargeOfIds },
           deptsPartOf: { deptsPartOf: deptsPartOfIds },
+          accessRight: this.currNewUserIsAdmin? "ADMIN" : "GENERAL",
         };
 
         console.log('Output CSV Record', csvRecord);
@@ -424,6 +432,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
       contactNumber: this.currNewUserContactNumber,
       deptsInChargeOf: { deptsInChargeOf: deptsInChargeOfIds },
       deptsPartOf: { deptsPartOf: deptsPartOfIds },
+      accessRight: this.currNewUserIsAdmin? "ADMIN" : "GENERAL",
     };
 
     let newUserId = null;
@@ -507,6 +516,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
     createdAt: string;
     contactNumber: string;
     isActivated: boolean;
+    accessRight: string;
   }) {
     this.editDialogRef = this.dialogService.open(EditEmployeeDialogComponent, {
       header: selectedUser.fullName + ' (' + selectedUser.userId + ')',

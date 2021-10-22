@@ -70,7 +70,9 @@
           class="peach-btn"
           (click)="createNewMeeting()"
           [disabled]="
-            meetingTitleInput.value === null || meetingTitleInput.value === ''
+            meetingTitleInput.value === null ||
+            meetingTitleInput.value === '' ||
+            invalidTime
           "
         >
           Save Meeting
@@ -439,6 +441,7 @@
           <mat-label style="white-space: nowrap">Meeting Date:</mat-label>
           <input
             matInput
+            (dateChange)="dateInputChange(meetingDateInput)"
             [(ngModel)]="meetingDate"
             #meetingDateInput="ngModel"
             [matDatepicker]="picker"
@@ -466,7 +469,9 @@
             #meetingDurationInput="ngModel"
             [min]="0"
             [disabled]="meetingDate === undefined"
-            (change)="generateTimeRecommendation(meetingDateInput)"
+            (change)="
+              generateTimeRecommendation({ meetingDateInput: meetingDateInput })
+            "
           />
         </mat-form-field>
       </div>
@@ -499,7 +504,8 @@
                 [disabled]="
                   meetingDuration === undefined ||
                   meetingDuration === null ||
-                  meetingDate === undefined || meetingDate === null
+                  meetingDate === undefined ||
+                  meetingDate === null
                 "
               />
             </mat-form-field>
@@ -525,7 +531,8 @@
                 [disabled]="
                   meetingDuration === undefined ||
                   meetingDuration === null ||
-                  meetingDate === undefined || meetingDate === null
+                  meetingDate === undefined ||
+                  meetingDate === null
                 "
                 readonly
               />
@@ -580,7 +587,10 @@
                   mat-button
                   style="background-color: inherit"
                   (click)="chooseMeetingRoom(room)"
-                  [disabled]="assignedPhysicalEmployees.length === 0"
+                  [disabled]="
+                    assignedPhysicalEmployees.length === 0 ||
+                    room?.isAvailable === false
+                  "
                 >
                   <div
                     class="roomItem"
@@ -589,7 +599,10 @@
                         ? 'rgba(255, 166, 135, 0.6)'
                         : '#FFFFFF',
                       opacity:
-                        assignedPhysicalEmployees.length === 0 ? '0.4' : '1'
+                        assignedPhysicalEmployees.length === 0 ||
+                        room?.isAvailable === false
+                          ? '0.4'
+                          : '1'
                     }"
                     fxLayout="column"
                     fxLayoutAlign="start"
