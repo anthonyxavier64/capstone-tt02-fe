@@ -41,6 +41,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { DataViewModule } from 'primeng/dataview';
 import { DeleteAnnouncementComponent } from './pages/admin/delete-announcement/delete-announcement.component';
 import { DeleteEmployeeDialogComponent } from './pages/admin/employeeManagement/delete-employee-dialog/delete-employee-dialog.component';
+import { DeleteMeetingDialogComponent } from './pages/employee/meeting/delete-meeting-dialog/delete-meeting-dialog.component';
 import { DepartmentInChargeOfComponent } from './pages/admin/dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from './pages/admin/dialogs/department-part-of/department-part-of.component';
 import { DialogModule } from 'primeng/dialog';
@@ -87,7 +88,7 @@ import { TableModule } from 'primeng/table';
 import { TaskComponent } from './pages/employee/task/task.component';
 import { TaskDetailDialogComponent } from './pages/employee/task-detail-dialog/task-detail-dialog.component';
 import { TierInfoDialogComponent } from './pages/index/sign-up/tier-info-dialog/tier-info-dialog.component';
-import { UpdateMeetingDialogComponent } from './pages/employee/meeting/update-meeting-dialog/update-meeting-dialog.component';
+import { UpdateMeetingComponent } from './pages/employee/meeting/update-meeting/update-meeting.component';
 import { UploadVaccinationDialogComponent } from './pages/covid-declarations/upload-vaccination-dialog/upload-vaccination-dialog.component';
 import { ViewAnnouncementComponent } from './pages/view-announcement/view-announcement.component';
 import { ViewArtComponent } from './pages/admin/employeeManagement/view-art-dialog/view-art-dialog.component';
@@ -155,7 +156,8 @@ export function tokenGetter() {
     ColorSelectorDialogComponent,
     AccountActivationComponent,
     ViewMeetingDetailsDialogComponent,
-    UpdateMeetingDialogComponent,
+    DeleteMeetingDialogComponent,
+    UpdateMeetingComponent,
   ],
   imports: [
     CommonModule,

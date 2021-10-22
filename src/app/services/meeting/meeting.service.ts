@@ -107,4 +107,10 @@ export class MeetingService {
       .patch<any>(this.baseUrl + '/update-meeting', meeting)
       .pipe(catchError(handleError));
   }
+
+  deleteMeeting(meetingId: string): Observable<any> {
+    return this.httpClient
+      .delete<any>(this.baseUrl + '/delete-meeting/' + meetingId)
+      .pipe(catchError(handleError));
+  }
 }
