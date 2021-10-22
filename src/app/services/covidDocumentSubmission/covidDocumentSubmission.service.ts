@@ -37,4 +37,9 @@ export class CovidDocumentSubmissionService {
       httpOptions
     );
   }
+  getCovidDocumentSubissionById(submissionId: any): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + '/get-submission-by-id/' + submissionId)
+      .pipe(catchError(handleError));
+  }
 }
