@@ -70,6 +70,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MaterialModule } from './core/material.module';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { NavbarComponent } from './sharedComponents/navbar/navbar.component';
 import { NewDepartmentComponent } from './pages/admin/dialogs/new-department/new-department.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
@@ -187,6 +188,7 @@ export function tokenGetter() {
     StyleClassModule,
     DataViewModule,
     DropdownModule,
+    MultiSelectModule,
     NgCircleProgressModule.forRoot({
       radius: 80,
       innerStrokeWidth: 10,
@@ -239,4 +241,4 @@ export function tokenGetter() {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

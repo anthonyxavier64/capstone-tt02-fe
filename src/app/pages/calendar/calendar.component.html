@@ -91,7 +91,35 @@
         <mat-checkbox [checked]="myMeetings" (change)="toggleMine()"
           >My Meetings Only</mat-checkbox
         >
-        <p-dropdown placeholder="Groups / Attendees"></p-dropdown>
+        <p-multiSelect
+          [options]="employees"
+          optionLabel="fullName"
+          [(ngModel)]="selectedEmployees"
+          placeholder="Select employees"
+          [filter]="true"
+          [showToggleAll]="false"
+          filterBy="fullName"
+          [style]="{ width: '16vw' }"
+          (onPanelHide)="handleAttendees()"
+        >
+          <ng-template let-user pTemplate="item">
+            <div fxLayout="row" fxLayoutGap="3%">
+              <img
+                *ngIf="user.isVaccinated && !user.isInfected"
+                src="../../../../../assets/images/vaccinatedIcon.svg"
+              />
+              <img
+                *ngIf="!user.isVaccinated && !user.isInfected"
+                src="../../../../../assets/images/unvaccinatedIcon.svg"
+              />
+              <img
+                *ngIf="user.isInfected"
+                src="../../../../../assets/images/covidIcon.svg"
+              />
+              <div>{{ user.fullName }}</div>
+            </div>
+          </ng-template>
+        </p-multiSelect>
       </div>
       <button (click)="scheduleMeeting()" mat-button class="peach-btn">
         + Schedule Meeting

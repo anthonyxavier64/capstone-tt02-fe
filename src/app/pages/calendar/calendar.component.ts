@@ -23,6 +23,8 @@ moment.updateLocale('en', {
 export class CalendarComponent implements OnInit {
   user: any;
   company: any;
+  employees: any;
+
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
   viewDate: Date = new Date();
@@ -30,11 +32,13 @@ export class CalendarComponent implements OnInit {
 
   meetings: any[];
   userMeetings: any[] = [];
+  attendeeMeetings: any[] = [];
   events: CalendarEvent[] = [];
 
   isPhysical: boolean;
   isVirtual: boolean;
   myMeetings: boolean;
+  selectedEmployees: any[];
 
   constructor(
     private router: Router,
@@ -67,6 +71,15 @@ export class CalendarComponent implements OnInit {
     this.companyService.getCompany(this.user.companyId).subscribe(
       (response) => {
         this.company = response.company;
+      },
+      (error) => {
+        console.log('Error obtaining company:  ' + error);
+      }
+    );
+
+    this.userService.getUsers(this.user.companyId).subscribe(
+      (response) => {
+        this.employees = response.users;
       },
       (error) => {
         console.log('Error obtaining company:  ' + error);
@@ -113,6 +126,7 @@ export class CalendarComponent implements OnInit {
 
     // All Meetings
     if (this.isPhysical && this.isVirtual && !this.myMeetings) {
+      console.log(this.meetings);
       this.events = this.meetings.map((m: any) => {
         return {
           title: m.title,
@@ -120,6 +134,7 @@ export class CalendarComponent implements OnInit {
           color: m.color,
         };
       });
+      console.log(this.events);
     }
 
     // All Physical Meetings
@@ -257,7 +272,11 @@ export class CalendarComponent implements OnInit {
     //   'isPhysicalSettings',
     //   JSON.stringify({ isPhysical: this.isPhysical })
     // );
-    this.loadMeetings();
+    if (this.attendeeMeetings.length == 0) {
+      this.loadMeetings();
+    } else {
+      this.handleAttendees();
+    }
   }
 
   toggleVirtual(): void {
@@ -270,7 +289,11 @@ export class CalendarComponent implements OnInit {
     //   'isVirtualSettings',
     //   JSON.stringify({ isVirtual: this.isVirtual })
     // );
-    this.loadMeetings();
+    if (this.attendeeMeetings.length == 0) {
+      this.loadMeetings();
+    } else {
+      this.handleAttendees();
+    }
   }
 
   toggleMine(): void {
@@ -284,5 +307,91 @@ export class CalendarComponent implements OnInit {
     //   JSON.stringify({ myMeetings: this.myMeetings })
     // );
     this.loadMeetings();
+  }
+
+  handleAttendees(): void {
+    console.log(this.selectedEmployees);
+    this.myMeetings = false;
+
+    for (const attendee of this.selectedEmployees) {
+      this.meetingService.getAllMeetingsParticipant(attendee.userId).subscribe(
+        (response) => {
+          for (const meeting of response.physicalMeetings) {
+            this.attendeeMeetings.push(meeting);
+          }
+          for (const meeting of response.virtualMeetings) {
+            this.attendeeMeetings.push(meeting);
+          }
+        },
+        (error) => {
+          console.log('Error obtaining meetings:  ' + error);
+        }
+      );
+    }
+    console.log('hihi');
+    console.log(this.attendeeMeetings);
+    console.log(this.events);
+
+    this.loadAttendeeMeetings();
+  }
+
+  loadAttendeeMeetings(): void {
+    this.events = [];
+    console.log('hello');
+    console.log(this.attendeeMeetings);
+    console.log(this.events);
+
+    // All Attendee Meetings
+    if (this.isPhysical && this.isVirtual) {
+      console.log('yooo');
+      console.log(this.attendeeMeetings);
+
+      this.events = this.attendeeMeetings.map((m: any) => {
+        return {
+          title: m.title,
+          start: new Date(m.startTime),
+          color: m.color,
+        };
+      });
+      this.events = this.attendeeMeetings;
+      console.log('bye');
+      console.log(this.events);
+    }
+
+    // All Attendee Physical Meetings
+    if (this.isPhysical && !this.isVirtual) {
+      var allAttPhysicalMeetings: any[] = [];
+
+      for (const m of this.attendeeMeetings) {
+        if (m.isPhysical) {
+          allAttPhysicalMeetings.push(m);
+        }
+      }
+      this.events = allAttPhysicalMeetings.map((m: any) => {
+        return {
+          title: m.title,
+          start: new Date(m.startTime),
+          color: m.color,
+        };
+      });
+    }
+
+    // All Attendee Virtual Meetings
+    if (!this.isPhysical && this.isVirtual) {
+      var allAttVirtuallMeetings: any[] = [];
+
+      for (const m of this.attendeeMeetings) {
+        if (m.isVirtual) {
+          allAttVirtuallMeetings.push(m);
+        }
+      }
+      this.events = allAttVirtuallMeetings.map((m: any) => {
+        return {
+          title: m.title,
+          start: new Date(m.startTime),
+          color: m.color,
+        };
+      });
+    }
   }
 }
