@@ -49,6 +49,7 @@ export class CalendarComponent implements OnInit {
   selectedEmployees: any[];
   isWfoSelectionMode: boolean = false;
   datesInOffice: Date[];
+  wfoRemainder: number = 10;
 
   refresh: Subject<any> = new Subject();
 
