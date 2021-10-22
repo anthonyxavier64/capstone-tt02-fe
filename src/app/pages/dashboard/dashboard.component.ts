@@ -106,6 +106,7 @@ export class DashboardComponent implements OnInit {
 
     this.meetingService.getAllMeetingsParticipant(this.user.userId).subscribe(
       (response) => {
+        console.log(response);
         for (const meeting of response.physicalMeetings) {
           if (
             moment(meeting.startTime).isAfter(this.startDate) &&
@@ -190,9 +191,40 @@ export class DashboardComponent implements OnInit {
       .rsvpToMeeting(meetingId, isPhysicalRsvp, userId)
       .subscribe(
         (response) => {
-          console.log('helloz');
-          console.log(response.meeting);
-          this.ngOnInit();
+          var meeting = response.meeting;
+          if (isPhysicalRsvp) {
+            if (
+              moment(meeting.startTime).isAfter(this.startDate) &&
+              moment(meeting.startTime).isBefore(this.endDate)
+            ) {
+              this.physicalMeetings.push(meeting);
+              this.physicalMeetings.sort((a, b) => {
+                var aMoment = moment(a.startTime);
+                var bMoment = moment(b.startTime);
+                return aMoment.isAfter(bMoment) ? 1 : -11;
+              });
+            }
+            var indexToRemove = this.physicalRsvps.findIndex(
+              (item) => item.meetingId === meetingId
+            );
+            this.physicalRsvps.splice(indexToRemove, 1);
+          } else {
+            if (
+              moment(meeting.startTime).isAfter(this.startDate) &&
+              moment(meeting.startTime).isBefore(this.endDate)
+            ) {
+              this.virtualMeetings.push(meeting);
+              this.virtualMeetings.sort((a, b) => {
+                var aMoment = moment(a.startTime);
+                var bMoment = moment(b.startTime);
+                return aMoment.isAfter(bMoment) ? 1 : -11;
+              });
+            }
+            var indexToRemove = this.virtualRsvps.findIndex(
+              (item) => item.meetingId === meetingId
+            );
+            this.virtualRsvps.splice(indexToRemove, 1);
+          }
         },
         (error) => {
           console.log(error);
