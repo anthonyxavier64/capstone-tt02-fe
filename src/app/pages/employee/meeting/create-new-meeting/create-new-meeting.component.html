@@ -70,7 +70,9 @@
           class="peach-btn"
           (click)="createNewMeeting()"
           [disabled]="
-            meetingTitleInput.value === null || meetingTitleInput.value === ''
+            meetingTitleInput.value === null ||
+            meetingTitleInput.value === '' ||
+            invalidTime
           "
         >
           Save Meeting
@@ -439,6 +441,7 @@
           <mat-label style="white-space: nowrap">Meeting Date:</mat-label>
           <input
             matInput
+            (dateChange)="dateInputChange(meetingDateInput)"
             [(ngModel)]="meetingDate"
             #meetingDateInput="ngModel"
             [matDatepicker]="picker"

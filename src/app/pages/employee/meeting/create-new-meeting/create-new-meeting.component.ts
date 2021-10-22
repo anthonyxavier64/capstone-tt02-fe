@@ -70,6 +70,8 @@ export class CreateNewMeetingComponent implements OnInit {
 
   startTimePlaceholder: string;
 
+  invalidTime: boolean;
+
   constructor(
     private _location: Location,
     private messageService: MessageService,
@@ -478,6 +480,8 @@ export class CreateNewMeetingComponent implements OnInit {
       return item;
     });
 
+    this.invalidTime = false;
+
     var generatedTimeFinalized: boolean = false;
 
     var selected: Date;
@@ -500,14 +504,10 @@ export class CreateNewMeetingComponent implements OnInit {
       var startTime = this.convertDateToMoment(selected, nextEarliestStartTime);
     }
 
-    console.log(startTime);
-
     var endTime = this.convertDateToMoment(
       selected,
       this.company.officeOpeningHour
     ).add(this.meetingDuration, 'minutes');
-
-    console.log(endTime);
 
     var closingHour = this.convertDateToMoment(
       selected,
@@ -579,12 +579,18 @@ export class CreateNewMeetingComponent implements OnInit {
                 generatedTimeFinalized = true;
               } else {
                 console.log('EXCEED CLOSING HOUR');
+
+                startTime = newStartTime;
+                endTime = finalEndTime;
                 this.messageService.add({
                   severity: 'error',
                   summary: 'Error',
                   detail:
                     'No available timeslots for the day. Please select another day!',
                 });
+                this.invalidTime = true;
+
+                generatedTimeFinalized = true;
               }
             }
           } else {
@@ -678,6 +684,9 @@ export class CreateNewMeetingComponent implements OnInit {
           detail:
             'No available timeslots for the day. Please select another day!',
         });
+        endTime = this.calculateEndTime(startTime, this.meetingDuration);
+        this.invalidTime = true;
+        generatedTimeFinalized = true;
       } else {
         this.checkMeetingRoomClashes(startTime, endTime, meetings);
         console.log('3');
@@ -702,7 +711,18 @@ export class CreateNewMeetingComponent implements OnInit {
       );
       this.startTime = startTime.format().substring(11, 16);
       this.endTime = updatedEndTimeToBind.format().substring(11, 16);
+      if (updatedEndTimeToBind.isSameOrBefore(closingHour)) {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Earliest meeting time generated!',
+        });
+      }
     }
+  }
+
+  dateInputChange(dateInput: NgModel) {
+    this.meetingDate = dateInput.value;
   }
 
   timeInputChange(timeInput: NgModel) {
@@ -731,21 +751,19 @@ export class CreateNewMeetingComponent implements OnInit {
 
   createNewMeeting(): void {
     if (
-      this.selectedGoal ||
+      this.chosenGoal ||
       this.meetingTitle ||
       this.chosenColor ||
       this.assignedPhysicalEmployees ||
       this.assignedVirtualEmployees ||
       this.meetingDate ||
       this.meetingDuration ||
-      this.startTime ||
-      this.chosenRoom
+      this.startTime
     ) {
       var startDateTime = this.convertDateToMoment(
         this.meetingDate,
         this.startTime.toString()
       ).toDate();
-      console.log(startDateTime);
       var assignedPhysicalEmployeeIds = [];
       var assignedVirtualEmployeeIds = [];
       this.assignedPhysicalEmployees.forEach((item) =>
@@ -764,10 +782,11 @@ export class CreateNewMeetingComponent implements OnInit {
         organiserId: this.user.userId,
         physicalRsvpIds: assignedPhysicalEmployeeIds,
         virtualRsvpIds: assignedVirtualEmployeeIds,
-        roomId: this.chosenRoom.roomId,
+        roomId: this.chosenRoom ? this.chosenRoom.roomId : null,
         companyId: this.company.companyId,
         isVirtual: this.assignedVirtualEmployees.length > 0 ? true : false,
         isPhysical: this.assignedPhysicalEmployees.length > 0 ? true : false,
+        goalId: this.chosenGoal.goalId,
       };
 
       this.meetingService.createNewMeeting(meeting).subscribe(
