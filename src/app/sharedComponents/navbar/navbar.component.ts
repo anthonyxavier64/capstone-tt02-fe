@@ -94,39 +94,4 @@ export class NavbarComponent implements OnInit {
   handleCalendar() {
     this.router.navigateByUrl('/calendar')
   }
-  chooseIcon(notification: any) {
-    if (notification.taskId) {
-      return "../../../assets/images/online-meeting.png";
-    } else if (notification.meetingId) {
-      return "../../../assets/images/to-do-list.png";
-    } else if (notification.covidDocumentSubmissionId) {
-      return "../../../assets/images/stethoscope.png";
-    } else if (notification.commentId) {
-      return "../../../assets/images/bubble-chat.png";
-    }
-    return "";
-  }
-  onClickNotification(notification: any) {
-    if (!notification.isRead) {
-      notification.isRead = true;
-      this.notificationService.updateNotification(notification).subscribe((response) => {
-        this.unreadNotifications = this.unreadNotifications
-          .filter((item) => { item.notificationId != notification.notificationId });
-        this.readNotifications.push(response.notification);
-        this.readNotifications = this.readNotifications
-          .sort((first, second) => second.notificationDate - first.notificationDate);
-        this.numUnread--;
-      },
-        (error) => {
-          console.log(error);
-        })
-    }
-    if (notification.taskId) {
-      this.router.navigateByUrl('/task');
-    } else if (notification.meetingId) {
-      this.router.navigateByUrl('/meeting');
-    } else if (notification.covidDocumentSubmissionId) {
-      this.router.navigateByUrl('/adminEmployeeManagement');
-    }
-  }
 }
