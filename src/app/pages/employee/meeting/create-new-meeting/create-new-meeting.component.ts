@@ -108,35 +108,8 @@ export class CreateNewMeetingComponent implements OnInit {
           this.isLoading = true;
           this.user = response.user;
           this.allInvolvedEmployees.push(this.user.userId);
-          this.meetingService
-            .getAllMeetingsParticipant(this.user.userId)
-            .subscribe(
-              (response) => {
-                var physicalMeetings = response.physicalMeetings;
-                var virtualMeetings = response.virtualMeetings;
-                var involvedMeetings = [];
-                physicalMeetings.forEach((item) => involvedMeetings.push(item));
-                virtualMeetings.forEach((item) => involvedMeetings.push(item));
+          this.assignedMeetingEmployees.push(this.user);
 
-                for (let meeting of involvedMeetings) {
-                  var meetingStartTime = new Date(meeting.startTime);
-                  var startTime = meetingStartTime.toLocaleTimeString();
-                  var endTime = new Date(
-                    meetingStartTime.getTime() + meeting.durationInMins * 60000
-                  ).toLocaleTimeString();
-                  var blockoutItem = {
-                    userId: this.user.userId,
-                    meetingId: meeting.meetingId,
-                    date: meetingStartTime,
-                    startTime: startTime,
-                    endTime: endTime,
-                  };
-
-                  this.blockoutDates.push(blockoutItem);
-                }
-              },
-              (error) => {}
-            );
           this.isUserFetched = true;
           this.userService
             .getUsers(JSON.parse(currentUser).companyId)
@@ -666,6 +639,7 @@ export class CreateNewMeetingComponent implements OnInit {
                   });
 
                   if (itemClash) {
+                    console.log(itemClash);
                     var itemFoundEndTimeMoment = this.convertDateToMoment(
                       itemClash.date,
                       itemClash.endTime
