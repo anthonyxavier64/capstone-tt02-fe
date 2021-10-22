@@ -27,6 +27,21 @@
       </button>
     </ng-template>
 
+    <ng-template
+      #customEventTemplate
+      let-weekEvent="weekEvent"
+      let-locale="locale"
+    >
+      <button
+        mat-button
+        class="cal-week-btn"
+        [ngStyle]="{ 'background-color': weekEvent.event.color }"
+        (click)="viewMeeting(weekEvent.event)"
+      >
+        {{ weekEvent ? weekEvent.event.title : null }}
+      </button>
+    </ng-template>
+
     <div
       fxLayout="row"
       fxLayoutAlign="space-between center"
@@ -126,6 +141,7 @@
         *ngSwitchCase="'week'"
         [viewDate]="viewDate"
         [events]="events"
+        [eventTemplate]="customEventTemplate"
       >
       </mwl-calendar-week-view>
       <mwl-calendar-day-view

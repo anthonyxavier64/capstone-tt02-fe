@@ -454,6 +454,20 @@ span {
   text-align: left !important;
 }
 
+.cal-week-btn {
+  font-family: var(--primary-font);
+  background: rgb(var(--secondary-button-color));
+  width:100% !important;
+  color: rgb(var(--title-color));
+  line-height: 1.5rem !important;
+  border-radius: 0 !important;
+  text-align: center !important;
+}
+.cal-week-btn span {
+  font-size: 1rem;
+  font-weight: 100;
+}
+
 .cal-event-btn span {
   font-size: 1rem;
   font-weight: 100;

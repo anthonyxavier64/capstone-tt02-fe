@@ -1,17 +1,10 @@
-import * as moment from 'moment';
-
-import { CalendarEvent, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  SystemJsNgModuleLoader,
-} from '@angular/core';
-
-import { CompanyService } from 'src/app/services/company/company.service';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { Router } from '@angular/router';
+import { CalendarEvent, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
+import * as moment from 'moment';
+import { CompanyService } from 'src/app/services/company/company.service';
+import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { ViewMeetingDetailsDialogComponent } from './view-meeting-details-dialog/view-meeting-details-dialog.component';
 
@@ -229,6 +222,7 @@ export class CalendarComponent implements OnInit {
   }
 
   viewMeeting(event: any) {
+    console.log('THIS IS PRINTED');
     let dialogRef = this.dialog.open(ViewMeetingDetailsDialogComponent, {
       data: {
         title: event.title,
@@ -280,5 +274,9 @@ export class CalendarComponent implements OnInit {
     //   JSON.stringify({ myMeetings: this.myMeetings })
     // );
     this.loadMeetings();
+  }
+
+  hello(weekEvent: any) {
+    console.log(weekEvent);
   }
 }
