@@ -38,7 +38,7 @@
         [ngStyle]="{ 'background-color': weekEvent.event.color }"
         (click)="viewMeeting(weekEvent.event)"
       >
-        {{ weekEvent ? weekEvent.event.title : null }}
+        {{ weekEvent.event.title }}
       </button>
     </ng-template>
 

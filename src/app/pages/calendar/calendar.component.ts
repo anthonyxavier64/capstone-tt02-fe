@@ -76,6 +76,11 @@ export class CalendarComponent implements OnInit {
     this.meetingService.getAllCompanyMeetings(this.user.companyId).subscribe(
       (response) => {
         this.meetings = response.meetings;
+        this.meetings.forEach((item) => {
+          var colorNumbers = item.color.substring(4, 17);
+          var opacityIncluded = 'rgba(' + colorNumbers + ', 0.3)';
+          item.color = opacityIncluded;
+        });
       },
       (error) => {
         console.log('Error obtaining meetings:  ' + error);
@@ -85,10 +90,16 @@ export class CalendarComponent implements OnInit {
     this.meetingService.getAllMeetingsParticipant(this.user.userId).subscribe(
       (response) => {
         for (const meeting of response.physicalMeetings) {
-          this.userMeetings.push(meeting);
+          var colorNumbers = meeting.color.substring(4, 17);
+          var opacityIncluded = 'rgba(' + colorNumbers + ', 0.3)';
+          var updatedItem = { ...meeting, color: opacityIncluded };
+          this.userMeetings.push(updatedItem);
         }
         for (const meeting of response.virtualMeetings) {
-          this.userMeetings.push(meeting);
+          var colorNumbers = meeting.color.substring(4, 17);
+          var opacityIncluded = 'rgba(' + colorNumbers + ', 0.3)';
+          var updatedItem = { ...meeting, color: opacityIncluded };
+          this.userMeetings.push(updatedItem);
         }
       },
       (error) => {
@@ -222,7 +233,6 @@ export class CalendarComponent implements OnInit {
   }
 
   viewMeeting(event: any) {
-    console.log('THIS IS PRINTED');
     let dialogRef = this.dialog.open(ViewMeetingDetailsDialogComponent, {
       data: {
         title: event.title,
@@ -274,9 +284,5 @@ export class CalendarComponent implements OnInit {
     //   JSON.stringify({ myMeetings: this.myMeetings })
     // );
     this.loadMeetings();
-  }
-
-  hello(weekEvent: any) {
-    console.log(weekEvent);
   }
 }

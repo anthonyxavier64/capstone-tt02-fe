@@ -458,6 +458,7 @@ span {
   font-family: var(--primary-font);
   background: rgb(var(--secondary-button-color));
   width:100% !important;
+  height:100% !important;
   color: rgb(var(--title-color));
   line-height: 1.5rem !important;
   border-radius: 0 !important;
