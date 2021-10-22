@@ -284,7 +284,11 @@ export class CreateNewMeetingComponent implements OnInit {
     );
     this.assignedPhysicalEmployees.splice(indexToRemove, 1);
 
-    this.employees.push(user);
+    if (user.userId !== this.user.userId) {
+      this.employees.push(user);
+    } else {
+      this.assignedMeetingEmployees.push(user);
+    }
     if (this.assignedPhysicalEmployees.length === 0) {
       this.rooms.forEach((room) => {
         room.isSelected = false;
@@ -300,7 +304,11 @@ export class CreateNewMeetingComponent implements OnInit {
     );
     this.assignedVirtualEmployees.splice(indexToRemove, 1);
 
-    this.employees.push(user);
+    if (user.userId !== this.user.userId) {
+      this.employees.push(user);
+    } else {
+      this.assignedMeetingEmployees.push(user);
+    }
 
     await this.generateNewRecommendation(this.unassign, user.userId);
   }
