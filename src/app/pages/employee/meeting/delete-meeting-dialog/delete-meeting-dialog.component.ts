@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 
@@ -9,24 +9,26 @@ import { MeetingService } from 'src/app/services/meeting/meeting.service';
   styleUrls: ['./delete-meeting-dialog.component.css'],
 })
 export class DeleteMeetingDialogComponent implements OnInit {
+  meetingId: string;
+
   constructor(
-    public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig,
+    public dialogRef: MatDialogRef<DeleteMeetingDialogComponent>,
+    @Inject(MAT_DIALOG_DATA)
+    public data: { meetingId: string },
     private meetingService: MeetingService
-  ) {}
+  ) {
+    this.meetingId = data.meetingId;
+  }
 
   ngOnInit(): void {}
 
   onConfirmClick() {
-    this.meetingService
-      .deleteMeeting(this.config.data.meetingId)
-      .subscribe((response) => {
-        this.config.data.confirmDelete = true;
-        this.ref.close(this.config);
-      });
+    this.meetingService.deleteMeeting(this.meetingId).subscribe((response) => {
+      this.dialogRef.close();
+    });
   }
 
-  onCloseClick() {
-    this.ref.close();
+  close() {
+    this.dialogRef.close();
   }
 }

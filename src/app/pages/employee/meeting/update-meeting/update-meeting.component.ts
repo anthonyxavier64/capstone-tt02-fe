@@ -6,6 +6,7 @@ import { NgForm, NgModel } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ColorSelectorDialogComponent } from '../create-new-meeting/color-selector-dialog/color-selector-dialog.component';
 import { CompanyService } from 'src/app/services/company/company.service';
+import { DeleteMeetingDialogComponent } from '../delete-meeting-dialog/delete-meeting-dialog.component';
 import { GoalService } from 'src/app/services/goal/goal.service';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -87,6 +88,7 @@ export class UpdateMeetingComponent implements OnInit {
     private meetingService: MeetingService,
     private goalService: GoalService,
     private colorSelectorDialog: MatDialog,
+    private deleteMeetingDialog: MatDialog,
     private activatedRoute: ActivatedRoute
   ) {
     this.selectedGoal = '';
@@ -125,9 +127,9 @@ export class UpdateMeetingComponent implements OnInit {
           this.chosenGoal = this.originalMeeting.goal;
           this.chosenRoom = this.originalMeeting.room;
           this.chosenColor = this.originalMeeting.color;
-          this.selectedRsvpPhysicalEmployees =
+          this.assignedRsvpPhysicalEmployees =
             this.originalMeeting.rsvpPhysicalEmployee;
-          this.selectedRsvpVirtualEmployees =
+          this.assignedRsvpVirtualEmployees =
             this.originalMeeting.rsvpVirtualEmployee;
           this.meetingPhysicalAttendees =
             this.originalMeeting.physicalAttendees;
@@ -193,13 +195,13 @@ export class UpdateMeetingComponent implements OnInit {
                   this.isCompanyFetched &&
                   this.isUsersFetched
                 ) {
-                  for (let employee of this.selectedRsvpPhysicalEmployees) {
+                  for (let employee of this.assignedRsvpPhysicalEmployees) {
                     const userIndex = this.employees.findIndex(
                       (item) => item.userId === employee.userId
                     );
                     this.employees.splice(userIndex, 1);
                   }
-                  for (let employee of this.selectedRsvpVirtualEmployees) {
+                  for (let employee of this.assignedRsvpVirtualEmployees) {
                     const userIndex = this.employees.findIndex(
                       (item) => item.userId === employee.userId
                     );
@@ -240,13 +242,13 @@ export class UpdateMeetingComponent implements OnInit {
           this.isCompanyFetched &&
           this.isUsersFetched
         ) {
-          for (let employee of this.selectedRsvpPhysicalEmployees) {
+          for (let employee of this.assignedRsvpPhysicalEmployees) {
             const userIndex = this.employees.findIndex(
               (item) => item.userId === employee.userId
             );
             this.employees.splice(userIndex, 1);
           }
-          for (let employee of this.selectedRsvpVirtualEmployees) {
+          for (let employee of this.assignedRsvpVirtualEmployees) {
             const userIndex = this.employees.findIndex(
               (item) => item.userId === employee.userId
             );
@@ -280,6 +282,7 @@ export class UpdateMeetingComponent implements OnInit {
         (error) => {}
       );
   }
+
   onBackClick() {
     this._location.back();
   }
@@ -295,6 +298,21 @@ export class UpdateMeetingComponent implements OnInit {
           colors: this.colors,
           chosenColor: this.chosenColor,
         },
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((response) => {
+      this.chosenColor = response.data;
+    });
+  }
+
+  deleteMeeting(): void {
+    var dialogRef = this.deleteMeetingDialog.open(
+      DeleteMeetingDialogComponent,
+      {
+        width: '30%',
+        height: '40%',
+        data: { meetingId: this.originalMeeting.meetingId },
       }
     );
 
@@ -398,7 +416,11 @@ export class UpdateMeetingComponent implements OnInit {
     );
     this.assignedRsvpPhysicalEmployees.splice(indexToRemove, 1);
 
-    this.employees.push(user);
+    if (user.userId !== this.user.userId) {
+      this.employees.push(user);
+    } else {
+      this.assignedMeetingEmployees.push(user);
+    }
     if (this.assignedRsvpPhysicalEmployees.length === 0) {
       this.rooms.forEach((room) => {
         room.isSelected = false;
@@ -414,7 +436,11 @@ export class UpdateMeetingComponent implements OnInit {
     );
     this.assignedRsvpVirtualEmployees.splice(indexToRemove, 1);
 
-    this.employees.push(user);
+    if (user.userId !== this.user.userId) {
+      this.employees.push(user);
+    } else {
+      this.assignedMeetingEmployees.push(user);
+    }
 
     await this.generateNewRecommendation(this.unassign, user.userId);
   }
@@ -426,6 +452,39 @@ export class UpdateMeetingComponent implements OnInit {
     this.assignedMeetingEmployees.splice(indexToRemove, 1);
 
     this.employees.push(user);
+
+    await this.generateNewRecommendation(this.unassign, user.userId);
+  }
+
+  async unassignPhysicalAttendee(user: any): Promise<void> {
+    const indexToRemove = this.meetingPhysicalAttendees.findIndex(
+      (item) => item.userId === user.userId
+    );
+    this.meetingPhysicalAttendees.splice(indexToRemove, 1);
+
+    if (user.userId !== this.user.userId) {
+      this.employees.push(user);
+    } else {
+    }
+    if (this.meetingPhysicalAttendees.length === 0) {
+      this.rooms.forEach((room) => {
+        room.isSelected = false;
+      });
+    }
+
+    await this.generateNewRecommendation(this.unassign, user.userId);
+  }
+
+  async unassignVirtualAttendee(user: any): Promise<void> {
+    const indexToRemove = this.meetingVirtualAttendees.findIndex(
+      (item) => item.userId === user.userId
+    );
+    this.meetingVirtualAttendees.splice(indexToRemove, 1);
+
+    if (user.userId !== this.user.userId) {
+      this.employees.push(user);
+    } else {
+    }
 
     await this.generateNewRecommendation(this.unassign, user.userId);
   }
@@ -596,15 +655,21 @@ export class UpdateMeetingComponent implements OnInit {
       this.company.officeOpeningHour
     ).add(this.meetingDuration, 'minutes');
 
+    var officeOpeningHour = this.convertDateToMoment(
+      selected,
+      this.company.officeOpeningHour
+    ).set('second', 0);
+
     var closingHour = this.convertDateToMoment(
       selected,
       this.company.officeClosingHour
-    );
+    ).set('second', 0);
 
     var blockoutTimingsOnDate = await this.blockoutDates.filter((item) => {
       return item.date.toLocaleDateString() === selected.toLocaleDateString();
     });
 
+    console.log(blockoutTimingsOnDate);
     var meetings = [];
 
     const response = await this.meetingService
@@ -719,6 +784,11 @@ export class UpdateMeetingComponent implements OnInit {
 
                 var isClashed: boolean = true;
 
+                endTime = this.calculateEndTime(
+                  startTime,
+                  this.meetingDuration
+                );
+
                 while (isClashed) {
                   var itemClash = blockoutTimingsOnDate.find((item) => {
                     var itemToFindStartTimeMoment = this.convertDateToMoment(
@@ -740,6 +810,18 @@ export class UpdateMeetingComponent implements OnInit {
                       endTime.isBetween(
                         itemToFindStartTimeMoment,
                         itemToFindEndTimeMoment,
+                        undefined,
+                        '(]'
+                      ) ||
+                      itemToFindStartTimeMoment.isBetween(
+                        startTime,
+                        endTime,
+                        undefined,
+                        '[)'
+                      ) ||
+                      itemToFindEndTimeMoment.isBetween(
+                        startTime,
+                        endTime,
                         undefined,
                         '(]'
                       )
@@ -769,8 +851,22 @@ export class UpdateMeetingComponent implements OnInit {
                   this.checkMeetingRoomClashes(startTime, endTime, meetings);
                   console.log('2');
 
+                  if (
+                    startTime.isAfter(closingHour) ||
+                    endTime.isAfter(closingHour) ||
+                    startTime.isBefore(officeOpeningHour) ||
+                    endTime.isBefore(officeOpeningHour)
+                  ) {
+                    this.messageService.add({
+                      severity: 'error',
+                      summary: 'Error',
+                      detail: 'Meeting time cannot be out of working hours!',
+                    });
+                    this.invalidTime = true;
+                  } else {
+                    this.invalidTime = false;
+                  }
                   generatedTimeFinalized = true;
-                  this.invalidTime = false;
                 } else {
                   this.messageService.add({
                     severity: 'error',
@@ -891,9 +987,25 @@ export class UpdateMeetingComponent implements OnInit {
         this.invalidTime = true;
         generatedTimeFinalized = true;
       } else {
-        this.checkMeetingRoomClashes(startTime, endTime, meetings);
         console.log('3');
 
+        this.checkMeetingRoomClashes(startTime, endTime, meetings);
+
+        if (
+          startTime.isAfter(closingHour) ||
+          endTime.isAfter(closingHour) ||
+          startTime.isBefore(officeOpeningHour) ||
+          endTime.isBefore(officeOpeningHour)
+        ) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Meeting time cannot be out of working hours!',
+          });
+          this.invalidTime = true;
+        } else {
+          this.invalidTime = false;
+        }
         generatedTimeFinalized = true;
 
         // get meetings for the date
@@ -914,12 +1026,18 @@ export class UpdateMeetingComponent implements OnInit {
       );
       this.startTime = startTime.format().substring(11, 16);
       this.endTime = updatedEndTimeToBind.format().substring(11, 16);
-      if (updatedEndTimeToBind.isSameOrBefore(closingHour)) {
+      if (
+        updatedEndTimeToBind.isSameOrBefore(closingHour) &&
+        startTime.isSameOrAfter(officeOpeningHour)
+      ) {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
           detail: 'Earliest meeting time generated!',
         });
+        this.invalidTime = false;
+      } else {
+        this.invalidTime = true;
       }
     }
   }
@@ -954,7 +1072,6 @@ export class UpdateMeetingComponent implements OnInit {
 
   updateMeeting(): void {
     if (
-      this.chosenGoal ||
       this.meetingTitle ||
       this.chosenColor ||
       this.assignedRsvpPhysicalEmployees ||
@@ -976,6 +1093,8 @@ export class UpdateMeetingComponent implements OnInit {
         assignedVirtualEmployeeIds.push(item.userId)
       );
 
+      console.log(this.chosenGoal);
+
       let meeting = {
         title: this.meetingTitle,
         color: this.chosenColor,
@@ -990,7 +1109,7 @@ export class UpdateMeetingComponent implements OnInit {
         isVirtual: this.assignedRsvpVirtualEmployees.length > 0 ? true : false,
         isPhysical:
           this.assignedRsvpPhysicalEmployees.length > 0 ? true : false,
-        goalId: this.chosenGoal.goalId,
+        goalId: this.chosenGoal ? this.chosenGoal.goalId : null,
       };
 
       this.meetingService.createNewMeeting(meeting).subscribe(
@@ -1011,37 +1130,6 @@ export class UpdateMeetingComponent implements OnInit {
         }
       );
     }
-
-    // Following code is to pass in employee id instead of employee object
-    // const employeeIds = [];
-    // for (let assignedEmployee of this.assignedEmployees) {
-    //   employeeIds.push(assignedEmployee.userId);
-    // }
-    // this.assignedEmployees.push(this.dialogConfig.data.user);
-    // let goalToPassIn = this.chosenGoal
-    //   ? this.chosenGoal.goalId
-    //   : this.goal.goalId;
-    // const newTaskDetails = {
-    //   name: this.taskName,
-    //   startDate: this.startDate,
-    //   deadline: this.deadline,
-    //   completionDate: undefined,
-    //   remarks: this.remarks,
-    //   isArchived: false,
-    //   complexityLevel: this.complexity,
-    //   employees: this.assignedEmployees,
-    //   teamIds: undefined,
-    //   goalId: goalToPassIn,
-    //   userId: this.dialogConfig.data.user.userId,
-    // };
-    // this.taskService.createTask(newTaskDetails).subscribe((response) => {
-    //   this.taskService
-    //     .addUsersToTask(this.assignedEmployees, response.task.taskId)
-    //     .subscribe((response) => {
-    //       this.allGoals[0] = { name: 'All Tasks' };
-    //       this.ref.close();
-    //     });
-    // });
   }
 
   async checkMeetingRoomClashes(startTime, endTime, meetings) {
