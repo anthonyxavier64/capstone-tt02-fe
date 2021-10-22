@@ -67,9 +67,15 @@
             Week
           </button>
         </div>
-        <mat-checkbox>In-Office</mat-checkbox>
-        <mat-checkbox>Online</mat-checkbox>
-        <mat-checkbox>My Meetings Only</mat-checkbox>
+        <mat-checkbox [checked]="isPhysical" (change)="togglePhysical()"
+          >In-Office</mat-checkbox
+        >
+        <mat-checkbox [checked]="isVirtual" (change)="toggleVirtual()"
+          >Online</mat-checkbox
+        >
+        <mat-checkbox [checked]="myMeetings" (change)="toggleMine()"
+          >My Meetings Only</mat-checkbox
+        >
         <p-dropdown placeholder="Groups / Attendees"></p-dropdown>
       </div>
       <button (click)="scheduleMeeting()" mat-button class="peach-btn">
