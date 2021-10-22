@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CalendarEvent, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
 import * as moment from 'moment';
+import { Subject } from 'rxjs';
 import { CompanyService } from 'src/app/services/company/company.service';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -39,6 +40,7 @@ export class CalendarComponent implements OnInit {
   isVirtual: boolean;
   myMeetings: boolean;
   selectedEmployees: any[];
+  refresh: Subject<any> = new Subject();
 
   constructor(
     private router: Router,
@@ -309,43 +311,50 @@ export class CalendarComponent implements OnInit {
     this.loadMeetings();
   }
 
-  handleAttendees(): void {
+  async handleAttendees(): Promise<void> {
     console.log(this.selectedEmployees);
     this.myMeetings = false;
+    this.attendeeMeetings = [];
 
     for (const attendee of this.selectedEmployees) {
-      this.meetingService.getAllMeetingsParticipant(attendee.userId).subscribe(
-        (response) => {
-          for (const meeting of response.physicalMeetings) {
-            this.attendeeMeetings.push(meeting);
-          }
-          for (const meeting of response.virtualMeetings) {
-            this.attendeeMeetings.push(meeting);
-          }
-        },
-        (error) => {
-          console.log('Error obtaining meetings:  ' + error);
+      var response = await this.meetingService
+        .getAllMeetingsParticipant(attendee.userId)
+        .toPromise();
+      for (const meeting of response.physicalMeetings) {
+        var colorNumbers = meeting.color.substring(4, 17);
+        var opacityIncluded = 'rgba(' + colorNumbers + ', 0.3)';
+        var updatedItem = { ...meeting, color: opacityIncluded };
+        if (
+          this.attendeeMeetings.find(
+            (item) => item.meetingId === updatedItem.meetingId
+          ) === undefined
+        ) {
+          this.attendeeMeetings.push(updatedItem);
         }
-      );
+      }
+      for (const meeting of response.virtualMeetings) {
+        var colorNumbers = meeting.color.substring(4, 17);
+        var opacityIncluded = 'rgba(' + colorNumbers + ', 0.3)';
+        var updatedItem = { ...meeting, color: opacityIncluded };
+        if (
+          this.attendeeMeetings.find(
+            (item) => item.meetingId === updatedItem.meetingId
+          ) === undefined
+        ) {
+          this.attendeeMeetings.push(updatedItem);
+        }
+      }
     }
-    console.log('hihi');
-    console.log(this.attendeeMeetings);
-    console.log(this.events);
 
     this.loadAttendeeMeetings();
   }
 
   loadAttendeeMeetings(): void {
-    this.events = [];
-    console.log('hello');
-    console.log(this.attendeeMeetings);
-    console.log(this.events);
-
     // All Attendee Meetings
     if (this.isPhysical && this.isVirtual) {
-      console.log('yooo');
-      console.log(this.attendeeMeetings);
-
+      this.attendeeMeetings.sort((a, b) =>
+        a.meetingId > b.meetingId ? 1 : -1
+      );
       this.events = this.attendeeMeetings.map((m: any) => {
         return {
           title: m.title,
@@ -353,9 +362,6 @@ export class CalendarComponent implements OnInit {
           color: m.color,
         };
       });
-      this.events = this.attendeeMeetings;
-      console.log('bye');
-      console.log(this.events);
     }
 
     // All Attendee Physical Meetings
@@ -367,6 +373,9 @@ export class CalendarComponent implements OnInit {
           allAttPhysicalMeetings.push(m);
         }
       }
+      allAttPhysicalMeetings.sort((a, b) =>
+        a.meetingId > b.meetingId ? 1 : -1
+      );
       this.events = allAttPhysicalMeetings.map((m: any) => {
         return {
           title: m.title,
@@ -385,6 +394,9 @@ export class CalendarComponent implements OnInit {
           allAttVirtuallMeetings.push(m);
         }
       }
+      allAttVirtuallMeetings.sort((a, b) =>
+        a.meetingId > b.meetingId ? 1 : -1
+      );
       this.events = allAttVirtuallMeetings.map((m: any) => {
         return {
           title: m.title,
