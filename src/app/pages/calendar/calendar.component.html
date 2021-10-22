@@ -101,6 +101,7 @@
           filterBy="fullName"
           [style]="{ width: '16vw' }"
           (onPanelHide)="handleAttendees()"
+          (onChange)="handleAttendees()"
         >
           <ng-template let-user pTemplate="item">
             <div fxLayout="row" fxLayoutGap="3%">
