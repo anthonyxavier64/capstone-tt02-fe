@@ -62,6 +62,12 @@ export class MeetingService {
     );
   }
 
+  getMeetingByMeetingId(meetingId: string): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + '/get-meeting' + '/' + meetingId)
+      .pipe(catchError(handleError));
+  }
+
   getAllMeetingsParticipant(participantId: string): Observable<any> {
     return this.httpClient
       .get<any>(

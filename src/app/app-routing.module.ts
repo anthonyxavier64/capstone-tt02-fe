@@ -106,7 +106,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'update-meeting',
+    path: 'update-meeting/:meetingId',
     component: UpdateMeetingComponent,
     canActivate: [AuthGuard],
   },
