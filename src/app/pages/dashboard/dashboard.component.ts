@@ -1,15 +1,12 @@
+import { DatePipe } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { Announcement } from 'src/app/models/announcement';
 import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { TaskService } from 'src/app/services/task/task.service';
-import { UserService } from 'src/app/services/user/user.service';
-
-import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-
 import { ViewAnnouncementComponent } from '../view-announcement/view-announcement.component';
 
 @Component({
@@ -188,12 +185,13 @@ export class DashboardComponent implements OnInit {
     this.router.navigateByUrl('/covid-declarations');
   }
 
-  acceptRsvp(meetingId: string, isPhysicalRSVP: boolean, userId: string) {
+  acceptRsvp(meetingId: string, isPhysicalRsvp: boolean, userId: string) {
     this.meetingService
-      .rsvpToMeeting(meetingId, isPhysicalRSVP, userId)
+      .rsvpToMeeting(meetingId, isPhysicalRsvp, userId)
       .subscribe(
         (response) => {
           console.log('helloz');
+          console.log(response.meeting);
           this.ngOnInit();
         },
         (error) => {
