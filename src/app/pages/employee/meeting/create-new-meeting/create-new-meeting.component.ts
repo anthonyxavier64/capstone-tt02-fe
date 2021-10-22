@@ -504,6 +504,8 @@ export class CreateNewMeetingComponent implements OnInit {
       var startTime = this.convertDateToMoment(selected, nextEarliestStartTime);
     }
 
+    console.log('INPUT START TIME', startTime);
+
     var endTime = this.convertDateToMoment(
       selected,
       this.company.officeOpeningHour
@@ -650,12 +652,71 @@ export class CreateNewMeetingComponent implements OnInit {
                 }
               } else {
                 console.log('NO OVERLAP');
-                var finalEndTime = this.calculateEndTime(
-                  newStartTime,
-                  this.meetingDuration
-                );
-                startTime = newStartTime;
-                endTime = finalEndTime;
+
+                console.log('START END', startTime, endTime);
+
+                if (!startTime.isSameOrAfter(nextItemEndTimeMoment)) {
+                  var finalEndTime = this.calculateEndTime(
+                    newStartTime,
+                    this.meetingDuration
+                  );
+
+                  startTime = newStartTime;
+                  endTime = finalEndTime;
+                } else {
+                  console.log('MANUAL INPUT HANDLING');
+
+                  endTime = this.calculateEndTime(
+                    startTime,
+                    this.meetingDuration
+                  );
+
+                  var isClashed: boolean = true;
+
+                  while (isClashed) {
+                    console.log('CLASH CHECK START TIME', startTime);
+                    var itemClash = blockoutTimingsOnDate.find((item) => {
+                      var itemToFindStartTimeMoment = this.convertDateToMoment(
+                        item.date,
+                        item.startTime
+                      );
+                      var itemToFindEndTimeMoment = this.convertDateToMoment(
+                        item.date,
+                        item.endTime
+                      );
+
+                      return (
+                        startTime.isBetween(
+                          itemToFindStartTimeMoment,
+                          itemToFindEndTimeMoment,
+                          undefined,
+                          '[)'
+                        ) ||
+                        endTime.isBetween(
+                          itemToFindStartTimeMoment,
+                          itemToFindEndTimeMoment,
+                          undefined,
+                          '(]'
+                        )
+                      );
+                    });
+                    if (itemClash) {
+                      var itemFoundEndTimeMoment = this.convertDateToMoment(
+                        itemClash.date,
+                        itemClash.endTime
+                      );
+                      startTime = itemFoundEndTimeMoment;
+                      endTime = this.calculateEndTime(
+                        startTime,
+                        this.meetingDuration
+                      );
+                    } else {
+                      isClashed = false;
+                    }
+                  }
+
+                  this.checkMeetingRoomClashes(startTime, endTime, meetings);
+                }
 
                 this.checkMeetingRoomClashes(startTime, endTime, meetings);
                 console.log('2');
@@ -731,6 +792,7 @@ export class CreateNewMeetingComponent implements OnInit {
       timeInput.value.concat(':00')
     );
 
+    console.log(inputTimeMoment);
     this.generateTimeRecommendation({
       meetingDate: this.meetingDate,
       nextEarliestStartTime: inputTimeMoment.toDate().toLocaleTimeString(),
