@@ -714,8 +714,6 @@ export class CreateNewMeetingComponent implements OnInit {
                       isClashed = false;
                     }
                   }
-
-                  this.checkMeetingRoomClashes(startTime, endTime, meetings);
                 }
 
                 this.checkMeetingRoomClashes(startTime, endTime, meetings);
