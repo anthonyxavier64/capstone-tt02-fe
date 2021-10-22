@@ -1,10 +1,11 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
 import { DateAdapter } from 'angular-calendar';
-import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.dev';
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
 import { handleError } from '../services-util';
 
 const httpOptions = {
@@ -17,7 +18,7 @@ const httpOptions = {
 export class MeetingService {
   baseUrl: string = `${environment.API_REST_URL}` + '/meeting';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   createNewMeeting(meeting: any): Observable<any> {
     return this.httpClient
@@ -28,6 +29,12 @@ export class MeetingService {
   getAllCompanyMeetings(companyId: string): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + '/get-all-meetings/' + companyId)
+      .pipe(catchError(handleError));
+  }
+
+  getMeetingsByDate(companyId: string, startDate: Date, endDate: Date): Observable<any> {
+    return this.httpClient
+      .get<any>(this.baseUrl + `/get-meetings-by-date/${companyId}/${startDate.toString()}/${endDate.toString()}`)
       .pipe(catchError(handleError));
   }
 
