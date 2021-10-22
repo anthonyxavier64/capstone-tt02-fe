@@ -44,6 +44,10 @@ export class CalendarComponent implements OnInit {
   isVirtual: boolean;
   myMeetings: boolean;
   selectedEmployees: any[];
+  isWfoSelectionMode: boolean = false;
+  datesInOffice: Date[];
+  wfoRemainder: number = 10;
+
   refresh: Subject<any> = new Subject();
 
   constructor(
@@ -52,7 +56,8 @@ export class CalendarComponent implements OnInit {
     private meetingService: MeetingService,
     private companyService: CompanyService,
     public dialog: MatDialog
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     // if (localStorage.getItem('isPhysicalSettings')) {
@@ -82,42 +87,6 @@ export class CalendarComponent implements OnInit {
         console.log('Error obtaining company:  ' + error);
       }
     );
-  }
-  beforeMonthViewRender(e: any) {
-    console.log("New Month");
-
-    this.currentPeriodStart = e.period.start;
-    this.currentPeriodEnd = e.period.end;
-
-    this.meetingService.getMeetingsByDate(this.user.companyId, this.currentPeriodStart, this.currentPeriodEnd)
-      .subscribe(
-        (response) => {
-          this.meetings = response.meetings;
-          console.log(response.meetings);
-          this.events = this.meetings.map((m: any) => {
-            return {
-              title: m.title,
-              start: new Date(m.startTime),
-              color: m.color,
-            };
-          });
-        },
-        (error) => {
-          console.log('Error obtaining meetings:  ' + error);
-        }
-      );
-  }
-  viewWfoMode() {
-
-    this.userService.getUsers(this.user.companyId).subscribe(
-      (response) => {
-        this.employees = response.users;
-      },
-      (error) => {
-        console.log('Error obtaining company:  ' + error);
-      }
-    );
-
     this.meetingService.getAllCompanyMeetings(this.user.companyId).subscribe(
       (response) => {
         this.meetings = response.meetings;
@@ -252,6 +221,16 @@ export class CalendarComponent implements OnInit {
       });
     }
   }
+  beforeMonthViewRender(e: any) {
+    this.currentPeriodStart = e.period.start;
+    this.currentPeriodEnd = e.period.end;
+  }
+  viewWfoMode() {
+    this.isWfoSelectionMode = true;
+    this.datesInOffice = this.user.datesInOffice
+      .filter((item) => (item >= this.currentPeriodStart && item <= this.currentPeriodEnd));
+    this.wfoRemainder = this.user.wfoMonthlyAllocation - this.datesInOffice.length;
+  }
 
   setView(view: CalendarView) {
     this.view = view;
@@ -293,7 +272,6 @@ export class CalendarComponent implements OnInit {
       // this.message = result;
     });
   }
-
   togglePhysical(): void {
     if (this.isPhysical) {
       this.isPhysical = false;
@@ -435,5 +413,14 @@ export class CalendarComponent implements OnInit {
         };
       });
     }
+  }
+  isWithinWfoRange(day: Date) {
+    return day >= this.currentPeriodStart && day <= this.currentPeriodEnd;
+  }
+  isWfoSelectable(day: Date) {
+    return this.isWfoSelectionMode && this.isWithinWfoRange(day) && !this.datesInOffice.includes(day);
+  }
+  isWfoSelected(day: Date) {
+    return this.datesInOffice.includes(day);
   }
 }
