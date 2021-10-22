@@ -66,4 +66,9 @@ export class TaskService {
       .post(this.baseUrl + '/unarchive-task/' + taskId, httpOptions)
       .pipe(catchError(handleError));
   }
+  getTaskById(taskId: string): Observable<any> {
+    return this.httpClient
+      .get(this.baseUrl + '/get-task/' + taskId)
+      .pipe(catchError(handleError));
+  }
 }
