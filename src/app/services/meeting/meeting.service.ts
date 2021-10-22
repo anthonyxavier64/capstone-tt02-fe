@@ -1,6 +1,4 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-import { DateAdapter } from 'angular-calendar';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -39,8 +37,6 @@ export class MeetingService {
       .pipe(catchError(handleError));
   }
 
-
-
   getMeetingByTitleDate(title: string, startTime: Date): Observable<any> {
     return this.httpClient.get<any>(
       this.baseUrl + '/get-meeting' + '/' + title + '/' + startTime
@@ -66,12 +62,12 @@ export class MeetingService {
 
   rsvpToMeeting(
     meetingId: string,
-    isPhysicalRSVP: boolean,
+    isPhysicalRsvp: boolean,
     userId: string
   ): Observable<any> {
     return this.httpClient.patch<any>(this.baseUrl + '/rsvp-to-meeting', {
       meetingId,
-      isPhysicalRSVP,
+      isPhysicalRsvp,
       userId,
     });
   }

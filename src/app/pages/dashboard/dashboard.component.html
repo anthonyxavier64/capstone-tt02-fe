@@ -208,7 +208,13 @@
             fxLayoutGap="5%"
             style="width: 100%"
           >
-            <button mat-button class="grey-btn">Yes</button>
+            <button
+              (click)="acceptRsvp(vRsvp.meetingId, false, user.userId)"
+              mat-button
+              class="grey-btn"
+            >
+              Yes
+            </button>
             <button mat-button class="grey-btn">No</button>
           </div>
         </mat-card>
