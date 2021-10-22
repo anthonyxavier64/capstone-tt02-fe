@@ -7,7 +7,7 @@
         {{ user.isVaccinated ? "Vaccinated" : "Unvaccinated" }}
       </h2>
     </mat-card>
-    <button class="grey-btn" (click)="openVaccinationDialog(user)">
+    <button mat-button class="grey-btn" (click)="openVaccinationDialog(user)">
       Update
     </button>
   </mat-card>
@@ -18,14 +18,20 @@
         {{ fetSubmissions[0]?.isPositive ? "Positive" : "Negative" }}
       </h2>
     </mat-card>
-    <button class="grey-btn" (click)="openArtTestDialog(user)">Update</button>
+    <button mat-button class="grey-btn" (click)="openArtTestDialog(user)">
+      Update
+    </button>
   </mat-card>
   <mat-card class="display-card">
     <h1>Medical Certificates</h1>
     <mat-card class="status-display {{ mcApprovalStatus() }}">
       <h2 class="status">{{ renderMcStatus() }}</h2>
     </mat-card>
-    <button class="grey-btn" (click)="openShnDeclarationDialog(user)">
+    <button
+      mat-button
+      class="grey-btn"
+      (click)="openShnDeclarationDialog(user)"
+    >
       Update
     </button>
   </mat-card>

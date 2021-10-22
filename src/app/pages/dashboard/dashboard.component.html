@@ -123,6 +123,8 @@
             <button
               mat-button
               class="grey-btn"
+              fxLayout="column"
+              fxLayoutAlign="space-around center"
               (click)="viewAnnouncement(cannouncement)"
             >
               View Details
@@ -148,6 +150,8 @@
             <button
               mat-button
               class="grey-btn"
+              fxLayout="column"
+              fxLayoutAlign="space-around center"
               (click)="viewAnnouncement(gannouncement)"
             >
               View Details
@@ -183,6 +187,8 @@
             <button
               mat-button
               class="grey-btn"
+              fxLayout="column"
+              fxLayoutAlign="space-around center"
               (click)="acceptRsvp(pRsvp.meetingId, true, user.userId)"
             >
               Yes
@@ -211,6 +217,8 @@
             <button
               (click)="acceptRsvp(vRsvp.meetingId, false, user.userId)"
               mat-button
+              fxLayout="column"
+              fxLayoutAlign="space-around center"
               class="grey-btn"
             >
               Yes
