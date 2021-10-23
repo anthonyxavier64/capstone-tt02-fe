@@ -621,7 +621,9 @@
             [disabled]="
               assignedMeetingEmployees.length === 0 &&
               assignedRsvpVirtualEmployees.length === 0 &&
-              assignedRsvpPhysicalEmployees.length === 0
+              assignedRsvpPhysicalEmployees.length === 0 &&
+              meetingPhysicalAttendees.length === 0 &&
+              meetingVirtualAttendees.length === 0
             "
           />
           <mat-datepicker-toggle
@@ -760,7 +762,8 @@
                   style="background-color: inherit"
                   (click)="chooseMeetingRoom(room)"
                   [disabled]="
-                    assignedRsvpPhysicalEmployees.length === 0 ||
+                    (assignedRsvpPhysicalEmployees.length === 0 &&
+                      meetingPhysicalAttendees.length === 0) ||
                     room?.isAvailable === false
                   "
                 >
@@ -771,7 +774,8 @@
                         ? 'rgba(255, 166, 135, 0.6)'
                         : '#FFFFFF',
                       opacity:
-                        assignedRsvpPhysicalEmployees.length === 0 ||
+                        (assignedRsvpPhysicalEmployees.length === 0 &&
+                          meetingPhysicalAttendees.length === 0) ||
                         room?.isAvailable === false
                           ? '0.4'
                           : '1'

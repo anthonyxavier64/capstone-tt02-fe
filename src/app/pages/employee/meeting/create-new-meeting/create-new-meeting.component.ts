@@ -1,14 +1,16 @@
-import { Location } from '@angular/common';
+import * as moment from 'moment';
+
 import { Component, OnInit } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import * as moment from 'moment';
-import { MessageService } from 'primeng/api';
+
+import { ColorSelectorDialogComponent } from './color-selector-dialog/color-selector-dialog.component';
 import { CompanyService } from 'src/app/services/company/company.service';
 import { GoalService } from 'src/app/services/goal/goal.service';
+import { Location } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
+import { MessageService } from 'primeng/api';
 import { UserService } from 'src/app/services/user/user.service';
-import { ColorSelectorDialogComponent } from './color-selector-dialog/color-selector-dialog.component';
 
 moment.defineLocale('en-foo', {
   parentLocale: 'sg',
@@ -780,6 +782,8 @@ export class CreateNewMeetingComponent implements OnInit {
                 );
 
                 if (!endTime.isAfter(closingHour)) {
+                  console.log('StartTime:', startTime);
+
                   this.checkMeetingRoomClashes(startTime, endTime, meetings);
                   console.log('2');
 

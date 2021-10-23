@@ -120,10 +120,15 @@ export class UpdateMeetingComponent implements OnInit {
           console.log(response.meeting);
           this.meetingTitle = this.originalMeeting.title;
           this.remarks = this.originalMeeting.remarks;
-          this.meetingDate = this.originalMeeting.meetingDate;
-          this.startTime = this.originalMeeting.startTime;
-          this.meetingDuration = this.originalMeeting.meetingDuration;
-          this.endTime = this.originalMeeting.title; // Needs to calculate
+          this.meetingDate = new Date(this.originalMeeting.startTime);
+
+          var startTimeMoment = moment(this.originalMeeting.startTime).format();
+          this.startTime = startTimeMoment.substring(11, 16);
+          this.meetingDuration = this.originalMeeting.durationInMins;
+          let endTimeMoment = moment(startTimeMoment)
+            .add(this.meetingDuration, 'minutes')
+            .format();
+          this.endTime = endTimeMoment.substring(11, 16);
           this.chosenGoal = this.originalMeeting.goal;
           this.chosenRoom = this.originalMeeting.room;
           this.chosenColor = this.originalMeeting.color;
@@ -233,10 +238,20 @@ export class UpdateMeetingComponent implements OnInit {
         this.isLoading = true;
         this.company = response.company;
         this.rooms = this.company.rooms;
-        this.rooms.forEach((room) => {
-          room = { ...room, isSelected: false };
-        });
-        this.isCompanyFetched = true;
+        this.meetingService
+          .getMeetingByMeetingId(meetingId)
+          .subscribe((response) => {
+            this.rooms.forEach((room) => {
+              if (room.roomId != response.meeting.roomId) {
+                room = { ...room, isSelected: false };
+                console.log('Curr Room: ' + JSON.stringify(room));
+              } else if (room.roomId == response.meeting.roomId) {
+                room = { ...room, isSelected: true };
+                console.log('Curr Room: ' + JSON.stringify(room));
+              }
+            });
+            this.isCompanyFetched = true;
+          });
         if (
           this.isUserFetched &&
           this.isCompanyFetched &&
@@ -1020,12 +1035,18 @@ export class UpdateMeetingComponent implements OnInit {
     }
 
     if (generatedTimeFinalized) {
+      console.log('StartTime:', startTime);
       var updatedEndTimeToBind = this.calculateEndTime(
         startTime,
         this.meetingDuration
       );
-      this.startTime = startTime.format().substring(11, 16);
-      this.endTime = updatedEndTimeToBind.format().substring(11, 16);
+      console.log('Updated End Time:', updatedEndTimeToBind);
+      // this.startTime = startTime.format().substring(11, 16);
+      console.log('Generated Start Time: ', this.startTime);
+      this.endTime = updatedEndTimeToBind.format();
+      // .substring(11, 16);
+      console.log('Generated End Time: ', this.endTime);
+
       if (
         updatedEndTimeToBind.isSameOrBefore(closingHour) &&
         startTime.isSameOrAfter(officeOpeningHour)
