@@ -99,4 +99,9 @@ export class UserService {
       `${this.baseUrl}/get-user-submissions/${userId}`, httpOptions)
       .pipe(catchError(handleError));
   }
+  getOfficeUsersByMonth(companyId: number, month: number): Observable<any> {
+    return this.httpClient.get<any>(
+      `${this.baseUrl}/get-office-users-by-month/${companyId}/${month}`, httpOptions)
+      .pipe(catchError(handleError));
+  }
 }

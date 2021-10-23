@@ -7,6 +7,14 @@
 .cal-wfo-circle.filled {
   background-color: rgb(65, 105, 225);
 }
+.cal-wfo-circle.grey {
+  cursor: auto;
+  border: 2px solid rgb(220, 220, 220);
+}
+.cal-wfo-circle.filled.grey {
+  cursor: auto;
+  background-color: rgb(220, 220, 220);
+}
 .wfo-selector {
   float: left;
   margin-left: 10%;
