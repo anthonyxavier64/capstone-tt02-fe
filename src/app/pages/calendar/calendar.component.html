@@ -27,12 +27,12 @@
           <div
             *ngIf="!isSelectorDisabled(day.date) && isWfoSelected(day.date)"
             class="cal-wfo-circle filled"
-            (click)="onClickWfoSelector(day.date)"
+            (click)="onUnselectDay(day.date)"
           ></div>
           <div
             *ngIf="!isSelectorDisabled(day.date) && !isWfoSelected(day.date)"
             class="cal-wfo-circle"
-            (click)="onClickWfoSelector(day.date)"
+            (click)="onSelectDay(day.date)"
           ></div>
         </span>
       </div>

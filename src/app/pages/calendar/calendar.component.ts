@@ -239,7 +239,7 @@ export class CalendarComponent implements OnInit {
   }
   viewWfoMode() {
     this.isWfoSelectionMode = true;
-    let numDaysInOffice = this.user.datesInOffice
+    let numDaysInOffice = this.datesInOffice
       .filter((item) => {
         return new Date(item).getMonth() == new Date().getMonth()
       });
@@ -460,20 +460,24 @@ export class CalendarComponent implements OnInit {
     const dayUsers = this.officeUsersThisMonth.filter((u) => {
       // Check if the user comes to office on this day
       const numMeetingsInOfficeToday = u.datesInOffice
-        .filter((item) => item.getDate() == day.getDate())
+        .filter((item) => new Date(item).getDate() == day.getDate())
         .length;
       return numMeetingsInOfficeToday > 0;
     })
     // Disable if the number of people in the office today exceeds capacity
     return dayUsers.length >= this.company.officeCapacity;
   }
-  onClickWfoSelector(day: Date) {
-    if (this.datesInOffice.includes(day)) {
-      this.datesInOffice = this.datesInOffice.filter((item) => item != day);
-      this.wfoAllowanceCount++;
-    } else {
-      this.datesInOffice.push(day);
+  onUnselectDay(day: Date) {
+    this.datesInOffice = this.datesInOffice.filter((item) => {
+      const d = new Date(item);
+      return d.getDate() != day.getDate()
+        || d.getMonth() != day.getMonth()
+        || d.getFullYear() != day.getFullYear()
+    });
+    this.wfoAllowanceCount++;
+  }
+  onSelectDay(day: Date) {
+    this.datesInOffice.push(day);
       this.wfoAllowanceCount--;
-    }
   }
 }
