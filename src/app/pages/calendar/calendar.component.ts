@@ -246,6 +246,7 @@ export class CalendarComponent implements OnInit {
     if (!numDaysInOffice) numDaysInOffice = [];
     this.wfoAllowanceCount = this.user.wfoMonthlyAllocation - numDaysInOffice.length;
   }
+
   escViewWfoMode() {
     if (this.wfoAllowanceCount >= 0) {
       this.isWfoSelectionMode = false;
@@ -256,6 +257,7 @@ export class CalendarComponent implements OnInit {
       localStorage.setItem('currentUser', JSON.stringify(response.user));
     }, error => console.log(error.message));
   }
+
   setView(view: CalendarView) {
     this.view = view;
   }
