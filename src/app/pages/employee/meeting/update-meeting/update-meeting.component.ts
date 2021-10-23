@@ -44,6 +44,8 @@ export class UpdateMeetingComponent implements OnInit {
   selectedGoal: String; // Whats the diff between selectedGoal and chosenGoal?
   meetingPhysicalAttendees: any[];
   meetingVirtualAttendees: any[];
+  meetingPhysicalAttendeesToDelete: any[];
+  meetingVirtualAttendeesToDelete: any[];
 
   originalMeeting: any;
 
@@ -103,6 +105,8 @@ export class UpdateMeetingComponent implements OnInit {
       'rgb(164, 149, 204)',
     ];
     this.chosenColor = 'rgb(255, 166, 135)';
+    this.meetingPhysicalAttendeesToDelete = [];
+    this.meetingVirtualAttendeesToDelete = [];
   }
 
   ngOnInit(): void {
@@ -479,6 +483,7 @@ export class UpdateMeetingComponent implements OnInit {
 
     if (user.userId !== this.user.userId) {
       this.employees.push(user);
+      this.meetingPhysicalAttendeesToDelete.push(user.userId);
     } else {
     }
     if (this.meetingPhysicalAttendees.length === 0) {
@@ -498,6 +503,7 @@ export class UpdateMeetingComponent implements OnInit {
 
     if (user.userId !== this.user.userId) {
       this.employees.push(user);
+      this.meetingVirtualAttendeesToDelete.push(user.userId);
     } else {
     }
 
@@ -1041,10 +1047,9 @@ export class UpdateMeetingComponent implements OnInit {
         this.meetingDuration
       );
       console.log('Updated End Time:', updatedEndTimeToBind);
-      // this.startTime = startTime.format().substring(11, 16);
+      this.startTime = startTime.format().substring(11, 16);
       console.log('Generated Start Time: ', this.startTime);
-      this.endTime = updatedEndTimeToBind.format();
-      // .substring(11, 16);
+      this.endTime = updatedEndTimeToBind.format().substring(11, 16);
       console.log('Generated End Time: ', this.endTime);
 
       if (
@@ -1099,7 +1104,9 @@ export class UpdateMeetingComponent implements OnInit {
       this.assignedRsvpVirtualEmployees ||
       this.meetingDate ||
       this.meetingDuration ||
-      this.startTime
+      this.startTime ||
+      this.meetingVirtualAttendeesToDelete ||
+      this.meetingPhysicalAttendeesToDelete
     ) {
       var startDateTime = this.convertDateToMoment(
         this.meetingDate,
@@ -1122,18 +1129,17 @@ export class UpdateMeetingComponent implements OnInit {
         remarks: this.remarks,
         durationInMins: this.meetingDuration,
         startTime: startDateTime,
-        organiserId: this.user.userId,
         physicalRsvpIds: assignedPhysicalEmployeeIds,
         virtualRsvpIds: assignedVirtualEmployeeIds,
+        physicalAttendeesToRemoveIds: this.meetingPhysicalAttendeesToDelete,
+        virtualAttendeesToRemoveIds: this.meetingVirtualAttendeesToDelete,
         roomId: this.chosenRoom ? this.chosenRoom.roomId : null,
-        companyId: this.company.companyId,
-        isVirtual: this.assignedRsvpVirtualEmployees.length > 0 ? true : false,
-        isPhysical:
-          this.assignedRsvpPhysicalEmployees.length > 0 ? true : false,
         goalId: this.chosenGoal ? this.chosenGoal.goalId : null,
+        meetingId: this.originalMeeting.meetingId,
       };
+      console.log(meeting);
 
-      this.meetingService.createNewMeeting(meeting).subscribe(
+      this.meetingService.updateMeeting(meeting).subscribe(
         (response) => {
           this.messageService.add({
             severity: 'success',
@@ -1146,7 +1152,7 @@ export class UpdateMeetingComponent implements OnInit {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: 'Meeting could not be created. Please try again!',
+            detail: 'Meeting could not be updated. Please try again!',
           });
         }
       );
