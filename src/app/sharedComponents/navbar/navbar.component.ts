@@ -12,6 +12,9 @@ import { TaskService } from 'src/app/services/task/task.service';
 import { GoalService } from 'src/app/services/goal/goal.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covidDocumentSubmission.service';
+import { ViewVaccinationDialogComponent } from 'src/app/pages/admin/employeeManagement/view-vaccination-dialog/view-vaccination-dialog.component';
+import { ViewArtComponent } from 'src/app/pages/admin/employeeManagement/view-art-dialog/view-art-dialog.component';
+import { ViewShnDeclarationDialog } from 'src/app/pages/admin/employeeManagement/view-shn-dialog/view-shn-dialog.component';
 
 @Component({
   selector: 'app-navbar',
@@ -152,31 +155,24 @@ export class NavbarComponent implements OnInit {
                   (goal) => goal.goalId === task.goalId
                 );
 
-                this.userService.getUsers(this.user.companyId).subscribe(
-                  (response) => {
-                    const employees = response.users;
+                const employees = task.employees;
+                const isSupervisor =
+                  this.user.userId === task.userId ? true : false;
 
-                    this.ref = this.dialogService.open(
-                      TaskDetailDialogComponent,
-                      {
-                        data: {
-                          goal,
-                          allGoals: goals,
-                          task,
-                          employees,
-                          isArchived: task.isArchived,
-                        },
-                        width: '80%',
-                        height: 'auto',
-                        closable: false,
-                        showHeader: false,
-                      }
-                    );
+                this.ref = this.dialogService.open(TaskDetailDialogComponent, {
+                  data: {
+                    goal,
+                    allGoals: goals,
+                    task,
+                    employees,
+                    isArchived: task.isArchived,
+                    isSupervisor,
                   },
-                  (error) => {
-                    throw new Error(error);
-                  }
-                );
+                  width: '80%',
+                  height: 'auto',
+                  closable: false,
+                  showHeader: false,
+                });
               },
               (error) => {
                 throw new Error(error);
@@ -188,8 +184,7 @@ export class NavbarComponent implements OnInit {
         }
       );
     } else if (notification.meetingId) {
-      // this.router.navigateByUrl('/meeting');
-      // open edit meeting details dialog
+      this.router.navigateByUrl('/update-meeting/' + notification.meetingId);
     } else if (notification.covidDocumentSubmissionId) {
       this.covidDocumentSubmissionService
         .getCovidDocumentSubissionById(notification.covidDocumentSubmissionId)
@@ -197,11 +192,32 @@ export class NavbarComponent implements OnInit {
           (response) => {
             // open submission dialog
 
-            const submssion = response.submission;
+            const { submission, user } = response;
 
-            if (submssion.covidDocumentType === 'PROOF_OF_VACCINATION') {
-            } else if (submssion.covidDocumentType === 'ART_TEST_RESULT') {
+            if (submission.covidDocumentType === 'PROOF_OF_VACCINATION') {
+              this.ref = this.dialogService.open(
+                ViewVaccinationDialogComponent,
+                {
+                  header: user.fullName + "'s Vaccination Certificate",
+                  width: '70%',
+                  contentStyle: { 'max-height': '50vw', overflow: 'auto' },
+                  data: user,
+                }
+              );
+            } else if (submission.covidDocumentType === 'ART_TEST_RESULT') {
+              this.ref = this.dialogService.open(ViewArtComponent, {
+                header: user.fullName + "'s ART Tests",
+                width: '70%',
+                contentStyle: { 'max-height': '50vw', overflow: 'auto' },
+                data: user,
+              });
             } else {
+              this.ref = this.dialogService.open(ViewShnDeclarationDialog, {
+                header: user.fullName + "'s SHN/QO Declaration",
+                width: '70%',
+                contentStyle: { 'max-height': '50vw', overflow: 'auto' },
+                data: user,
+              });
             }
           },
           (error) => {

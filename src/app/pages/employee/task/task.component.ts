@@ -228,6 +228,8 @@ export class TaskComponent implements OnInit {
   }
 
   openTaskDetails(task: any) {
+    const isSupervisor = this.user.userId === task.userId ? true : false;
+
     this.ref = this.dialogService.open(TaskDetailDialogComponent, {
       data: {
         goal: this.selectedGoal,
@@ -235,6 +237,7 @@ export class TaskComponent implements OnInit {
         task,
         employees: this.employees,
         isArchived: this.isViewArchivedClicked,
+        isSupervisor,
       },
       width: '80%',
       height: 'auto',
