@@ -1,18 +1,16 @@
-import * as moment from 'moment';
-
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
-
-import { ActivatedRoute } from '@angular/router';
-import { ColorSelectorDialogComponent } from '../create-new-meeting/color-selector-dialog/color-selector-dialog.component';
-import { CompanyService } from 'src/app/services/company/company.service';
-import { DeleteMeetingDialogComponent } from '../delete-meeting-dialog/delete-meeting-dialog.component';
-import { GoalService } from 'src/app/services/goal/goal.service';
-import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { MeetingService } from 'src/app/services/meeting/meeting.service';
+import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
+import { CompanyService } from 'src/app/services/company/company.service';
+import { GoalService } from 'src/app/services/goal/goal.service';
+import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { ColorSelectorDialogComponent } from '../create-new-meeting/color-selector-dialog/color-selector-dialog.component';
+import { DeleteMeetingDialogComponent } from '../delete-meeting-dialog/delete-meeting-dialog.component';
 
 moment.defineLocale('en-foo', {
   parentLocale: 'sg',
@@ -367,7 +365,8 @@ export class UpdateMeetingComponent implements OnInit {
 
   // Does this use a form to implement responsiveness?
   async assignPhysicalEmployee(employee: NgForm): Promise<void> {
-    const assignedEmployee = employee.value.selectedPhysicalEmployees;
+    console.log(employee);
+    const assignedEmployee = employee.value.selectedRsvpPhysicalEmployees;
     if (
       !this.assignedRsvpPhysicalEmployees.find(
         (item) => item.userId === assignedEmployee.userId
@@ -394,7 +393,7 @@ export class UpdateMeetingComponent implements OnInit {
   }
 
   async assignVirtualEmployee(employee: NgForm): Promise<void> {
-    const assignedEmployee = employee.value.selectedVirtualEmployees;
+    const assignedEmployee = employee.value.selectedRsvpVirtualEmployees;
     if (
       !this.assignedRsvpPhysicalEmployees.find(
         (item) => item.userId === assignedEmployee.userId
@@ -483,8 +482,10 @@ export class UpdateMeetingComponent implements OnInit {
 
     if (user.userId !== this.user.userId) {
       this.employees.push(user);
+      console.log(this.employees);
       this.meetingPhysicalAttendeesToDelete.push(user.userId);
     } else {
+      this.assignedMeetingEmployees.push(user);
     }
     if (this.meetingPhysicalAttendees.length === 0) {
       this.rooms.forEach((room) => {

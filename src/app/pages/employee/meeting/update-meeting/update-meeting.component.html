@@ -201,6 +201,7 @@
                     </p>
                   </div>
                   <button
+                    *ngIf="meetingEmployee.userId !== user.userId"
                     mat-button
                     style="background-color: inherit"
                     (click)="unassignMeetingEmployee(meetingEmployee)"
@@ -505,6 +506,7 @@
                       </p>
                     </div>
                     <button
+                      *ngIf="physicalEmployee.userId !== user.userId"
                       mat-button
                       style="background-color: inherit"
                       (click)="unassignPhysicalAttendee(physicalEmployee)"
@@ -577,6 +579,7 @@
                       </p>
                     </div>
                     <button
+                      *ngIf="virtualEmployee.userId !== user.userId"
                       mat-button
                       style="background-color: inherit"
                       (click)="unassignVirtualAttendee(virtualEmployee)"
