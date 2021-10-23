@@ -126,9 +126,12 @@ export class NavbarComponent implements OnInit {
       notification.isRead = true;
       this.notificationService.updateNotification(notification).subscribe(
         (response) => {
-          this.unreadNotifications = this.unreadNotifications.filter((item) => {
-            item.notificationId != notification.notificationId;
+          const filterUnread = this.unreadNotifications.filter((item) => {
+            return item.notificationId !== notification.notificationId;
           });
+
+          this.unreadNotifications = [...filterUnread];
+
           this.readNotifications.push(response.notification);
           this.readNotifications = this.readNotifications.sort(
             (first, second) => second.notificationDate - first.notificationDate
