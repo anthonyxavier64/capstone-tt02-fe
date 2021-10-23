@@ -442,7 +442,7 @@ export class CalendarComponent implements OnInit {
   }
   // To check if the blue button should appear
   isWfoSelectable(day: Date) {
-    return this.isWfoSelectionMode && this.isWithinWfoRange(day);
+    return this.isWfoSelectionMode && this.isWithinWfoRange(day) && day.getDay() != 0 && day.getDay() != 6;
   }
   isWfoSelected(day: Date) {
     const dates = this.datesInOffice.filter(item => {
@@ -478,6 +478,6 @@ export class CalendarComponent implements OnInit {
   }
   onSelectDay(day: Date) {
     this.datesInOffice.push(day);
-      this.wfoAllowanceCount--;
+    this.wfoAllowanceCount--;
   }
 }
