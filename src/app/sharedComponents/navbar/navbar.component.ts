@@ -44,6 +44,7 @@ export class NavbarComponent implements OnInit {
     this.unreadNotifications = [];
     this.readNotifications = [];
     this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.accessRight = this.user.accessRight;
   }
 
   ngOnInit(): void {
