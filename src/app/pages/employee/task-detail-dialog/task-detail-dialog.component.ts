@@ -27,6 +27,7 @@ export class TaskDetailDialogComponent implements OnInit {
   updateStartDate: Date;
   updateDeadline: Date;
   updateGoal: any;
+  isSupervisor: boolean;
 
   constructor(
     private dialogConfig: DynamicDialogConfig,
@@ -39,6 +40,7 @@ export class TaskDetailDialogComponent implements OnInit {
     this.allGoals = this.dialogConfig.data.allGoals;
     this.allGoals[0] = { name: 'No Goals' };
     this.isViewArchivedClicked = this.dialogConfig.data.isArchived;
+    this.isSupervisor = this.dialogConfig.data.isSupervisor;
 
     this.assignPopup = false;
     this.filterValue = '';
@@ -47,7 +49,7 @@ export class TaskDetailDialogComponent implements OnInit {
   ngOnInit(): void {
     const employees = this.dialogConfig.data.employees;
 
-    this.personnel = this.task.employees.filter(
+    this.personnel = employees.filter(
       (emp) => emp.userId !== this.task.supervisor.userId
     );
 
