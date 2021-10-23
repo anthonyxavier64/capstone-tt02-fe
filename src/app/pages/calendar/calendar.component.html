@@ -125,14 +125,17 @@
         <mat-checkbox [checked]="isVirtual" (change)="toggleVirtual()"
           >Online</mat-checkbox
         >
-        <mat-checkbox [checked]="myMeetings" (change)="toggleMine()"
+        <mat-checkbox
+          [checked]="myMeetings"
+          (change)="toggleMine()"
+          style="display: none"
           >My Meetings Only</mat-checkbox
         >
         <p-multiSelect
           [options]="employees"
           optionLabel="fullName"
           [(ngModel)]="selectedEmployees"
-          placeholder="Select employees"
+          placeholder="Filter by attendees"
           [filter]="true"
           [showToggleAll]="false"
           filterBy="fullName"
