@@ -2,6 +2,7 @@ import { CalendarEvent, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
 import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { CompanyService } from 'src/app/services/company/company.service';
+import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covidDocumentSubmission.service';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -55,6 +56,9 @@ export class CalendarComponent implements OnInit {
   isWfoSelectionMode: boolean = false;
   datesInOffice: Date[];
 
+  mcStartDate: Date;
+  mcEndDate: Date;
+
   refresh: Subject<any> = new Subject();
 
   constructor(
@@ -62,6 +66,7 @@ export class CalendarComponent implements OnInit {
     private userService: UserService,
     private meetingService: MeetingService,
     private companyService: CompanyService,
+    private covidDocumentSubmissionService: CovidDocumentSubmissionService,
     public dialog: MatDialog
   ) {
     this.datesInOffice = [];
@@ -141,6 +146,15 @@ export class CalendarComponent implements OnInit {
       .subscribe((response) => {
         this.officeUsersThisMonth = response.users;
       });
+
+    this.covidDocumentSubmissionService.getUserMcs(this.user.userId)
+      .subscribe(response => {
+        const latestMc = response.document;
+        if (latestMc) {
+          this.mcStartDate = latestMc.startDate;
+          this.mcEndDate = latestMc.endDate;
+        }
+      }, error => { console.log(error.message) })
   }
 
   loadMeetings(): void {
@@ -457,6 +471,10 @@ export class CalendarComponent implements OnInit {
   isWithinWfoRange(day: Date) {
     return day.getMonth() == new Date().getMonth();
   }
+  isMcDay(day: Date) {
+    if (!this.mcStartDate || !this.mcEndDate) return false;
+    return day >= this.mcStartDate && day <= this.mcEndDate;
+  }
   // To check if the blue button should appear
   isWfoSelectable(day: Date) {
     return (
@@ -478,6 +496,8 @@ export class CalendarComponent implements OnInit {
     return dates.length > 0;
   }
   isSelectorDisabled(day: Date) {
+    if (this.isMcDay(day) || this.user.isInfected) return true;
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (day < today) return true;

@@ -18,7 +18,7 @@ export class CovidDocumentSubmissionService {
   baseUrl: string =
     `${environment.API_REST_URL}` + '/covid-document-submission';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   getUserSubmissions(userId: number): Observable<any> {
     return this.httpClient
@@ -40,6 +40,10 @@ export class CovidDocumentSubmissionService {
   getCovidDocumentSubissionById(submissionId: any): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + '/get-submission-by-id/' + submissionId)
+  }
+  getUserMcs(userId: number): Observable<any> {
+    return this.httpClient
+      .get<any>(`${this.baseUrl}/get-approved-user-mc/${userId}`)
       .pipe(catchError(handleError));
   }
 }
