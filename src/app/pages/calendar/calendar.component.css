@@ -9,11 +9,11 @@
 }
 .cal-wfo-circle.grey {
   cursor: auto;
-  border: 2px solid rgb(220, 220, 220);
+  border: 2px solid rgb(169,169,169);
 }
 .cal-wfo-circle.filled.grey {
   cursor: auto;
-  background-color: rgb(220, 220, 220);
+  background-color: rgb(169,169,169);
 }
 .wfo-selector {
   float: left;
