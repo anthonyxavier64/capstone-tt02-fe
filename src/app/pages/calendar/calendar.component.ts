@@ -151,8 +151,8 @@ export class CalendarComponent implements OnInit {
       .subscribe(response => {
         const latestMc = response.document;
         if (latestMc) {
-          this.mcStartDate = latestMc.startDate;
-          this.mcEndDate = latestMc.endDate;
+          this.mcStartDate = new Date(latestMc.startDate);
+          this.mcEndDate = new Date(latestMc.endDate);
         }
       }, error => { console.log(error.message) })
   }
