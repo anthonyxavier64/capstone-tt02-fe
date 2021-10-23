@@ -267,7 +267,6 @@ export class CalendarComponent implements OnInit {
     this.user.datesInOffice = this.datesInOffice;
     this.userService.updateUserDetails(this.user).subscribe(
       (response) => {
-        console.log(response);
         localStorage.setItem('currentUser', JSON.stringify(response.user));
       },
       (error) => console.log(error.message)
@@ -482,6 +481,13 @@ export class CalendarComponent implements OnInit {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (day < today) return true;
+
+    // Check this user
+    if (this.isWfoSelected(day)) {
+      return false;
+    }
+
+    // Check company wide users
     const dayUsers = this.officeUsersThisMonth.filter((u) => {
       // Check if the user comes to office on this day
       const numMeetingsInOfficeToday = u.datesInOffice.filter(
@@ -492,6 +498,7 @@ export class CalendarComponent implements OnInit {
     // Disable if the number of people in the office today exceeds capacity
     return dayUsers.length >= this.company.officeCapacity;
   }
+
   onUnselectDay(day: Date) {
     this.datesInOffice = this.datesInOffice.filter((item) => {
       const d = new Date(item);
@@ -501,10 +508,27 @@ export class CalendarComponent implements OnInit {
         d.getFullYear() != day.getFullYear()
       );
     });
+    this.user.datesInOffice = this.datesInOffice;
+
+    // Update officeUsersThisMonth
+    const dayUsers = this.officeUsersThisMonth.filter((u) => {
+      return u.userId !== this.user.userId;
+    });
+    dayUsers.push(this.user);
+    this.officeUsersThisMonth = dayUsers;
+
     this.wfoAllowanceCount++;
   }
   onSelectDay(day: Date) {
     this.datesInOffice.push(day);
+    this.user.datesInOffice = this.datesInOffice;
+    // Update officeUsersThisMonth
+    const dayUsers = this.officeUsersThisMonth.filter((u) => {
+      return u.userId !== this.user.userId;
+    });
+    dayUsers.push(this.user);
+    this.officeUsersThisMonth = dayUsers;
+
     this.wfoAllowanceCount--;
   }
 }
