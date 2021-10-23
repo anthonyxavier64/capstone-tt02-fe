@@ -816,6 +816,8 @@ export class CreateNewMeetingComponent implements OnInit {
       }
     } else {
       if (!endTime.isSameOrBefore(closingHour)) {
+        console.log('END TIME', endTime);
+        console.log('start time', startTime);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -859,6 +861,7 @@ export class CreateNewMeetingComponent implements OnInit {
     }
 
     if (generatedTimeFinalized) {
+      console.log('Generated Time Finalised', startTime);
       var updatedEndTimeToBind = this.calculateEndTime(
         startTime,
         this.meetingDuration
