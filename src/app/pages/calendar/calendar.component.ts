@@ -5,7 +5,12 @@ import { CompanyService } from 'src/app/services/company/company.service';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UserService } from 'src/app/services/user/user.service';
 
-import { ChangeDetectionStrategy, Component, ComponentFactoryResolver, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ComponentFactoryResolver,
+  OnInit,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
@@ -84,6 +89,7 @@ export class CalendarComponent implements OnInit {
 
     this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.datesInOffice = this.user.datesInOffice;
+
     this.companyService.getCompany(this.user.companyId).subscribe(
       (response) => {
         this.company = response.company;
@@ -125,7 +131,13 @@ export class CalendarComponent implements OnInit {
         console.log('Error obtaining meetings:  ' + error);
       }
     );
-    this.userService.getOfficeUsersByMonth(this.user.companyId, new Date().getMonth())
+
+    this.userService.getUsers(this.user.companyId).subscribe((response) => {
+      this.employees = response.users;
+    });
+
+    this.userService
+      .getOfficeUsersByMonth(this.user.companyId, new Date().getMonth())
       .subscribe((response) => {
         this.officeUsersThisMonth = response.users;
       });
@@ -136,7 +148,6 @@ export class CalendarComponent implements OnInit {
 
     // All Meetings
     if (this.isPhysical && this.isVirtual && !this.myMeetings) {
-      console.log(this.meetings);
       this.events = this.meetings.map((m: any) => {
         return {
           title: m.title,
@@ -144,7 +155,6 @@ export class CalendarComponent implements OnInit {
           color: m.color,
         };
       });
-      console.log(this.events);
     }
 
     // All Physical Meetings
@@ -234,17 +244,20 @@ export class CalendarComponent implements OnInit {
     this.currentPeriodStart = e.period.start;
     this.currentPeriodEnd = e.period.end;
     this.thisMonthMeetings = this.meetings.filter((meeting) => {
-      return meeting.startTime >= this.currentPeriodStart && meeting.startTime <= this.currentPeriodEnd;
-    })
+      return (
+        meeting.startTime >= this.currentPeriodStart &&
+        meeting.startTime <= this.currentPeriodEnd
+      );
+    });
   }
   viewWfoMode() {
     this.isWfoSelectionMode = true;
-    let numDaysInOffice = this.datesInOffice
-      .filter((item) => {
-        return new Date(item).getMonth() == new Date().getMonth()
-      });
+    let numDaysInOffice = this.datesInOffice.filter((item) => {
+      return new Date(item).getMonth() == new Date().getMonth();
+    });
     if (!numDaysInOffice) numDaysInOffice = [];
-    this.wfoAllowanceCount = this.user.wfoMonthlyAllocation - numDaysInOffice.length;
+    this.wfoAllowanceCount =
+      this.user.wfoMonthlyAllocation - numDaysInOffice.length;
   }
 
   escViewWfoMode() {
@@ -252,10 +265,13 @@ export class CalendarComponent implements OnInit {
       this.isWfoSelectionMode = false;
     }
     this.user.datesInOffice = this.datesInOffice;
-    this.userService.updateUserDetails(this.user).subscribe((response) => {
-      console.log(response);
-      localStorage.setItem('currentUser', JSON.stringify(response.user));
-    }, error => console.log(error.message));
+    this.userService.updateUserDetails(this.user).subscribe(
+      (response) => {
+        console.log(response);
+        localStorage.setItem('currentUser', JSON.stringify(response.user));
+      },
+      (error) => console.log(error.message)
+    );
   }
 
   setView(view: CalendarView) {
@@ -310,7 +326,7 @@ export class CalendarComponent implements OnInit {
     if (this.attendeeMeetings.length == 0) {
       this.loadMeetings();
     } else {
-      this.handleAttendees();
+      this.loadAttendeeMeetings();
     }
   }
 
@@ -327,7 +343,7 @@ export class CalendarComponent implements OnInit {
     if (this.attendeeMeetings.length == 0) {
       this.loadMeetings();
     } else {
-      this.handleAttendees();
+      this.loadAttendeeMeetings();
     }
   }
 
@@ -345,7 +361,6 @@ export class CalendarComponent implements OnInit {
   }
 
   async handleAttendees(): Promise<void> {
-    console.log(this.selectedEmployees);
     this.myMeetings = false;
     this.attendeeMeetings = [];
 
@@ -383,6 +398,7 @@ export class CalendarComponent implements OnInit {
   }
 
   loadAttendeeMeetings(): void {
+    this.events = [];
     // All Attendee Meetings
     if (this.isPhysical && this.isVirtual) {
       this.attendeeMeetings.sort((a, b) =>
@@ -420,17 +436,17 @@ export class CalendarComponent implements OnInit {
 
     // All Attendee Virtual Meetings
     if (!this.isPhysical && this.isVirtual) {
-      var allAttVirtuallMeetings: any[] = [];
+      var allAttVirtualMeetings: any[] = [];
 
       for (const m of this.attendeeMeetings) {
         if (m.isVirtual) {
-          allAttVirtuallMeetings.push(m);
+          allAttVirtualMeetings.push(m);
         }
       }
-      allAttVirtuallMeetings.sort((a, b) =>
+      allAttVirtualMeetings.sort((a, b) =>
         a.meetingId > b.meetingId ? 1 : -1
       );
-      this.events = allAttVirtuallMeetings.map((m: any) => {
+      this.events = allAttVirtualMeetings.map((m: any) => {
         return {
           title: m.title,
           start: new Date(m.startTime),
@@ -444,15 +460,22 @@ export class CalendarComponent implements OnInit {
   }
   // To check if the blue button should appear
   isWfoSelectable(day: Date) {
-    return this.isWfoSelectionMode && this.isWithinWfoRange(day) && day.getDay() != 0 && day.getDay() != 6;
+    return (
+      this.isWfoSelectionMode &&
+      this.isWithinWfoRange(day) &&
+      day.getDay() != 0 &&
+      day.getDay() != 6
+    );
   }
   isWfoSelected(day: Date) {
-    const dates = this.datesInOffice.filter(item => {
+    const dates = this.datesInOffice.filter((item) => {
       const d = new Date(item);
-      return d.getDate() == day.getDate()
-        && d.getMonth() == day.getMonth()
-        && d.getFullYear() == day.getFullYear();
-    })
+      return (
+        d.getDate() == day.getDate() &&
+        d.getMonth() == day.getMonth() &&
+        d.getFullYear() == day.getFullYear()
+      );
+    });
     return dates.length > 0;
   }
   isSelectorDisabled(day: Date) {
@@ -461,20 +484,22 @@ export class CalendarComponent implements OnInit {
     if (day < today) return true;
     const dayUsers = this.officeUsersThisMonth.filter((u) => {
       // Check if the user comes to office on this day
-      const numMeetingsInOfficeToday = u.datesInOffice
-        .filter((item) => new Date(item).getDate() == day.getDate())
-        .length;
+      const numMeetingsInOfficeToday = u.datesInOffice.filter(
+        (item) => new Date(item).getDate() == day.getDate()
+      ).length;
       return numMeetingsInOfficeToday > 0;
-    })
+    });
     // Disable if the number of people in the office today exceeds capacity
     return dayUsers.length >= this.company.officeCapacity;
   }
   onUnselectDay(day: Date) {
     this.datesInOffice = this.datesInOffice.filter((item) => {
       const d = new Date(item);
-      return d.getDate() != day.getDate()
-        || d.getMonth() != day.getMonth()
-        || d.getFullYear() != day.getFullYear()
+      return (
+        d.getDate() != day.getDate() ||
+        d.getMonth() != day.getMonth() ||
+        d.getFullYear() != day.getFullYear()
+      );
     });
     this.wfoAllowanceCount++;
   }
