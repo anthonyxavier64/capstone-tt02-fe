@@ -16,7 +16,24 @@
           day.date | calendarDate: "monthViewDayNumber":locale
         }}</span>
         <span *ngIf="isWfoSelectable(day.date)" class="wfo-selector">
-          <div class="cal-wfo-circle"></div>
+          <div
+            *ngIf="isSelectorDisabled(day.date) && isWfoSelected(day.date)"
+            class="cal-wfo-circle filled grey"
+          ></div>
+          <div
+            *ngIf="isSelectorDisabled(day.date) && !isWfoSelected(day.date)"
+            class="cal-wfo-circle grey"
+          ></div>
+          <div
+            *ngIf="!isSelectorDisabled(day.date) && isWfoSelected(day.date)"
+            class="cal-wfo-circle filled"
+            (click)="onClickWfoSelector(day.date)"
+          ></div>
+          <div
+            *ngIf="!isSelectorDisabled(day.date) && !isWfoSelected(day.date)"
+            class="cal-wfo-circle"
+            (click)="onClickWfoSelector(day.date)"
+          ></div>
         </span>
       </div>
       <button
@@ -51,11 +68,23 @@
       style="width: 100%; height: 100%"
     >
       <h1>{{ company.name }}'s Calendar</h1>
-      <button *ngIf="!isWfoSelectionMode" button mat-button class="blue-btn" (click)="viewWfoMode()">
+      <button
+        *ngIf="!isWfoSelectionMode"
+        button
+        mat-button
+        class="blue-btn"
+        (click)="viewWfoMode()"
+      >
         Work From Office
       </button>
-      <button *ngIf="isWfoSelectionMode" mat-button class="blue-btn" (click)="viewWfoMode()">
-        Remaining number of days: {{wfoRemainder}}
+      <button
+        *ngIf="isWfoSelectionMode"
+        mat-button
+        class="{{ wfoAllowanceCount >= 0 ? 'blue-btn' : 'red-btn' }}"
+        disabled="{{ wfoAllowanceCount < 0 }}"
+        (click)="escViewWfoMode()"
+      >
+        Remaining number of days: {{ wfoAllowanceCount }}
       </button>
     </div>
 
