@@ -16,8 +16,6 @@
       </div>
     </div>
 
-    <!-- generate number of cards to show -->
-
     <div
       fxLayout="column"
       fxLayoutAlign="space-around center"
@@ -94,7 +92,7 @@
                           type="text"
                           [placeholder]="company.officeName"
                           name="officeName"
-                          ngModel
+                          [(ngModel)]="company.officeName"
                           #officeName="ngModel"
                           required
                           pInputText
@@ -124,7 +122,7 @@
                           [placeholder]="company.officeAddress"
                           name="officeAddress"
                           #officeAddress="ngModel"
-                          ngModel
+                          [(ngModel)]="company.officeAddress"
                           required
                           pInputTextarea
                         ></textarea>
@@ -153,7 +151,7 @@
                           style="width: 15vw"
                           #openingHour="ngModel"
                           pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
-                          ngModel
+                          [(ngModel)]="company.officeOpeningHour"
                           required
                           pInputText
                         />
@@ -187,7 +185,7 @@
                           style="width: 15vw"
                           #closingHour="ngModel"
                           pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
-                          ngModel
+                          [(ngModel)]="company.officeClosingHour"
                           required
                           pInputText
                         />
@@ -295,6 +293,7 @@
           </button>
         </div>
         <p-dialog
+          *ngIf="isEditRoomDetailsOpen"
           header="Edit Room Details"
           [(visible)]="isEditRoomDetailsOpen"
           [breakpoints]="{ '150vw': '75vw' }"
@@ -319,7 +318,7 @@
                       placeholder="Room Name"
                       name="name"
                       #roomName="ngModel"
-                      ngModel
+                      [(ngModel)]="company.rooms[editRoomIndex].name"
                       pInputText
                     />
                     <div
@@ -345,7 +344,7 @@
                       name="location"
                       style="width: 15vw"
                       #roomLocation="ngModel"
-                      ngModel
+                      [(ngModel)]="company.rooms[editRoomIndex].location"
                       pInputText
                     />
                     <div
@@ -371,7 +370,7 @@
                       name="capacity"
                       #roomCapacity="ngModel"
                       pattern="[1-9]\d*"
-                      ngModel
+                      [(ngModel)]="company.rooms[editRoomIndex].capacity"
                       pInputText
                     />
                     <div

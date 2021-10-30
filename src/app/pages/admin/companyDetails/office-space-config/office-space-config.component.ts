@@ -1,9 +1,9 @@
-import { Location, DatePipe } from '@angular/common';
-import { Component, OnInit, ɵɵtrustConstantResourceUrl } from '@angular/core';
+import { DatePipe, Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
 import { MessageService } from 'primeng/api';
+import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
 import { RoomService } from 'src/app/services/room/room.service';
 
 @Component({

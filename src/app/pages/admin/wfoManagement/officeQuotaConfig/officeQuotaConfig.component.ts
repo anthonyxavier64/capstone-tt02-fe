@@ -43,13 +43,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
     private officeQuotaConfigurationService: OfficeQuotaConfigurationService,
     private userService: UserService,
     public dialog: MatDialog
-  ) {
-    if (this.officeQuotaConfig === null) {
-      this.numDaysAllowedPerMonth = 0;
-      this.numDaysAllowedPerMonth = 0;
-    }
-    this.isLoading = true;
-  }
+  ) {}
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -64,6 +58,8 @@ export class OfficeQuotaConfigComponent implements OnInit {
             this.officeQuotaConfigId = null;
             this.exceptions = [];
             this.deletedExceptions = [];
+            this.numEmployeesPerDay = null;
+            this.numDaysAllowedPerMonth = null;
 
             this.isLoading = false;
           } else {
@@ -94,6 +90,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
 
       this.userService.getUsers(companyId).subscribe((response) => {
         this.users = response.users;
+        console.log(this.users);
       });
     }
   }
@@ -109,11 +106,14 @@ export class OfficeQuotaConfigComponent implements OnInit {
       formValue.selectedExceptionWfoMonthlyAllocation;
     if (
       selectedExceptionWfoMonthlyAllocation <= 31 &&
-      selectedExceptionWfoMonthlyAllocation >= 0
+      selectedExceptionWfoMonthlyAllocation >= 0 &&
+      selectedExceptionWfoMonthlyAllocation !== ''
     ) {
       const exception = {
         userId: selectedException.userId,
         fullName: selectedException.fullName,
+        isVaccinated: selectedException.isVaccinated,
+        isInfected: selectedException.isInfected,
         wfoMonthlyAllocation: selectedExceptionWfoMonthlyAllocation,
       };
 
@@ -127,8 +127,19 @@ export class OfficeQuotaConfigComponent implements OnInit {
         //Logic to add exception into exceptions array if it is valid
         if (!this.exceptions) {
           this.exceptions = [exception];
+          const indexToRemove = this.users.findIndex(
+            (item) => item.userId === exception.userId
+          );
+          console.log(exception);
+          this.users.splice(indexToRemove, 1);
         } else {
           this.exceptions.push(exception);
+
+          console.log(exception);
+          const indexToRemove = this.users.findIndex(
+            (item) => item.userId === exception.userId
+          );
+          this.users.splice(indexToRemove, 1);
         }
 
         //Logic to remove exception from deletedExceptions array for edge case of someone deleting the exception and readding them in
@@ -147,6 +158,12 @@ export class OfficeQuotaConfigComponent implements OnInit {
           detail: 'This exception already exists.',
         });
       }
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Please enter a valid exception.',
+      });
     }
   }
 
@@ -163,13 +180,17 @@ export class OfficeQuotaConfigComponent implements OnInit {
     const indexToRemove = this.exceptions.indexOf(selectedException);
     this.exceptions.splice(indexToRemove, 1);
     this.deletedExceptions.push(selectedException);
+    if (!this.users.find((item) => item.userId === selectedException.userId)) {
+      this.users.push(selectedException);
+      this.users.sort((a, b) => (a.userId < b.userId ? -1 : 1));
+    }
   }
 
   createNewOfficeConfig(officeQuotaConfigForm: NgForm): void {
     const formValues = officeQuotaConfigForm.value;
     const newOfficeQuotaConfigForm = {
-      numEmployeesPerDay: formValues.numEmployeesPerDay,
-      numDaysAllowedPerMonth: formValues.numDaysAllowedPerMonth,
+      numEmployeesPerDay: this.numEmployeesPerDay,
+      numDaysAllowedPerMonth: this.numDaysAllowedPerMonth,
       exceptions: this.exceptions,
     };
 

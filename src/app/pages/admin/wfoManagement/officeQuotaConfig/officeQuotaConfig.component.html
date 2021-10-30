@@ -41,16 +41,13 @@
         >
         <input
           matInput
-          ngModel
-          class="numberInput"
+          [(ngModel)]="numEmployeesPerDay"
           name="numEmployeesPerDay"
-          #numEmployeesPerDay="ngModel"
+          #numEmployeesPerDayInput="ngModel"
+          class="numberInput"
           type="number"
           [max]="31"
           [min]="0"
-          [placeholder]="
-            officeQuotaConfig ? officeQuotaConfig.numEmployeesPerDay : 0
-          "
         />
       </div>
       <div
@@ -65,16 +62,13 @@
         >
         <input
           matInput
-          ngModel
-          class="numberInput"
+          [(ngModel)]="numDaysAllowedPerMonth"
           name="numDaysAllowedPerMonth"
-          #numDaysAllowedPerMonth="ngModel"
+          #numDaysAllowedPerMonthInput="ngModel"
+          class="numberInput"
           type="number"
           [max]="31"
           [min]="0"
-          [placeholder]="
-            officeQuotaConfig ? officeQuotaConfig.numDaysAllowedPerMonth : 0
-          "
         />
       </div>
 
@@ -240,9 +234,7 @@
         <div fxLayout="column" fxLayoutAlign="space-around center">
           <div
             *ngIf="
-              (numEmployeesPerDay.value === '' ||
-                numEmployeesPerDay.value === null) &&
-              numEmployeesPerDay.touched
+              numEmployeesPerDay === null && numEmployeesPerDayInput.touched
             "
             class="errorText"
             style="color: red"
@@ -251,9 +243,8 @@
           </div>
           <div
             *ngIf="
-              (numDaysAllowedPerMonth.value === '' ||
-                numDaysAllowedPerMonth.value === null) &&
-              numDaysAllowedPerMonth.touched
+              numDaysAllowedPerMonth === null &&
+              numDaysAllowedPerMonthInput.touched
             "
             class="errorText"
             style="color: red"
