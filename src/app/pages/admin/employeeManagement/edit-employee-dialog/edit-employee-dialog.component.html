@@ -15,7 +15,7 @@
             placeholder="Full Name"
             name="fullName"
             #fullName="ngModel"
-            ngModel
+            [(ngModel)]="config.data.fullName"
             pInputText
           />
           <div
@@ -39,17 +39,17 @@
             name="contactNumber"
             #contactNum="ngModel"
             pattern="[689][0-9]{7}"
-            ngModel
+            [(ngModel)]="config.data.contactNumber"
             pInputText
           />
           <div
-          *ngIf="
-            contactNum.invalid && (contactNum.touched || contactNum.dirty)
-          "
-          class="errorText"
-          style="color: red; font-size: small"
+            *ngIf="
+              contactNum.invalid && (contactNum.touched || contactNum.dirty)
+            "
+            class="errorText"
+            style="color: red; font-size: small"
           >
-          A valid 8-digit Singapore contact number is required.
+            A valid 8-digit Singapore contact number is required.
           </div>
         </td>
       </tr>
@@ -74,9 +74,11 @@
           <label>Admin Status:</label>
         </th>
         <td class="text">
-          <mat-checkbox [(ngModel)]="isAdmin" 
+          <mat-checkbox
+            [(ngModel)]="isAdmin"
             name="isAdmin"
-            [disabled]="this.user.userId === config.data.userId">
+            [disabled]="this.user.userId === config.data.userId"
+          >
           </mat-checkbox>
         </td>
       </tr>

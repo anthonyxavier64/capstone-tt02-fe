@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TaskService } from 'src/app/services/task/task.service';
@@ -36,6 +37,11 @@ export class TaskDetailDialogComponent implements OnInit {
     private messageService: MessageService
   ) {
     this.task = this.dialogConfig.data.task;
+    this.task = {
+      ...this.task,
+      startDate: this.task.startDate.substring(0, 10),
+      deadline: this.task.deadline.substring(0, 10),
+    };
     this.goal = this.dialogConfig.data.goal;
     this.allGoals = this.dialogConfig.data.allGoals;
     this.allGoals[0] = { name: 'No Goals' };
@@ -167,19 +173,17 @@ export class TaskDetailDialogComponent implements OnInit {
   }
 
   saveDetails(): void {
-    if (
-      this.updateDeadline &&
-      this.updateTaskName &&
-      this.updateStartDate &&
-      this.updateGoal
-    ) {
+    const startDate = moment(this.task.startDate);
+    const deadline = moment(this.task.deadline);
+
+    if (!startDate.isAfter(deadline)) {
       const updatedTask = {
         ...this.task,
-        name: this.updateTaskName,
-        startDate: this.updateStartDate,
-        deadline: this.updateDeadline,
+        name: this.task.name,
+        startDate: this.task.startDate,
+        deadline: this.task.deadline,
         completionDate: this.task.completionDate,
-        goalId: this.updateGoal.goalId,
+        goalId: this.updateGoal ? this.updateGoal.goalId : null,
       };
       this.taskService.updateTask(updatedTask).subscribe(
         (response) => {
@@ -193,7 +197,8 @@ export class TaskDetailDialogComponent implements OnInit {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: 'Task could not be edited.',
+        detail:
+          'Task could not be edited. Start date cannot be after deadline.',
       });
     }
   }

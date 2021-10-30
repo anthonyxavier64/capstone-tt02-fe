@@ -35,12 +35,11 @@
       >
         <input
           matInput
-          [(ngModel)]="updateTaskName"
+          [(ngModel)]="task.name"
           #taskNameInput="ngModel"
           class="input"
           type="text"
           style="height: 2.2vw"
-          [placeholder]="task.name"
         />
         <div
           *ngIf="
@@ -68,12 +67,11 @@
           <div *ngIf="isEditMode" fxLayout="column" fxLayoutGap="3%">
             <input
               matInput
-              [(ngModel)]="updateStartDate"
+              [(ngModel)]="task.startDate"
               #startDateInput="ngModel"
               class="input"
               type="date"
               style="height: 2vw"
-              [placeholder]="task.startDate"
             />
             <div
               *ngIf="
@@ -107,12 +105,11 @@
           <div *ngIf="isEditMode" fxLayout="column" fxLayoutGap="3%">
             <input
               matInput
-              [(ngModel)]="updateDeadline"
+              [(ngModel)]="task.deadline"
               #deadlineInput="ngModel"
               class="input"
               type="date"
               style="height: 2vw"
-              [placeholder]="task.deadline"
             />
             <div
               *ngIf="
