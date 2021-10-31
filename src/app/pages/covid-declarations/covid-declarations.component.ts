@@ -15,7 +15,7 @@ import { UploadVaccinationDialogComponent } from './upload-vaccination-dialog/up
   selector: 'app-covid-declarations',
   templateUrl: './covid-declarations.component.html',
   styleUrls: ['./covid-declarations.component.css'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class CovidDeclarationsComponent implements OnInit {
   user: any;
@@ -30,9 +30,11 @@ export class CovidDeclarationsComponent implements OnInit {
   editDialogRef: DynamicDialogRef;
   deleteDialogRef: DynamicDialogRef;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private covidDocumentSubmissionService: CovidDocumentSubmissionService,
-    public dialogService: DialogService) {
+    public dialogService: DialogService
+  ) {
     this.covidDocumentSubmissions = [];
     this.fetSubmissions = [];
     this.mcs = [];
@@ -45,24 +47,33 @@ export class CovidDeclarationsComponent implements OnInit {
       this.covidDocumentSubmissionService
         .getUserSubmissions(this.user.userId)
         .subscribe(
-          response => {
+          (response) => {
             this.covidDocumentSubmissions = response.covidDocumentSubmissions;
             this.fetSubmissions = this.covidDocumentSubmissions
-              .filter((item) => item.covidDocumentType === "ART_TEST_RESULT" && item.documentApprovalStatus === "APPROVED")
+              .filter(
+                (item) =>
+                  item.covidDocumentType === 'ART_TEST_RESULT' &&
+                  item.documentApprovalStatus === 'APPROVED'
+              )
               .sort((a, b) => {
                 const dateA = moment(a.dateOfSubmission);
                 const dateB = moment(b.dateOfSubmission);
                 return dateB.diff(dateA);
               });
             this.mcs = this.covidDocumentSubmissions
-              .filter((item) => (item.covidDocumentType === "SHN_MEDICAL_CERTIFICATE" || item.covidDocumentType === "QUARANTINE_ORDER") && item.documentApprovalStatus === "APPROVED")
+              .filter(
+                (item) =>
+                  (item.covidDocumentType === 'SHN_MEDICAL_CERTIFICATE' ||
+                    item.covidDocumentType === 'QUARANTINE_ORDER') &&
+                  item.documentApprovalStatus === 'APPROVED'
+              )
               .sort((a, b) => {
                 const dateA = moment(a.dateOfSubmission);
                 const dateB = moment(b.dateOfSubmission);
                 return dateB.diff(dateA);
               });
           },
-          error => {
+          (error) => {
             console.log(error);
           }
         );
@@ -70,40 +81,49 @@ export class CovidDeclarationsComponent implements OnInit {
   }
 
   vaccinationStatus() {
-    if (this.user.isVaccinated) return "green";
-    return "red"
+    if (this.user.isVaccinated) return 'green';
+    return 'red';
   }
   fetApprovalStatus() {
-    if (this.fetSubmissions[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
+    if (
+      this.fetSubmissions[0]?.documentApprovalStatus.toUpperCase() ===
+      'APPROVED'
+    ) {
       if (this.fetSubmissions[0].isPositive) {
-        return "red";
+        return 'red';
       }
-      return "green";
+      return 'green';
     }
 
-    return "grey";
+    return 'grey';
   }
   mcApprovalStatus() {
-    if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
+    if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'APPROVED') {
       const today = moment();
-      if (today.isAfter(this.mcs[0].startDate) && today.isBefore(this.mcs[0].endDate)) {
-        return "red";
+      if (
+        today.isAfter(this.mcs[0].startDate) &&
+        today.isBefore(this.mcs[0].endDate)
+      ) {
+        return 'red';
       }
     }
-    return "green";
+    return 'green';
   }
   renderMcStatus() {
-    if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
+    if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'APPROVED') {
       const today = moment();
-      if (today.isAfter(this.mcs[0].startDate) && today.isBefore(this.mcs[0].endDate)) {
-        if (this.mcs[0].covidDocumentType === "SHN_MEDICAL_CERTIFICATE") {
-          return "On stay home notice";
+      if (
+        today.isAfter(this.mcs[0].startDate) &&
+        today.isBefore(this.mcs[0].endDate)
+      ) {
+        if (this.mcs[0].covidDocumentType === 'SHN_MEDICAL_CERTIFICATE') {
+          return 'On stay home notice';
         } else {
-          return "On quarantine order";
+          return 'On quarantine order';
         }
       }
     }
-    return "Fit for work";
+    return 'Fit for work';
   }
 
   openArtTestDialog(selectedUser: {
@@ -115,9 +135,9 @@ export class CovidDeclarationsComponent implements OnInit {
     isActivated: boolean;
   }) {
     this.artTestDialogRef = this.dialogService.open(ArtDialogComponent, {
-      header: selectedUser.fullName + "'s ART Tests",
-      width: '70%',
-      contentStyle: { 'max-height': '50vw', overflow: 'auto' },
+      showHeader: false,
+      width: '50%',
+      contentStyle: { 'max-height': '50vw', overflow: 'auto', padding: '5%' },
       data: selectedUser,
     });
 
@@ -133,12 +153,15 @@ export class CovidDeclarationsComponent implements OnInit {
     contactNumber: string;
     isActivated: boolean;
   }) {
-    this.shnDeclarationDialogRef = this.dialogService.open(ShnDeclarationDialogComponent, {
-      header: selectedUser.fullName + "'s SHN/QO Declaration",
-      width: '70%',
-      contentStyle: { 'max-height': '50vw', overflow: 'auto' },
-      data: selectedUser,
-    });
+    this.shnDeclarationDialogRef = this.dialogService.open(
+      ShnDeclarationDialogComponent,
+      {
+        showHeader: false,
+        width: '50%',
+        contentStyle: { 'max-height': '50vw', overflow: 'auto', padding: '5%' },
+        data: selectedUser,
+      }
+    );
 
     this.shnDeclarationDialogRef.onClose.subscribe(() => {
       this.ngOnInit();
@@ -152,12 +175,15 @@ export class CovidDeclarationsComponent implements OnInit {
     contactNumber: string;
     isActivated: boolean;
   }) {
-    this.vaccinationDialogRef = this.dialogService.open(UploadVaccinationDialogComponent, {
-      header: selectedUser.fullName + "'s Vaccination Certificate",
-      width: '70%',
-      contentStyle: { 'max-height': '50vw', overflow: 'auto' },
-      data: selectedUser,
-    });
+    this.vaccinationDialogRef = this.dialogService.open(
+      UploadVaccinationDialogComponent,
+      {
+        showHeader: false,
+        width: '50%',
+        contentStyle: { 'max-height': '50vw', overflow: 'auto', padding: '5%' },
+        data: selectedUser,
+      }
+    );
 
     this.vaccinationDialogRef.onClose.subscribe(() => {
       this.ngOnInit();
