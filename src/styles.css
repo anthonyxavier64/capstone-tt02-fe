@@ -288,6 +288,16 @@ span {
   width: 20vw;
 }
 
+.room-card .mat-dialog-container {
+  padding: 0.75rem;
+  width: 50vw;
+}
+
+.office-card .mat-dialog-container {
+  padding: 0.75rem;
+  width: 80vw;
+}
+
 .mat-dialog-content {
   display: block;
   margin: 0 -1.5rem;

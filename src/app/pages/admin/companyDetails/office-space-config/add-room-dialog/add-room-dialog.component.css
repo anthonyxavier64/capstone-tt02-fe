@@ -1,0 +1,12 @@
+.companyDetailsTbl {
+  align-content: center;
+  align-self: center;
+  border-spacing: 50px 20px;
+}
+
+.text {
+  font-size: 25px;
+  font-family: var(--primary-font);
+  color: rgba(var(--theme-primary-color), 0.8);
+  text-align: left;
+}

@@ -1,13 +1,11 @@
-import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
-
-import { ChangePasswordComponent } from './change-password/change-password.component';
+import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { NgForm } from '@angular/forms';
-import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @Component({
   selector: 'app-profile',
@@ -19,6 +17,9 @@ export class ProfileComponent implements OnInit {
   user: any | null;
   dept: any | null;
   mdept: any | null;
+
+  fullName: string;
+  contactNumber: string;
 
   hasWFOMonthlyCap: boolean = false;
   hasWFOTeam: boolean = false;
@@ -39,6 +40,8 @@ export class ProfileComponent implements OnInit {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.user = JSON.parse(currentUser);
+      this.fullName = this.user.fullName;
+      this.contactNumber = this.user.contactNumber;
       console.log(this.user.email);
       this.userService.getDepartments(this.user.email).subscribe(
         (response) => {
@@ -93,12 +96,20 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  toggleEditMode(): void {
+    this.fullName = this.user.fullName;
+    this.contactNumber = this.user.contactNumber;
+    this.editDetailsMode = !this.editDetailsMode;
+  }
+
   closeProfileEdit(updateForm: NgForm) {
     var updatedValues = updateForm.value;
     this.editDetailsMode = false;
   }
 
   editDetails() {
+    this.user.fullName = this.fullName;
+    this.user.contactNumber = this.contactNumber;
     this.userService.updateUserDetails(this.user).subscribe(
       (response) => {
         this.messageService.add({
