@@ -113,9 +113,11 @@
         </div>
         <div fxLayout="column" fxLayoutGap="8%">
           <h3 style="text-align: left">Admin?</h3>
-          <mat-checkbox [(ngModel)]="currNewUserIsAdmin" 
-            name="currNewUserIsAdmin">
-        </mat-checkbox>
+          <mat-checkbox
+            [(ngModel)]="currNewUserIsAdmin"
+            name="currNewUserIsAdmin"
+          >
+          </mat-checkbox>
         </div>
       </div>
       <button
@@ -250,9 +252,10 @@
       </ng-template> -->
         <ng-template pTemplate="header">
           <tr>
-            <th>
+            <th pSortableColumn="fullName">
               <div class="p-d-flex p-jc-between p-ai-center">
                 Full Name
+                <p-sortIcon field="fullName"></p-sortIcon>
                 <p-columnFilter
                   type="text"
                   field="fullName"
@@ -260,9 +263,10 @@
                 ></p-columnFilter>
               </div>
             </th>
-            <th>
+            <th pSortableColumn="email">
               <div class="p-d-flex p-jc-between p-ai-center">
                 Email
+                <p-sortIcon field="email"></p-sortIcon>
                 <p-columnFilter
                   type="text"
                   field="email"
@@ -270,9 +274,10 @@
                 ></p-columnFilter>
               </div>
             </th>
-            <th>
+            <th pSortableColumn="createdAt">
               <div class="p-d-flex p-jc-between p-ai-center">
                 Date Joined
+                <p-sortIcon field="createdAt"></p-sortIcon>
                 <p-columnFilter
                   type="date"
                   field="createdAt"
@@ -280,9 +285,10 @@
                 ></p-columnFilter>
               </div>
             </th>
-            <th>
+            <th pSortableColumn="contactNumber">
               <div class="p-d-flex p-jc-between p-ai-center">
                 Contact Number
+                <p-sortIcon field="contactNumber"></p-sortIcon>
                 <p-columnFilter
                   type="numeric"
                   field="contactNumber"
