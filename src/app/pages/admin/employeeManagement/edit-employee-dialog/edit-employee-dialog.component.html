@@ -14,14 +14,14 @@
             type="text"
             placeholder="Full Name"
             name="fullName"
-            #fullName="ngModel"
-            [(ngModel)]="config.data.fullName"
+            [(ngModel)]="fullName"
+            #fullNameInput="ngModel"
             pInputText
           />
           <div
             *ngIf="
-              (fullName.touched || fullName.dirty) &&
-              fullName.value.length === 0
+              (fullNameInput.touched || fullNameInput.dirty) &&
+              fullNameInput.value.length === 0
             "
             class="errorText"
             style="color: red; font-size: small"
@@ -37,14 +37,15 @@
             type="tel"
             placeholder="Contact Number"
             name="contactNumber"
-            #contactNum="ngModel"
+            [(ngModel)]="contactNumber"
+            #contactNumInput="ngModel"
             pattern="[689][0-9]{7}"
-            [(ngModel)]="config.data.contactNumber"
             pInputText
           />
           <div
             *ngIf="
-              contactNum.invalid && (contactNum.touched || contactNum.dirty)
+              contactNumInput.invalid &&
+              (contactNumInput.touched || contactNumInput.dirty)
             "
             class="errorText"
             style="color: red; font-size: small"
@@ -90,8 +91,8 @@
       fxLayoutGap="3%"
       style="margin-top: 3%"
     >
-      <button mat-button class="saveBtn" type="submit">Save Details</button>
-      <button mat-button class="closeBtn" (click)="onCloseClick()">
+      <button mat-button class="peach-btn" type="submit">Save Details</button>
+      <button mat-button class="grey-btn" (click)="onCloseClick()">
         Close
       </button>
     </div>

@@ -97,6 +97,9 @@ import { ViewShnDeclarationDialog } from './pages/admin/employeeManagement/view-
 import { ViewVaccinationDialogComponent } from './pages/admin/employeeManagement/view-vaccination-dialog/view-vaccination-dialog.component';
 import { adapterFactory } from 'angular-calendar/date-adapters/moment';
 import { environment } from 'src/environments/environment.dev';
+import { EditRoomDetailsDialogComponent } from './pages/admin/companyDetails/office-space-config/edit-room-details-dialog/edit-room-details-dialog.component';
+import { AddRoomDialogComponent } from './pages/admin/companyDetails/office-space-config/add-room-dialog/add-room-dialog.component';
+import { EditOfficeDetailsDialogComponent } from './pages/admin/companyDetails/office-space-config/edit-office-details-dialog/edit-office-details-dialog.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -158,6 +161,9 @@ export function tokenGetter() {
     ViewMeetingDetailsDialogComponent,
     DeleteMeetingDialogComponent,
     UpdateMeetingComponent,
+    EditRoomDetailsDialogComponent,
+    AddRoomDialogComponent,
+    EditOfficeDetailsDialogComponent,
   ],
   imports: [
     CommonModule,

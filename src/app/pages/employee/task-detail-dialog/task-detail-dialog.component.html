@@ -35,7 +35,7 @@
       >
         <input
           matInput
-          [(ngModel)]="task.name"
+          [(ngModel)]="updateTaskName"
           #taskNameInput="ngModel"
           class="input"
           type="text"
@@ -67,7 +67,7 @@
           <div *ngIf="isEditMode" fxLayout="column" fxLayoutGap="3%">
             <input
               matInput
-              [(ngModel)]="task.startDate"
+              [(ngModel)]="updateStartDate"
               #startDateInput="ngModel"
               class="input"
               type="date"
@@ -105,7 +105,7 @@
           <div *ngIf="isEditMode" fxLayout="column" fxLayoutGap="3%">
             <input
               matInput
-              [(ngModel)]="task.deadline"
+              [(ngModel)]="updateDeadline"
               #deadlineInput="ngModel"
               class="input"
               type="date"
@@ -227,7 +227,7 @@
       mat-button
       *ngIf="isEditMode"
       class="grey-btn"
-      (click)="isEditMode = false"
+      (click)="toggleEditDetails()"
     >
       Close
     </button>

@@ -19,14 +19,14 @@
       style="min-width: 12vw"
       class="numberInput"
       name="updateWfoAllocation"
-      [(ngModel)]="dialogDisplayData.wfoMonthlyAllocation"
+      [(ngModel)]="wfoMonthlyAllocation"
       #updateWfoAllocation="ngModel"
       type="number"
       [max]="31"
       [min]="0"
     />
 
-    <button type="submit" class="saveButton" mat-button>Save</button>
+    <button type="submit" class="peach-btn" mat-button>Save</button>
     <div
       *ngIf="updateWfoAllocation.value === '' && updateWfoAllocation.touched"
       class="errorText"

@@ -1,0 +1,156 @@
+<form
+  #officeDetailsForm="ngForm"
+  ngNativeValidate
+  name="officeDetailsForm"
+  (ngSubmit)="submitOfficeDetailsForm(officeDetailsForm)"
+>
+  <div fxLayout="column" fxLayoutAlign="space-around center">
+    <h1>Edit Office Details</h1>
+    <table class="companyDetailsTbl">
+      <tr>
+        <th class="text">
+          <label for="officeName">Office Name:</label>
+        </th>
+        <td class="text">
+          <div>
+            <input
+              type="text"
+              [(ngModel)]="officeName"
+              name="officeName"
+              #officeNameInput="ngModel"
+              required
+              pInputText
+            />
+            <div
+              *ngIf="
+                (officeNameInput.touched || officeNameInput.dirty) &&
+                officeNameInput.value.length === 0
+              "
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Office Name cannot be empty.
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th class="text">
+          <label for="officeAddress">Office Address:</label>
+        </th>
+        <td class="text">
+          <div>
+            <textarea
+              type="textarea"
+              style="width: 20vw"
+              name="officeAddress"
+              [(ngModel)]="officeAddress"
+              #officeAddressInput="ngModel"
+              required
+              pInputTextarea
+            ></textarea>
+            <div
+              *ngIf="
+                (officeAddressInput.touched || officeAddressInput.dirty) &&
+                officeAddressInput.value.length === 0
+              "
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Office Address cannot be empty.
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th class="text">
+          <label>Opening Hours:</label>
+        </th>
+        <td class="text">
+          <div>
+            <input
+              type="text"
+              name="openingHour"
+              style="width: 15vw"
+              [(ngModel)]="officeOpeningHour"
+              #openingHourInput="ngModel"
+              pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
+              required
+              pInputText
+            />
+            <div
+              *ngIf="
+                (openingHourInput.touched || openingHourInput.dirty) &&
+                openingHourInput.value.length === 0
+              "
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Office Opening Hour cannot be empty.
+            </div>
+            <div
+              *ngIf="
+                (openingHourInput.touched || openingHourInput.dirty) &&
+                openingHourInput.invalid
+              "
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Please enter a valid Opening Hour. (00:00 - 23:59)
+            </div>
+          </div>
+        </td>
+        <td class="text">
+          <div>
+            <input
+              type="text"
+              name="closingHour"
+              style="width: 15vw"
+              [(ngModel)]="officeClosingHour"
+              #closingHourInput="ngModel"
+              pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
+              required
+              pInputText
+            />
+            <div
+              *ngIf="
+                (closingHourInput.touched || closingHourInput.dirty) &&
+                closingHourInput.value.length === 0
+              "
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Office Closing Hour cannot be empty.
+            </div>
+            <div
+              *ngIf="
+                (closingHourInput.touched || closingHourInput.dirty) &&
+                closingHourInput.invalid
+              "
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Please enter a valid Closing Hour. (00:00 - 23:59)
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th class="text"><label>Office Capacity:</label></th>
+        <td class="text">{{ company.officeCapacity }}</td>
+      </tr>
+    </table>
+
+    <div
+      fxLayout="row"
+      fxLayoutAlign=" center"
+      fxLayoutGap="3%"
+      style="margin-top: 3%"
+    >
+      <button mat-button class="peach-btn" type="submit">Save Details</button>
+      <button mat-button class="grey-btn" type="button" (click)="closeDialog()">
+        Close
+      </button>
+    </div>
+  </div>
+</form>

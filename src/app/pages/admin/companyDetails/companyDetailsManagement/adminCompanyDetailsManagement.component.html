@@ -35,7 +35,7 @@
             }}</span>
             <div *ngIf="editDetailsMode">
               <input
-                [(ngModel)]="company.email"
+                [(ngModel)]="email"
                 #emailText="ngModel"
                 email="true"
                 class="inputFields"
@@ -59,7 +59,7 @@
             }}</span>
             <div *ngIf="editDetailsMode">
               <input
-                [(ngModel)]="company.contactNumber"
+                [(ngModel)]="contactNumber"
                 #contactNum="ngModel"
                 pattern="[689][0-9]{7}"
                 type="tel"

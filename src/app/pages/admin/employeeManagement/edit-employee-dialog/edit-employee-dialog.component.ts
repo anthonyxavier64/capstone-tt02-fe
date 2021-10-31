@@ -1,8 +1,7 @@
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { UserService } from 'src/app/services/user/user.service';
-
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-edit-employee-dialog',
@@ -10,9 +9,10 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./edit-employee-dialog.component.css'],
 })
 export class EditEmployeeDialogComponent implements OnInit {
-  
   user: any;
   isAdmin: boolean;
+  fullName: string;
+  contactNumber: number;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -20,6 +20,8 @@ export class EditEmployeeDialogComponent implements OnInit {
     private userService: UserService
   ) {
     console.log(config.data);
+    this.fullName = config.data.fullName;
+    this.contactNumber = config.data.contactNumber;
   }
 
   ngOnInit(): void {

@@ -41,12 +41,20 @@ export class TaskDetailDialogComponent implements OnInit {
       ...this.task,
       startDate: this.task.startDate.substring(0, 10),
       deadline: this.task.deadline.substring(0, 10),
+      employees: this.task.employees,
     };
     this.goal = this.dialogConfig.data.goal;
     this.allGoals = this.dialogConfig.data.allGoals;
     this.allGoals[0] = { name: 'No Goals' };
     this.isViewArchivedClicked = this.dialogConfig.data.isArchived;
     this.isSupervisor = this.dialogConfig.data.isSupervisor;
+
+    this.updateTaskName = this.task.name;
+    this.updateStartDate = this.task.startDate;
+    this.updateDeadline = this.task.deadline;
+    this.updateGoal = this.task?.goalId
+      ? this.allGoals.find((item) => item.goalId === this.task.goalId)
+      : null;
 
     this.assignPopup = false;
     this.filterValue = '';
@@ -55,7 +63,7 @@ export class TaskDetailDialogComponent implements OnInit {
   ngOnInit(): void {
     const employees = this.dialogConfig.data.employees;
 
-    this.personnel = employees.filter(
+    this.personnel = this.task.employees.filter(
       (emp) => emp.userId !== this.task.supervisor.userId
     );
 
@@ -179,9 +187,9 @@ export class TaskDetailDialogComponent implements OnInit {
     if (!startDate.isAfter(deadline)) {
       const updatedTask = {
         ...this.task,
-        name: this.task.name,
-        startDate: this.task.startDate,
-        deadline: this.task.deadline,
+        name: this.updateTaskName,
+        startDate: this.updateStartDate,
+        deadline: this.updateDeadline,
         completionDate: this.task.completionDate,
         goalId: this.updateGoal ? this.updateGoal.goalId : null,
       };
@@ -201,5 +209,15 @@ export class TaskDetailDialogComponent implements OnInit {
           'Task could not be edited. Start date cannot be after deadline.',
       });
     }
+  }
+
+  toggleEditDetails(): void {
+    this.updateTaskName = this.task.name;
+    this.updateStartDate = this.task.startDate;
+    this.updateDeadline = this.task.deadline;
+    this.updateGoal = this.task?.goalId
+      ? this.allGoals.find((item) => item.goalId === this.task.goalId)
+      : null;
+    this.isEditMode = !this.isEditMode;
   }
 }

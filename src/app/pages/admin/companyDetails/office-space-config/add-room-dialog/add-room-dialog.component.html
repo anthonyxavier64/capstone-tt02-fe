@@ -1,0 +1,102 @@
+<form
+  #addRoomForm="ngForm"
+  ngNativeValidate
+  name="addRoomForm"
+  (ngSubmit)="submitAddRoomForm(addRoomForm)"
+>
+  <div fxLayout="column" fxLayoutAlign="space-around center">
+    <h1>Add New Room</h1>
+    <table class="companyDetailsTbl">
+      <tr>
+        <th class="text">
+          <label for="name">Room Name:</label>
+        </th>
+        <td class="text">
+          <input
+            type="text"
+            placeholder="Room Name"
+            name="name"
+            required
+            #newRoomName="ngModel"
+            ngModel
+            pInputText
+          />
+          <div
+            *ngIf="newRoomName.touched && newRoomName.value.length === 0"
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            Room name cannot be empty.
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th class="text">
+          <label for="location">Room Location:</label>
+        </th>
+        <td class="text">
+          <input
+            type="text"
+            placeholder="Room Location"
+            name="location"
+            style="width: 15vw"
+            required
+            #newRoomLocation="ngModel"
+            ngModel
+            pInputText
+          />
+          <div
+            *ngIf="
+              newRoomLocation.touched && newRoomLocation.value.length === 0
+            "
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            Room location cannot be empty.
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th class="text">
+          <label for="capacity">Room Capacity:</label>
+        </th>
+        <td class="text">
+          <input
+            type="number"
+            placeholder="Room Capacity"
+            name="capacity"
+            required
+            #newRoomCapacity="ngModel"
+            pattern="[1-9]\d*"
+            ngModel
+            pInputText
+          />
+          <div
+            *ngIf="newRoomCapacity.touched && newRoomCapacity.value.length == 0"
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            Room capacity cannot be empty.
+          </div>
+          <div
+            *ngIf="newRoomCapacity.touched && newRoomCapacity.invalid"
+            class="errorText"
+            style="color: red; font-size: small"
+          >
+            Please enter a valid room capacity.
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <div
+      fxLayout="row"
+      fxLayoutAlign=" center"
+      fxLayoutGap="3%"
+      style="margin-top: 3%"
+    >
+      <button mat-button class="peach-btn" type="submit">Save Details</button>
+      <button mat-button class="grey-btn" type="button" (click)="closeDialog()">Close</button>
+    </div>
+  </div>
+</form>

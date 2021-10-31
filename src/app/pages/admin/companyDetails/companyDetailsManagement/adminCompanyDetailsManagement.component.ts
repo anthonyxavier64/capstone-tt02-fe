@@ -1,11 +1,9 @@
-import { MessageService } from 'primeng/api';
-import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
-
 import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
 
 @Component({
   selector: 'app-admin-companyDetailsManagement',
@@ -16,6 +14,9 @@ import { Router } from '@angular/router';
 export class AdminCompanyDetailsManagementComponent implements OnInit {
   company: any | undefined;
   editDetailsMode: boolean = false;
+
+  contactNumber: string;
+  email: string;
 
   constructor(
     private router: Router,
@@ -32,6 +33,8 @@ export class AdminCompanyDetailsManagementComponent implements OnInit {
       this.companyDetailsService.getCompanyById(companyId).subscribe(
         (result) => {
           this.company = result.company;
+          this.contactNumber = this.company.contactNumber;
+          this.email = this.company.email;
         },
         (error) => {
           this.messageService.add({
@@ -55,10 +58,14 @@ export class AdminCompanyDetailsManagementComponent implements OnInit {
   }
 
   toggleEditDetails() {
+    this.email = this.company.email;
+    this.contactNumber = this.company.contactNumber;
     this.editDetailsMode = !this.editDetailsMode;
   }
 
   saveEditDetails() {
+    this.company.email = this.email;
+    this.company.contactNumber = this.contactNumber;
     this.companyDetailsService.updateCompany(this.company).subscribe(
       (response) => {
         this.messageService.add({
@@ -85,6 +92,6 @@ export class AdminCompanyDetailsManagementComponent implements OnInit {
   }
 
   onEmailTextChange(emailText: any) {
-    console.log(emailText)
+    console.log(emailText);
   }
 }

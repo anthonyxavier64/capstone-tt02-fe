@@ -393,7 +393,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
           contactNumber: currentRecord[2].trim(),
           deptsInChargeOf: { deptsInChargeOf: deptsInChargeOfIds },
           deptsPartOf: { deptsPartOf: deptsPartOfIds },
-          accessRight: this.currNewUserIsAdmin? "ADMIN" : "GENERAL",
+          accessRight: this.currNewUserIsAdmin ? 'ADMIN' : 'GENERAL',
         };
 
         console.log('Output CSV Record', csvRecord);
@@ -432,7 +432,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
       contactNumber: this.currNewUserContactNumber,
       deptsInChargeOf: { deptsInChargeOf: deptsInChargeOfIds },
       deptsPartOf: { deptsPartOf: deptsPartOfIds },
-      accessRight: this.currNewUserIsAdmin? "ADMIN" : "GENERAL",
+      accessRight: this.currNewUserIsAdmin ? 'ADMIN' : 'GENERAL',
     };
 
     let newUserId = null;
@@ -523,10 +523,6 @@ export class AdminEmployeeManagementComponent implements OnInit {
       width: '70%',
       contentStyle: { 'max-height': '50vw', overflow: 'auto' },
       data: selectedUser,
-    });
-
-    this.editDialogRef.onClose.subscribe(() => {
-      this.ngOnInit();
     });
   }
 

@@ -10,12 +10,14 @@ import { exceptionData } from './../officeQuotaConfig.component';
 })
 export class EditExceptionDialogComponent implements OnInit {
   dialogDisplayData: any;
+  wfoMonthlyAllocation: number;
 
   constructor(
     public dialogRef: MatDialogRef<EditExceptionDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: exceptionData
   ) {
     this.dialogDisplayData = data;
+    this.wfoMonthlyAllocation = data.wfoMonthlyAllocation;
   }
 
   onSave(editUserWfoMonthlyAllocationForm: NgForm): void {

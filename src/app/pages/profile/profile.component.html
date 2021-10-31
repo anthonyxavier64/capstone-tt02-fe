@@ -23,7 +23,10 @@
           Basic Information
         </h2>
 
-        <div fxLayout="row" fxLayoutAlign="space-between stretch" [ngClass]="{
+        <div
+          fxLayout="row"
+          fxLayoutAlign="space-between stretch"
+          [ngClass]="{
             editProfileDetails: editDetailsMode,
             viewProfileDetails: !editDetailsMode
           }"
@@ -32,8 +35,17 @@
             <label for="fullName">Name</label>
 
             <p *ngIf="!editDetailsMode">{{ user.fullName }}</p>
-            <input pInputText ngNativeValidate required *ngIf="editDetailsMode" class="inputField"
-              [(ngModel)]="user.fullName" name="fullName" id="fullName" #fullName="ngModel" />
+            <input
+              pInputText
+              ngNativeValidate
+              required
+              *ngIf="editDetailsMode"
+              class="inputField"
+              [(ngModel)]="fullName"
+              name="fullName"
+              id="fullName"
+              #fullNameInput="ngModel"
+            />
           </div>
 
           <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
@@ -46,25 +58,62 @@
             <label for="contactNumber">Contact</label>
 
             <p *ngIf="!editDetailsMode">{{ user.contactNumber }}</p>
-            <input pInputText ngNativeValidate required *ngIf="editDetailsMode" class="inputField"
-              [(ngModel)]="user.contactNumber" name="contactNumber" id="contactNumber" #contactNumber="ngModel" />
+            <input
+              pInputText
+              ngNativeValidate
+              required
+              *ngIf="editDetailsMode"
+              class="inputField"
+              [(ngModel)]="contactNumber"
+              name="contactNumber"
+              id="contactNumber"
+              #contactNumberInput="ngModel"
+            />
           </div>
         </div>
-
       </mat-card-group>
 
-      <div class="profile-btn-wrap" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5%">
-        <button mat-button class="grey-btn" *ngIf="!editDetailsMode" (click)="openDialog()">
+      <div
+        class="profile-btn-wrap"
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        fxLayoutGap="5%"
+      >
+        <button
+          mat-button
+          class="peach-btn"
+          *ngIf="!editDetailsMode"
+          (click)="openDialog()"
+        >
           Change password
         </button>
-        <button mat-button class="grey-btn" (click)="editDetailsMode = true" *ngIf="!editDetailsMode">
+        <button
+          mat-button
+          class="grey-btn"
+          (click)="editDetailsMode = true"
+          *ngIf="!editDetailsMode"
+        >
           Edit Profile
         </button>
-        <button mat-button class="grey-btn" type="submit" *ngIf="editDetailsMode" (click)="editDetails()">
+        <button
+          mat-button
+          class="peach-btn"
+          type="submit"
+          *ngIf="editDetailsMode"
+          (click)="editDetails()"
+        >
           Save Changes
         </button>
+        <button
+          mat-button
+          class="grey-btn"
+          type="button"
+          *ngIf="editDetailsMode"
+          (click)="toggleEditMode()"
+        >
+          Back
+        </button>
       </div>
-
     </form>
 
     <mat-card-group class="covid-info-wrap" fxLayout="column" fxLayoutGap="2%">
@@ -72,7 +121,11 @@
         Covid Related Information
       </h2>
 
-      <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="45%">
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-between stretch"
+        fxLayoutGap="45%"
+      >
         <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
           <label for="name">Vaccination Status</label>
 
@@ -85,14 +138,28 @@
           <p>Test</p>
         </div>
       </div>
-      <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="45%">
-        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%" *ngIf="hasWFOMonthlyCap">
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-between stretch"
+        fxLayoutGap="45%"
+      >
+        <div
+          fxLayout="column"
+          fxLayoutAlign="flex-start"
+          fxLayoutGap="5%"
+          *ngIf="hasWFOMonthlyCap"
+        >
           <label for="name">WFO Monthly Cap</label>
 
           <p>{{ user.wfoMonthlyAllocation }}</p>
         </div>
 
-        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%" *ngIf="hasWFOTeam">
+        <div
+          fxLayout="column"
+          fxLayoutAlign="flex-start"
+          fxLayoutGap="5%"
+          *ngIf="hasWFOTeam"
+        >
           <label for="name">WFO Team</label>
 
           <span>{{ user.alternateWfoTeam }}</span>
@@ -104,7 +171,11 @@
         Work Related Information
       </h2>
 
-      <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="25%">
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-between stretch"
+        fxLayoutGap="25%"
+      >
         <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
           <label for="name">Position</label>
 
