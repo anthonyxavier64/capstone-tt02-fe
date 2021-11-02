@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { GoalService } from 'src/app/services/goal/goal.service';
@@ -32,6 +33,7 @@ export class TaskComponent implements OnInit {
   isViewArchivedClicked: boolean = false;
 
   constructor(
+    private route: ActivatedRoute,
     private goalService: GoalService,
     private taskService: TaskService,
     private dialogService: DialogService,
@@ -65,28 +67,38 @@ export class TaskComponent implements OnInit {
         this.archivedTasks = [];
         this.goals = [];
         this.goals.push({ name: 'All Tasks' });
-        this.selectedGoal = this.goals[0];
+        const routeParam = this.route.snapshot.paramMap;
+        const goalId = Number(routeParam.get('goalId'));
+
         for (let goal of response.goals) {
           this.goals.push(goal);
         }
-
-        for (let goal of this.goals) {
-          this.taskService
-            .getAllTasksByGoalId(goal.goalId, this.user.userId)
-            .subscribe(
-              (response) => {
-                const goalTasks = response.tasks;
-                for (let task of goalTasks) {
-                  if (!task.isArchived) {
-                    this.filteredTasks.push(task);
-                  } else if (task.isArchived) {
-                    this.archivedTasks.push(task);
+        if (goalId === 0) {
+          this.selectedGoal = this.goals[0];
+          for (let goal of this.goals) {
+            this.taskService
+              .getAllTasksByGoalId(goal.goalId, this.user.userId)
+              .subscribe(
+                (response) => {
+                  const goalTasks = response.tasks;
+                  for (let task of goalTasks) {
+                    if (!task.isArchived) {
+                      this.filteredTasks.push(task);
+                    } else if (task.isArchived) {
+                      this.archivedTasks.push(task);
+                    }
+                    console.log(this.filteredTasks);
                   }
-                  console.log(this.filteredTasks);
-                }
-              },
-              (error) => {}
-            );
+                },
+                (error) => {}
+              );
+          }
+        } else {
+          const goalToDisplay = response.goals.find(
+            (item) => item.goalId === goalId
+          );
+          this.selectedGoal = goalToDisplay;
+          this.handleGoalSelection();
         }
       },
       (error) => {

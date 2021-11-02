@@ -68,6 +68,7 @@
             class="goalCard"
             fxLayout="column"
             fxLayoutAlign="space-evenly center"
+            (click)="goalToTaskNavigation(goal.goalId)"
           >
             <mat-card-title style="text-align: center; position: relative"
               >{{ goal.name }}&nbsp;<mat-checkbox
