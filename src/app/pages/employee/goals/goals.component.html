@@ -1,0 +1,143 @@
+<p-toast></p-toast>
+
+<div
+  fxLayout="column"
+  fxLayoutGap="3%"
+  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+>
+  <app-navbar></app-navbar>
+
+  <div fxLayout="row" fxLayoutAlign="space-between start">
+    <div fxLayout="row" fxLayoutGap="2%">
+      <h1 style="white-space: nowrap">
+        Welcome {{ user.fullName }}, view all your goals.
+      </h1>
+    </div>
+    <div>
+      <button mat-button class="grey-btn" (click)="onBackClick()">Back</button>
+    </div>
+  </div>
+
+  <div>
+    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="2%">
+      <span class="p-input-icon-right" style="margin-top: 20px">
+        <i class="pi pi-search" (click)="handleFilter()"></i>
+        <input
+          type="text"
+          placeholder="Search Goal"
+          [(ngModel)]="filterValue"
+          pInputText
+          (keyup)="handleFilter()"
+        />
+      </span>
+
+      <button
+        *ngIf="!isViewArchivedClicked && !isLoading"
+        mat-button
+        class="peach-btn"
+        (click)="viewGoalArchives()"
+      >
+        View Goal Archives
+      </button>
+      <button
+        *ngIf="isViewArchivedClicked && !isLoading"
+        mat-button
+        class="peach-btn"
+        (click)="viewGoalArchives()"
+      >
+        View Unarchived Goals
+      </button>
+    </div>
+
+    <mat-spinner
+      *ngIf="isLoading"
+      style="color: aquamarine; margin-left: 47%; margin-top: 11%"
+      fxLayoutAlign=" center"
+    ></mat-spinner>
+
+    <!-- HTML for non-archived tasks -->
+    <mat-grid-list
+      cols="3"
+      gutterSize="50px"
+      style="margin-top: 20px"
+      *ngIf="!isViewArchivedClicked && !isLoading"
+    >
+      <div *ngFor="let goal of unarchivedGoals">
+        <mat-grid-tile>
+          <mat-card
+            class="goalCard"
+            fxLayout="column"
+            fxLayoutAlign="space-evenly center"
+          >
+            <mat-card-title style="text-align: center; position: relative"
+              >{{ goal.name }}&nbsp;<mat-checkbox
+                color="primary"
+              ></mat-checkbox>
+            </mat-card-title>
+            <!-- <span
+                *ngIf="hasInfectedPersonnel(task)"
+                class="covid-19-indicator"
+                fxLayout
+                fxLayoutAlign="center center"
+                ><img
+                  *ngIf="hasInfectedPersonnel(task)"
+                  src="../../../../assets/images/covidIconBig.svg"
+              /></span> -->
+            <mat-card-subtitle style="text-align: center; margin-top: 20px">
+              <div fxLayout="column">
+                <span> Start: {{ goal.startDate | date: "dd/MM/yy" }} </span>
+                <span> End: {{ goal.completionDate | date: "dd/MM/yy" }} </span>
+              </div>
+            </mat-card-subtitle>
+            <mat-card-content style="text-align: center">
+              <div fxLayout="column" fxLayoutGap="5px"></div>
+            </mat-card-content>
+          </mat-card>
+        </mat-grid-tile>
+      </div>
+      <mat-grid-tile>
+        <mat-card
+          class="goalCard"
+          fxLayout="column"
+          fxLayoutAlign="space-evenly center"
+        >
+          <mat-card-content>Add Goal</mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <!-- HTML for Archived tasks -->
+    <mat-grid-list
+      cols="3"
+      gutterSize="50px"
+      style="margin-top: 20px"
+      *ngIf="isViewArchivedClicked && !isLoading"
+    >
+      <div *ngFor="let goal of archivedGoals">
+        <mat-grid-tile>
+          <mat-card
+            class="goalCard"
+            fxLayout="column"
+            fxLayoutAlign="space-evenly center"
+          >
+            <mat-card-title style="text-align: center"
+              >{{ goal.name }}&nbsp;<mat-checkbox color="primary"></mat-checkbox
+            ></mat-card-title>
+            <mat-card-subtitle style="text-align: center; margin-top: 20px">
+              <div fxLayout="column">
+                <span> Start: {{ goal.startDate | date: "dd/MM/yy" }} </span>
+                <span> End: {{ goal.completionDate | date: "dd/MM/yy" }} </span>
+              </div>
+            </mat-card-subtitle>
+            <mat-card-content style="text-align: center">
+              <div fxLayout="column" fxLayoutGap="5px"></div>
+            </mat-card-content>
+            <mat-card-actions style="text-align: center">
+              <button mat-button class="peach-btn">View Details</button>
+            </mat-card-actions>
+          </mat-card>
+        </mat-grid-tile>
+      </div>
+    </mat-grid-list>
+  </div>
+</div>

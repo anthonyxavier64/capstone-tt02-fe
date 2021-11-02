@@ -1,20 +1,19 @@
-import { AdminGuideComponent } from 'src/app/pages/admin/adminLanding/admin-guide/admin-guide.component';
-import { NotificationService } from 'src/app/services/notification/notification.service';
-import { AuthService } from 'src/app/services/user/auth.service';
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { TaskDetailDialogComponent } from 'src/app/pages/employee/task-detail-dialog/task-detail-dialog.component';
-import { TaskService } from 'src/app/services/task/task.service';
-import { GoalService } from 'src/app/services/goal/goal.service';
-import { UserService } from 'src/app/services/user/user.service';
-import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covidDocumentSubmission.service';
-import { ViewVaccinationDialogComponent } from 'src/app/pages/admin/employeeManagement/view-vaccination-dialog/view-vaccination-dialog.component';
+import { AdminGuideComponent } from 'src/app/pages/admin/adminLanding/admin-guide/admin-guide.component';
 import { ViewArtComponent } from 'src/app/pages/admin/employeeManagement/view-art-dialog/view-art-dialog.component';
 import { ViewShnDeclarationDialog } from 'src/app/pages/admin/employeeManagement/view-shn-dialog/view-shn-dialog.component';
+import { ViewVaccinationDialogComponent } from 'src/app/pages/admin/employeeManagement/view-vaccination-dialog/view-vaccination-dialog.component';
+import { TaskDetailDialogComponent } from 'src/app/pages/employee/task-detail-dialog/task-detail-dialog.component';
+import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covidDocumentSubmission.service';
+import { GoalService } from 'src/app/services/goal/goal.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
+import { TaskService } from 'src/app/services/task/task.service';
+import { AuthService } from 'src/app/services/user/auth.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -100,7 +99,7 @@ export class NavbarComponent implements OnInit {
   }
 
   handleGoals() {
-    console.log('clicking on goals');
+    this.router.navigateByUrl('/goals');
   }
 
   handleTasks() {
