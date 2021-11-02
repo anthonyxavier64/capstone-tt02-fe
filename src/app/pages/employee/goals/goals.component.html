@@ -73,22 +73,43 @@
           >
             <mat-card-title style="text-align: center; position: relative"
               >{{ goal.name }}&nbsp;<mat-checkbox
+                (click)="$event.preventDefault()"
+                [checked]="
+                  goal.completedTasks === goal.numberOfTasks &&
+                  goal.numberOfTasks !== 0
+                "
+                [disableRipple]="true"
                 color="primary"
               ></mat-checkbox>
             </mat-card-title>
-            <!-- <span
-                *ngIf="hasInfectedPersonnel(task)"
-                class="covid-19-indicator"
-                fxLayout
-                fxLayoutAlign="center center"
-                ><img
-                  *ngIf="hasInfectedPersonnel(task)"
-                  src="../../../../assets/images/covidIconBig.svg"
-              /></span> -->
+            <span
+              *ngIf="hasInfectedPersonnel(goal)"
+              class="covid-19-indicator"
+              fxLayout
+              fxLayoutAlign="center center"
+              ><img
+                *ngIf="hasInfectedPersonnel(goal)"
+                src="../../../../assets/images/covidIconBig.svg"
+            /></span>
+
             <mat-card-subtitle style="text-align: center; margin-top: 20px">
               <div fxLayout="column">
                 <span> Start: {{ goal.startDate | date: "dd/MM/yy" }} </span>
-                <span> End: {{ goal.completionDate | date: "dd/MM/yy" }} </span>
+                <span
+                  *ngIf="
+                    goal.completionDate !== undefined ||
+                    goal.completionDate !== null
+                  "
+                >
+                  Completed: {{ goal.completionDate | date: "dd/MM/yy" }}
+                </span>
+                <span
+                  *ngIf="
+                    goal.completionDate === undefined ||
+                    goal.completionDate === null
+                  "
+                  ><p>-</p></span
+                >
               </div>
               <circle-progress
                 [percent]="goal.goalProgress"
