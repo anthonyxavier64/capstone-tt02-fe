@@ -55,11 +55,12 @@
       fxLayoutAlign=" center"
     ></mat-spinner>
 
-    <!-- HTML for non-archived tasks -->
+    <!-- HTML for non-archived goals -->
     <mat-grid-list
       cols="3"
       gutterSize="50px"
-      style="margin-top: 20px"
+      rowHeight="0.9:1"
+      style="margin-top: 30px"
       *ngIf="!isViewArchivedClicked && !isLoading"
     >
       <div *ngFor="let goal of unarchivedGoals">
@@ -89,6 +90,13 @@
                 <span> Start: {{ goal.startDate | date: "dd/MM/yy" }} </span>
                 <span> End: {{ goal.completionDate | date: "dd/MM/yy" }} </span>
               </div>
+              <circle-progress
+                [percent]="goal.goalProgress"
+                subtitle="{{ goal.completedTasks }} / {{
+                  goal.numberOfTasks
+                }} Tasks"
+              >
+              </circle-progress>
             </mat-card-subtitle>
             <mat-card-content style="text-align: center">
               <div fxLayout="column" fxLayoutGap="5px"></div>
@@ -107,7 +115,7 @@
       </mat-grid-tile>
     </mat-grid-list>
 
-    <!-- HTML for Archived tasks -->
+    <!-- HTML for Archived goals -->
     <mat-grid-list
       cols="3"
       gutterSize="50px"

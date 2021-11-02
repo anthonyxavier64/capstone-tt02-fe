@@ -12,10 +12,10 @@ import { GoalService } from 'src/app/services/goal/goal.service';
 })
 export class GoalsComponent implements OnInit {
   user: any;
-  allGoals: any[];
-  unarchivedGoals: any[];
-  archivedGoals: any[];
-  unassignedTasks: any[];
+  allGoals: any[] = [];
+  unarchivedGoals: any[] = [];
+  archivedGoals: any[] = [];
+  unassignedTasks: any[] = [];
 
   isViewArchivedClicked: boolean;
   isLoading: boolean;
@@ -35,12 +35,54 @@ export class GoalsComponent implements OnInit {
     this.goalService.getAllGoalsByCompanyId(this.user.companyId).subscribe(
       (response) => {
         this.allGoals = response.goals;
-        this.unarchivedGoals = this.allGoals.filter(
+        const filteredUnarchived = this.allGoals.filter(
           (item) => item.isArchived === false
         );
-        this.archivedGoals = this.allGoals.filter(
+
+        for (let goal of filteredUnarchived) {
+          let completedTasks = 0;
+          let uncompletedTasks = 0;
+          goal.assignedTasks.forEach((item) => {
+            if (item.completionDate === null) {
+              uncompletedTasks++;
+            } else {
+              completedTasks++;
+            }
+          });
+          var progress;
+          if (uncompletedTasks === 0 && completedTasks === 0) {
+            progress = 0;
+          } else if (uncompletedTasks === 0) {
+            progress = 100;
+          } else {
+            progress =
+              (completedTasks / (completedTasks + uncompletedTasks)) * 100;
+          }
+
+          var goalWithProgress = {
+            ...goal,
+            goalProgress: progress,
+            completedTasks: completedTasks,
+            numberOfTasks: completedTasks + uncompletedTasks,
+          };
+          this.unarchivedGoals.push(goalWithProgress);
+        }
+
+        const filteredArchived = this.allGoals.filter(
           (item) => item.isArchived === true
         );
+        for (let goal of filteredArchived) {
+          const completedTasks = goal.assignedTasks.length();
+
+          const goalWithProgress = {
+            ...goal,
+            goalProgress: 100,
+            completedTasks: completedTasks,
+            numberOfTasks: completedTasks,
+          };
+          this.archivedGoals.push(goalWithProgress);
+        }
+
         this.isLoading = false;
       },
       (error) => {
