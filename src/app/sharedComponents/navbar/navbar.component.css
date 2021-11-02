@@ -18,18 +18,21 @@
 }
 
 .profileIcon {
+  cursor: pointer;
   height: 2.6vw;
   width: 2.6vw;
   align-self: center;
 }
 
 .homeButton {
+  cursor: pointer;
   max-height: 3vw;
   max-width: 3vw;
   align-self: center;
 }
 
 .homeIcon {
+  cursor: pointer;
   max-width: inherit;
   max-height: inherit;
 }
@@ -85,6 +88,7 @@
 }
 
 .goalIcon {
+  cursor: pointer;
   width: 40px;
   height: 40px;
   margin-top: 2%;
@@ -92,6 +96,7 @@
 }
 
 .taskIcon {
+  cursor: pointer;
   width: 40px;
   height: 40px;
   margin-top: 1%;
@@ -99,11 +104,13 @@
 }
 
 .arrowIcon {
+  cursor: pointer;
   width: 20px;
   height: 20px;
   align-self: center;
   margin-left: 130px;
 }
+
 
 .workDropListItemText {
   color: rgb(var(--theme-primary-color));
@@ -112,6 +119,7 @@
 }
 
 .logoutIcon {
+  cursor: pointer;
   width: 60px;
   height: 30px;
   margin-bottom: 8%;

@@ -28,7 +28,7 @@
             placeholder="Search Task"
             [(ngModel)]="filterValue"
             pInputText
-            (change)="handleFilter()"
+            (keyup)="handleFilter()"
           />
         </span>
 
