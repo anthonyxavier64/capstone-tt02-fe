@@ -16,3 +16,36 @@
   top: 1em;
   right: 1em;
 }
+
+.actionIcon {
+  cursor: pointer;
+  height: 1.5em;
+  width: 1.5em
+}
+
+@media only screen and (max-width: 1024px) {
+  .goalCard {
+    width: 25vw;
+    height: 36vw;
+    padding: 2rem;
+    background: rgb(var(--secondary-card-color));
+    box-shadow: -4px -4px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+  }
+
+  .covid-19-indicator {
+    height: 30px;
+    width: 30px;
+    background-color: rgb(var(--covid-button-color));
+    border-radius: 50%;
+    position: absolute;
+    top: 1em;
+    right: 1em;
+  }
+
+  .actionIcon {
+    cursor: pointer;
+    height: 1.5em;
+    width: 1.5em;
+    position: absolute;  }
+}

@@ -59,7 +59,7 @@
     <mat-grid-list
       cols="3"
       gutterSize="50px"
-      rowHeight="0.9:1"
+      rowHeight="0.8:1"
       style="margin-top: 30px"
       *ngIf="!isViewArchivedClicked && !isLoading"
     >
@@ -69,9 +69,10 @@
             class="goalCard"
             fxLayout="column"
             fxLayoutAlign="space-evenly center"
-            (click)="goalToTaskNavigation(goal.goalId)"
           >
-            <mat-card-title style="text-align: center; position: relative"
+            <mat-card-title
+              style="text-align: center; position: relative"
+              (click)="goalToTaskNavigation(goal.goalId)"
               >{{ goal.name }}&nbsp;<mat-checkbox
                 (click)="$event.preventDefault()"
                 [checked]="
@@ -92,7 +93,10 @@
                 src="../../../../assets/images/covidIconBig.svg"
             /></span>
 
-            <mat-card-subtitle style="text-align: center; margin-top: 20px">
+            <mat-card-subtitle
+              style="text-align: center; margin-top: 20px"
+              (click)="goalToTaskNavigation(goal.goalId)"
+            >
               <div fxLayout="column">
                 <span> Start: {{ goal.startDate | date: "dd/MM/yy" }} </span>
                 <span
@@ -119,9 +123,19 @@
               >
               </circle-progress>
             </mat-card-subtitle>
-            <mat-card-content style="text-align: center">
-              <div fxLayout="column" fxLayoutGap="5px"></div>
-            </mat-card-content>
+
+            <mat-card-actions
+              fxLayout="column"
+              fxLayoutAlign=" end"
+              style="width: 100%"
+            >
+              <button mat-button (click)="editGoal(goal)">
+                <img
+                  class="actionIcon"
+                  src="../../../../assets/images/editIcon.png"
+                />
+              </button>
+            </mat-card-actions>
           </mat-card>
         </mat-grid-tile>
       </div>
@@ -159,11 +173,17 @@
                 <span> End: {{ goal.completionDate | date: "dd/MM/yy" }} </span>
               </div>
             </mat-card-subtitle>
-            <mat-card-content style="text-align: center">
-              <div fxLayout="column" fxLayoutGap="5px"></div>
-            </mat-card-content>
-            <mat-card-actions style="text-align: center">
-              <button mat-button class="peach-btn">View Details</button>
+            <mat-card-actions
+              fxLayout="column"
+              fxLayoutAlign=" end"
+              style="width: 100%"
+            >
+              <button mat-button (click)="editGoal(goal)">
+                <img
+                  class="actionIcon"
+                  src="../../../../assets/images/editIcon.png"
+                />
+              </button>
             </mat-card-actions>
           </mat-card>
         </mat-grid-tile>
