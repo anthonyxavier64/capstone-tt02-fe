@@ -67,7 +67,6 @@ export class GoalsComponent implements OnInit {
           };
           this.unarchivedGoals.push(goalWithProgress);
         }
-        console.log(this.unarchivedGoals);
 
         const filteredArchived = this.allGoals.filter(
           (item) => item.isArchived === true
@@ -136,7 +135,6 @@ export class GoalsComponent implements OnInit {
 
   hasInfectedPersonnel(goal: any) {
     for (let task of goal.assignedTasks) {
-      console.log(task);
       for (let employee of task.employees) {
         if (employee.isInfected) {
           return true;
@@ -144,5 +142,9 @@ export class GoalsComponent implements OnInit {
       }
     }
     return false;
+  }
+
+  editGoal(goal: any) {
+    console.log('Edit');
   }
 }
