@@ -92,6 +92,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'task/:goalId',
+    component: TaskComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'covid-declarations',
     component: CovidDeclarationsComponent,
     canActivate: [AuthGuard],

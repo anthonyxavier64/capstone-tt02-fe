@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { GoalService } from 'src/app/services/goal/goal.service';
 
@@ -22,6 +23,7 @@ export class GoalsComponent implements OnInit {
   filterValue: string;
 
   constructor(
+    private router: Router,
     private _location: Location,
     private messageService: MessageService,
     private goalService: GoalService
@@ -54,6 +56,10 @@ export class GoalsComponent implements OnInit {
 
   onBackClick(): void {
     this._location.back();
+  }
+
+  goalToTaskNavigation(goalId: number): void {
+    this.router.navigateByUrl(`task/${goalId}`);
   }
 
   handleFilter() {
