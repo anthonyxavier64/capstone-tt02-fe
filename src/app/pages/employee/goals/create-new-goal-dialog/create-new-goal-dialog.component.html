@@ -1,0 +1,114 @@
+<div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="3%">
+  <h1>Create New Goal</h1>
+  <div fxLayout="row" fxLayoutAlign="space-around start" fxLayoutGap="5%">
+    <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="3%">
+      <label>Goal Name:</label>
+      <mat-form-field appearance="outline">
+        <input
+          matInput
+          [(ngModel)]="name"
+          #goalNameInput="ngModel"
+          type="text"
+          placeholder="Goal Name"
+        />
+      </mat-form-field>
+      <div
+        *ngIf="
+          goalNameInput.touched &&
+          (goalNameInput.value === '' || goalNameInput.value === undefined)
+        "
+        class="errorText"
+        style="color: red"
+      >
+        Goal Name cannot be empty.
+      </div>
+      <label>Start Date:</label>
+      <mat-form-field appearance="outline">
+        <input
+          matInput
+          [(ngModel)]="startDate"
+          #startDateInput="ngModel"
+          [matDatepicker]="picker"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <div
+        *ngIf="startDateInput.touched && startDateInput.value === undefined"
+        class="errorText"
+        style="color: red"
+      >
+        Start Date cannot be empty.
+      </div>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="3%">
+      <label>Select Unassigned Tasks:</label>
+      <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="4%">
+        <p-dropdown
+          [options]="unassignedTasks"
+          appendTo="body"
+          optionLabel="name"
+          name="selectedTask"
+          ngModel
+          #selectedTask="ngModel"
+          placeholder="Select Unassigned Task"
+          [filter]="true"
+          filterBy="name"
+          [style]="{ width: '15vw' }"
+        >
+          <ng-template let-task pTemplate="item">
+            <div fxLayout="column" fxLayoutGap="2%">
+              <p>Name: {{ task.name }}</p>
+              <p>Start Date: {{ task.startDate.substring(0, 10) }}</p>
+              <p>Deadline: {{ task.deadline.substring(0, 10) }}</p>
+            </div>
+          </ng-template>
+        </p-dropdown>
+        <button
+          mat-button
+          class="peach-btn"
+          (click)="addTask(selectedTask)"
+          [disabled]="!selectedTask.value.taskId"
+        >
+          Add
+        </button>
+      </div>
+      <table
+        style="overflow: auto"
+        *ngFor="let task of selectedUnassignedTasks"
+      >
+        <tr>
+          <div
+            *ngIf="selectedUnassignedTasks.length !== 0"
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
+            fxLayoutGap="15%"
+          >
+            <div fxLayout="row" fxLayoutGap="3%">
+              <p style="white-space: nowrap; font-size: 1.4vw">
+                Id: {{ task.taskId }}&nbsp; ; Name: {{ task.name }}
+              </p>
+            </div>
+            <button
+              mat-button
+              style="background-color: inherit"
+              (click)="removeUnassignedTask(task)"
+            >
+              <img
+                style="cursor: pointer; height: 1.5em; width: 1.5em"
+                src="../../../../assets/images/deleteIcon.png"
+              />
+            </button>
+          </div>
+          <div *ngIf="selectedUnassignedTasks.length === 0">
+            <p>No tasks assigned to goal</p>
+          </div>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="3%">
+    <button mat-button class="peach-btn" (click)="createGoal()">Save</button>
+    <button mat-button class="grey-btn" (click)="closeDialog()">Close</button>
+  </div>
+</div>

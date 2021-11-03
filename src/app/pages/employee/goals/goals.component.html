@@ -144,6 +144,7 @@
           class="goalCard"
           fxLayout="column"
           fxLayoutAlign="space-evenly center"
+          (click)="openAddGoalDialog()"
         >
           <mat-card-content>Add Goal</mat-card-content>
         </mat-card>
@@ -173,18 +174,6 @@
                 <span> End: {{ goal.completionDate | date: "dd/MM/yy" }} </span>
               </div>
             </mat-card-subtitle>
-            <mat-card-actions
-              fxLayout="column"
-              fxLayoutAlign=" end"
-              style="width: 100%"
-            >
-              <button mat-button (click)="editGoal(goal)">
-                <img
-                  class="actionIcon"
-                  src="../../../../assets/images/editIcon.png"
-                />
-              </button>
-            </mat-card-actions>
           </mat-card>
         </mat-grid-tile>
       </div>

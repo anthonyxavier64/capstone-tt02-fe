@@ -17,6 +17,12 @@ export class GoalService {
 
   constructor(private httpClient: HttpClient) {}
 
+  createGoal(goal: any): Observable<any> {
+    return this.httpClient
+      .post(this.baseUrl + '/create-goal', goal, httpOptions)
+      .pipe(catchError(handleError));
+  }
+
   getAllGoalsByCompanyId(companyId: string): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + '/get-all-goals/' + companyId)

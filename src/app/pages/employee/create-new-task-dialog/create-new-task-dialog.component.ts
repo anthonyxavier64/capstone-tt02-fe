@@ -67,6 +67,9 @@ export class CreateNewTaskDialogComponent implements OnInit {
         (item) => item.userId === assignedEmployee.userId
       );
       this.employees.splice(indexToRemove, 1);
+
+      console.log('HERE');
+      employee.reset('Please select an employee');
     } else {
       this.messageService.add({
         severity: 'error',
