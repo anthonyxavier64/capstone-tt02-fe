@@ -11,7 +11,7 @@
     style="width: 100%; height: 100%; padding: 0 2%"
   >
     <ng-template #customCellTemplate let-day="day" let-locale="locale">
-      <div class="cal-cell-top">
+      <div class="cal-cell-top" (click)="viewDay(day.date, day.events)">
         <span class="cal-day-number">{{
           day.date | calendarDate: "monthViewDayNumber":locale
         }}</span>

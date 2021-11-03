@@ -1,0 +1,46 @@
+<div
+  fxLayout="column"
+  fxLayoutGap="5%"
+  style="width: 100%; height: 100%; padding: 1rem"
+>
+  <div
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+    style="width: 100%; height: 100%"
+  >
+    <p>
+      {{ date | date: "MMMM, YYYY" }} <br />
+      {{ date | date: "EEEE" }}
+    </p>
+    <h1 style="font-size: 2.5rem">{{ date | date: "d" }}</h1>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <p style="text-align: center">Office Capacity:</p>
+
+  <div *ngIf="meetings.length == 0">
+    <p>No meetings today.</p>
+  </div>
+
+  <div
+    *ngIf="meetings.length > 0"
+    fxLayout="column"
+    fxLayoutGap="2%"
+    style="width: 100%; height: 100%"
+  >
+    <div *ngFor="let meeting of meetings">
+      <p>
+        {{ meeting.start | date: "shortTime" }} -
+        {{ meeting.end | date: "shortTime" }}
+      </p>
+      <div
+        style="width: 100%; text-align: center; padding: 0.25rem 0"
+        [ngStyle]="{ 'background-color': meeting.color }"
+        (click)="viewMeeting(meeting)"
+      >
+        <p>{{ meeting.title }}</p>
+      </div>
+    </div>
+  </div>
+</div>

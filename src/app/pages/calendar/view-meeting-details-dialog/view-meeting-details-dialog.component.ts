@@ -21,6 +21,7 @@ import { RoomService } from 'src/app/services/room/room.service';
 export class ViewMeetingDetailsDialogComponent implements OnInit {
   title: any;
   start: any;
+  color: any;
   end: any;
   meeting: any;
   user: any;
@@ -43,6 +44,7 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
   ngOnInit() {
     this.title = this.data.title;
     this.start = this.data.startTime;
+    this.color = this.data.color;
     this.user = this.data.user;
     this.isOrganiser = false;
 
@@ -58,7 +60,6 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
           this.isOrganiser = true;
         }
 
-        console.log('room');
         this.roomService.getRoomById(this.meeting.roomId).subscribe(
           (response) => {
             this.room = response.room;
@@ -69,7 +70,6 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
           }
         );
 
-        console.log('meeting');
         this.meetingService
           .getMeetingAttendees(this.meeting.meetingId)
           .subscribe(
