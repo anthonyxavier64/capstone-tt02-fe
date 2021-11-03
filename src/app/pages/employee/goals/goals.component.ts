@@ -68,15 +68,35 @@ export class GoalsComponent implements OnInit {
             goalProgress: progress,
             completedTasks: completedTasks,
             numberOfTasks: completedTasks + uncompletedTasks,
+            completionDate: progress === 100 ? new Date() : null,
           };
+
           this.unarchivedGoals.push(goalWithProgress);
+          const updateCompletionDate = {
+            ...goal,
+            completionDate: new Date(),
+          };
+          this.goalService.updateGoalById(updateCompletionDate).subscribe(
+            (response) => {},
+            (error) => {
+              console.log(error);
+            }
+          );
         }
 
         const filteredArchived = this.allGoals.filter(
           (item) => item.isArchived === true
         );
         for (let goal of filteredArchived) {
-          const completedTasks = goal.assignedTasks.length();
+          let completedTasks = 0;
+          let uncompletedTasks = 0;
+          goal.assignedTasks.forEach((item) => {
+            if (item.completionDate === null) {
+              uncompletedTasks++;
+            } else {
+              completedTasks++;
+            }
+          });
 
           const goalWithProgress = {
             ...goal,
@@ -159,13 +179,21 @@ export class GoalsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((response) => {
       if (response.action === 'SUCCESS') {
-        var goalToChangeIndex = this.unarchivedGoals.findIndex(
-          (item) => item.goalId === response.goal.goalId
-        );
-
-        this.unarchivedGoals[goalToChangeIndex].name = response.goal.name;
-        this.unarchivedGoals[goalToChangeIndex].startDate =
-          response.goal.startDate;
+        if (!response.goal.isArchived) {
+          var goalToChangeIndex = this.unarchivedGoals.findIndex(
+            (item) => item.goalId === response.goal.goalId
+          );
+          this.unarchivedGoals[goalToChangeIndex].name = response.goal.name;
+          this.unarchivedGoals[goalToChangeIndex].startDate =
+            response.goal.startDate;
+        } else {
+          var goalToChangeIndex = this.archivedGoals.findIndex(
+            (item) => item.goalId === response.goal.goalId
+          );
+          this.archivedGoals[goalToChangeIndex].name = response.goal.name;
+          this.archivedGoals[goalToChangeIndex].startDate =
+            response.goal.startDate;
+        }
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -175,8 +203,56 @@ export class GoalsComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: `Goal ${response.goal.goalId} could not be updated.`,
+          detail: `Goal could not be updated.`,
         });
+      } else if (response.action === 'ARCHIVE') {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Goal ${response.goal.goalId} has been successfully archived.`,
+        });
+        const indexToRemove = this.unarchivedGoals.findIndex(
+          (item) => item.goalId === response.goal.goalId
+        );
+
+        const goalToPush = {
+          ...this.unarchivedGoals[indexToRemove],
+          isArchived: true,
+        };
+
+        this.archivedGoals.push(goalToPush);
+        this.unarchivedGoals.splice(indexToRemove, 1);
+
+        this.archivedGoals.sort((a, b) => (a.goalId < b.goalId ? -1 : 1));
+      } else if (response.action === 'ARCHIVE_ERROR') {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `Goal could not be archived.`,
+        });
+      } else if (response.action === 'ARCHIVE_ERROR_INCOMPLETE') {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `Goal ${response.goal.goalId} could not be updated. Please complete all tasks within the goal first.`,
+        });
+      } else if (response.action === 'UNARCHIVE') {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Goal ${response.goal.goalId} has been successfully unarchived.`,
+        });
+        const indexToRemove = this.archivedGoals.findIndex(
+          (item) => item.goalId === response.goal.goalId
+        );
+
+        const goalToPush = {
+          ...this.archivedGoals[indexToRemove],
+          isArchived: false,
+        };
+        this.unarchivedGoals.push(goalToPush);
+        this.archivedGoals.splice(indexToRemove, 1);
+        this.unarchivedGoals.sort((a, b) => (a.goalId < b.goalId ? -1 : 1));
       }
     });
   }

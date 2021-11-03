@@ -15,7 +15,7 @@
     Goal Name cannot be empty.
   </div>
   <label>Start Date:</label>
-  <mat-form-field appearance="outline">
+  <mat-form-field appearance="outline" *ngIf="!goal.isArchived">
     <input
       matInput
       [(ngModel)]="startDate"
@@ -27,6 +27,23 @@
   </mat-form-field>
   <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="3%">
     <button mat-button class="peach-btn" (click)="updateGoal()">Save</button>
+    <button
+      mat-button
+      class="grey-btn"
+      *ngIf="!goal.isArchived"
+      (click)="archiveGoal()"
+    >
+      Archive
+    </button>
+    <button
+      mat-button
+      class="peach-btn"
+      *ngIf="goal.isArchived"
+      (click)="unarchiveGoal()"
+      style="text-align: center"
+    >
+      Unarchive
+    </button>
     <button mat-button class="grey-btn" (click)="closeDialog()">Close</button>
   </div>
 </div>

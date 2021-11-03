@@ -100,19 +100,15 @@
               <div fxLayout="column">
                 <span> Start: {{ goal.startDate | date: "dd/MM/yy" }} </span>
                 <span
-                  *ngIf="
-                    goal.completionDate !== undefined ||
-                    goal.completionDate !== null
-                  "
+                  *ngIf="goal.completionDate !== null"
+                  style="white-space: nowrap"
                 >
                   Completed: {{ goal.completionDate | date: "dd/MM/yy" }}
                 </span>
                 <span
-                  *ngIf="
-                    goal.completionDate === undefined ||
-                    goal.completionDate === null
-                  "
-                  ><p>-</p></span
+                  *ngIf="goal.completionDate === null"
+                  style="white-space: nowrap"
+                  >Completed: -</span
                 >
               </div>
               <circle-progress
@@ -129,7 +125,11 @@
               fxLayoutAlign=" end"
               style="width: 100%"
             >
-              <button mat-button (click)="editGoal(goal)">
+              <button
+                mat-button
+                *ngIf="goal.userInChargeId === user.userId"
+                (click)="editGoal(goal)"
+              >
                 <img
                   class="actionIcon"
                   src="../../../../assets/images/editIcon.png"
@@ -155,7 +155,8 @@
     <mat-grid-list
       cols="3"
       gutterSize="50px"
-      style="margin-top: 20px"
+      rowHeight="0.8:1"
+      style="margin-top: 30px"
       *ngIf="isViewArchivedClicked && !isLoading"
     >
       <div *ngFor="let goal of archivedGoals">
@@ -165,15 +166,72 @@
             fxLayout="column"
             fxLayoutAlign="space-evenly center"
           >
-            <mat-card-title style="text-align: center"
-              >{{ goal.name }}&nbsp;<mat-checkbox color="primary"></mat-checkbox
-            ></mat-card-title>
-            <mat-card-subtitle style="text-align: center; margin-top: 20px">
+            <mat-card-title
+              style="text-align: center; position: relative"
+              (click)="goalToTaskNavigation(goal.goalId)"
+              >{{ goal.name }}&nbsp;<mat-checkbox
+                (click)="$event.preventDefault()"
+                [checked]="
+                  goal.completedTasks === goal.numberOfTasks &&
+                  goal.numberOfTasks !== 0
+                "
+                [disableRipple]="true"
+                color="primary"
+              ></mat-checkbox>
+            </mat-card-title>
+            <span
+              *ngIf="hasInfectedPersonnel(goal)"
+              class="covid-19-indicator"
+              fxLayout
+              fxLayoutAlign="center center"
+              ><img
+                *ngIf="hasInfectedPersonnel(goal)"
+                src="../../../../assets/images/covidIconBig.svg"
+            /></span>
+
+            <mat-card-subtitle
+              style="text-align: center; margin-top: 20px"
+              (click)="goalToTaskNavigation(goal.goalId)"
+            >
               <div fxLayout="column">
                 <span> Start: {{ goal.startDate | date: "dd/MM/yy" }} </span>
-                <span> End: {{ goal.completionDate | date: "dd/MM/yy" }} </span>
+                <span
+                  *ngIf="goal.completionDate !== null"
+                  style="white-space: nowrap"
+                >
+                  Completed: {{ goal.completionDate | date: "dd/MM/yy" }}
+                </span>
+                <span
+                  *ngIf="goal.completionDate === null"
+                  style="white-space: nowrap"
+                  >Completed: -</span
+                >
               </div>
+              <circle-progress
+                [percent]="goal.goalProgress"
+                subtitle="{{ goal.completedTasks }} / {{
+                  goal.numberOfTasks
+                }} Tasks"
+              >
+              </circle-progress>
             </mat-card-subtitle>
+
+            <mat-card-actions
+              fxLayout="column"
+              fxLayoutAlign=" end"
+              style="width: 100%"
+            >
+              <button
+                mat-button
+                *ngIf="goal.userInChargeId === user.userId"
+                (click)="editGoal(goal)"
+              >
+                <img
+                  class="actionIcon"
+                  src="../../../../assets/images/editIcon.png"
+                />
+              </button>
+            </mat-card-actions>
           </mat-card>
         </mat-grid-tile>
       </div>
