@@ -64,6 +64,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -100,6 +101,7 @@ import { environment } from 'src/environments/environment.dev';
 import { EditRoomDetailsDialogComponent } from './pages/admin/companyDetails/office-space-config/edit-room-details-dialog/edit-room-details-dialog.component';
 import { AddRoomDialogComponent } from './pages/admin/companyDetails/office-space-config/add-room-dialog/add-room-dialog.component';
 import { EditOfficeDetailsDialogComponent } from './pages/admin/companyDetails/office-space-config/edit-office-details-dialog/edit-office-details-dialog.component';
+import { DayComponent } from './pages/calendar/day/day.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -164,6 +166,7 @@ export function tokenGetter() {
     EditRoomDetailsDialogComponent,
     AddRoomDialogComponent,
     EditOfficeDetailsDialogComponent,
+    DayComponent,
   ],
   imports: [
     CommonModule,
@@ -190,6 +193,7 @@ export function tokenGetter() {
     MatAutocompleteModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
+    MatDividerModule,
     PrimeNgModule,
     TableModule,
     InputTextareaModule,

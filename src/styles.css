@@ -283,6 +283,11 @@ span {
   background-color: rgb(var(--secondary-card-color));
 }
 
+.day-card .mat-dialog-container {
+  padding: 0.75rem;
+  width: 30vw;
+}
+
 .meeting-card .mat-dialog-container {
   padding: 0.75rem;
   width: 20vw;
@@ -432,6 +437,16 @@ span {
   display: block;
   white-space: nowrap;
   color: rgb(var(--theme-primary-color));
+  font-size: 1rem;
+}
+
+.cal-month-view .cal-day-cell {
+  min-height: 8rem;
+}
+
+.cal-month-view .cal-cell-top {
+  min-height: 1rem;
+  flex: 1;
 }
 
 .cal-month-view .cal-days {
@@ -485,13 +500,14 @@ span {
   line-height: 1.5rem !important;
   border-radius: 0 !important;
   text-align: left !important;
+  width: 100%;
 }
 
 .cal-week-btn {
   font-family: var(--primary-font);
   background: rgb(var(--secondary-button-color));
-  width:100% !important;
-  height:100% !important;
+  width: 100% !important;
+  height: 100% !important;
   color: rgb(var(--title-color));
   line-height: 1.5rem !important;
   border-radius: 0 !important;
