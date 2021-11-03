@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { NgModel } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSelect } from '@angular/material/select';
 import { GoalService } from 'src/app/services/goal/goal.service';
 import { TaskService } from 'src/app/services/task/task.service';
 
@@ -33,15 +33,16 @@ export class CreateNewGoalDialogComponent implements OnInit {
     );
   }
 
-  addTask(task: NgModel): void {
+  addTask(task: MatSelect): void {
     const selectedTask = task.value;
 
-    const indexToRemove = this.unassignedTasks.findIndex(
-      (item) => item.taskId === selectedTask.taskId
-    );
-    this.unassignedTasks.splice(indexToRemove, 1);
-    this.selectedUnassignedTasks.push(selectedTask);
-    task.reset('Select Unassigned Task');
+    if (!this.selectedUnassignedTasks.find((item) => item === selectedTask)) {
+      const indexToRemove = this.unassignedTasks.findIndex(
+        (item) => item.taskId === selectedTask.taskId
+      );
+      this.unassignedTasks.splice(indexToRemove, 1);
+      this.selectedUnassignedTasks.push(selectedTask);
+    }
   }
 
   removeUnassignedTask(task: any): void {
