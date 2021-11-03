@@ -22,8 +22,6 @@
   color: rgba(var(--theme-primary-color), 0.8);
 }
 
-
-
 .editActionButtons {
   background-color: rgba(var(--primary-button-color), 0.5);
   font-family: var(--primary-font);
@@ -34,10 +32,9 @@
   font-weight: lighter;
 }
 
-
 @media only screen and (max-width: 768px) {
   .headerText {
-    font-size: 20px;
+    font-size: 1.5rem;
   }
 
   .subHeaderText {
@@ -76,7 +73,7 @@
 
 @media only screen and (min-width: 769px) {
   .headerText {
-    font-size: 30px;
+    font-size: 1.5rem;
   }
 
   .subHeaderText {
