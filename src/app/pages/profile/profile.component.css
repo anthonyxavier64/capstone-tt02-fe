@@ -14,15 +14,17 @@
 }
 
 .profile-image {
-    background-color: lightgrey;
-    width: 8rem;
-    height: 8rem;
-    border-radius: 100px;
-    margin-bottom: 3%
-
+  background-color: lightgrey;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 100px;
+  margin-bottom: 3%;
 }
 
-.profile-btn-wrap, .basic-info-wrap, .covid-info-wrap, .work-info-wrap {
+.profile-btn-wrap,
+.basic-info-wrap,
+.covid-info-wrap,
+.work-info-wrap {
   margin-bottom: 5%;
 }
 
@@ -43,10 +45,11 @@
   max-width: inherit;
 }
 
-
 .editProfileDetails {
   gap: 8vw;
   max-width: inherit;
 }
 
-
+p {
+  color: rgba(var(--theme-primary-color), 0.8);
+}
