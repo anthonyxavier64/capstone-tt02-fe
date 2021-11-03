@@ -44,6 +44,43 @@ export class EditGoalDialogComponent implements OnInit {
     );
   }
 
+  archiveGoal(): void {
+    if (this.goal.completionDate !== null) {
+      this.goal = {
+        ...this.goal,
+        isArchived: true,
+      };
+      this.goalService.updateGoalById(this.goal).subscribe(
+        (response) => {
+          this.dialogRef.close({ action: 'ARCHIVE', goal: response.goal });
+        },
+        (error) => {
+          this.dialogRef.close({ action: 'ARCHIVE_ERROR' });
+        }
+      );
+    } else {
+      this.dialogRef.close({
+        action: 'ARCHIVE_ERROR_INCOMPLETE',
+        goal: this.goal,
+      });
+    }
+  }
+
+  unarchiveGoal(): void {
+    this.goal = {
+      ...this.goal,
+      isArchived: false,
+    };
+    this.goalService.updateGoalById(this.goal).subscribe(
+      (response) => {
+        this.dialogRef.close({ action: 'UNARCHIVE', goal: response.goal });
+      },
+      (error) => {
+        this.dialogRef.close({ action: 'UNARCHIVE_ERROR' });
+      }
+    );
+  }
+
   closeDialog(): void {
     this.dialogRef.close({ action: 'CLOSE' });
   }

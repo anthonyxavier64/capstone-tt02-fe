@@ -63,6 +63,7 @@ export class CreateNewGoalDialogComponent implements OnInit {
       companyId: this.user.companyId,
       isArchived: false,
       startDate: this.startDate,
+      userInChargeId: this.user.userId,
       assignedTaskIds: selectedUnassignedTaskId,
     };
     this.goalService.createGoal(goalToCreate).subscribe(
