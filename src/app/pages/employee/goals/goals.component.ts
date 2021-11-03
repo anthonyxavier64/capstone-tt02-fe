@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { GoalService } from 'src/app/services/goal/goal.service';
+import { CreateNewGoalDialogComponent } from './create-new-goal-dialog/create-new-goal-dialog.component';
 import { EditGoalDialogComponent } from './edit-goal-dialog/edit-goal-dialog.component';
 
 @Component({
@@ -161,12 +162,10 @@ export class GoalsComponent implements OnInit {
         var goalToChangeIndex = this.unarchivedGoals.findIndex(
           (item) => item.goalId === response.goal.goalId
         );
-        var updatedGoal = {
-          ...goal,
-          name: response.goal.name,
-          startDate: response.goal.startDate,
-        };
-        this.unarchivedGoals[goalToChangeIndex] = updatedGoal;
+
+        this.unarchivedGoals[goalToChangeIndex].name = response.goal.name;
+        this.unarchivedGoals[goalToChangeIndex].startDate =
+          response.goal.startDate;
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -180,5 +179,64 @@ export class GoalsComponent implements OnInit {
         });
       }
     });
+  }
+
+  openAddGoalDialog(): void {
+    let dialogRef = this.dialog.open(CreateNewGoalDialogComponent, {
+      data: { user: this.user },
+      panelClass: 'create-goal-card',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe(
+      (response) => {
+        if (response.action === 'SUCCESS') {
+          const goalTasks = response.goal.assignedTasks;
+          let completedTasks = 0;
+          let uncompletedTasks = 0;
+          goalTasks.forEach((item) => {
+            if (item.completionDate === null) {
+              uncompletedTasks++;
+            } else {
+              completedTasks++;
+            }
+          });
+          var progress;
+          if (uncompletedTasks === 0 && completedTasks === 0) {
+            progress = 0;
+          } else if (uncompletedTasks === 0) {
+            progress = 100;
+          } else {
+            progress =
+              (completedTasks / (completedTasks + uncompletedTasks)) * 100;
+          }
+          let goal = {
+            ...response.goal,
+            goalProgress: progress,
+            completedTasks: completedTasks,
+            numberOfTasks: completedTasks + uncompletedTasks,
+          };
+          this.unarchivedGoals.push(goal);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: `Goal ${goal.goalId} has been created`,
+          });
+        } else if (response.action === 'ERROR') {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `Goal could not be created.`,
+          });
+        }
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `Goal could not be created.`,
+        });
+      }
+    );
   }
 }
