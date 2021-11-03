@@ -5,6 +5,7 @@
   background: rgb(var(--secondary-card-color));
   box-shadow: -4px -4px 4px rgba(0, 0, 0, 0.05);
   border-radius: 15px;
+  overflow-y: auto;
 }
 
 .green-icon {

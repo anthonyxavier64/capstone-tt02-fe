@@ -44,26 +44,24 @@
     <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="3%">
       <label>Select Unassigned Tasks:</label>
       <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="4%">
-        <p-dropdown
-          [options]="unassignedTasks"
-          appendTo="body"
-          optionLabel="name"
-          name="selectedTask"
-          ngModel
-          #selectedTask="ngModel"
-          placeholder="Select Unassigned Task"
-          [filter]="true"
-          filterBy="name"
-          [style]="{ width: '15vw' }"
-        >
-          <ng-template let-task pTemplate="item">
-            <div fxLayout="column" fxLayoutGap="2%">
-              <p>Name: {{ task.name }}</p>
-              <p>Start Date: {{ task.startDate.substring(0, 10) }}</p>
-              <p>Deadline: {{ task.deadline.substring(0, 10) }}</p>
-            </div>
-          </ng-template>
-        </p-dropdown>
+        <mat-form-field appearance="outline">
+          <mat-select #selectedTask placeholder="Select Unassigned Task">
+            <mat-option>
+              <p>Select Unassigned Task</p>
+            </mat-option>
+            <mat-option
+              *ngFor="let task of unassignedTasks"
+              [value]="task"
+              style="height: auto"
+            >
+              <div fxLayout="column" fxLayoutGap="2%">
+                <p>Name: {{ task.name }}</p>
+                <p>Start Date: {{ task.startDate.substring(0, 10) }}</p>
+                <p>Deadline: {{ task.deadline.substring(0, 10) }}</p>
+              </div>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
         <button
           mat-button
           class="peach-btn"
