@@ -192,6 +192,8 @@ export class TaskDetailDialogComponent implements OnInit {
         deadline: this.updateDeadline,
         completionDate: this.task.completionDate,
         goalId: this.updateGoal ? this.updateGoal.goalId : null,
+        newGoalId: this.updateGoal ? this.updateGoal.goalId : null,
+        previousGoalId: this.task.goalId,
       };
       this.taskService.updateTask(updatedTask).subscribe(
         (response) => {
