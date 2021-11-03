@@ -36,15 +36,26 @@
           ></div>
         </span>
       </div>
-      <button
-        mat-button
-        *ngFor="let event of day.events"
-        class="cal-event-btn"
-        [ngStyle]="{ 'background-color': event.color }"
-        (click)="viewMeeting(event)"
-      >
-        {{ event.title }}
-      </button>
+      <div *ngFor="let event of day.events; index as i">
+        <button
+          mat-button
+          *ngIf="i < 2"
+          class="cal-event-btn"
+          [ngStyle]="{ 'background-color': event.color }"
+          (click)="viewMeeting(event)"
+        >
+          {{ event.title }}
+        </button>
+      </div>
+      <div *ngIf="day.events.length > 2">
+        <button
+          mat-button
+          class="cal-event-btn"
+          (click)="viewDay(day.date, day.events)"
+        >
+          + {{ day.events.length - 2 }} others
+        </button>
+      </div>
     </ng-template>
 
     <ng-template
