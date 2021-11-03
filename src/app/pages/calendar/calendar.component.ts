@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 import { ViewMeetingDetailsDialogComponent } from './view-meeting-details-dialog/view-meeting-details-dialog.component';
+import { DayComponent } from './day/day.component';
 
 moment.updateLocale('en', {
   week: {
@@ -147,14 +148,18 @@ export class CalendarComponent implements OnInit {
         this.officeUsersThisMonth = response.users;
       });
 
-    this.covidDocumentSubmissionService.getUserMcs(this.user.userId)
-      .subscribe(response => {
+    this.covidDocumentSubmissionService.getUserMcs(this.user.userId).subscribe(
+      (response) => {
         const latestMc = response.document;
         if (latestMc) {
           this.mcStartDate = new Date(latestMc.startDate);
           this.mcEndDate = new Date(latestMc.endDate);
         }
-      }, error => { console.log(error.message) })
+      },
+      (error) => {
+        console.log(error.message);
+      }
+    );
   }
 
   loadMeetings(): void {
@@ -308,8 +313,24 @@ export class CalendarComponent implements OnInit {
       this.viewDate = date;
     }
   }
+
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
+  }
+
+  viewDay(day: any, events: any) {
+    let dialogRef = this.dialog.open(DayComponent, {
+      data: {
+        date: day,
+        user: this.user,
+        events: events,
+      },
+      panelClass: 'day-card',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // this.message = result;
+    });
   }
 
   viewMeeting(event: any) {
@@ -318,6 +339,7 @@ export class CalendarComponent implements OnInit {
         title: event.title,
         startTime: event.start,
         user: this.user,
+        color: event.color,
       },
       panelClass: 'meeting-card',
     });
