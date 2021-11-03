@@ -68,7 +68,12 @@
           mat-button
           class="peach-btn"
           (click)="addTask(selectedTask)"
-          [disabled]="!selectedTask.value.taskId"
+          [disabled]="
+            selectedTask.value === undefined ||
+            selectedTask.value === null ||
+            selectedTask.value === 'Select Unassigned Task' ||
+            selectedTask.value === ''
+          "
         >
           Add
         </button>
