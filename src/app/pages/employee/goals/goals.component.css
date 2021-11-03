@@ -47,5 +47,7 @@
     cursor: pointer;
     height: 1.5em;
     width: 1.5em;
-    position: absolute;  }
+    position: absolute;
+    bottom: 0.5em;
+  }
 }

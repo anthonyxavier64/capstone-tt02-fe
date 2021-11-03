@@ -1,5 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -21,6 +20,16 @@ export class GoalService {
   getAllGoalsByCompanyId(companyId: string): Observable<any> {
     return this.httpClient
       .get<any>(this.baseUrl + '/get-all-goals/' + companyId)
+      .pipe(catchError(handleError));
+  }
+
+  updateGoalById(goal: any): Observable<any> {
+    return this.httpClient
+      .patch<any>(
+        this.baseUrl + '/update-goal-by-id/' + goal.goalId,
+        goal,
+        httpOptions
+      )
       .pipe(catchError(handleError));
   }
 }

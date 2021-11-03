@@ -1,8 +1,10 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { GoalService } from 'src/app/services/goal/goal.service';
+import { EditGoalDialogComponent } from './edit-goal-dialog/edit-goal-dialog.component';
 
 @Component({
   selector: 'app-goals',
@@ -26,7 +28,8 @@ export class GoalsComponent implements OnInit {
     private router: Router,
     private _location: Location,
     private messageService: MessageService,
-    private goalService: GoalService
+    private goalService: GoalService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -145,6 +148,37 @@ export class GoalsComponent implements OnInit {
   }
 
   editGoal(goal: any) {
-    console.log('Edit');
+    let dialogRef = this.dialog.open(EditGoalDialogComponent, {
+      data: {
+        goal: goal,
+      },
+      panelClass: 'edit-goal-card',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((response) => {
+      if (response.action === 'SUCCESS') {
+        var goalToChangeIndex = this.unarchivedGoals.findIndex(
+          (item) => item.goalId === response.goal.goalId
+        );
+        var updatedGoal = {
+          ...goal,
+          name: response.goal.name,
+          startDate: response.goal.startDate,
+        };
+        this.unarchivedGoals[goalToChangeIndex] = updatedGoal;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Goal ${response.goal.goalId} successfully updated.`,
+        });
+      } else if (response.action === 'ERROR') {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `Goal ${response.goal.goalId} could not be updated.`,
+        });
+      }
+    });
   }
 }

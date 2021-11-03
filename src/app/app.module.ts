@@ -103,6 +103,7 @@ import { AddRoomDialogComponent } from './pages/admin/companyDetails/office-spac
 import { EditOfficeDetailsDialogComponent } from './pages/admin/companyDetails/office-space-config/edit-office-details-dialog/edit-office-details-dialog.component';
 import { DayComponent } from './pages/calendar/day/day.component';
 import { GoalsComponent } from './pages/employee/goals/goals.component';
+import { EditGoalDialogComponent } from './pages/employee/goals/edit-goal-dialog/edit-goal-dialog.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -169,6 +170,7 @@ export function tokenGetter() {
     EditOfficeDetailsDialogComponent,
     DayComponent,
     GoalsComponent,
+    EditGoalDialogComponent,
   ],
   imports: [
     CommonModule,

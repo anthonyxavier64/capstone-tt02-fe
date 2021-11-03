@@ -303,6 +303,11 @@ span {
   width: 80vw;
 }
 
+.edit-goal-card .mat-dialog-container {
+  padding: 0.75rem;
+  width: 40vw;
+}
+
 .mat-dialog-content {
   display: block;
   margin: 0 -1.5rem;
