@@ -1,16 +1,15 @@
-import * as moment from 'moment';
-
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
-
-import { ColorSelectorDialogComponent } from './color-selector-dialog/color-selector-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import * as moment from 'moment';
+import { MessageService } from 'primeng/api';
 import { CompanyService } from 'src/app/services/company/company.service';
 import { GoalService } from 'src/app/services/goal/goal.service';
-import { Location } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
-import { MessageService } from 'primeng/api';
 import { UserService } from 'src/app/services/user/user.service';
+import { ColorSelectorDialogComponent } from './color-selector-dialog/color-selector-dialog.component';
 
 moment.defineLocale('en-foo', {
   parentLocale: 'sg',
@@ -75,6 +74,7 @@ export class CreateNewMeetingComponent implements OnInit {
   invalidTime: boolean;
 
   constructor(
+    private router: Router,
     private _location: Location,
     private messageService: MessageService,
     private userService: UserService,
@@ -958,9 +958,13 @@ export class CreateNewMeetingComponent implements OnInit {
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
-            detail: 'Meeting successfully created!',
+            detail:
+              'Meeting successfully created! Bringing you back to the calendar...',
           });
           console.log(response);
+          setTimeout(() => {
+            this.router.navigateByUrl('/calendar');
+          }, 1500);
         },
         (error) => {
           this.messageService.add({
