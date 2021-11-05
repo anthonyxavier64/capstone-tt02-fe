@@ -61,7 +61,21 @@ export class OfficeQuotaConfigComponent implements OnInit {
             this.numEmployeesPerDay = null;
             this.numDaysAllowedPerMonth = null;
 
-            this.isLoading = false;
+            this.userService.getUsers(companyId).subscribe((response) => {
+              this.users = response.users;
+              for (let exception of this.exceptions) {
+                if (
+                  this.users.find((item) => item.userId === exception.userId)
+                ) {
+                  const indexToRemove = this.users.findIndex(
+                    (item) => item.userId === exception.userId
+                  );
+                  this.users.splice(indexToRemove, 1);
+                }
+              }
+
+              this.isLoading = false;
+            });
           } else {
             this.officeQuotaConfigId = this.company.officeQuotaConfigurationId;
 
@@ -89,6 +103,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
                       this.users.splice(indexToRemove, 1);
                     }
                   }
+
                   this.isLoading = false;
                 });
               });
