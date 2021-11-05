@@ -26,7 +26,7 @@ moment.updateLocale('en', {
 });
 @Component({
   selector: 'app-calendar',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
 })
@@ -61,6 +61,7 @@ export class CalendarComponent implements OnInit {
   mcEndDate: Date;
 
   refresh: Subject<any> = new Subject();
+  isLoading: boolean;
 
   constructor(
     private router: Router,
@@ -76,22 +77,10 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit() {
-    // if (localStorage.getItem('isPhysicalSettings')) {
-    //   var isPhysicalMemory = JSON.parse(
-    //     localStorage.getItem('isPhysicalSettings')
-    //   );
-    //   this.isPhysical = isPhysicalMemory.isPhysical;
-    //   var isVirtuallMemory = JSON.parse(
-    //     localStorage.getItem('isVirtualSettings')
-    //   );
-    //   this.isVirtual = isVirtuallMemory.isVirtual;
-    //   var isMinelMemory = JSON.parse(localStorage.getItem('isMineSettings'));
-    //   this.myMeetings = isMinelMemory.myMeetings;
-    // } else {
-    this.isPhysical = false;
-    this.isVirtual = false;
+    this.isLoading = true;
+    this.isPhysical = true;
+    this.isVirtual = true;
     this.myMeetings = false;
-    // }
 
     this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.datesInOffice = this.user.datesInOffice;
@@ -112,6 +101,9 @@ export class CalendarComponent implements OnInit {
           var opacityIncluded = 'rgba(' + colorNumbers + ', 0.3)';
           item.color = opacityIncluded;
         });
+
+        this.loadMeetings();
+        this.isLoading = false;
       },
       (error) => {
         console.log('Error obtaining meetings:  ' + error);
@@ -259,16 +251,16 @@ export class CalendarComponent implements OnInit {
       });
     }
   }
-  beforeMonthViewRender(e: any) {
-    this.currentPeriodStart = e.period.start;
-    this.currentPeriodEnd = e.period.end;
-    this.thisMonthMeetings = this.meetings.filter((meeting) => {
-      return (
-        meeting.startTime >= this.currentPeriodStart &&
-        meeting.startTime <= this.currentPeriodEnd
-      );
-    });
-  }
+  // beforeMonthViewRender(e: any) {
+  //   this.currentPeriodStart = e.period.start;
+  //   this.currentPeriodEnd = e.period.end;
+  //   this.thisMonthMeetings = this.meetings.filter((meeting) => {
+  //     return (
+  //       meeting.startTime >= this.currentPeriodStart &&
+  //       meeting.startTime <= this.currentPeriodEnd
+  //     );
+  //   });
+  // }
   viewWfoMode() {
     this.isWfoSelectionMode = true;
     let numDaysInOffice = this.datesInOffice.filter((item) => {
@@ -354,10 +346,6 @@ export class CalendarComponent implements OnInit {
     } else {
       this.isPhysical = true;
     }
-    // localStorage.setItem(
-    //   'isPhysicalSettings',
-    //   JSON.stringify({ isPhysical: this.isPhysical })
-    // );
     if (this.attendeeMeetings.length == 0) {
       this.loadMeetings();
     } else {
@@ -371,10 +359,6 @@ export class CalendarComponent implements OnInit {
     } else {
       this.isVirtual = true;
     }
-    // localStorage.setItem(
-    //   'isVirtualSettings',
-    //   JSON.stringify({ isVirtual: this.isVirtual })
-    // );
     if (this.attendeeMeetings.length == 0) {
       this.loadMeetings();
     } else {
@@ -388,10 +372,6 @@ export class CalendarComponent implements OnInit {
     } else {
       this.myMeetings = true;
     }
-    // localStorage.setItem(
-    //   'isMineSettings',
-    //   JSON.stringify({ myMeetings: this.myMeetings })
-    // );
     this.loadMeetings();
   }
 
