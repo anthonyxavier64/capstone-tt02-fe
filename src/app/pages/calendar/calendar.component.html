@@ -5,7 +5,12 @@
 >
   <app-navbar></app-navbar>
 
+  <div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="space-around center">
+    <mat-spinner style="color: aquamarine; margin-top: 15%"></mat-spinner>
+  </div>
+
   <div
+    *ngIf="!isLoading"
     fxLayout="column"
     fxLayoutGap="2%"
     style="width: 100%; height: 100%; padding: 0 2%"
@@ -212,7 +217,6 @@
     <div [ngSwitch]="view">
       <mwl-calendar-month-view
         *ngSwitchCase="'month'"
-        (beforeViewRender)="beforeMonthViewRender($event)"
         [viewDate]="viewDate"
         [events]="events"
         [cellTemplate]="customCellTemplate"
