@@ -17,9 +17,16 @@
   >
     <ng-template #customCellTemplate let-day="day" let-locale="locale">
       <div class="cal-cell-top" (click)="viewDay(day.date, day.events)">
-        <span class="cal-day-number">{{
-          day.date | calendarDate: "monthViewDayNumber":locale
-        }}</span>
+        <span
+          [ngClass]="{
+            'cal-day-number': !isBlockoutDate(day.date),
+            'blockout-date': isBlockoutDate(day.date)
+          }"
+          >{{ day.date | calendarDate: "monthViewDayNumber":locale }}</span
+        >
+        <span *ngIf="isBlockoutDate(day.date)" class="blockout-date"
+          >{{ blockoutDate.title }}
+        </span>
         <span *ngIf="isWfoSelectable(day.date)" class="wfo-selector">
           <div
             *ngIf="isSelectorDisabled(day.date) && isWfoSelected(day.date)"

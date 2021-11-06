@@ -1,4 +1,9 @@
-import { CalendarEvent, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
+import {
+  CalendarEvent,
+  CalendarView,
+  DAYS_OF_WEEK,
+  CalendarMonthViewBeforeRenderEvent,
+} from 'angular-calendar';
 import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { CompanyService } from 'src/app/services/company/company.service';
@@ -49,6 +54,8 @@ export class CalendarComponent implements OnInit {
   attendeeMeetings: any[] = [];
   thisMonthMeetings: any[];
   events: CalendarEvent[] = [];
+  blockoutDates: any[] = [];
+  blockoutDate: any;
 
   isPhysical: boolean;
   isVirtual: boolean;
@@ -88,11 +95,16 @@ export class CalendarComponent implements OnInit {
     this.companyService.getCompany(this.user.companyId).subscribe(
       (response) => {
         this.company = response.company;
+
+        for (const bod of this.company.blockoutDates) {
+          this.blockoutDates.push(bod);
+        }
       },
       (error) => {
         console.log('Error obtaining company:  ' + error);
       }
     );
+
     this.meetingService.getAllCompanyMeetings(this.user.companyId).subscribe(
       (response) => {
         this.meetings = response.meetings;
@@ -251,16 +263,7 @@ export class CalendarComponent implements OnInit {
       });
     }
   }
-  // beforeMonthViewRender(e: any) {
-  //   this.currentPeriodStart = e.period.start;
-  //   this.currentPeriodEnd = e.period.end;
-  //   this.thisMonthMeetings = this.meetings.filter((meeting) => {
-  //     return (
-  //       meeting.startTime >= this.currentPeriodStart &&
-  //       meeting.startTime <= this.currentPeriodEnd
-  //     );
-  //   });
-  // }
+
   viewWfoMode() {
     this.isWfoSelectionMode = true;
     let numDaysInOffice = this.datesInOffice.filter((item) => {
@@ -311,18 +314,23 @@ export class CalendarComponent implements OnInit {
   }
 
   viewDay(day: any, events: any) {
-    let dialogRef = this.dialog.open(DayComponent, {
-      data: {
-        date: day,
-        user: this.user,
-        events: events,
-      },
-      panelClass: 'day-card',
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      // this.message = result;
-    });
+    if (
+      moment(day).day() != DAYS_OF_WEEK.SATURDAY &&
+      moment(day).day() != DAYS_OF_WEEK.SUNDAY &&
+      !this.isBlockoutDate(day)
+    ) {
+      let dialogRef = this.dialog.open(DayComponent, {
+        data: {
+          date: day,
+          user: this.user,
+          events: events,
+        },
+        panelClass: 'day-card',
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        // this.message = result;
+      });
+    }
   }
 
   viewMeeting(event: any) {
@@ -340,6 +348,7 @@ export class CalendarComponent implements OnInit {
       // this.message = result;
     });
   }
+
   togglePhysical(): void {
     if (this.isPhysical) {
       this.isPhysical = false;
@@ -552,5 +561,24 @@ export class CalendarComponent implements OnInit {
     this.officeUsersThisMonth = dayUsers;
 
     this.wfoAllowanceCount--;
+  }
+
+  isBlockoutDate(day: Date) {
+    const dates = this.blockoutDates.filter((item) => {
+      const bod = new Date(item.date);
+      if (
+        bod.getDate() == day.getDate() &&
+        bod.getMonth() == day.getMonth() &&
+        bod.getFullYear() == day.getFullYear()
+      ) {
+        this.blockoutDate = item;
+      }
+      return (
+        bod.getDate() == day.getDate() &&
+        bod.getMonth() == day.getMonth() &&
+        bod.getFullYear() == day.getFullYear()
+      );
+    });
+    return dates.length > 0;
   }
 }

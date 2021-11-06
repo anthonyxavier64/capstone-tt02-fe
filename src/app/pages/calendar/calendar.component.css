@@ -21,3 +21,22 @@
   margin-top: 10%;
   cursor: pointer;
 }
+.blockout-date {
+  font-size: 1.2em;
+  font-weight: 100;
+  color: rgb(var(--theme-primary-color), 0.5);
+  opacity: 1;
+  margin-top: 15px;
+  margin-right: 15px;
+  float: right;
+  margin-bottom: 10px;
+}
+.blockout-text {
+  font-size: 1.2em;
+  font-weight: 100;
+  color: rgb(var(--theme-primary-color), 0.5);
+  opacity: 1;
+  margin-top: 15px;
+  margin-right: 10px;
+  float: right;
+}
