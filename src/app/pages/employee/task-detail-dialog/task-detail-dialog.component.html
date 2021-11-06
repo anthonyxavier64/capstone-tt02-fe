@@ -11,7 +11,7 @@
         *ngIf="task.goalId && !isEditMode"
         style="font-weight: bold; font-size: 30px"
       >
-        Goal {{ task.goalId }} -
+        {{ task.goalName }} -
       </h1>
       <h1 *ngIf="!isEditMode" style="font-weight: bold; font-size: 30px">
         {{ task.name }}
