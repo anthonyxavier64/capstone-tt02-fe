@@ -82,10 +82,11 @@ export class TaskComponent implements OnInit {
                 (response) => {
                   const goalTasks = response.tasks;
                   for (let task of goalTasks) {
+                    const taskWithGoalName = { ...task, goalName: goal.name };
                     if (!task.isArchived) {
-                      this.filteredTasks.push(task);
+                      this.filteredTasks.push(taskWithGoalName);
                     } else if (task.isArchived) {
-                      this.archivedTasks.push(task);
+                      this.archivedTasks.push(taskWithGoalName);
                     }
                     console.log(this.filteredTasks);
                   }
@@ -123,8 +124,18 @@ export class TaskComponent implements OnInit {
           .getAllTasksByGoalId(this.selectedGoal.goalId, this.user.userId)
           .subscribe(
             (response) => {
-              this.tasks = response.tasks;
+              this.tasks = [];
+              this.filteredTasks = [];
+              this.archivedTasks = [];
+              var responseTasks = response.tasks;
 
+              for (let task of responseTasks) {
+                var taskWithGoalName = {
+                  ...task,
+                  goalName: this.selectedGoal.name,
+                };
+                this.tasks.push(taskWithGoalName);
+              }
               const archivedTemp = this.tasks.filter((task) => {
                 return task.isArchived === true;
               });

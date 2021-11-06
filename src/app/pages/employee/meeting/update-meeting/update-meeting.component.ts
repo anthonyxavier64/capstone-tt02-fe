@@ -146,95 +146,6 @@ export class UpdateMeetingComponent implements OnInit {
       );
     }
 
-    if (currentUser) {
-      this.userService
-        .getUser(JSON.parse(currentUser).userId)
-        .subscribe((response) => {
-          this.isLoading = true;
-          this.user = response.user;
-          this.allInvolvedEmployees.push(this.user.userId);
-          this.meetingService
-            .getAllMeetingsParticipant(this.user.userId)
-            .subscribe(
-              (response) => {
-                var physicalMeetings = response.physicalMeetings;
-                var virtualMeetings = response.virtualMeetings;
-                var involvedMeetings = [];
-                physicalMeetings.forEach((item) => involvedMeetings.push(item));
-                virtualMeetings.forEach((item) => involvedMeetings.push(item));
-
-                for (let meeting of involvedMeetings) {
-                  var meetingStartTime = new Date(meeting.startTime);
-                  var startTime = meetingStartTime.toLocaleTimeString();
-                  var endTime = new Date(
-                    meetingStartTime.getTime() + meeting.durationInMins * 60000
-                  ).toLocaleTimeString();
-                  var blockoutItem = {
-                    userId: this.user.userId,
-                    meetingId: meeting.meetingId,
-                    date: meetingStartTime,
-                    startTime: startTime,
-                    endTime: endTime,
-                  };
-
-                  this.blockoutDates.push(blockoutItem);
-                }
-              },
-              (error) => {}
-            );
-          this.isUserFetched = true;
-          this.userService
-            .getUsers(JSON.parse(currentUser).companyId)
-            .subscribe(
-              (response) => {
-                this.isLoading = true;
-                this.employees = response.users;
-
-                const userIndexToRemove = this.employees.findIndex(
-                  (item) => item.userId === this.user.userId
-                );
-                this.employees.splice(userIndexToRemove, 1);
-
-                this.isUsersFetched = true;
-
-                if (
-                  this.isUserFetched &&
-                  this.isCompanyFetched &&
-                  this.isUsersFetched
-                ) {
-                  for (let employee of this.assignedRsvpPhysicalEmployees) {
-                    const userIndex = this.employees.findIndex(
-                      (item) => item.userId === employee.userId
-                    );
-                    this.employees.splice(userIndex, 1);
-                  }
-                  for (let employee of this.assignedRsvpVirtualEmployees) {
-                    const userIndex = this.employees.findIndex(
-                      (item) => item.userId === employee.userId
-                    );
-                    this.employees.splice(userIndex, 1);
-                  }
-                  for (let employee of this.meetingPhysicalAttendees) {
-                    const userIndex = this.employees.findIndex(
-                      (item) => item.userId === employee.userId
-                    );
-                    this.employees.splice(userIndex, 1);
-                  }
-                  for (let employee of this.meetingVirtualAttendees) {
-                    const userIndex = this.employees.findIndex(
-                      (item) => item.userId === employee.userId
-                    );
-                    this.employees.splice(userIndex, 1);
-                  }
-
-                  this.isLoading = false;
-                }
-              },
-              (error) => {}
-            );
-        });
-    }
-
     this.companyService.getCompany(JSON.parse(currentUser).companyId).subscribe(
       (response) => {
         this.isLoading = true;
@@ -285,6 +196,98 @@ export class UpdateMeetingComponent implements OnInit {
           }
 
           this.isLoading = false;
+        }
+        if (currentUser) {
+          this.userService
+            .getUser(JSON.parse(currentUser).userId)
+            .subscribe((response) => {
+              this.isLoading = true;
+              this.user = response.user;
+              this.allInvolvedEmployees.push(this.user.userId);
+              this.meetingService
+                .getAllMeetingsParticipant(this.user.userId)
+                .subscribe(
+                  (response) => {
+                    var physicalMeetings = response.physicalMeetings;
+                    var virtualMeetings = response.virtualMeetings;
+                    var involvedMeetings = [];
+                    physicalMeetings.forEach((item) =>
+                      involvedMeetings.push(item)
+                    );
+                    virtualMeetings.forEach((item) =>
+                      involvedMeetings.push(item)
+                    );
+
+                    for (let meeting of involvedMeetings) {
+                      var meetingStartTime = new Date(meeting.startTime);
+                      var startTime = meetingStartTime.toLocaleTimeString();
+                      var endTime = new Date(
+                        meetingStartTime.getTime() +
+                          meeting.durationInMins * 60000
+                      ).toLocaleTimeString();
+                      var blockoutItem = {
+                        userId: this.user.userId,
+                        meetingId: meeting.meetingId,
+                        date: meetingStartTime,
+                        startTime: startTime,
+                        endTime: endTime,
+                      };
+
+                      this.blockoutDates.push(blockoutItem);
+                    }
+                  },
+                  (error) => {}
+                );
+              this.isUserFetched = true;
+              this.userService
+                .getUsers(JSON.parse(currentUser).companyId)
+                .subscribe(
+                  (response) => {
+                    this.isLoading = true;
+                    this.employees = response.users;
+
+                    const userIndexToRemove = this.employees.findIndex(
+                      (item) => item.userId === this.user.userId
+                    );
+                    this.employees.splice(userIndexToRemove, 1);
+
+                    this.isUsersFetched = true;
+
+                    if (
+                      this.isUserFetched &&
+                      this.isCompanyFetched &&
+                      this.isUsersFetched
+                    ) {
+                      for (let employee of this.assignedRsvpPhysicalEmployees) {
+                        const userIndex = this.employees.findIndex(
+                          (item) => item.userId === employee.userId
+                        );
+                        this.employees.splice(userIndex, 1);
+                      }
+                      for (let employee of this.assignedRsvpVirtualEmployees) {
+                        const userIndex = this.employees.findIndex(
+                          (item) => item.userId === employee.userId
+                        );
+                        this.employees.splice(userIndex, 1);
+                      }
+                      for (let employee of this.meetingPhysicalAttendees) {
+                        const userIndex = this.employees.findIndex(
+                          (item) => item.userId === employee.userId
+                        );
+                        this.employees.splice(userIndex, 1);
+                      }
+                      for (let employee of this.meetingVirtualAttendees) {
+                        const userIndex = this.employees.findIndex(
+                          (item) => item.userId === employee.userId
+                        );
+                        this.employees.splice(userIndex, 1);
+                      }
+                      this.isLoading = false;
+                    }
+                  },
+                  (error) => {}
+                );
+            });
         }
       },
       (error) => {}
