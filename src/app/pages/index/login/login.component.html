@@ -27,10 +27,12 @@
           [(ngModel)]="password"
           pInputText
         />
-        <button mat-flat-button color="accent" (click)="handleLogin()">
+        <button mat-button class="peach-btn" (click)="handleLogin()">
           Login
         </button>
-        <button mat-button>Forgotten password?</button>
+        <button mat-button class="grey-btn" (click)="handleForgetPassword()">
+          Forgotten password?
+        </button>
       </mat-card-content>
     </mat-card>
   </div>

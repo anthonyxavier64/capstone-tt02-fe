@@ -4,9 +4,11 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/services/user/auth.service';
+import { ForgotPasswordDialogComponent } from './forgot-password-dialog/forgot-password-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +24,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private cdRef: ChangeDetectorRef,
     private auth: AuthService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private dialog: MatDialog
   ) {
     this.email = '';
     this.password = '';
@@ -119,5 +122,29 @@ export class LoginComponent implements OnInit, AfterViewInit {
     });
   }
 
-  handleLoginPopup() {}
+  handleForgetPassword(): void {
+    let dialogRef = this.dialog.open(ForgotPasswordDialogComponent, {
+      data: {},
+      panelClass: 'day-card',
+    });
+
+    dialogRef.afterClosed().subscribe(
+      (response) => {
+        if (response.action === 'NOT_FOUND') {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: response.message,
+          });
+        } else if (response.action === 'RESET') {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: `A new password has been sent to ${response.email}`,
+          });
+        }
+      },
+      (error) => {}
+    );
+  }
 }

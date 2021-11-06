@@ -42,7 +42,7 @@
             (click)="openTierInfo()"
           />
         </div>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="outline">
           <mat-select
             [(ngModel)]="selectedSubscriptionTier"
             name="subscriptionTier"
@@ -68,7 +68,7 @@
           </div>
         </mat-form-field>
         <label>Payment Method: </label>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="outline">
           <mat-select
             [(ngModel)]="selectedPaymentMethod"
             name="paymentMethod"
@@ -94,8 +94,8 @@
           </div>
         </mat-form-field>
         <button
-          mat-flat-button
-          color="accent"
+          mat-button
+          class="peach-btn"
           (click)="openCompanyDetailsDialog(emailText)"
         >
           Sign Up
