@@ -101,7 +101,7 @@
                   (change)="handleChange(task)"
                   [checked]="!!task.completionDate"
                 ></mat-checkbox>
-                <h2 *ngIf="task.goalId">Goal {{ task.goalId }}</h2>
+                <h2 *ngIf="task.goalId">{{ task.goalName }}</h2>
               </mat-card-title>
               <span
                 *ngIf="hasInfectedPersonnel(task)"
@@ -182,12 +182,23 @@
               fxLayoutAlign="space-evenly center"
             >
               <mat-card-title style="text-align: center"
-                >{{ task.name }}&nbsp;<mat-checkbox
+                >{{ task.name }}&nbsp;
+                <mat-checkbox
                   color="primary"
                   (change)="handleChange(task)"
                   [checked]="!!task.completionDate"
-                ></mat-checkbox
-              ></mat-card-title>
+                ></mat-checkbox>
+                <h2 *ngIf="task.goalId">{{ task.goalName }}</h2>
+              </mat-card-title>
+              <span
+                *ngIf="hasInfectedPersonnel(task)"
+                class="covid-19-indicator"
+                fxLayout
+                fxLayoutAlign="center center"
+                ><img
+                  *ngIf="hasInfectedPersonnel(task)"
+                  src="../../../../assets/images/covidIconBig.svg"
+              /></span>
               <mat-card-subtitle style="text-align: center; margin-top: 20px">
                 <div fxLayout="column">
                   <span> Start: {{ task.startDate | date: "dd/MM/yy" }} </span>
@@ -200,16 +211,18 @@
                   <div *ngIf="task.employees.length > 0">
                     <div *ngFor="let employee of task.employees">
                       <div fxLayout="row" fxLayoutGap="5px">
-                        <mat-icon
-                          *ngIf="employee.isVaccinated"
-                          class="green-icon"
-                          >circle</mat-icon
-                        >
-                        <mat-icon
-                          *ngIf="!employee.isVaccinated"
-                          class="grey-icon"
-                          >circle</mat-icon
-                        >
+                        <img
+                          *ngIf="employee.isVaccinated && !employee.isInfected"
+                          src="../../../../assets/images/vaccinatedIcon.svg"
+                        />
+                        <img
+                          *ngIf="!employee.isVaccinated && !employee.isInfected"
+                          src="../../../../assets/images/unvaccinatedIcon.svg"
+                        />
+                        <img
+                          *ngIf="employee.isInfected"
+                          src="../../../../assets/images/covidIcon.svg"
+                        />
                         <div>{{ employee.fullName }}</div>
                       </div>
                     </div>
