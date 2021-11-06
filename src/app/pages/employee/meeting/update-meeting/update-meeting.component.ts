@@ -141,6 +141,7 @@ export class UpdateMeetingComponent implements OnInit {
           this.meetingPhysicalAttendees =
             this.originalMeeting.physicalAttendees;
           this.meetingVirtualAttendees = this.originalMeeting.virtualAttendees;
+          this.isLoading = false;
         },
         (error) => {}
       );
