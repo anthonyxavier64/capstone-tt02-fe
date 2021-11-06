@@ -149,7 +149,6 @@ export class UpdateMeetingComponent implements OnInit {
 
     this.companyService.getCompany(JSON.parse(currentUser).companyId).subscribe(
       (response) => {
-        this.isLoading = true;
         this.company = response.company;
         this.rooms = this.company.rooms;
         this.meetingService
@@ -202,7 +201,6 @@ export class UpdateMeetingComponent implements OnInit {
           this.userService
             .getUser(JSON.parse(currentUser).userId)
             .subscribe((response) => {
-              this.isLoading = true;
               this.user = response.user;
               this.allInvolvedEmployees.push(this.user.userId);
               this.meetingService
@@ -244,7 +242,6 @@ export class UpdateMeetingComponent implements OnInit {
                 .getUsers(JSON.parse(currentUser).companyId)
                 .subscribe(
                   (response) => {
-                    this.isLoading = true;
                     this.employees = response.users;
 
                     const userIndexToRemove = this.employees.findIndex(
