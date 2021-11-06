@@ -1,10 +1,8 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.dev';
-
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-
 import { handleError } from '../services-util';
 
 const httpOptions = {
@@ -17,7 +15,7 @@ const httpOptions = {
 export class UserService {
   baseUrl: string = environment.API_REST_URL + '/user';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   getUsers(companyId: string): Observable<any> {
     let params = new HttpParams().set('companyId', companyId);
@@ -38,6 +36,12 @@ export class UserService {
     let params = new HttpParams().set('email', email);
     return this.httpClient
       .get<any>(this.baseUrl + '/get-managed-departments', { params })
+      .pipe(catchError(handleError));
+  }
+
+  forgotPassword(email: string): Observable<any> {
+    return this.httpClient
+      .post(this.baseUrl + '/forgot-password', { email }, httpOptions)
       .pipe(catchError(handleError));
   }
 
@@ -80,6 +84,13 @@ export class UserService {
       .pipe(catchError(handleError));
   }
 
+  getUserByEmail(email: string): Observable<any> {
+    return this.httpClient.get<any>(
+      this.baseUrl + `/get-user-by-email/${email}`,
+      httpOptions
+    );
+  }
+
   deleteUser(userId: String) {
     return this.httpClient.post<any>(this.baseUrl + '/delete-user', {
       userId: userId,
@@ -95,13 +106,16 @@ export class UserService {
   }
 
   getUserDocuments(userId: any) {
-    return this.httpClient.get<any>(
-      `${this.baseUrl}/get-user-submissions/${userId}`, httpOptions)
+    return this.httpClient
+      .get<any>(`${this.baseUrl}/get-user-submissions/${userId}`, httpOptions)
       .pipe(catchError(handleError));
   }
   getOfficeUsersByMonth(companyId: number, month: number): Observable<any> {
-    return this.httpClient.get<any>(
-      `${this.baseUrl}/get-office-users-by-month/${companyId}/${month}`, httpOptions)
+    return this.httpClient
+      .get<any>(
+        `${this.baseUrl}/get-office-users-by-month/${companyId}/${month}`,
+        httpOptions
+      )
       .pipe(catchError(handleError));
   }
 }

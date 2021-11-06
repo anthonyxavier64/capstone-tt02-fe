@@ -105,6 +105,7 @@ import { DayComponent } from './pages/calendar/day/day.component';
 import { GoalsComponent } from './pages/employee/goals/goals.component';
 import { EditGoalDialogComponent } from './pages/employee/goals/edit-goal-dialog/edit-goal-dialog.component';
 import { CreateNewGoalDialogComponent } from './pages/employee/goals/create-new-goal-dialog/create-new-goal-dialog.component';
+import { ForgotPasswordDialogComponent } from './pages/index/login/forgot-password-dialog/forgot-password-dialog.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -173,6 +174,7 @@ export function tokenGetter() {
     GoalsComponent,
     EditGoalDialogComponent,
     CreateNewGoalDialogComponent,
+    ForgotPasswordDialogComponent,
   ],
   imports: [
     CommonModule,
