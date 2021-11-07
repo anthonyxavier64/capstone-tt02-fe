@@ -7,7 +7,11 @@
   >
     <app-navbar></app-navbar>
 
-    <div fxLayout="row" fxLayoutAlign="space-between start">
+    <div
+      fxLayout="row"
+      fxLayoutAlign="space-between start"
+      style="padding: 0 2%"
+    >
       <h1>Company Details</h1>
       <div>
         <button mat-button class="grey-btn" (click)="handleBackButton()">
@@ -16,150 +20,179 @@
       </div>
     </div>
 
-    <div style="background-color: #faf9f6; width: 100%; padding: 5% 10%">
-      <div fxLayout="row" fxLayoutGap="3%">
-        <div fxLayout="column" fxLayoutGap="10%" style="width: 50%">
-          <span class="headerText">{{ company.name }}</span>
-          <img
-            src="../../../../../assets/images/flexiworkLogo.png"
-            class="logoImage"
-          />
-          <div fxLayout="column" fxLayoutGap="0.5%">
-            <span class="subHeaderText">Company ID</span>
-            <span class="contentText">{{ company.companyId }}</span>
-          </div>
-          <div fxLayout="column" fxLayoutGap="0.5%">
-            <span class="subHeaderText">Company Email</span>
-            <span *ngIf="!editDetailsMode" class="contentText">{{
-              company.email
-            }}</span>
-            <div *ngIf="editDetailsMode">
-              <input
-                [(ngModel)]="email"
-                #emailText="ngModel"
-                email="true"
-                class="inputFields"
-                pInputText
-              />
-              <div
-                *ngIf="
-                  (emailText.touched || emailText.dirty) && emailText.invalid
-                "
-                class="errorText"
-                style="color: red"
-              >
-                Email must be valid.
-              </div>
+    <mat-card
+      fxLayout="row"
+      fxLayoutAlign="space-between end"
+      fxLayoutGap="10%"
+      class="beige-block"
+    >
+      <div fxLayout="column" fxLayoutGap="10%">
+        <span class="headerText">{{ company.name }}</span>
+        <img
+          src="../../../../../assets/images/flexiworkLogo.png"
+          class="logoImage"
+        />
+        <div fxLayout="column" fxLayoutGap="0.5%">
+          <span class="subHeaderText">Company ID</span>
+          <span class="contentText">{{ company.companyId }}</span>
+        </div>
+        <div fxLayout="column" fxLayoutGap="0.5%">
+          <span class="subHeaderText">Company Email</span>
+          <span *ngIf="!editDetailsMode" class="contentText">{{
+            company.email
+          }}</span>
+          <div *ngIf="editDetailsMode">
+            <input
+              [(ngModel)]="email"
+              #emailText="ngModel"
+              email="true"
+              class="inputFields"
+              pInputText
+            />
+            <div
+              *ngIf="
+                (emailText.touched || emailText.dirty) && emailText.invalid
+              "
+              class="errorText"
+              style="color: red"
+            >
+              Email must be valid.
             </div>
-          </div>
-          <div fxLayout="column" fxLayoutGap="0.5%">
-            <span class="subHeaderText">Contact Number</span>
-            <span *ngIf="!editDetailsMode" class="contentText">{{
-              company.contactNumber
-            }}</span>
-            <div *ngIf="editDetailsMode">
-              <input
-                [(ngModel)]="contactNumber"
-                #contactNum="ngModel"
-                pattern="[689][0-9]{7}"
-                type="tel"
-                class="inputFields"
-                pInputText
-              />
-              <div
-                *ngIf="
-                  contactNum.invalid && (contactNum.touched || contactNum.dirty)
-                "
-                class="errorText"
-                style="color: red"
-              >
-                A valid 8-digit Singapore contact number is required.
-              </div>
-            </div>
-          </div>
-          <div fxLayout="column" fxLayoutGap="0.5%">
-            <span class="subHeaderText">Number of employees</span>
-            <span class="contentText">{{ company.numOfEmployees }}</span>
-          </div>
-          <button
-            *ngIf="!editDetailsMode"
-            mat-button
-            class="peach-btn"
-            style="width: 15vw"
-            (click)="toggleEditDetails()"
-          >
-            Edit Details
-          </button>
-          <div fxLayout="row" *ngIf="editDetailsMode" fxLayoutGap="5%">
-            <button mat-button class="peach-btn" (click)="saveEditDetails()">
-              Save
-            </button>
-            <button mat-button (click)="toggleEditDetails()" class="grey-btn">
-              Back
-            </button>
           </div>
         </div>
-        <div fxLayout="column" fxLayoutGap="10%" style="width: 50%">
-          <div fxLayout="column" fxLayoutGap="0.5%">
-            <span class="subHeaderText">Office Name</span>
-            <span class="contentText">{{ company.officeName }}</span>
-          </div>
-          <div fxLayout="column" fxLayoutGap="0.5%">
-            <span class="subHeaderText">Office Address</span>
-            <span class="contentText">{{ company.officeAddress }}</span>
-          </div>
-          <div fxLayout="column" fxLayoutGap="0.5%">
-            <span class="subHeaderText">Office Opening Hours</span>
-            <span class="contentText"
-              >{{ company.officeOpeningHour }} -
-              {{ company.officeClosingHour }}</span
+        <div fxLayout="column" fxLayoutGap="0.5%">
+          <span class="subHeaderText">Contact Number</span>
+          <span *ngIf="!editDetailsMode" class="contentText">{{
+            company.contactNumber
+          }}</span>
+          <div *ngIf="editDetailsMode">
+            <input
+              [(ngModel)]="contactNumber"
+              #contactNum="ngModel"
+              pattern="[689][0-9]{7}"
+              type="tel"
+              class="inputFields"
+              pInputText
+            />
+            <div
+              *ngIf="
+                contactNum.invalid && (contactNum.touched || contactNum.dirty)
+              "
+              class="errorText"
+              style="color: red"
             >
+              A valid 8-digit Singapore contact number is required.
+            </div>
           </div>
-          <div fxLayout="column" fxLayoutGap="0.5%">
-            <span class="subHeaderText">Office Capacity</span>
-            <span class="contentText">{{ company.officeCapacity }}</span>
-          </div>
-          <button
-            mat-button
-            class="peach-btn"
-            style="width: 20vw"
-            *ngIf="!editDetailsMode"
-            (click)="handleConfigureOfficeSpace()"
-          >
-            Configure Office Space
+        </div>
+        <div fxLayout="column" fxLayoutGap="0.5%">
+          <span class="subHeaderText">Number of employees</span>
+          <span class="contentText">{{ company.numOfEmployees }}</span>
+        </div>
+        <button
+          *ngIf="!editDetailsMode"
+          mat-button
+          class="peach-btn"
+          style="width: 15vw"
+          (click)="toggleEditDetails()"
+        >
+          Edit Details
+        </button>
+        <div fxLayout="row" *ngIf="editDetailsMode" fxLayoutGap="5%">
+          <button mat-button class="peach-btn" (click)="saveEditDetails()">
+            Save
           </button>
-          <button
-            mat-button
-            *ngIf="editDetailsMode"
-            [disabled]="true"
-            class="peach-btn"
-            style="width: 20vw"
-          >
-            Configure Office Space
-          </button>
-          <div fxLayout="column" fxLayoutGap="0.5%">
-            <span class="subHeaderText">Subscription Plan</span>
-            <span class="contentText">{{ company.subscriptionType }}</span>
-          </div>
-          <button
-            mat-button
-            class="grey-btn"
-            style="width: 20vw"
-            *ngIf="!editDetailsMode"
-          >
-            Manage Subscription
-          </button>
-          <button
-            mat-button
-            *ngIf="editDetailsMode"
-            [disabled]="true"
-            class="grey-btn"
-            style="width: 20vw"
-          >
-            Manage Subscription
+          <button mat-button (click)="toggleEditDetails()" class="grey-btn">
+            Back
           </button>
         </div>
       </div>
-    </div>
+      <div fxLayout="column" fxLayoutGap="10%">
+        <div fxLayout="column" fxLayoutGap="0.5%">
+          <span class="subHeaderText">Office Name</span>
+          <span class="contentText">{{ company.officeName }}</span>
+        </div>
+        <div fxLayout="column" fxLayoutGap="0.5%">
+          <span class="subHeaderText">Office Address</span>
+          <span class="contentText">{{ company.officeAddress }}</span>
+        </div>
+        <div fxLayout="column" fxLayoutGap="0.5%">
+          <span class="subHeaderText">Office Opening Hours</span>
+          <span class="contentText"
+            >{{ company.officeOpeningHour }} -
+            {{ company.officeClosingHour }}</span
+          >
+        </div>
+        <div fxLayout="column" fxLayoutGap="0.5%">
+          <span class="subHeaderText">Office Capacity</span>
+          <span class="contentText">{{ company.officeCapacity }}</span>
+        </div>
+        <button
+          mat-button
+          class="peach-btn"
+          style="width: 20vw"
+          *ngIf="!editDetailsMode"
+          (click)="handleConfigureOfficeSpace()"
+        >
+          Configure Office Space
+        </button>
+        <button
+          mat-button
+          *ngIf="editDetailsMode"
+          [disabled]="true"
+          class="peach-btn"
+          style="width: 20vw"
+        >
+          Configure Office Space
+        </button>
+      </div>
+      <div fxLayout="column" fxLayoutGap="10%">
+        <div fxLayout="column" fxLayoutGap="0.5%">
+          <span class="subHeaderText">Blockout Dates</span>
+          <span *ngFor="let bod of company.blockoutDates" class="contentText"
+            >{{ bod.title }} - {{ bod.date | date: "shortDate" }}</span
+          >
+        </div>
+        <button
+          mat-button
+          class="grey-btn"
+          style="width: 20vw"
+          *ngIf="!editDetailsMode"
+          (click)="handleManageBlockoutDate()"
+        >
+          Manage Blockout Dates
+        </button>
+        <button
+          mat-button
+          *ngIf="editDetailsMode"
+          [disabled]="true"
+          class="grey-btn"
+          style="width: 20vw"
+        >
+          Manage Blockout Dates
+        </button>
+        <div fxLayout="column" fxLayoutGap="0.5%">
+          <span class="subHeaderText">Subscription Plan</span>
+          <span class="contentText">{{ company.subscriptionType }}</span>
+        </div>
+        <button
+          mat-button
+          class="grey-btn"
+          style="width: 20vw"
+          *ngIf="!editDetailsMode"
+        >
+          Manage Subscription
+        </button>
+        <button
+          mat-button
+          *ngIf="editDetailsMode"
+          [disabled]="true"
+          class="grey-btn"
+          style="width: 20vw"
+        >
+          Manage Subscription
+        </button>
+      </div>
+    </mat-card>
   </div>
 </div>

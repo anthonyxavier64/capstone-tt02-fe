@@ -491,7 +491,7 @@ span {
 .cal-month-view .cal-day-cell.cal-today .cal-day-number {
   font-size: 1.2em;
   background: rgb(var(--primary-card-color));
-  padding: 0.15em;
+  padding: 0.05em 0.35em;
   border-radius: 5rem;
   font-weight: 800;
   color: white !important;

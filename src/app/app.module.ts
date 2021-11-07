@@ -104,6 +104,8 @@ import { TierInfoDialogComponent } from './pages/index/sign-up/tier-info-dialog/
 import { ChangePasswordComponent } from './pages/profile/change-password/change-password.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { NavbarComponent } from './pages/shared-components/navbar/navbar.component';
+import { ManageBlockoutDateComponent } from './pages/admin/company-details/blockout-dates/manage-blockout-date/manage-blockout-date.component';
+import { EditBlockoutDateDialogComponent } from './pages/admin/company-details/blockout-dates/edit-blockout-date-dialog/edit-blockout-date-dialog.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -173,6 +175,8 @@ export function tokenGetter() {
     EditGoalDialogComponent,
     CreateNewGoalDialogComponent,
     ForgotPasswordDialogComponent,
+    ManageBlockoutDateComponent,
+    EditBlockoutDateDialogComponent,
   ],
   imports: [
     CommonModule,

@@ -91,6 +91,12 @@ export class AdminCompanyDetailsManagementComponent implements OnInit {
     });
   }
 
+  handleManageBlockoutDate() {
+    this.router.navigate(['manage-blockout-date'], {
+      state: this.company.companyId,
+    });
+  }
+
   onEmailTextChange(emailText: any) {
     console.log(emailText);
   }
