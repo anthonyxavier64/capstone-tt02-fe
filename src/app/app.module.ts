@@ -103,7 +103,7 @@ import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 import { TierInfoDialogComponent } from './pages/index/sign-up/tier-info-dialog/tier-info-dialog.component';
 import { ChangePasswordComponent } from './pages/profile/change-password/change-password.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { NavbarComponent } from './shared-components/navbar/navbar.component';
+import { NavbarComponent } from './pages/shared-components/navbar/navbar.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
