@@ -4,12 +4,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { CompanyDetailsService } from './../../../services/company/company-details.service';
+import { CompanyDetailsService } from '../../../services/company/company-details.service';
 
 @Component({
   selector: 'app-admin-wfoManagement',
-  templateUrl: './adminWfoManagement.component.html',
-  styleUrls: ['./adminWfoManagement.component.css'],
+  templateUrl: './admin-wfo-management.component.html',
+  styleUrls: ['./admin-wfo-management.component.css'],
   providers: [MessageService],
 })
 export class AdminWfoManagementComponent implements OnInit {
@@ -152,8 +152,8 @@ export class AdminWfoManagementComponent implements OnInit {
 
 @Component({
   selector: 'dialog-no-option-selected',
-  templateUrl: './noOptionSelected.component.html',
-  styleUrls: ['./noOptionSelected.component.css'],
+  templateUrl: './no-option-selected.component.html',
+  styleUrls: ['./no-option-selected.component.css'],
 })
 export class NoOptionSelectedDialog {
   constructor(public dialogRef: MatDialogRef<NoOptionSelectedDialog>) {}

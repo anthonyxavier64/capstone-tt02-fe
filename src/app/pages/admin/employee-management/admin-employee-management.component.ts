@@ -8,9 +8,9 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { finalize } from 'rxjs/operators';
 import { DepartmentService } from 'src/app/services/department/department.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { CompanyDetailsService } from '../../../services/company/company-details.service';
 import { DepartmentInChargeOfComponent } from '../dialogs/department-in-charge-of/department-in-charge-of.component';
 import { DepartmentPartOfComponent } from '../dialogs/department-part-of/department-part-of.component';
-import { CompanyDetailsService } from './../../../services/company/company-details.service';
 import { DeleteEmployeeDialogComponent } from './delete-employee-dialog/delete-employee-dialog.component';
 import { DownloadCsvDialogComponent } from './download-csv-dialog/download-csv-dialog.component';
 import { EditEmployeeDialogComponent } from './edit-employee-dialog/edit-employee-dialog.component';
@@ -29,8 +29,8 @@ export interface user {
 }
 @Component({
   selector: 'app-admin-employeeManagement',
-  templateUrl: './adminEmployeeManagement.component.html',
-  styleUrls: ['./adminEmployeeManagement.component.css'],
+  templateUrl: './admin-employee-management.component.html',
+  styleUrls: ['./admin-employee-management.component.css'],
   providers: [MatDialog, MessageService],
 })
 export class AdminEmployeeManagementComponent implements OnInit {

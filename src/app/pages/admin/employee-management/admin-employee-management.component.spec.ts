@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AdminEmployeeManagementComponent } from './adminEmployeeManagement.component';
+import { AdminEmployeeManagementComponent } from './admin-employee-management.component';
 
 describe('AdminEmployeeManagementComponent', () => {
   let component: AdminEmployeeManagementComponent;

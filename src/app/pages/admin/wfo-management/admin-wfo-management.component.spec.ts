@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AdminWfoManagementComponent } from './adminWfoManagement.component';
+import { AdminWfoManagementComponent } from './admin-wfo-management.component';
 
 describe('AdminWfoManagementComponent', () => {
   let component: AdminWfoManagementComponent;

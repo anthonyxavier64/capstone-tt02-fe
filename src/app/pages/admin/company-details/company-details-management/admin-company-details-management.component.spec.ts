@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AdminCompanyDetailsManagementComponent } from './adminCompanyDetailsManagement.component';
+import { AdminCompanyDetailsManagementComponent } from './admin-company-details-management.component';
 
 describe('AdminCompanyDetailsManagementComponent', () => {
   let component: AdminCompanyDetailsManagementComponent;
