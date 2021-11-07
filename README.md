@@ -24,7 +24,7 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-#Commitizen Commits
+## Commitizen Commits
 - Commitizen is a framework that helps us keep our commit messages structured and clear
 - It is prompt based and below are some of the information you will be able to view when commiting through commitizen 
   1. Commit Type: feat, fix (Bug Fix), Docs (Documentation), style (Style changes), refactor, perf (performance), test, chore
