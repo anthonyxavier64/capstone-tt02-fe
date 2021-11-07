@@ -1,0 +1,77 @@
+<p-toast> </p-toast>
+<div style="padding: 8%">
+  <h3 style="margin-bottom: 3%; text-align: center">Add Blockout Date</h3>
+  <form
+    #editBlockoutDayForm="ngForm"
+    ngNativeValidate
+    name="editBlockoutDayForm"
+    (ngSubmit)="onSave(editBlockoutDayForm)"
+    fxLayout="column"
+    fxLayoutAlign="space-around center"
+    fxLayoutGap="5%"
+  >
+    <div
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      fxLayoutGap="2%"
+      style="width: 100%"
+    >
+      <label for="date">Date:</label>
+      <input
+        name="date"
+        pInputText
+        [(ngModel)]="blockoutDate.date"
+        #dateInput="ngModel"
+        [matDatepicker]="picker"
+        style="width: 100%"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </div>
+    <div
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      fxLayoutGap="2%"
+      style="width: 100%"
+    >
+      <label for="title">Title:</label>
+      <input
+        pInputText
+        [(ngModel)]="blockoutDate.title"
+        name="title"
+        #titleInput="ngModel"
+        type="text"
+        [max]="31"
+        [min]="0"
+        style="width: 100%"
+      />
+    </div>
+    <div
+      fxLayout="column"
+      fxLayoutAlign="center start"
+      fxLayoutGap="2%"
+      style="width: 100%"
+    >
+      <label for="title">Description:</label>
+      <textarea
+        pInputTextarea
+        [(ngModel)]="blockoutDate.description"
+        name="description"
+        #descriptionInput="ngModel"
+        type="text"
+        style="width: 100%; height: 6rem"
+      ></textarea>
+    </div>
+    <div
+      fxLayout="row"
+      fxLayoutAlign="center center"
+      fxLayoutGap="10%"
+      style="margin-top: 3%; width: 100%"
+    >
+      <button mat-button class="peach-btn" type="submit">Save</button>
+      <button mat-button class="grey-btn" type="button" (click)="closeDialog()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
