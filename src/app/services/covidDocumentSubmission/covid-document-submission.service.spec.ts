@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CovidDocumentSubmissionService } from './covidDocumentSubmission.service';
+import { CovidDocumentSubmissionService } from './covid-document-submission.service';
 
 describe('CovidDocumentSubmissionService', () => {
   let service: CovidDocumentSubmissionService;

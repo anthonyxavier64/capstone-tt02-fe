@@ -2,7 +2,7 @@ import { CalendarEvent, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
 import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { CompanyService } from 'src/app/services/company/company.service';
-import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covidDocumentSubmission.service';
+import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covid-document-submission.service';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UserService } from 'src/app/services/user/user.service';
 

@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { AlternateWorkTeamsConfigurationService } from '../../../../services/wfoConfiguration/alternate-work-teams-configuration/alternate-work-teams-configuration.service';
+import { AlternateWorkTeamsConfigurationService } from '../../../../services/wfoConfiguration/alternateWorkTeamsConfiguration/alternate-work-teams-configuration.service';
 
 @Component({
   selector: 'app-admin-alternate-work-teams-config',
