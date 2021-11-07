@@ -7,7 +7,7 @@ import { AdminGuideComponent } from 'src/app/pages/admin/admin-landing/admin-gui
 import { ViewArtComponent } from 'src/app/pages/admin/employee-management/view-art-dialog/view-art-dialog.component';
 import { ViewShnDeclarationDialog } from 'src/app/pages/admin/employee-management/view-shn-dialog/view-shn-dialog.component';
 import { ViewVaccinationDialogComponent } from 'src/app/pages/admin/employee-management/view-vaccination-dialog/view-vaccination-dialog.component';
-import { TaskDetailDialogComponent } from 'src/app/pages/employee/task-detail-dialog/task-detail-dialog.component';
+import { TaskDetailDialogComponent } from 'src/app/pages/employee/task/task-detail-dialog/task-detail-dialog.component';
 import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covidDocumentSubmission.service';
 import { GoalService } from 'src/app/services/goal/goal.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';

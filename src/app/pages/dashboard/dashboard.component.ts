@@ -7,7 +7,7 @@ import { Announcement } from 'src/app/models/announcement';
 import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { TaskService } from 'src/app/services/task/task.service';
-import { ViewAnnouncementComponent } from '../view-announcement/view-announcement.component';
+import { ViewAnnouncementComponent } from '../admin/announcement-management/view-announcement/view-announcement.component';
 
 @Component({
   selector: 'app-dashboard',

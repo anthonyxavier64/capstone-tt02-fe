@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
-import { AccountActivationComponent } from './pages/admin/account-activation/account-activation/account-activation.component';
+import { AccountActivationComponent } from './pages/admin/account-activation/account-activation.component';
 import { AdminComponent } from './pages/admin/admin-landing/admin.component';
 import { AdminAnnouncementManagementComponent } from './pages/admin/announcement-management/admin-announcement-management.component';
 import { AdminCompanyDetailsManagementComponent } from './pages/admin/company-details/company-details-management/admin-company-details-management.component';
