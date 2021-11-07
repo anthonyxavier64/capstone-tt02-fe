@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { exceptionData } from './../officeQuotaConfig.component';
+import { exceptionData } from '../office-quota-config.component';
 
 @Component({
   selector: 'app-edit-exception-dialog',

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AlternateWorkTeamsConfigComponent } from './alternateWorkTeamsConfig.component';
+import { AlternateWorkTeamsConfigComponent } from './alternate-work-teams-config.component';
 
 describe('AlternateWorkTeamsConfigComponent', () => {
   let component: AlternateWorkTeamsConfigComponent;

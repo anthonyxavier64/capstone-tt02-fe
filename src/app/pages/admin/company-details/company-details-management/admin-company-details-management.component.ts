@@ -7,8 +7,8 @@ import { CompanyDetailsService } from 'src/app/services/company/company-details.
 
 @Component({
   selector: 'app-admin-companyDetailsManagement',
-  templateUrl: './adminCompanyDetailsManagement.component.html',
-  styleUrls: ['./adminCompanyDetailsManagement.component.css'],
+  templateUrl: './admin-company-details-management.component.html',
+  styleUrls: ['./admin-company-details-management.component.css'],
   providers: [MessageService],
 })
 export class AdminCompanyDetailsManagementComponent implements OnInit {

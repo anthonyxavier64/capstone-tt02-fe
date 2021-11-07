@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AdminAnnouncementManagementComponent } from './adminAnnouncementManagement.component';
+import { AdminAnnouncementManagementComponent } from './admin-announcement-management.component';
 
 describe('AdminAnnouncementManagementComponent', () => {
   let component: AdminAnnouncementManagementComponent;

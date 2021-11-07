@@ -13,8 +13,8 @@ import { EditAnnouncementComponent } from '../edit-announcement/edit-announcemen
 let counter: number = 1;
 @Component({
   selector: 'app-admin-announcementManagement',
-  templateUrl: './adminAnnouncementManagement.component.html',
-  styleUrls: ['./adminAnnouncementManagement.component.css'],
+  templateUrl: './admin-announcement-management.component.html',
+  styleUrls: ['./admin-announcement-management.component.css'],
 })
 export class AdminAnnouncementManagementComponent implements OnInit {
   user: any;

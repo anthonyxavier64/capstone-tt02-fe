@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MessageService } from 'primeng/api';
 import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
 import { OfficeQuotaConfigurationService } from 'src/app/services/wfoConfiguration/office-quota-configuration/office-quota-configuration.service';
-import { UserService } from './../../../../services/user/user.service';
+import { UserService } from '../../../../services/user/user.service';
 import { EditExceptionDialogComponent } from './edit-exception-dialog/edit-exception-dialog.component';
 
 export interface exceptionData {
@@ -16,8 +16,8 @@ export interface exceptionData {
 
 @Component({
   selector: 'app-admin-office-quota-config',
-  templateUrl: './officeQuotaConfig.component.html',
-  styleUrls: ['./officeQuotaConfig.component.css'],
+  templateUrl: './office-quota-config.component.html',
+  styleUrls: ['./office-quota-config.component.css'],
   providers: [MessageService],
 })
 export class OfficeQuotaConfigComponent implements OnInit {

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { OfficeQuotaConfigComponent } from './officeQuotaConfig.component';
+import { OfficeQuotaConfigComponent } from './office-quota-config.component';
 
 describe('OfficeQuotaConfigComponent', () => {
   let component: OfficeQuotaConfigComponent;
