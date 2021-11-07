@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
 import { Announcement } from 'src/app/models/announcement';
-import { AnnouncementType } from '../../../models/announcement-type';
+import { AnnouncementType } from '../../../../models/announcement-type';
 import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -66,7 +66,7 @@ export class EditAnnouncementComponent implements OnInit {
   }
 
   save(updateAnnouncementForm: NgForm) {
-  
+
     if (updateAnnouncementForm.invalid) {
       this.resultSuccess = false;
       this.message = "Failed to edit announcement";
