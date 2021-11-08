@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covid-document-submission.service';
 
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -33,7 +33,8 @@ export class CovidDeclarationsComponent implements OnInit {
   constructor(
     private router: Router,
     private covidDocumentSubmissionService: CovidDocumentSubmissionService,
-    public dialogService: DialogService
+    public dialogService: DialogService,
+    private location: Location
   ) {
     this.covidDocumentSubmissions = [];
     this.fetSubmissions = [];
@@ -188,5 +189,8 @@ export class CovidDeclarationsComponent implements OnInit {
     this.vaccinationDialogRef.onClose.subscribe(() => {
       this.ngOnInit();
     });
+  }
+  handleBackButton() {
+    this.location.back();
   }
 }

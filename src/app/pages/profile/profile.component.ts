@@ -85,7 +85,7 @@ export class ProfileComponent implements OnInit {
     this.clickHoverMenuTrigger.openMenu();
   }
 
-  openDialog(): void {
+  changePasswordDialog(): void {
     let dialogRef = this.dialog.open(ChangePasswordComponent, {
       width: '250px',
       data: 'test',
@@ -127,5 +127,9 @@ export class ProfileComponent implements OnInit {
         });
       }
     );
+  }
+
+  onCovidDeclarationsClick() {
+    this.router.navigateByUrl('/covid-declarations');
   }
 }
