@@ -83,7 +83,7 @@
           mat-button
           class="peach-btn"
           *ngIf="!editDetailsMode"
-          (click)="openDialog()"
+          (click)="changePasswordDialog()"
         >
           Change password
         </button>
@@ -166,6 +166,17 @@
         </div>
       </div>
     </mat-card-group>
+    <div class="profile-btn-wrap" fxLayout="row" fxLayoutAlign="center center">
+      <button
+        mat-button
+        class="peach-btn"
+        *ngIf="!editDetailsMode"
+        (click)="onCovidDeclarationsClick()"
+      >
+        Manage Covid Declarations
+      </button>
+    </div>
+
     <mat-card-group class="work-info-wrap" fxLayout="column" fxLayoutGap="2%">
       <h2 style="text-decoration: underline; align-self: flex-start">
         Work Related Information
@@ -178,22 +189,24 @@
       >
         <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
           <label for="name">Position</label>
-
           <p>{{ user.position }}</p>
         </div>
 
         <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
           <label for="name">In-charge of</label>
-
-          <p>{{ user.mdept }}</p>
+          <p>Finance Department</p>
         </div>
 
         <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
           <label for="name">Part of</label>
-
-          <p>{{ user.dept }}</p>
+          <p>Executive Comittee</p>
         </div>
       </div>
     </mat-card-group>
+    <div class="profile-btn-wrap" fxLayout="row" fxLayoutAlign="center center">
+      <button mat-button class="grey-btn" *ngIf="!editDetailsMode">
+        Manage Leave Dates
+      </button>
+    </div>
   </mat-card>
 </div>

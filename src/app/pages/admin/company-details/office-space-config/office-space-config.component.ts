@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
+import { CompanyService } from 'src/app/services/company/company.service';
 import { RoomService } from 'src/app/services/room/room.service';
 import { AddRoomDialogComponent } from './add-room-dialog/add-room-dialog.component';
 import { EditOfficeDetailsDialogComponent } from './edit-office-details-dialog/edit-office-details-dialog.component';
@@ -29,7 +29,7 @@ export class OfficeSpaceConfigComponent implements OnInit {
   constructor(
     private _location: Location,
     private router: Router,
-    private companyDetailsService: CompanyDetailsService,
+    private companyService: CompanyService,
     private messageService: MessageService,
     private roomService: RoomService,
     private dialog: MatDialog
@@ -42,10 +42,13 @@ export class OfficeSpaceConfigComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.companyDetailsService.getCompanyById(this.companyId).subscribe(
+    this.companyService.getCompany(this.companyId).subscribe(
       (response) => {
         this.company = response.company;
-        this.rooms = this.company.rooms;
+        console.log(this.company);
+        for (const room of this.company.rooms) {
+          this.rooms.push(room);
+        }
       },
       (error) => {
         this.messageService.add({

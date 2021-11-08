@@ -1,38 +1,54 @@
-<app-navbar></app-navbar>
-<div class="card-container">
-  <mat-card class="display-card">
-    <h1>Vaccination Status</h1>
-    <mat-card class="status-display {{ vaccinationStatus() }}">
-      <h2 class="status">
-        {{ user.isVaccinated ? "Vaccinated" : "Unvaccinated" }}
-      </h2>
+<div
+  fxLayout="column"
+  fxLayoutGap="3%"
+  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+>
+  <app-navbar></app-navbar>
+
+  <div fxLayout="row" fxLayoutAlign="space-between start" style="padding: 0 2%">
+    <h1>Manage Covid Declarations</h1>
+    <div>
+      <button mat-button class="grey-btn" (click)="handleBackButton()">
+        Back
+      </button>
+    </div>
+  </div>
+
+  <div class="card-container">
+    <mat-card class="display-card">
+      <h1>Vaccination Status</h1>
+      <mat-card class="status-display {{ vaccinationStatus() }}">
+        <h2 class="status">
+          {{ user.isVaccinated ? "Vaccinated" : "Unvaccinated" }}
+        </h2>
+      </mat-card>
+      <button mat-button class="grey-btn" (click)="openVaccinationDialog(user)">
+        Update
+      </button>
     </mat-card>
-    <button mat-button class="grey-btn" (click)="openVaccinationDialog(user)">
-      Update
-    </button>
-  </mat-card>
-  <mat-card class="display-card">
-    <h1>ART / FET Test Result</h1>
-    <mat-card class="status-display {{ fetApprovalStatus() }}">
-      <h2 class="status">
-        {{ fetSubmissions[0]?.isPositive ? "Positive" : "Negative" }}
-      </h2>
+    <mat-card class="display-card">
+      <h1>ART / FET Test Result</h1>
+      <mat-card class="status-display {{ fetApprovalStatus() }}">
+        <h2 class="status">
+          {{ fetSubmissions[0]?.isPositive ? "Positive" : "Negative" }}
+        </h2>
+      </mat-card>
+      <button mat-button class="grey-btn" (click)="openArtTestDialog(user)">
+        Update
+      </button>
     </mat-card>
-    <button mat-button class="grey-btn" (click)="openArtTestDialog(user)">
-      Update
-    </button>
-  </mat-card>
-  <mat-card class="display-card">
-    <h1>Medical Certificates</h1>
-    <mat-card class="status-display {{ mcApprovalStatus() }}">
-      <h2 class="status">{{ renderMcStatus() }}</h2>
+    <mat-card class="display-card">
+      <h1>Medical Certificates</h1>
+      <mat-card class="status-display {{ mcApprovalStatus() }}">
+        <h2 class="status">{{ renderMcStatus() }}</h2>
+      </mat-card>
+      <button
+        mat-button
+        class="grey-btn"
+        (click)="openShnDeclarationDialog(user)"
+      >
+        Update
+      </button>
     </mat-card>
-    <button
-      mat-button
-      class="grey-btn"
-      (click)="openShnDeclarationDialog(user)"
-    >
-      Update
-    </button>
-  </mat-card>
+  </div>
 </div>
