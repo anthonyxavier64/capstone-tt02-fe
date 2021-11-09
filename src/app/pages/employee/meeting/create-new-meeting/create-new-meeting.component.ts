@@ -27,7 +27,7 @@ export class CreateNewMeetingComponent implements OnInit {
   colors: string[];
   chosenColor: string;
   company: any | null;
-  rooms: any[];
+  rooms: any[] = [];
   allGoals: any | null;
   employees: any[];
   scheduleType = ['Daily', 'Weekly', 'Biweekly', 'Monthly'];
