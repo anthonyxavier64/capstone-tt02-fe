@@ -16,7 +16,7 @@ import { EditRoomDetailsDialogComponent } from './edit-room-details-dialog/edit-
   providers: [MessageService],
 })
 export class OfficeSpaceConfigComponent implements OnInit {
-  rooms: any[];
+  rooms: any[] = [];
 
   company: any | undefined;
   companyId: any | undefined;
@@ -45,10 +45,7 @@ export class OfficeSpaceConfigComponent implements OnInit {
     this.companyService.getCompany(this.companyId).subscribe(
       (response) => {
         this.company = response.company;
-        console.log(this.company);
-        for (const room of this.company.rooms) {
-          this.rooms.push(room);
-        }
+        this.rooms = this.company.rooms;
       },
       (error) => {
         this.messageService.add({

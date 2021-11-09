@@ -95,10 +95,7 @@ export class CalendarComponent implements OnInit {
     this.companyService.getCompany(this.user.companyId).subscribe(
       (response) => {
         this.company = response.company;
-
-        for (const bod of this.company.blockoutDates) {
-          this.blockoutDates.push(bod);
-        }
+        this.blockoutDates = this.company.blockoutDates;
       },
       (error) => {
         console.log('Error obtaining company:  ' + error);
