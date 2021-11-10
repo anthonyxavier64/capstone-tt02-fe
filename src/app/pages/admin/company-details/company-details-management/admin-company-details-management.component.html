@@ -149,9 +149,6 @@
       <div fxLayout="column" fxLayoutGap="10%">
         <div fxLayout="column" fxLayoutGap="0.5%">
           <span class="subHeaderText">Blockout Dates</span>
-          <span *ngFor="let bod of company.blockoutDates" class="contentText"
-            >{{ bod.title }} - {{ bod.date | date: "shortDate" }}</span
-          >
         </div>
         <button
           mat-button

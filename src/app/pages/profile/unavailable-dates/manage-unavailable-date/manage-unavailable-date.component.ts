@@ -56,10 +56,10 @@ export class ManageUnavailableDateComponent implements OnInit {
       employeeId: userId,
     };
 
-    this.leaveDates.push(newleave);
-
     this.unavailableDateService.createUnavailableDate(newleave).subscribe(
       (response) => {
+        this.leaveDates.push(response.unavailableDate);
+
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
