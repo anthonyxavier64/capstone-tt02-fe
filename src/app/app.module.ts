@@ -106,6 +106,8 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { NavbarComponent } from './pages/shared-components/navbar/navbar.component';
 import { ManageBlockoutDateComponent } from './pages/admin/company-details/blockout-dates/manage-blockout-date/manage-blockout-date.component';
 import { EditBlockoutDateDialogComponent } from './pages/admin/company-details/blockout-dates/edit-blockout-date-dialog/edit-blockout-date-dialog.component';
+import { ManageUnavailableDateComponent } from './pages/profile/unavailable-dates/manage-unavailable-date/manage-unavailable-date.component';
+import { EditUnavailableDateDialogComponent } from './pages/profile/unavailable-dates/edit-unavailable-date-dialog/edit-unavailable-date-dialog.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -177,6 +179,8 @@ export function tokenGetter() {
     ForgotPasswordDialogComponent,
     ManageBlockoutDateComponent,
     EditBlockoutDateDialogComponent,
+    ManageUnavailableDateComponent,
+    EditUnavailableDateDialogComponent,
   ],
   imports: [
     CommonModule,

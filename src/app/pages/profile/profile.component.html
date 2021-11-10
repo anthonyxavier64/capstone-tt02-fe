@@ -204,7 +204,12 @@
       </div>
     </mat-card-group>
     <div class="profile-btn-wrap" fxLayout="row" fxLayoutAlign="center center">
-      <button mat-button class="grey-btn" *ngIf="!editDetailsMode">
+      <button
+        mat-button
+        class="grey-btn"
+        *ngIf="!editDetailsMode"
+        (click)="onManageLeavesClick()"
+      >
         Manage Leave Dates
       </button>
     </div>

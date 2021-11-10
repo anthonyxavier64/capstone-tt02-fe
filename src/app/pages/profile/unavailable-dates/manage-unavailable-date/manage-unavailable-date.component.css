@@ -1,0 +1,8 @@
+.beige-block {
+  background-color: rgb(var(--secondary-card-color));
+  border-radius: 25px;
+  padding: 2%;
+  height: auto;
+  width: 40%;
+  margin: 0 2%;
+}

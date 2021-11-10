@@ -22,6 +22,7 @@ import { LoginComponent } from './pages/index/login/login.component';
 import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ManageBlockoutDateComponent } from './pages/admin/company-details/blockout-dates/manage-blockout-date/manage-blockout-date.component';
+import { ManageUnavailableDateComponent } from './pages/profile/unavailable-dates/manage-unavailable-date/manage-unavailable-date.component';
 
 const user = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -124,6 +125,10 @@ const routes: Routes = [
   {
     path: 'manage-blockout-date',
     component: ManageBlockoutDateComponent,
+  },
+  {
+    path: 'manage-unavailable-date',
+    component: ManageUnavailableDateComponent,
   },
 ];
 

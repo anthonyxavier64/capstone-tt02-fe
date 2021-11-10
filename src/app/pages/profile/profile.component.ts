@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { throttle } from 'rxjs/operators';
 import { UserService } from 'src/app/services/user/user.service';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 
@@ -127,6 +128,10 @@ export class ProfileComponent implements OnInit {
         });
       }
     );
+  }
+
+  onManageLeavesClick() {
+    this.router.navigateByUrl('/manage-unavailable-date');
   }
 
   onCovidDeclarationsClick() {
