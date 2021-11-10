@@ -10,6 +10,7 @@ import { CompanyService } from 'src/app/services/company/company.service';
 import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covid-document-submission.service';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { UnavailableDateService } from 'src/app/services/unavailableDate/unavailable-date.service';
 
 import {
   ChangeDetectionStrategy,
@@ -22,6 +23,7 @@ import { Router } from '@angular/router';
 
 import { ViewMeetingDetailsDialogComponent } from './view-meeting-details-dialog/view-meeting-details-dialog.component';
 import { DayComponent } from './day/day.component';
+import { MessageService } from 'primeng/api';
 
 moment.updateLocale('en', {
   week: {
@@ -34,6 +36,7 @@ moment.updateLocale('en', {
   // changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
+  providers: [MessageService],
 })
 export class CalendarComponent implements OnInit {
   user: any;
@@ -56,6 +59,8 @@ export class CalendarComponent implements OnInit {
   events: CalendarEvent[] = [];
   blockoutDates: any[] = [];
   blockoutDate: any;
+  leaveDates: any[] = [];
+  leave: any;
 
   isPhysical: boolean;
   isVirtual: boolean;
@@ -76,7 +81,9 @@ export class CalendarComponent implements OnInit {
     private meetingService: MeetingService,
     private companyService: CompanyService,
     private covidDocumentSubmissionService: CovidDocumentSubmissionService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private messageService: MessageService,
+    private unavailableDateService: UnavailableDateService
   ) {
     this.datesInOffice = [];
     this.meetings = [];
@@ -92,13 +99,32 @@ export class CalendarComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.datesInOffice = this.user.datesInOffice;
 
+    this.unavailableDateService
+      .getUnavailableDateByUid(this.user.userId)
+      .subscribe(
+        (result) => {
+          this.leaveDates = result.unavailableDate;
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Leaves not found.',
+          });
+        }
+      );
+
     this.companyService.getCompany(this.user.companyId).subscribe(
       (response) => {
         this.company = response.company;
         this.blockoutDates = this.company.blockoutDates;
       },
       (error) => {
-        console.log('Error obtaining company:  ' + error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error obtaining company.',
+        });
       }
     );
 
@@ -115,7 +141,11 @@ export class CalendarComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        console.log('Error obtaining meetings:  ' + error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error obtaining meetings for company.',
+        });
       }
     );
 
@@ -135,7 +165,11 @@ export class CalendarComponent implements OnInit {
         }
       },
       (error) => {
-        console.log('Error obtaining meetings:  ' + error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error obtaining meetings for user.',
+        });
       }
     );
 
@@ -158,7 +192,11 @@ export class CalendarComponent implements OnInit {
         }
       },
       (error) => {
-        console.log(error.message);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error obtaining user MCs.',
+        });
       }
     );
   }
@@ -574,6 +612,25 @@ export class CalendarComponent implements OnInit {
         bod.getDate() == day.getDate() &&
         bod.getMonth() == day.getMonth() &&
         bod.getFullYear() == day.getFullYear()
+      );
+    });
+    return dates.length > 0;
+  }
+
+  isLeaveDate(day: Date) {
+    const dates = this.leaveDates.filter((item) => {
+      const leave = new Date(item.date);
+      if (
+        leave.getDate() == day.getDate() &&
+        leave.getMonth() == day.getMonth() &&
+        leave.getFullYear() == day.getFullYear()
+      ) {
+        this.leave = item;
+      }
+      return (
+        leave.getDate() == day.getDate() &&
+        leave.getMonth() == day.getMonth() &&
+        leave.getFullYear() == day.getFullYear()
       );
     });
     return dates.length > 0;

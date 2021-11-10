@@ -20,13 +20,14 @@
         <span
           [ngClass]="{
             'cal-day-number': !isBlockoutDate(day.date),
-            'blockout-date': isBlockoutDate(day.date)
+            'blockout-date': isBlockoutDate(day.date) || isLeaveDate(day.date)
           }"
           >{{ day.date | calendarDate: "monthViewDayNumber":locale }}</span
         >
         <span *ngIf="isBlockoutDate(day.date)" class="blockout-date"
           >{{ blockoutDate.title }}
         </span>
+        <span *ngIf="isLeaveDate(day.date)" class="leave-tag">Leave</span>
         <span *ngIf="isWfoSelectable(day.date)" class="wfo-selector">
           <div
             *ngIf="isSelectorDisabled(day.date) && isWfoSelected(day.date)"
