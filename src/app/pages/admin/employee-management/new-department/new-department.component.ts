@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-
 import { DepartmentService } from 'src/app/services/department/department.service';
+
+import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
