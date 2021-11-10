@@ -1,0 +1,182 @@
+<p-toast></p-toast>
+
+<div
+  fxLayout="column"
+  fxLayoutGap="3%"
+  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+>
+  <app-navbar></app-navbar>
+
+  <div fxLayout="row" fxLayoutAlign="space-between start">
+    <h1>Manage Leave Dates</h1>
+    <div>
+      <button mat-button class="grey-btn" (click)="onBackClick()">Back</button>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: center">
+    <mat-card
+      class="beige-block"
+      fxLayout="column"
+      fxLayoutAlign="space-around center"
+      fxLayoutGap="3%"
+    >
+      <h3>Add Leave Date</h3>
+      <form
+        #addLeaveDayForm="ngForm"
+        ngNativeValidate
+        name="addLeaveDayForm"
+        (ngSubmit)="submit(addLeaveDayForm)"
+        fxLayout="column"
+        fxLayoutGap="5%"
+      >
+        <div
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxLayoutGap="2%"
+          style="width: 100%"
+        >
+          <label for="date">Date:</label>
+          <input
+            name="date"
+            pInputText
+            ngModel
+            #dateInput="ngModel"
+            [matDatepicker]="picker"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </div>
+        <div
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxLayoutGap="2%"
+          style="width: 100%"
+        >
+          <label for="title">Title:</label>
+          <input
+            pInputText
+            ngModel
+            name="title"
+            #titleInput="ngModel"
+            type="text"
+            [max]="31"
+            [min]="0"
+            style="width: 100%"
+            rows="6"
+            cols="33"
+          />
+        </div>
+        <div
+          fxLayout="column"
+          fxLayoutAlign="center start"
+          fxLayoutGap="2%"
+          style="width: 100%"
+        >
+          <label for="title">Description:</label>
+          <textarea
+            pInputTextarea
+            ngModel
+            name="description"
+            #descriptionInput="ngModel"
+            type="text"
+            style="width: 100%; height: 6rem"
+          ></textarea>
+        </div>
+        <div
+          fxLayout="row"
+          fxLayoutAlign="center center"
+          fxLayoutGap="3%"
+          style="margin-top: 3%"
+        >
+          <button mat-button class="peach-btn" type="submit">Submit</button>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+
+  <p-table
+    #leaveDateTable
+    [value]="leaveDates"
+    dataKey="id"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    styleClass="p-datatable-gridlines"
+    [paginator]="true"
+    [globalFilterFields]="['userId', 'fullName', 'wfoMonthlyAllocation']"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Date
+            <p-columnFilter
+              type="date"
+              field="date"
+              display="menu"
+            ></p-columnFilter>
+          </div>
+        </th>
+        <th>
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Title
+            <p-columnFilter
+              type="text"
+              field="title"
+              display="menu"
+            ></p-columnFilter>
+          </div>
+        </th>
+        <th>
+          <div class="p-d-flex p-jc-between p-ai-center">
+            Description
+            <p-columnFilter
+              type="text"
+              field="description"
+              display="menu"
+            ></p-columnFilter>
+          </div>
+        </th>
+
+        <th style="width: 8rem">
+          <div class="p-d-flex p-jc-between p-ai-center">Actions</div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-leave>
+      <tr>
+        <td>{{ leave.date | date: "longDate" }}</td>
+        <td>
+          {{ leave.title }}
+        </td>
+        <td>
+          {{ leave.description }}
+        </td>
+        <td>
+          <div
+            fxLayout="row"
+            fxLayoutAlign="space-around center"
+            fxLayoutGap="1%"
+            class="btnGroup"
+          >
+            <img
+              (click)="editLeaveDate(leave)"
+              src="../../../../assets/images/editIcon.png"
+              style="cursor: pointer; height: 1.5em; width: 1.5em"
+            />
+
+            <img
+              (click)="deleteLeaveDate(leave.unavailableDateId)"
+              src="../../../../assets/images/deleteIcon.png"
+              style="cursor: pointer; height: 1.5em; width: 1.5em"
+            />
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
