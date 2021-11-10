@@ -56,10 +56,10 @@ export class ManageBlockoutDateComponent implements OnInit {
       companyId: this.company.companyId,
     };
 
-    this.blockoutDates.push(newBod);
-
     this.blockoutDateService.createBlockoutDate(newBod).subscribe(
       (response) => {
+        this.blockoutDates.push(response.blockoutDate);
+
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
