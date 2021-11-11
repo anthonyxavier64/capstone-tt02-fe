@@ -251,12 +251,16 @@ export class CreateNewMeetingComponent implements OnInit {
       let employee = this.employees.find((item) => item.userId === employeeId);
       for (let unavailableDate of employee.unavailableDates) {
         const date = new Date(unavailableDate.unavailableDates);
-        if (this.datesToDisable.find((item) => item === date)) {
+
+        if (
+          this.datesToDisable.find(
+            (item) => item.toDateString() === date.toDateString()
+          )
+        ) {
           const indexToRemove = this.datesToDisable.findIndex(
-            (item) => item === date
+            (item) => item.toDateString() === date.toDateString()
           );
           this.datesToDisable.splice(indexToRemove, 1);
-
           this.meetingDate = null;
         }
       }
