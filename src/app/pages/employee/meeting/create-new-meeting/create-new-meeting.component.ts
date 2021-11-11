@@ -238,30 +238,36 @@ export class CreateNewMeetingComponent implements OnInit {
       for (let unavailableDate of employee.unavailableDates) {
         const date = new Date(unavailableDate.unavailableDates);
         console.log(date);
-        if (this.datesToDisable.find((item) => item === date) === undefined) {
+        if (
+          this.datesToDisable.find(
+            (item) => item.toDateString() === date.toDateString()
+          ) === undefined
+        ) {
           console.log('INSIDE IF BLOCK');
-          console.log(this.datesToDisable);
           //wtf?????
           this.datesToDisable[this.datesToDisable.length] = date;
-          console.log(this.datesToDisable);
           this.meetingDate = null;
         }
       }
     } else {
-      let employee = this.employees.find((item) => item.userId === employeeId);
-      for (let unavailableDate of employee.unavailableDates) {
-        const date = new Date(unavailableDate.unavailableDates);
+      if (employeeId !== this.user.userId) {
+        let employee = this.employees.find(
+          (item) => item.userId === employeeId
+        );
+        for (let unavailableDate of employee.unavailableDates) {
+          const date = new Date(unavailableDate.unavailableDates);
 
-        if (
-          this.datesToDisable.find(
-            (item) => item.toDateString() === date.toDateString()
-          )
-        ) {
-          const indexToRemove = this.datesToDisable.findIndex(
-            (item) => item.toDateString() === date.toDateString()
-          );
-          this.datesToDisable.splice(indexToRemove, 1);
-          this.meetingDate = null;
+          if (
+            this.datesToDisable.find(
+              (item) => item.toDateString() === date.toDateString()
+            )
+          ) {
+            const indexToRemove = this.datesToDisable.findIndex(
+              (item) => item.toDateString() === date.toDateString()
+            );
+            this.datesToDisable.splice(indexToRemove, 1);
+            this.meetingDate = null;
+          }
         }
       }
     }
@@ -490,19 +496,6 @@ export class CreateNewMeetingComponent implements OnInit {
 
     // SORT BLOCKOUT DATE BY MEETING START TIME
     this.blockoutDates.sort((a, b) => (a.startTime < b.startTime ? -1 : 1));
-
-    // LOGIC TO UPDATE THE BLOCKED OUT DATES
-    this.blockoutDates.forEach((item) => {
-      var itemDate = new Date(item.date);
-
-      if (
-        this.datesToDisable.find(
-          (item) => item.getDate() === itemDate.getDate()
-        ) === undefined
-      ) {
-        this.datesToDisable.push(itemDate);
-      }
-    });
   }
 
   filter = (d: Date | null): boolean => {
@@ -516,8 +509,9 @@ export class CreateNewMeetingComponent implements OnInit {
         return (
           day !== 0 &&
           day !== 6 &&
-          this.datesToDisable.find((item) => item.getDate() === d.getDate()) ===
-            undefined
+          this.datesToDisable.find(
+            (item) => item.toDateString() === d.toDateString()
+          ) === undefined
         );
       }
     } else {
