@@ -214,6 +214,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
   createNewOfficeConfig(officeQuotaConfigForm: NgForm): void {
     const formValues = officeQuotaConfigForm.value;
     const newOfficeQuotaConfigForm = {
+      companyId: this.company.companyId,
       numEmployeesPerDay: this.numEmployeesPerDay,
       numDaysAllowedPerMonth: this.numDaysAllowedPerMonth,
       exceptions: this.exceptions,
