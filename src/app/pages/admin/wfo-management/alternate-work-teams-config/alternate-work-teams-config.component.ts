@@ -226,6 +226,7 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
 
   createAlternateWorkTeamsConfiguration() {
     const newConfig = {
+      companyId: this.company.companyId,
       scheduleType: this.selectedConfig,
       teamA: this.teamA,
       teamB: this.teamB,
