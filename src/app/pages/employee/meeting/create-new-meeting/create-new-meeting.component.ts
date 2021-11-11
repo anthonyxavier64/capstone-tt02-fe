@@ -120,6 +120,7 @@ export class CreateNewMeetingComponent implements OnInit {
               userId: user.userId,
               unavailableDates: item.date,
             });
+            this.datesToDisable.push(new Date(item.date));
           }
           this.user = {
             ...user,
@@ -228,7 +229,39 @@ export class CreateNewMeetingComponent implements OnInit {
     });
   }
 
-  updateDatePicker(): void {}
+  updateDatePicker(employeeId: number, action: string): void {
+    if (action === 'ASSIGN') {
+      let employee = this.assignedMeetingEmployees.find(
+        (item) => item.userId === employeeId
+      );
+      console.log(employee);
+      for (let unavailableDate of employee.unavailableDates) {
+        const date = new Date(unavailableDate.unavailableDates);
+        console.log(date);
+        if (this.datesToDisable.find((item) => item === date) === undefined) {
+          console.log('INSIDE IF BLOCK');
+          console.log(this.datesToDisable);
+          //wtf?????
+          this.datesToDisable[this.datesToDisable.length] = date;
+          console.log(this.datesToDisable);
+          this.meetingDate = null;
+        }
+      }
+    } else {
+      let employee = this.employees.find((item) => item.userId === employeeId);
+      for (let unavailableDate of employee.unavailableDates) {
+        const date = new Date(unavailableDate.unavailableDates);
+        if (this.datesToDisable.find((item) => item === date)) {
+          const indexToRemove = this.datesToDisable.findIndex(
+            (item) => item === date
+          );
+          this.datesToDisable.splice(indexToRemove, 1);
+
+          this.meetingDate = null;
+        }
+      }
+    }
+  }
 
   async assignMeetingEmployee(employee: NgForm): Promise<void> {
     const assignedEmployee = employee.value.selectedMeetingEmployees;
@@ -252,7 +285,8 @@ export class CreateNewMeetingComponent implements OnInit {
 
     employee.resetForm();
 
-    await await this.generateNewRecommendation(this.assign);
+    await this.updateDatePicker(assignedEmployee.userId, 'ASSIGN');
+    await this.generateNewRecommendation(this.assign);
   }
 
   // Does this use a form to implement responsiveness?
@@ -336,6 +370,7 @@ export class CreateNewMeetingComponent implements OnInit {
       });
     }
 
+    await this.updateDatePicker(user.userId, 'UNASSIGN');
     await this.generateNewRecommendation(this.unassign, user.userId);
   }
 
@@ -351,6 +386,7 @@ export class CreateNewMeetingComponent implements OnInit {
       this.assignedMeetingEmployees.push(user);
     }
 
+    await this.updateDatePicker(user.userId, 'UNASSIGN');
     await this.generateNewRecommendation(this.unassign, user.userId);
   }
 
@@ -362,6 +398,7 @@ export class CreateNewMeetingComponent implements OnInit {
 
     this.employees.push(user);
 
+    await this.updateDatePicker(user.userId, 'UNASSIGN');
     await this.generateNewRecommendation(this.unassign, user.userId);
   }
 
@@ -468,11 +505,20 @@ export class CreateNewMeetingComponent implements OnInit {
     const day = (d || new Date()).getDay();
     // Prevent Saturday and Sunday from being selected.
 
-    return (
-      day !== 0 && day !== 6
-      // && this.datesToDisable.find((item) => item.getDate() === d.getDate()) ===
-      //   undefined
-    );
+    if (d !== null) {
+      if (this.datesToDisable.length === 0) {
+        return day !== 0 && day !== 6;
+      } else {
+        return (
+          day !== 0 &&
+          day !== 6 &&
+          this.datesToDisable.find((item) => item.getDate() === d.getDate()) ===
+            undefined
+        );
+      }
+    } else {
+      return false;
+    }
   };
 
   convertDateToMoment(date: Date, time: string): moment.Moment {
