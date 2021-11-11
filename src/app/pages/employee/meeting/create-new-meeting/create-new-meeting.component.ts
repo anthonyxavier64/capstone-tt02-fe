@@ -9,6 +9,7 @@ import { CompanyService } from 'src/app/services/company/company.service';
 import { GoalService } from 'src/app/services/goal/goal.service';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { UnavailableDateService } from './../../../../services/unavailableDate/unavailable-date.service';
 import { ColorSelectorDialogComponent } from './color-selector-dialog/color-selector-dialog.component';
 
 moment.defineLocale('en-foo', {
@@ -29,7 +30,7 @@ export class CreateNewMeetingComponent implements OnInit {
   company: any | null;
   rooms: any[] = [];
   allGoals: any | null;
-  employees: any[];
+  employees: any[] = [];
   scheduleType = ['Daily', 'Weekly', 'Biweekly', 'Monthly'];
   selectedScheduleType: string;
   assignedMeetingEmployees: any[] = [];
@@ -81,7 +82,8 @@ export class CreateNewMeetingComponent implements OnInit {
     private companyService: CompanyService,
     private meetingService: MeetingService,
     private goalService: GoalService,
-    private colorSelectorDialog: MatDialog
+    private colorSelectorDialog: MatDialog,
+    private unavailableDateService: UnavailableDateService
   ) {
     this.selectedGoal = '';
     this.colors = [
@@ -106,9 +108,23 @@ export class CreateNewMeetingComponent implements OnInit {
     if (currentUser) {
       this.userService
         .getUser(JSON.parse(currentUser).userId)
-        .subscribe((response) => {
+        .subscribe(async (response) => {
           this.isLoading = true;
-          this.user = response.user;
+          let user = response.user;
+          let userUnavailDatesResolved = await this.unavailableDateService
+            .getUnavailableDateByUid(user.userId)
+            .toPromise();
+          let userUnavailDates: any[] = [];
+          for (let item of userUnavailDatesResolved.unavailableDate) {
+            userUnavailDates.push({
+              userId: user.userId,
+              unavailableDates: item.date,
+            });
+          }
+          this.user = {
+            ...user,
+            unavailableDates: userUnavailDates,
+          };
           this.allInvolvedEmployees.push(this.user.userId);
           this.assignedMeetingEmployees.push(this.user);
 
@@ -116,14 +132,33 @@ export class CreateNewMeetingComponent implements OnInit {
           this.userService
             .getUsers(JSON.parse(currentUser).companyId)
             .subscribe(
-              (response) => {
+              async (response) => {
                 this.isLoading = true;
-                this.employees = response.users;
+                let employees = response.users;
 
-                const userIndexToRemove = this.employees.findIndex(
+                const userIndexToRemove = employees.findIndex(
                   (item) => item.userId === this.user.userId
                 );
-                this.employees.splice(userIndexToRemove, 1);
+                employees.splice(userIndexToRemove, 1);
+
+                for (let employee of employees) {
+                  let employeeUnavailDatesResolved =
+                    await this.unavailableDateService
+                      .getUnavailableDateByUid(employee.userId)
+                      .toPromise();
+                  let employeeUnavailDates: any[] = [];
+                  for (let item of employeeUnavailDatesResolved.unavailableDate) {
+                    employeeUnavailDates.push({
+                      userId: employee.userId,
+                      unavailableDates: item.date,
+                    });
+                  }
+                  let updatedEmployee = {
+                    ...employee,
+                    unavailableDates: employeeUnavailDates,
+                  };
+                  this.employees.push(updatedEmployee);
+                }
                 this.isUsersFetched = true;
                 if (
                   this.isUserFetched &&
@@ -132,6 +167,8 @@ export class CreateNewMeetingComponent implements OnInit {
                 ) {
                   this.isLoading = false;
                 }
+                console.log('USER', this.user);
+                console.log('EMPLOYEE', this.employees);
               },
               (error) => {}
             );
@@ -191,6 +228,8 @@ export class CreateNewMeetingComponent implements OnInit {
     });
   }
 
+  updateDatePicker(): void {}
+
   async assignMeetingEmployee(employee: NgForm): Promise<void> {
     const assignedEmployee = employee.value.selectedMeetingEmployees;
     if (
@@ -213,7 +252,7 @@ export class CreateNewMeetingComponent implements OnInit {
 
     employee.resetForm();
 
-    await this.generateNewRecommendation(this.assign);
+    await await this.generateNewRecommendation(this.assign);
   }
 
   // Does this use a form to implement responsiveness?
