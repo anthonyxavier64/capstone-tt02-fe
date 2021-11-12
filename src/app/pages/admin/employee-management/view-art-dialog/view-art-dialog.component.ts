@@ -105,7 +105,7 @@ export class ViewArtComponent implements OnInit {
   }
   fetApprovalStyle() {
     if (this.artTests[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
-      if (this.artTests[0].isPositive) {
+      if (this.artTests[0].isPositive && this.artTests[0].documentApprovalStatus.toUpperCase() !== "REJECTED") {
         return "red";
       }
       return "green";

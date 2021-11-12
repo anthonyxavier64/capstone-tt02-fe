@@ -103,7 +103,7 @@ export class CovidDeclarationsComponent implements OnInit {
   }
   fetApprovalStatus() {
     if (this.fetSubmissions[0]?.documentApprovalStatus.toUpperCase() === 'APPROVED') {
-      if (this.fetSubmissions[0].isPositive) {
+      if (this.fetSubmissions[0].isPositive && this.fetSubmissions[0].documentApprovalStatus.toUpperCase() !== "REJECTED") {
         return 'red';
       }
       return 'green';
@@ -121,7 +121,7 @@ export class CovidDeclarationsComponent implements OnInit {
   }
   mcApprovalStatus() {
     const today = new Date();
-    if ((today >= new Date(this.mcs[0]?.startDate)) && (today <= new Date(this.mcs[0]?.endDate))) {
+    if (this.mcs[0]?.documentApprovalStatus !== 'REJECTED' && (today >= new Date(this.mcs[0]?.startDate)) && (today <= new Date(this.mcs[0]?.endDate))) {
       if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'APPROVED') {
         return 'red';
       } else if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'PENDING') {
@@ -133,7 +133,7 @@ export class CovidDeclarationsComponent implements OnInit {
   renderMcStatus() {
     const today = new Date();
     //console.log(today);
-    if ((today >= new Date(this.mcs[0]?.startDate)) && (today <= new Date(this.mcs[0]?.endDate))) {
+    if (this.mcs[0]?.documentApprovalStatus !== 'REJECTED' && (today >= new Date(this.mcs[0]?.startDate)) && (today <= new Date(this.mcs[0]?.endDate))) {
       if (this.mcs[0]?.covidDocumentType === 'SHN_MEDICAL_CERTIFICATE') {
         return 'On stay home notice';
       } else {

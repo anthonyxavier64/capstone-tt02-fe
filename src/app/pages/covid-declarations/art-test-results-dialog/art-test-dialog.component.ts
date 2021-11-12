@@ -143,7 +143,7 @@ export class ArtDialogComponent implements OnInit {
   }
   renderFetApprovalStatus() {
     if (this.artTests[0]) {
-      if (this.artTests[0].isPositive) {
+      if (this.artTests[0].isPositive && this.artTests[0].documentApprovalStatus.toUpperCase() !== "REJECTED") {
         return 'Positive';
       }
       return 'Negative';
