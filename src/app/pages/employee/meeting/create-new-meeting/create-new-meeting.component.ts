@@ -743,7 +743,39 @@ export class CreateNewMeetingComponent implements OnInit {
         } else if (this.alternateWorkTeamsConfig === 'BIWEEKLY') {
           return false;
         } else if (this.alternateWorkTeamsConfig === 'MONTHLY') {
-          return false;
+          if (
+            this.assignedPhysicalEmployees.length > 0 &&
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'A'
+          ) {
+            let month = d.getMonth();
+            if (month % 2 === 0 && day !== 0 && day !== 6) {
+              let dateToEnable = d.toDateString();
+              return (
+                this.datesToDisable.find(
+                  (item) => item.toDateString() === d.toDateString()
+                ) === undefined && dateToEnable === d.toDateString()
+              );
+            } else {
+              return false;
+            }
+          } else if (
+            this.assignedPhysicalEmployees.length > 0 &&
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'B'
+          ) {
+            let month = d.getMonth();
+            if (month % 2 === 1 && day !== 0 && day !== 6) {
+              let dateToEnable = d.toDateString();
+              return (
+                this.datesToDisable.find(
+                  (item) => item.toDateString() === d.toDateString()
+                ) === undefined && dateToEnable === d.toDateString()
+              );
+            } else {
+              return false;
+            }
+          } else {
+            return false;
+          }
         } else {
           return (
             day !== 0 &&
