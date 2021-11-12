@@ -163,7 +163,11 @@ export class ShnDeclarationDialogComponent implements OnInit {
   renderMcStatus() {
     const today = new Date();
     //console.log(today);
-    if (this.mcs[0]?.documentApprovalStatus !== 'REJECTED' && (today >= new Date(this.mcs[0]?.startDate)) && (today <= new Date(this.mcs[0]?.endDate))) {
+    const endDate = new Date(this.mcs[0]?.endDate);
+    endDate.setHours(23, 59, 59);
+    console.log(endDate);
+
+    if (this.mcs[0]?.documentApprovalStatus !== 'REJECTED' && (today >= new Date(this.mcs[0]?.startDate)) && (today <= endDate)) {
       if (this.mcs[0]?.covidDocumentType === 'SHN_MEDICAL_CERTIFICATE') {
         return 'On stay home notice';
       } else {
@@ -174,7 +178,9 @@ export class ShnDeclarationDialogComponent implements OnInit {
   }
   mcApprovalStatus() {
     const today = new Date();
-    if (this.mcs[0]?.documentApprovalStatus !== 'REJECTED' && (today >= new Date(this.mcs[0]?.startDate)) && (today <= new Date(this.mcs[0]?.endDate))) {
+    const endDate = new Date(this.mcs[0]?.endDate);
+    endDate.setHours(23, 59, 59);
+    if (this.mcs[0]?.documentApprovalStatus !== 'REJECTED' && (today >= new Date(this.mcs[0]?.startDate)) && (today <= endDate)) {
       if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'APPROVED') {
         return 'red';
       } else if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'PENDING') {
