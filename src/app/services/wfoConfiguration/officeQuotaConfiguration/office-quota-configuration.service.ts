@@ -1,8 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.dev';
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
 import { handleError } from '../../services-util';
 
 const httpOptions = {
@@ -14,7 +16,7 @@ const httpOptions = {
 })
 export class OfficeQuotaConfigurationService {
   baseUrl: string = `${environment.API_REST_URL}/officeQuotaConfiguration`;
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   createOfficeQuotaConfiguration(
     officeQuotaConfiguration: any

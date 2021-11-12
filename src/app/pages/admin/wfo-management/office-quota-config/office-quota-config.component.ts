@@ -1,10 +1,12 @@
+import { MessageService } from 'primeng/api';
+import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
+import { OfficeQuotaConfigurationService } from 'src/app/services/wfoConfiguration/officeQuotaConfiguration/office-quota-configuration.service';
+
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MessageService } from 'primeng/api';
-import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
-import { OfficeQuotaConfigurationService } from 'src/app/services/wfoConfiguration/officeQuotaConfiguration/office-quota-configuration.service';
+
 import { UserService } from '../../../../services/user/user.service';
 import { EditExceptionDialogComponent } from './edit-exception-dialog/edit-exception-dialog.component';
 
@@ -21,12 +23,13 @@ export interface exceptionData {
   providers: [MessageService],
 })
 export class OfficeQuotaConfigComponent implements OnInit {
+  user: any;
   company: any | null;
   officeQuotaConfigId: number;
   officeQuotaConfig: any | null;
   isLoading: boolean;
 
-  users: any | null;
+  users: any[] = [];
   exceptions: any | null;
   selectedException: any | null;
   selectedExceptionWfoMonthlyAllocation: number;
@@ -43,14 +46,15 @@ export class OfficeQuotaConfigComponent implements OnInit {
     private officeQuotaConfigurationService: OfficeQuotaConfigurationService,
     private userService: UserService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.isLoading = true;
     const currentUser = localStorage.getItem('currentUser');
 
     if (currentUser) {
-      const { companyId } = JSON.parse(currentUser);
+      this.user = JSON.parse(currentUser);
+      const { companyId } = this.user;
       this.companyDetailsService.getCompanyById(companyId).subscribe(
         (result) => {
           this.company = result.company;
@@ -200,6 +204,15 @@ export class OfficeQuotaConfigComponent implements OnInit {
     });
   }
 
+  updateUserWFoAllowance(newUser: any) {
+    console.log(newUser);
+    if (this.user.wfoMonthlyAllocation < newUser.wfoMonthlyAllocation) {
+
+    }
+    this.user = newUser;
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
+  }
+
   deleteException(selectedException: any) {
     //Logic to store an array of deletedExceptions to reset deletedExceptions wfoMonthlyAllocation to default in update
     const indexToRemove = this.exceptions.indexOf(selectedException);
@@ -228,7 +241,11 @@ export class OfficeQuotaConfigComponent implements OnInit {
       this.users.splice(indexToRemoveFromUsers, 1);
       this.userService
         .updateUserDetailsByUserId(exception.userId, exception)
-        .subscribe((response) => {});
+        .subscribe((response) => {
+          if (exception.userId === this.user.userId) {
+            this.updateUserWFoAllowance(response.user);
+          }
+        });
     }
 
     //Logic to set default wfoMonthlyAllocation for users
@@ -239,7 +256,11 @@ export class OfficeQuotaConfigComponent implements OnInit {
       };
       this.userService
         .updateUserDetailsByUserId(user.userId, updatedUser)
-        .subscribe((response) => {});
+        .subscribe((response) => {
+          if (user.userId === this.user.userId) {
+            this.updateUserWFoAllowance(response.user);
+          }
+        });
     }
 
     this.officeQuotaConfigurationService
@@ -292,14 +313,30 @@ export class OfficeQuotaConfigComponent implements OnInit {
       numDaysAllowedPerMonth: formValues.numDaysAllowedPerMonth,
       exceptions: this.exceptions,
     };
-
+    //Logic to set default wfoMonthlyAllocation for users
+    for (let user of this.users) {
+      const updatedUser = {
+        ...user,
+        wfoMonthlyAllocation: formValues.numDaysAllowedPerMonth,
+      };
+      this.userService
+        .updateUserDetailsByUserId(user.userId, updatedUser)
+        .subscribe((response) => {
+          if (user.userId === this.user.userId) {
+            this.updateUserWFoAllowance(response.user);
+          }
+        });
+    }
     //Logic to update exception wfoMonthlyAllocation in the backend
     for (let exception of this.exceptions) {
       this.userService
         .updateUserDetailsByUserId(exception.userId, exception)
-        .subscribe((response) => {});
+        .subscribe((response) => {
+          if (exception.userId === this.user.userId) {
+            this.updateUserWFoAllowance(response.user);
+          }
+        });
     }
-
     //Logic to reset the wfoMonthlyAllocation for deletedException
     for (let deletedException of this.deletedExceptions) {
       const updatedDeletedException = {
@@ -311,7 +348,11 @@ export class OfficeQuotaConfigComponent implements OnInit {
           deletedException.userId,
           updatedDeletedException
         )
-        .subscribe((response) => {});
+        .subscribe((response) => {
+          if (deletedException.userId === this.user.userId) {
+            this.updateUserWFoAllowance(response.user);
+          }
+        });
     }
 
     this.officeQuotaConfigurationService
