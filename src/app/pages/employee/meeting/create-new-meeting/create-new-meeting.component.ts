@@ -294,19 +294,30 @@ export class CreateNewMeetingComponent implements OnInit {
         (item) => item.userId === assignedEmployee.userId
       )
     ) {
-      // handle change in droplist option disabling
-      let isEmployeeDisabled = assignedEmployee.isInfected
-        ? true
-        : this.assignedPhysicalEmployees[0]
-        ? this.assignedPhysicalEmployees[0].alternateWfoTeam ===
-          assignedEmployee.alternateWfoTeam
-          ? false
-          : true
-        : false;
-      assignedEmployee = {
-        ...assignedEmployee,
-        isDisabled: isEmployeeDisabled,
-      };
+      if (
+        this.company.alternateWorkTeamsConfigurationId !== null &&
+        this.company.wfoArrangement === 'ALTERNATE_WORK_TEAMS'
+      ) {
+        // handle change in droplist option disabling
+        let isEmployeeDisabled = assignedEmployee.isInfected
+          ? true
+          : this.assignedPhysicalEmployees[0]
+          ? this.assignedPhysicalEmployees[0].alternateWfoTeam ===
+            assignedEmployee.alternateWfoTeam
+            ? false
+            : true
+          : false;
+        assignedEmployee = {
+          ...assignedEmployee,
+          isDisabled: isEmployeeDisabled,
+        };
+      } else {
+        let isEmployeeDisabled = assignedEmployee.isInfected;
+        assignedEmployee = {
+          ...assignedEmployee,
+          isDisabled: isEmployeeDisabled,
+        };
+      }
       this.assignedMeetingEmployees.push(assignedEmployee);
       const indexToRemove = this.employees.findIndex(
         (item) => item.userId === assignedEmployee.userId
@@ -343,13 +354,18 @@ export class CreateNewMeetingComponent implements OnInit {
       );
       this.assignedMeetingEmployees.splice(indexToRemove, 1);
 
-      // handle change in droplist option disabling
-      for (let i = 0; i < this.assignedMeetingEmployees.length; i++) {
-        if (
-          this.assignedMeetingEmployees[i].alternateWfoTeam !==
-          this.assignedPhysicalEmployees[0].alternateWfoTeam
-        ) {
-          this.assignedMeetingEmployees[i].isDisabled = true;
+      if (
+        this.company.alternateWorkTeamsConfigurationId !== null &&
+        this.company.wfoArrangement === 'ALTERNATE_WORK_TEAMS'
+      ) {
+        // handle change in droplist option disabling
+        for (let i = 0; i < this.assignedMeetingEmployees.length; i++) {
+          if (
+            this.assignedMeetingEmployees[i].alternateWfoTeam !==
+            this.assignedPhysicalEmployees[0].alternateWfoTeam
+          ) {
+            this.assignedMeetingEmployees[i].isDisabled = true;
+          }
         }
       }
     } else {
@@ -408,38 +424,53 @@ export class CreateNewMeetingComponent implements OnInit {
 
     // handle change in droplist option disabling
     if (user.userId !== this.user.userId) {
-      user = {
-        ...user,
-        isDisabled: false,
-      };
+      if (
+        this.company.alternateWorkTeamsConfigurationId !== null &&
+        this.company.wfoArrangement === 'ALTERNATE_WORK_TEAMS'
+      ) {
+        user = {
+          ...user,
+          isDisabled: false,
+        };
+      }
       this.employees.push(user);
     } else {
-      user = {
-        ...user,
-        isDisabled: false,
-      };
+      if (
+        this.company.alternateWorkTeamsConfigurationId !== null &&
+        this.company.wfoArrangement === 'ALTERNATE_WORK_TEAMS'
+      ) {
+        user = {
+          ...user,
+          isDisabled: false,
+        };
+      }
       this.assignedMeetingEmployees.push(user);
     }
 
-    // handle change in droplist option disabling
-    if (this.assignedMeetingEmployees.length !== 0) {
-      for (let i = 0; i < this.assignedMeetingEmployees.length; i++) {
-        let employee = this.assignedMeetingEmployees[i];
-        let isEmployeeDisabled = employee.isInfected
-          ? true
-          : this.assignedPhysicalEmployees[0]
-          ? this.assignedPhysicalEmployees[0].alternateWfoTeam ===
-            employee.alternateWfoTeam
-            ? false
-            : true
-          : false;
-        this.assignedMeetingEmployees[i].isDisabled = isEmployeeDisabled;
-      }
-    } else {
-      for (let i = 0; i < this.assignedMeetingEmployees.length; i++) {
-        let employee = this.assignedMeetingEmployees[i];
-        let isEmployeeDisabled = employee.isInfected;
-        this.assignedMeetingEmployees[0].isDisabled = isEmployeeDisabled;
+    if (
+      this.company.alternateWorkTeamsConfigurationId !== null &&
+      this.company.wfoArrangement === 'ALTERNATE_WORK_TEAMS'
+    ) {
+      // handle change in droplist option disabling
+      if (this.assignedMeetingEmployees.length !== 0) {
+        for (let i = 0; i < this.assignedMeetingEmployees.length; i++) {
+          let employee = this.assignedMeetingEmployees[i];
+          let isEmployeeDisabled = employee.isInfected
+            ? true
+            : this.assignedPhysicalEmployees[0]
+            ? this.assignedPhysicalEmployees[0].alternateWfoTeam ===
+              employee.alternateWfoTeam
+              ? false
+              : true
+            : false;
+          this.assignedMeetingEmployees[i].isDisabled = isEmployeeDisabled;
+        }
+      } else {
+        for (let i = 0; i < this.assignedMeetingEmployees.length; i++) {
+          let employee = this.assignedMeetingEmployees[i];
+          let isEmployeeDisabled = employee.isInfected;
+          this.assignedMeetingEmployees[0].isDisabled = isEmployeeDisabled;
+        }
       }
     }
 
@@ -461,16 +492,26 @@ export class CreateNewMeetingComponent implements OnInit {
 
     // handle change in droplist option disabling
     if (user.userId !== this.user.userId) {
-      user = {
-        ...user,
-        isDisabled: false,
-      };
+      if (
+        this.company.alternateWorkTeamsConfigurationId !== null &&
+        this.company.wfoArrangement === 'ALTERNATE_WORK_TEAMS'
+      ) {
+        user = {
+          ...user,
+          isDisabled: false,
+        };
+      }
       this.employees.push(user);
     } else {
-      user = {
-        ...user,
-        isDisabled: false,
-      };
+      if (
+        this.company.alternateWorkTeamsConfigurationId !== null &&
+        this.company.wfoArrangement === 'ALTERNATE_WORK_TEAMS'
+      ) {
+        user = {
+          ...user,
+          isDisabled: false,
+        };
+      }
       this.assignedMeetingEmployees.push(user);
     }
 
@@ -484,11 +525,16 @@ export class CreateNewMeetingComponent implements OnInit {
     );
     this.assignedMeetingEmployees.splice(indexToRemove, 1);
 
-    // handle change in droplist option disabling
-    user = {
-      ...user,
-      isDisabled: false,
-    };
+    if (
+      this.company.alternateWorkTeamsConfigurationId !== null &&
+      this.company.wfoArrangement === 'ALTERNATE_WORK_TEAMS'
+    ) {
+      // handle change in droplist option disabling
+      user = {
+        ...user,
+        isDisabled: false,
+      };
+    }
     this.employees.push(user);
 
     await this.updateDatePicker(user.userId, 'UNASSIGN');
@@ -589,19 +635,239 @@ export class CreateNewMeetingComponent implements OnInit {
       if (this.datesToDisable.length === 0) {
         if (this.alternateWorkTeamsConfig === 'DAILY') {
           if (
-            this.assignedPhysicalEmployees.length > 1 &&
-            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'A'
+            this.assignedPhysicalEmployees.length > 0 &&
+            this.assignedPhysicalEmployees[0]?.alternateWfoTeam === 'A'
           ) {
             return (
               day !== 0 && day !== 1 && day !== 3 && day !== 5 && day !== 6
             );
           } else if (
-            this.assignedPhysicalEmployees.length > 1 &&
+            this.assignedPhysicalEmployees.length > 0 &&
             this.assignedPhysicalEmployees[0].alternateWfoTeam === 'B'
           ) {
             return day !== 0 && day !== 2 && day !== 4 && day !== 6;
           } else {
-            return false;
+            return day !== 0 && day !== 6;
+          }
+        } else if (this.alternateWorkTeamsConfig === 'WEEKLY') {
+          if (
+            this.assignedPhysicalEmployees.length > 0 &&
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'B'
+          ) {
+            // To factor in leap years
+            let numDaysInYear =
+              (d.getFullYear() % 4 === 0 && d.getFullYear() % 100 > 0) ||
+              d.getFullYear() % 400 == 0
+                ? 366
+                : 365;
+
+            if (numDaysInYear === 365) {
+              // non leap year logic
+              let start = new Date(d.getFullYear(), 0, 2);
+              let diff = d.getTime() - start.getTime();
+              let oneDay = 1000 * 60 * 60 * 24;
+              let dayNumber = Math.floor(diff / oneDay);
+              let weekNumber = Math.floor(dayNumber / 7);
+              if (weekNumber % 2 !== 0 && day !== 0 && day !== 6) {
+                console.log('HERE');
+                const dateToEnable = d.toDateString();
+                return dateToEnable !== d.toDateString();
+              } else {
+                return day !== 0 && day !== 6;
+              }
+            } else {
+              // leap year logic
+              let start = new Date(d.getFullYear(), 0, 1);
+              let diff = d.getTime() - start.getTime();
+              let oneDay = 1000 * 60 * 60 * 24;
+              let dayNumber = Math.floor(diff / oneDay);
+              let weekNumber = Math.floor(dayNumber / 7);
+              if (weekNumber % 2 !== 0 && day !== 0 && day !== 6) {
+                const dateToEnable = d.toDateString();
+                return dateToEnable !== d.toDateString();
+              } else {
+                return day !== 0 && day !== 6;
+              }
+            }
+          } else if (
+            this.assignedPhysicalEmployees.length > 0 &&
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'A'
+          ) {
+            // To factor in leap years
+            let numDaysInYear =
+              (d.getFullYear() % 4 === 0 && d.getFullYear() % 100 > 0) ||
+              d.getFullYear() % 400 == 0
+                ? 366
+                : 365;
+
+            if (numDaysInYear === 365) {
+              // non leap year logic
+              let start = new Date(d.getFullYear(), 0, 2);
+              let diff = d.getTime() - start.getTime();
+              let oneDay = 1000 * 60 * 60 * 24;
+              let dayNumber = Math.floor(diff / oneDay);
+              let weekNumber = Math.floor(dayNumber / 7);
+              if (weekNumber % 2 !== 1 && day !== 0 && day !== 6) {
+                const dateToEnable = d.toDateString();
+                return dateToEnable !== d.toDateString();
+              } else {
+                return day !== 0 && day !== 6;
+              }
+            } else {
+              // leap year logic
+              let start = new Date(d.getFullYear(), 0, 1);
+              let diff = d.getTime() - start.getTime();
+              let oneDay = 1000 * 60 * 60 * 24;
+              let dayNumber = Math.floor(diff / oneDay);
+              let weekNumber = Math.floor(dayNumber / 7);
+              if (weekNumber % 2 !== 1 && day !== 0 && day !== 6) {
+                const dateToEnable = d.toDateString();
+                return dateToEnable !== d.toDateString();
+              } else {
+                return day !== 0 && day !== 6;
+              }
+            }
+          } else {
+            return day !== 0 && day !== 6;
+          }
+        } else if (this.alternateWorkTeamsConfig === 'BIWEEKLY') {
+          let month = d.getMonth();
+
+          //num of weeks in the month
+          let firstOfMonth = new Date(d.getFullYear(), month, 1);
+          let dayOfFirst = firstOfMonth.getDay() || 6;
+          dayOfFirst = dayOfFirst === 1 ? 0 : dayOfFirst;
+          if (dayOfFirst) {
+            dayOfFirst--;
+          }
+          let diff = 7 - dayOfFirst;
+          let lastOfMonth = new Date(d.getFullYear(), month, 0);
+          let lastDate = lastOfMonth.getDate();
+          if (lastOfMonth.getDay() === 1) {
+            diff--;
+          }
+          let weeksInMonth = Math.ceil((lastDate - diff) / 7) + 1;
+
+          if (
+            this.assignedPhysicalEmployees.length > 0 &&
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'B'
+          ) {
+            if (month % 2 === 0 && day !== 0 && day !== 6) {
+              let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
+              let offsetDate = d.getDate() + firstWeekday - 1;
+              let weekNumber = Math.floor(offsetDate / 7);
+
+              if (weeksInMonth === 6) {
+                if (weekNumber === 0 || weekNumber === 1 || weekNumber === 2) {
+                  let dateToEnable = d.toDateString();
+                  return dateToEnable !== d.toDateString();
+                } else {
+                  return day !== 0 && day !== 6;
+                }
+              } else {
+                if (weekNumber === 0 || weekNumber === 1) {
+                  let dateToEnable = d.toDateString();
+                  return dateToEnable !== d.toDateString();
+                } else {
+                  return day !== 0 && day !== 6;
+                }
+              }
+            } else if (month % 2 === 1 && day !== 0 && day !== 6) {
+              let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
+              let offsetDate = d.getDate() + firstWeekday - 1;
+              let weekNumber = Math.floor(offsetDate / 7);
+              if (weeksInMonth === 6) {
+                if (weekNumber === 3 || weekNumber === 4 || weekNumber === 5) {
+                  let dateToEnable = d.toDateString();
+                  return dateToEnable !== d.toDateString();
+                } else {
+                  return day !== 0 && day !== 6;
+                }
+              } else {
+                if (weekNumber === 3 || weekNumber === 4 || weekNumber === 5) {
+                  let dateToEnable = d.toDateString();
+                  return dateToEnable !== d.toDateString();
+                } else {
+                  return day !== 0 && day !== 6;
+                }
+              }
+            } else {
+              return day !== 0 && day !== 6;
+            }
+          } else if (
+            this.assignedPhysicalEmployees.length > 0 &&
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'A'
+          ) {
+            if (month % 2 === 1 && day !== 0 && day !== 6) {
+              let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
+              let offsetDate = d.getDate() + firstWeekday - 1;
+              let weekNumber = Math.floor(offsetDate / 7);
+
+              if (weeksInMonth === 6) {
+                if (weekNumber === 0 || weekNumber === 1 || weekNumber === 2) {
+                  let dateToEnable = d.toDateString();
+                  return dateToEnable !== d.toDateString();
+                } else {
+                  return day !== 0 && day !== 6;
+                }
+              } else {
+                if (weekNumber === 0 || weekNumber === 1) {
+                  let dateToEnable = d.toDateString();
+                  return dateToEnable !== d.toDateString();
+                } else {
+                  return day !== 0 && day !== 6;
+                }
+              }
+            } else if (month % 2 === 0 && day !== 0 && day !== 6) {
+              let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
+              let offsetDate = d.getDate() + firstWeekday - 1;
+              let weekNumber = Math.floor(offsetDate / 7);
+              if (weeksInMonth === 6) {
+                if (weekNumber === 0 || weekNumber === 1 || weekNumber === 2) {
+                  let dateToEnable = d.toDateString();
+                  return dateToEnable === d.toDateString();
+                } else {
+                  return false;
+                }
+              } else {
+                if (weekNumber === 2 || weekNumber === 3 || weekNumber === 4) {
+                  let dateToEnable = d.toDateString();
+                  return dateToEnable !== d.toDateString();
+                } else {
+                  return day !== 0 && day !== 6;
+                }
+              }
+            } else {
+              return day !== 0 && day !== 6;
+            }
+          } else {
+            return day !== 0 && day !== 6;
+          }
+        } else if (this.alternateWorkTeamsConfig === 'MONTHLY') {
+          if (
+            this.assignedPhysicalEmployees.length > 0 &&
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'B'
+          ) {
+            let month = d.getMonth();
+            if (month % 2 === 0 && day !== 0 && day !== 6) {
+              let dateToEnable = d.toDateString();
+              return dateToEnable !== d.toDateString();
+            } else {
+              return day !== 0 && day !== 6;
+            }
+          } else if (
+            this.assignedPhysicalEmployees.length > 0 &&
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'A'
+          ) {
+            let month = d.getMonth();
+            if (month % 2 === 1 && day !== 0 && day !== 6) {
+              let dateToEnable = d.toDateString();
+              return dateToEnable !== d.toDateString();
+            } else {
+              return day !== 0 && day !== 6;
+            }
+          } else {
+            return day !== 0 && day !== 6;
           }
         } else {
           return day !== 0 && day !== 6;
@@ -647,52 +913,6 @@ export class CreateNewMeetingComponent implements OnInit {
         } else if (this.alternateWorkTeamsConfig === 'WEEKLY') {
           if (
             this.assignedPhysicalEmployees.length > 0 &&
-            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'A'
-          ) {
-            // To factor in leap years
-            let numDaysInYear =
-              (d.getFullYear() % 4 === 0 && d.getFullYear() % 100 > 0) ||
-              d.getFullYear() % 400 == 0
-                ? 366
-                : 365;
-
-            if (numDaysInYear === 365) {
-              // non leap year logic
-              let start = new Date(d.getFullYear(), 0, 2);
-              let diff = d.getTime() - start.getTime();
-              let oneDay = 1000 * 60 * 60 * 24;
-              let dayNumber = Math.floor(diff / oneDay);
-              let weekNumber = Math.floor(dayNumber / 7);
-              if (weekNumber % 2 !== 0 && day !== 0 && day !== 6) {
-                const dateToEnable = d.toDateString();
-                return (
-                  this.datesToDisable.find(
-                    (item) => item.toDateString() === d.toDateString()
-                  ) === undefined && dateToEnable === d.toDateString()
-                );
-              } else {
-                return false;
-              }
-            } else {
-              // leap year logic
-              let start = new Date(d.getFullYear(), 0, 1);
-              let diff = d.getTime() - start.getTime();
-              let oneDay = 1000 * 60 * 60 * 24;
-              let dayNumber = Math.floor(diff / oneDay);
-              let weekNumber = Math.floor(dayNumber / 7);
-              if (weekNumber % 2 !== 0 && day !== 0 && day !== 6) {
-                const dateToEnable = d.toDateString();
-                return (
-                  this.datesToDisable.find(
-                    (item) => item.toDateString() === d.toDateString()
-                  ) === undefined && dateToEnable === d.toDateString()
-                );
-              } else {
-                return false;
-              }
-            }
-          } else if (
-            this.assignedPhysicalEmployees.length > 0 &&
             this.assignedPhysicalEmployees[0].alternateWfoTeam === 'B'
           ) {
             // To factor in leap years
@@ -709,15 +929,80 @@ export class CreateNewMeetingComponent implements OnInit {
               let oneDay = 1000 * 60 * 60 * 24;
               let dayNumber = Math.floor(diff / oneDay);
               let weekNumber = Math.floor(dayNumber / 7);
+              if (weekNumber % 2 !== 0 && day !== 0 && day !== 6) {
+                console.log('HERE');
+                const dateToEnable = d.toDateString();
+                return (
+                  this.datesToDisable.find(
+                    (item) => item.toDateString() === d.toDateString()
+                  ) === undefined && dateToEnable !== d.toDateString()
+                );
+              } else {
+                return (
+                  day !== 0 &&
+                  day !== 6 &&
+                  this.datesToDisable.find(
+                    (item) => item.toDateString() === d.toDateString()
+                  ) === undefined
+                );
+              }
+            } else {
+              // leap year logic
+              let start = new Date(d.getFullYear(), 0, 1);
+              let diff = d.getTime() - start.getTime();
+              let oneDay = 1000 * 60 * 60 * 24;
+              let dayNumber = Math.floor(diff / oneDay);
+              let weekNumber = Math.floor(dayNumber / 7);
+              if (weekNumber % 2 !== 0 && day !== 0 && day !== 6) {
+                const dateToEnable = d.toDateString();
+                return (
+                  this.datesToDisable.find(
+                    (item) => item.toDateString() === d.toDateString()
+                  ) === undefined && dateToEnable !== d.toDateString()
+                );
+              } else {
+                return (
+                  day !== 0 &&
+                  day !== 6 &&
+                  this.datesToDisable.find(
+                    (item) => item.toDateString() === d.toDateString()
+                  ) === undefined
+                );
+              }
+            }
+          } else if (
+            this.assignedPhysicalEmployees.length > 0 &&
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'A'
+          ) {
+            // To factor in leap years
+            let numDaysInYear =
+              (d.getFullYear() % 4 === 0 && d.getFullYear() % 100 > 0) ||
+              d.getFullYear() % 400 == 0
+                ? 366
+                : 365;
+
+            if (numDaysInYear === 365) {
+              // non leap year logic
+              let start = new Date(d.getFullYear(), 0, 2);
+              let diff = d.getTime() - start.getTime();
+              let oneDay = 1000 * 60 * 60 * 24;
+              let dayNumber = Math.floor(diff / oneDay);
+              let weekNumber = Math.floor(dayNumber / 7);
               if (weekNumber % 2 !== 1 && day !== 0 && day !== 6) {
                 const dateToEnable = d.toDateString();
                 return (
                   this.datesToDisable.find(
                     (item) => item.toDateString() === d.toDateString()
-                  ) === undefined && dateToEnable === d.toDateString()
+                  ) === undefined && dateToEnable !== d.toDateString()
                 );
               } else {
-                return false;
+                return (
+                  day !== 0 &&
+                  day !== 6 &&
+                  this.datesToDisable.find(
+                    (item) => item.toDateString() === d.toDateString()
+                  ) === undefined
+                );
               }
             } else {
               // leap year logic
@@ -731,14 +1016,26 @@ export class CreateNewMeetingComponent implements OnInit {
                 return (
                   this.datesToDisable.find(
                     (item) => item.toDateString() === d.toDateString()
-                  ) === undefined && dateToEnable === d.toDateString()
+                  ) === undefined && dateToEnable !== d.toDateString()
                 );
               } else {
-                return false;
+                return (
+                  day !== 0 &&
+                  day !== 6 &&
+                  this.datesToDisable.find(
+                    (item) => item.toDateString() === d.toDateString()
+                  ) === undefined
+                );
               }
             }
           } else {
-            return false;
+            return (
+              day !== 0 &&
+              day !== 6 &&
+              this.datesToDisable.find(
+                (item) => item.toDateString() === d.toDateString()
+              ) === undefined
+            );
           }
         } else if (this.alternateWorkTeamsConfig === 'BIWEEKLY') {
           let month = d.getMonth();
@@ -760,7 +1057,7 @@ export class CreateNewMeetingComponent implements OnInit {
 
           if (
             this.assignedPhysicalEmployees.length > 0 &&
-            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'A'
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'B'
           ) {
             if (month % 2 === 0 && day !== 0 && day !== 6) {
               let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
@@ -773,10 +1070,16 @@ export class CreateNewMeetingComponent implements OnInit {
                   return (
                     this.datesToDisable.find(
                       (item) => item.toDateString() === d.toDateString()
-                    ) === undefined && dateToEnable === d.toDateString()
+                    ) === undefined && dateToEnable !== d.toDateString()
                   );
                 } else {
-                  return false;
+                  return (
+                    day !== 0 &&
+                    day !== 6 &&
+                    this.datesToDisable.find(
+                      (item) => item.toDateString() === d.toDateString()
+                    ) === undefined
+                  );
                 }
               } else {
                 if (weekNumber === 0 || weekNumber === 1) {
@@ -784,10 +1087,16 @@ export class CreateNewMeetingComponent implements OnInit {
                   return (
                     this.datesToDisable.find(
                       (item) => item.toDateString() === d.toDateString()
-                    ) === undefined && dateToEnable === d.toDateString()
+                    ) === undefined && dateToEnable !== d.toDateString()
                   );
                 } else {
-                  return false;
+                  return (
+                    day !== 0 &&
+                    day !== 6 &&
+                    this.datesToDisable.find(
+                      (item) => item.toDateString() === d.toDateString()
+                    ) === undefined
+                  );
                 }
               }
             } else if (month % 2 === 1 && day !== 0 && day !== 6) {
@@ -800,29 +1109,47 @@ export class CreateNewMeetingComponent implements OnInit {
                   return (
                     this.datesToDisable.find(
                       (item) => item.toDateString() === d.toDateString()
-                    ) === undefined && dateToEnable === d.toDateString()
+                    ) === undefined && dateToEnable !== d.toDateString()
                   );
                 } else {
-                  return false;
+                  return (
+                    day !== 0 &&
+                    day !== 6 &&
+                    this.datesToDisable.find(
+                      (item) => item.toDateString() === d.toDateString()
+                    ) === undefined
+                  );
                 }
               } else {
-                if (weekNumber === 2 || weekNumber === 3 || weekNumber === 4) {
+                if (weekNumber === 3 || weekNumber === 4 || weekNumber === 5) {
                   let dateToEnable = d.toDateString();
                   return (
                     this.datesToDisable.find(
                       (item) => item.toDateString() === d.toDateString()
-                    ) === undefined && dateToEnable === d.toDateString()
+                    ) === undefined && dateToEnable !== d.toDateString()
                   );
                 } else {
-                  return false;
+                  return (
+                    day !== 0 &&
+                    day !== 6 &&
+                    this.datesToDisable.find(
+                      (item) => item.toDateString() === d.toDateString()
+                    ) === undefined
+                  );
                 }
               }
             } else {
-              return false;
+              return (
+                day !== 0 &&
+                day !== 6 &&
+                this.datesToDisable.find(
+                  (item) => item.toDateString() === d.toDateString()
+                ) === undefined
+              );
             }
           } else if (
             this.assignedPhysicalEmployees.length > 0 &&
-            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'B'
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'A'
           ) {
             if (month % 2 === 1 && day !== 0 && day !== 6) {
               let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
@@ -835,10 +1162,16 @@ export class CreateNewMeetingComponent implements OnInit {
                   return (
                     this.datesToDisable.find(
                       (item) => item.toDateString() === d.toDateString()
-                    ) === undefined && dateToEnable === d.toDateString()
+                    ) === undefined && dateToEnable !== d.toDateString()
                   );
                 } else {
-                  return false;
+                  return (
+                    day !== 0 &&
+                    day !== 6 &&
+                    this.datesToDisable.find(
+                      (item) => item.toDateString() === d.toDateString()
+                    ) === undefined
+                  );
                 }
               } else {
                 if (weekNumber === 0 || weekNumber === 1) {
@@ -846,10 +1179,16 @@ export class CreateNewMeetingComponent implements OnInit {
                   return (
                     this.datesToDisable.find(
                       (item) => item.toDateString() === d.toDateString()
-                    ) === undefined && dateToEnable === d.toDateString()
+                    ) === undefined && dateToEnable !== d.toDateString()
                   );
                 } else {
-                  return false;
+                  return (
+                    day !== 0 &&
+                    day !== 6 &&
+                    this.datesToDisable.find(
+                      (item) => item.toDateString() === d.toDateString()
+                    ) === undefined
+                  );
                 }
               }
             } else if (month % 2 === 0 && day !== 0 && day !== 6) {
@@ -857,7 +1196,7 @@ export class CreateNewMeetingComponent implements OnInit {
               let offsetDate = d.getDate() + firstWeekday - 1;
               let weekNumber = Math.floor(offsetDate / 7);
               if (weeksInMonth === 6) {
-                if (weekNumber === 3 || weekNumber === 4 || weekNumber === 5) {
+                if (weekNumber === 0 || weekNumber === 1 || weekNumber === 2) {
                   let dateToEnable = d.toDateString();
                   return (
                     this.datesToDisable.find(
@@ -873,22 +1212,40 @@ export class CreateNewMeetingComponent implements OnInit {
                   return (
                     this.datesToDisable.find(
                       (item) => item.toDateString() === d.toDateString()
-                    ) === undefined && dateToEnable === d.toDateString()
+                    ) === undefined && dateToEnable !== d.toDateString()
                   );
                 } else {
-                  return false;
+                  return (
+                    day !== 0 &&
+                    day !== 6 &&
+                    this.datesToDisable.find(
+                      (item) => item.toDateString() === d.toDateString()
+                    ) === undefined
+                  );
                 }
               }
             } else {
-              return false;
+              return (
+                day !== 0 &&
+                day !== 6 &&
+                this.datesToDisable.find(
+                  (item) => item.toDateString() === d.toDateString()
+                ) === undefined
+              );
             }
           } else {
-            return false;
+            return (
+              day !== 0 &&
+              day !== 6 &&
+              this.datesToDisable.find(
+                (item) => item.toDateString() === d.toDateString()
+              ) === undefined
+            );
           }
         } else if (this.alternateWorkTeamsConfig === 'MONTHLY') {
           if (
             this.assignedPhysicalEmployees.length > 0 &&
-            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'A'
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'B'
           ) {
             let month = d.getMonth();
             if (month % 2 === 0 && day !== 0 && day !== 6) {
@@ -896,14 +1253,20 @@ export class CreateNewMeetingComponent implements OnInit {
               return (
                 this.datesToDisable.find(
                   (item) => item.toDateString() === d.toDateString()
-                ) === undefined && dateToEnable === d.toDateString()
+                ) === undefined && dateToEnable !== d.toDateString()
               );
             } else {
-              return false;
+              return (
+                day !== 0 &&
+                day !== 6 &&
+                this.datesToDisable.find(
+                  (item) => item.toDateString() === d.toDateString()
+                ) === undefined
+              );
             }
           } else if (
             this.assignedPhysicalEmployees.length > 0 &&
-            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'B'
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'A'
           ) {
             let month = d.getMonth();
             if (month % 2 === 1 && day !== 0 && day !== 6) {
@@ -911,13 +1274,25 @@ export class CreateNewMeetingComponent implements OnInit {
               return (
                 this.datesToDisable.find(
                   (item) => item.toDateString() === d.toDateString()
-                ) === undefined && dateToEnable === d.toDateString()
+                ) === undefined && dateToEnable !== d.toDateString()
               );
             } else {
-              return false;
+              return (
+                day !== 0 &&
+                day !== 6 &&
+                this.datesToDisable.find(
+                  (item) => item.toDateString() === d.toDateString()
+                ) === undefined
+              );
             }
           } else {
-            return false;
+            return (
+              day !== 0 &&
+              day !== 6 &&
+              this.datesToDisable.find(
+                (item) => item.toDateString() === d.toDateString()
+              ) === undefined
+            );
           }
         } else {
           return (
