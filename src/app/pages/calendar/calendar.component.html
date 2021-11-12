@@ -25,9 +25,9 @@
           <div *ngIf="isSelectorDisabled(day.date) && isWfoSelected(day.date)" class="cal-wfo-circle filled grey"></div>
           <div *ngIf="isSelectorDisabled(day.date) && !isWfoSelected(day.date)" class="cal-wfo-circle grey"></div>
           <div *ngIf="!isSelectorDisabled(day.date) && isWfoSelected(day.date)" class="cal-wfo-circle filled"
-            (click)="onUnselectDay(day.date)"></div>
+            (click)="onUnselectDay(day.date); $event.stopPropagation()"></div>
           <div *ngIf="!isSelectorDisabled(day.date) && !isWfoSelected(day.date)" class="cal-wfo-circle"
-            (click)="onSelectDay(day.date)"></div>
+            (click)="onSelectDay(day.date); $event.stopPropagation()"></div>
         </span>
       </div>
       <div *ngFor="let event of day.events; index as i">
