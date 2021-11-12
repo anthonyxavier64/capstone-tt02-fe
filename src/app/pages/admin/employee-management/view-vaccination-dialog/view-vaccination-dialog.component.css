@@ -60,7 +60,7 @@ h1 {
 .custom-file-input::before {
   background: rgba(255, 166, 135, 0.5);
   border-radius: 8px;
-  content: "Upload MC";
+  content: "Upload Vaccination Cert";
   cursor: pointer;
   font-size: 18px;
   font-weight: 400px;
@@ -91,9 +91,12 @@ h1 {
   height: 28px;
   margin-right: 8px;
 }
-.vaccination-status.vaccinated {
+.vaccination-status.green {
   background-color: green;
 }
-.vaccination-status.unvaccinated {
+.vaccination-status.red {
   background-color: #a50000;
+}
+.vaccination-status.grey {
+  background-color: grey;
 }

@@ -97,6 +97,9 @@ h1 {
 .art-status.red {
   background-color: #a50000;
 }
+.art-status.grey {
+  background-color: grey;
+}
 .selection-group {
   display: flex;
   flex-direction: row;

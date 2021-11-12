@@ -114,34 +114,34 @@ export class ShnDeclarationDialogComponent implements OnInit {
               }
             );
           });
+          this.user.latestMedicalCert = currentDate.toString();
+          const newSubmission = {
+            dateOfSubmission: currentDate,
+            remarks: this.remarks,
+            startDate: this.startDate,
+            endDate: this.endDate,
+            covidDocumentType: this.covidSubmissionType,
+            employeeId: this.user.userId,
+          };
+          this.covidDocumentSubmissionService
+            .createCovidDocumentSubmission(newSubmission)
+            .subscribe(
+              (response) => {
+                if (response.status) {
+                  console.log('success!', response.covidDocumentSubmission);
+                  this.covidDocumentSubmissions.unshift(response.covidDocumentSubmission);
+                  this.mcs.unshift(response.covidDocumentSubmission);
+                } else {
+                  console.log('A problem has occured', response);
+                }
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
         })
       )
       .subscribe();
-    this.user.latestMedicalCert = currentDate.toString();
-    const newSubmission = {
-      dateOfSubmission: currentDate,
-      remarks: this.remarks,
-      startDate: this.startDate,
-      endDate: this.endDate,
-      covidDocumentType: this.covidSubmissionType,
-      employeeId: this.user.userId,
-    };
-    this.covidDocumentSubmissionService
-      .createCovidDocumentSubmission(newSubmission)
-      .subscribe(
-        (response) => {
-          if (response.status) {
-            console.log('success!', response.covidDocumentSubmission);
-            this.covidDocumentSubmissions.push(response.covidDocumentSubmission);
-            this.mcs.push(response.covidDocumentSubmission);
-          } else {
-            console.log('A problem has occured', response);
-          }
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
   }
 
   onCloseClick() {
@@ -161,20 +161,26 @@ export class ShnDeclarationDialogComponent implements OnInit {
   }
 
   renderMcStatus() {
-    if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
-      const today = moment();
-      if (today.isAfter(this.mcs[0].startDate) && today.isBefore(this.mcs[0].endDate)) {
-        if (this.mcs[0].covidDocumentType === "SHN_MEDICAL_CERTIFICATE") {
-          return "On stay home notice";
-        } else {
-          return "On quarantine order";
-        }
+    const today = new Date();
+    //console.log(today);
+    if ((today >= new Date(this.mcs[0]?.startDate)) && (today <= new Date(this.mcs[0]?.endDate))) {
+      if (this.mcs[0]?.covidDocumentType === 'SHN_MEDICAL_CERTIFICATE') {
+        return 'On stay home notice';
+      } else {
+        return 'On quarantine order';
       }
     }
-    return "Fit for work";
+    return 'Fit for work';
   }
   mcApprovalStatus() {
-    if (this.renderMcStatus() === "Fit for work") return "green";
-    return "red";
+    const today = new Date();
+    if ((today >= new Date(this.mcs[0]?.startDate)) && (today <= new Date(this.mcs[0]?.endDate))) {
+      if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'APPROVED') {
+        return 'red';
+      } else if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'PENDING') {
+        return 'grey';
+      }
+    }
+    return 'green';
   }
 }

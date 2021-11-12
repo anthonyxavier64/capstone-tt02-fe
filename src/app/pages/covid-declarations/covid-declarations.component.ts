@@ -21,6 +21,7 @@ export class CovidDeclarationsComponent implements OnInit {
   user: any;
   covidDocumentSubmissions: any[];
   fetSubmissions: any[];
+  vaccinationCerts: any[]
   mcs: any[];
 
   artTestDialogRef: DynamicDialogRef;
@@ -38,6 +39,7 @@ export class CovidDeclarationsComponent implements OnInit {
   ) {
     this.covidDocumentSubmissions = [];
     this.fetSubmissions = [];
+    this.vaccinationCerts = [];
     this.mcs = [];
   }
 
@@ -53,9 +55,7 @@ export class CovidDeclarationsComponent implements OnInit {
             this.fetSubmissions = this.covidDocumentSubmissions
               .filter(
                 (item) =>
-                  item.covidDocumentType === 'ART_TEST_RESULT' &&
-                  item.documentApprovalStatus === 'APPROVED'
-              )
+                  item.covidDocumentType === 'ART_TEST_RESULT')
               .sort((a, b) => {
                 const dateA = moment(a.dateOfSubmission);
                 const dateB = moment(b.dateOfSubmission);
@@ -64,10 +64,15 @@ export class CovidDeclarationsComponent implements OnInit {
             this.mcs = this.covidDocumentSubmissions
               .filter(
                 (item) =>
-                  (item.covidDocumentType === 'SHN_MEDICAL_CERTIFICATE' ||
-                    item.covidDocumentType === 'QUARANTINE_ORDER') &&
-                  item.documentApprovalStatus === 'APPROVED'
-              )
+                (item.covidDocumentType === 'SHN_MEDICAL_CERTIFICATE' ||
+                  item.covidDocumentType === 'QUARANTINE_ORDER'))
+              .sort((a, b) => {
+                const dateA = moment(a.dateOfSubmission);
+                const dateB = moment(b.dateOfSubmission);
+                return dateB.diff(dateA);
+              });
+            this.vaccinationCerts = this.covidDocumentSubmissions
+              .filter((item) => item.covidDocumentType === 'PROOF_OF_VACCINATION')
               .sort((a, b) => {
                 const dateA = moment(a.dateOfSubmission);
                 const dateB = moment(b.dateOfSubmission);
@@ -80,48 +85,59 @@ export class CovidDeclarationsComponent implements OnInit {
         );
     }
   }
-
-  vaccinationStatus() {
-    if (this.user.isVaccinated) return 'green';
-    return 'red';
+  renderVaccinationStatus() {
+    if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
+      return "Vaccinated";
+    } else if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "PENDING") {
+      return "Pending approval";
+    }
+    return "Not Yet Vaccinated";
+  }
+  renderVaccinationStyle() {
+    if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
+      return "green";
+    } else if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "PENDING") {
+      return "grey";
+    }
+    return "red";
   }
   fetApprovalStatus() {
-    if (
-      this.fetSubmissions[0]?.documentApprovalStatus.toUpperCase() ===
-      'APPROVED'
-    ) {
+    if (this.fetSubmissions[0]?.documentApprovalStatus.toUpperCase() === 'APPROVED') {
       if (this.fetSubmissions[0].isPositive) {
         return 'red';
       }
       return 'green';
     }
-
     return 'grey';
   }
+  renderFetApprovalStatus() {
+    if (this.fetSubmissions[0]) {
+      if (this.fetSubmissions[0].isPositive) {
+        return 'Positive';
+      }
+      return 'Negative';
+    }
+    return 'Unsubmitted';
+  }
   mcApprovalStatus() {
-    if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'APPROVED') {
-      const today = moment();
-      if (
-        today.isAfter(this.mcs[0].startDate) &&
-        today.isBefore(this.mcs[0].endDate)
-      ) {
+    const today = new Date();
+    if ((today >= new Date(this.mcs[0]?.startDate)) && (today <= new Date(this.mcs[0]?.endDate))) {
+      if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'APPROVED') {
         return 'red';
+      } else if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'PENDING') {
+        return 'grey';
       }
     }
     return 'green';
   }
   renderMcStatus() {
-    if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'APPROVED') {
-      const today = moment();
-      if (
-        today.isAfter(this.mcs[0].startDate) &&
-        today.isBefore(this.mcs[0].endDate)
-      ) {
-        if (this.mcs[0].covidDocumentType === 'SHN_MEDICAL_CERTIFICATE') {
-          return 'On stay home notice';
-        } else {
-          return 'On quarantine order';
-        }
+    const today = new Date();
+    //console.log(today);
+    if ((today >= new Date(this.mcs[0]?.startDate)) && (today <= new Date(this.mcs[0]?.endDate))) {
+      if (this.mcs[0]?.covidDocumentType === 'SHN_MEDICAL_CERTIFICATE') {
+        return 'On stay home notice';
+      } else {
+        return 'On quarantine order';
       }
     }
     return 'Fit for work';
