@@ -824,7 +824,64 @@ export class CreateNewMeetingComponent implements OnInit {
             this.assignedPhysicalEmployees.length > 0 &&
             this.assignedPhysicalEmployees[0].alternateWfoTeam === 'B'
           ) {
-            return false;
+            if (month % 2 === 1 && day !== 0 && day !== 6) {
+              let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
+              let offsetDate = d.getDate() + firstWeekday - 1;
+              let weekNumber = Math.floor(offsetDate / 7);
+
+              if (weeksInMonth === 6) {
+                if (weekNumber === 0 || weekNumber === 1 || weekNumber === 2) {
+                  let dateToEnable = d.toDateString();
+                  return (
+                    this.datesToDisable.find(
+                      (item) => item.toDateString() === d.toDateString()
+                    ) === undefined && dateToEnable === d.toDateString()
+                  );
+                } else {
+                  return false;
+                }
+              } else {
+                if (weekNumber === 0 || weekNumber === 1) {
+                  let dateToEnable = d.toDateString();
+                  return (
+                    this.datesToDisable.find(
+                      (item) => item.toDateString() === d.toDateString()
+                    ) === undefined && dateToEnable === d.toDateString()
+                  );
+                } else {
+                  return false;
+                }
+              }
+            } else if (month % 2 === 0 && day !== 0 && day !== 6) {
+              let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
+              let offsetDate = d.getDate() + firstWeekday - 1;
+              let weekNumber = Math.floor(offsetDate / 7);
+              if (weeksInMonth === 6) {
+                if (weekNumber === 3 || weekNumber === 4 || weekNumber === 5) {
+                  let dateToEnable = d.toDateString();
+                  return (
+                    this.datesToDisable.find(
+                      (item) => item.toDateString() === d.toDateString()
+                    ) === undefined && dateToEnable === d.toDateString()
+                  );
+                } else {
+                  return false;
+                }
+              } else {
+                if (weekNumber === 2 || weekNumber === 3 || weekNumber === 4) {
+                  let dateToEnable = d.toDateString();
+                  return (
+                    this.datesToDisable.find(
+                      (item) => item.toDateString() === d.toDateString()
+                    ) === undefined && dateToEnable === d.toDateString()
+                  );
+                } else {
+                  return false;
+                }
+              }
+            } else {
+              return false;
+            }
           } else {
             return false;
           }
