@@ -81,23 +81,27 @@ export class UploadVaccinationDialogComponent implements OnInit {
             }
           );
         });
+        const newSubmission = { dateOfSubmission: currentDate, covidDocumentType: "PROOF_OF_VACCINATION", employeeId: this.user.userId };
+        this.covidDocumentSubmissionService
+          .createCovidDocumentSubmission(newSubmission)
+          .subscribe(
+            (response) => {
+              if (response.status) {
+                console.log(response.covidDocumentSubmission);
+                if (response.covidDocumentSubmission) {
+                  this.covidDocumentSubmissions.unshift(response.covidDocumentSubmission);
+                  this.vaccinationCerts.unshift(response.covidDocumentSubmission);
+                }
+              } else {
+                console.log("A problem has occured", response);
+              }
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
       })
     ).subscribe();
-    const newSubmission = { dateOfSubmission: currentDate, covidDocumentType: "PROOF_OF_VACCINATION", employeeId: this.user.userId };
-    this.covidDocumentSubmissionService
-      .createCovidDocumentSubmission(newSubmission)
-      .subscribe(
-        (response) => {
-          if (response.status) {
-            console.log(response.covidDocumentSubmission);
-          } else {
-            console.log("A problem has occured", response);
-          }
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
   }
 
   onConfirmClick() {
@@ -125,15 +129,19 @@ export class UploadVaccinationDialogComponent implements OnInit {
     return "NA";
   }
   renderVaccinationStatus() {
-    if (this.user?.isVaccinated) {
+    if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
       return "Vaccinated";
+    } else if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "PENDING") {
+      return "Pending Approval";
     }
     return "Not Yet Vaccinated";
   }
   renderVaccinationStyle() {
-    if (this.user?.isVaccinated) {
-      return "vaccinated";
+    if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
+      return "green";
+    } else if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "PENDING") {
+      return "grey";
     }
-    return "unvaccinated";
+    return "red";
   }
 }

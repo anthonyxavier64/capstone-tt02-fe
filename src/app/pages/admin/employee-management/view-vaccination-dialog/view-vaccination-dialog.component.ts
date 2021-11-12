@@ -5,7 +5,6 @@ import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSu
 import { UserService } from 'src/app/services/user/user.service';
 
 import { Component, OnInit } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/storage';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -98,18 +97,21 @@ export class ViewVaccinationDialogComponent implements OnInit {
     return null;
   }
   renderVaccinationStatus() {
-    if (this.isVaccinated) {
-      return 'Vaccinated';
+    if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
+      return "Vaccinated";
+    } else if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "PENDING") {
+      return "Pending Approval";
     }
-    return 'Not Yet Vaccinated';
+    return "Not Yet Vaccinated";
   }
   renderVaccinationStyle() {
-    if (this.isVaccinated) {
-      return 'vaccinated';
+    if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
+      return "green";
+    } else if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "PENDING") {
+      return "grey";
     }
-    return 'unvaccinated';
+    return "red";
   }
-
   onSaveClick(form: NgForm) {
     this.isSubmitted = true;
 

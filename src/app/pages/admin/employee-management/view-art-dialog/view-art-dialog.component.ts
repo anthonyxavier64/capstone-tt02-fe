@@ -113,12 +113,13 @@ export class ViewArtComponent implements OnInit {
     return "grey";
   }
   renderFetApprovalStatus() {
-    if (this.artTests[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
+    if (this.artTests[0]) {
       if (this.artTests[0].isPositive) {
-        return "Positive";
+        return 'Positive';
       }
+      return 'Negative';
     }
-    return "Negative";
+    return 'Unsubmitted';
   }
   onSaveClick(form: NgForm) {
     this.isSubmitted = true;

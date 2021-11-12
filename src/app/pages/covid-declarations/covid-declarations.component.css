@@ -25,7 +25,7 @@ h1 {
   margin: 32px;
   height: 60%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -38,6 +38,9 @@ h1 {
 .status-display.red {
   background-color: #ffcccc;
 }
+.status-description {
+  margin-top: 8px;
+}
 @media only screen and (max-width: 1280px) {
   h1 {
     font-size: 24px;
@@ -47,6 +50,7 @@ h1 {
   }
   .card-container {
     flex-direction: column;
+    align-items: center;
     height: 60%;
   }
   .display-card {

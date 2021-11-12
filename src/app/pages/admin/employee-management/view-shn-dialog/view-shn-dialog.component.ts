@@ -132,21 +132,27 @@ export class ViewShnDeclarationDialog implements OnInit {
     return null;
   }
   renderMcStatus() {
-    if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
-      const today = moment();
-      if (today.isAfter(this.mcs[0].startDate) && today.isBefore(this.mcs[0].endDate)) {
-        if (this.mcs[0].covidDocumentType === "SHN_MEDICAL_CERTIFICATE") {
-          return "On stay home notice";
-        } else {
-          return "On quarantine order";
-        }
+    const today = new Date();
+    //console.log(today);
+    if ((today >= new Date(this.mcs[0]?.startDate)) && (today <= new Date(this.mcs[0]?.endDate))) {
+      if (this.mcs[0]?.covidDocumentType === 'SHN_MEDICAL_CERTIFICATE') {
+        return 'On stay home notice';
+      } else {
+        return 'On quarantine order';
       }
     }
-    return "Fit for work";
+    return 'Fit for work';
   }
   mcApprovalStatus() {
-    if (this.renderMcStatus() === "Fit for work") return "green";
-    return "red";
+    const today = new Date();
+    if ((today >= new Date(this.mcs[0]?.startDate)) && (today <= new Date(this.mcs[0]?.endDate))) {
+      if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'APPROVED') {
+        return 'red';
+      } else if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'PENDING') {
+        return 'grey';
+      }
+    }
+    return 'green';
   }
 
   onSaveClick(form: NgForm) {

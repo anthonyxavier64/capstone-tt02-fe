@@ -7,7 +7,7 @@
     <div class="vaccination-status-wrapper">
       <div
         class="vaccination-status {{
-          this.isVaccinated ? 'vaccinated' : 'unvaccinated'
+          renderVaccinationStyle()
         }}"
       ></div>
       <p class="text">{{ renderVaccinationStatus() }}</p>
