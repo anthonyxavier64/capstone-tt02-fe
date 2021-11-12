@@ -1,16 +1,17 @@
 import {
   CalendarEvent,
+  CalendarMonthViewBeforeRenderEvent,
   CalendarView,
   DAYS_OF_WEEK,
-  CalendarMonthViewBeforeRenderEvent,
 } from 'angular-calendar';
 import * as moment from 'moment';
+import { MessageService } from 'primeng/api';
 import { Subject } from 'rxjs';
 import { CompanyService } from 'src/app/services/company/company.service';
 import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covid-document-submission.service';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
-import { UserService } from 'src/app/services/user/user.service';
 import { UnavailableDateService } from 'src/app/services/unavailableDate/unavailable-date.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 import {
   ChangeDetectionStrategy,
@@ -21,9 +22,8 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
-import { ViewMeetingDetailsDialogComponent } from './view-meeting-details-dialog/view-meeting-details-dialog.component';
 import { DayComponent } from './day/day.component';
-import { MessageService } from 'primeng/api';
+import { ViewMeetingDetailsDialogComponent } from './view-meeting-details-dialog/view-meeting-details-dialog.component';
 
 moment.updateLocale('en', {
   week: {
@@ -54,6 +54,7 @@ export class CalendarComponent implements OnInit {
   officeUsersThisMonth: any[];
   meetings: any[];
   userMeetings: any[] = [];
+  myPhysicalMeetings: any[] = [];
   attendeeMeetings: any[] = [];
   thisMonthMeetings: any[];
   events: CalendarEvent[] = [];
@@ -151,6 +152,7 @@ export class CalendarComponent implements OnInit {
 
     this.meetingService.getAllMeetingsParticipant(this.user.userId).subscribe(
       (response) => {
+        this.myPhysicalMeetings = response.physicalMeetings.filter((meeting) => new Date(meeting.startTime).getMonth() == new Date().getMonth());
         for (const meeting of response.physicalMeetings) {
           var colorNumbers = meeting.color.substring(4, 17);
           var opacityIncluded = 'rgba(' + colorNumbers + ', 0.3)';
@@ -305,8 +307,17 @@ export class CalendarComponent implements OnInit {
       return new Date(item).getMonth() == new Date().getMonth();
     });
     if (!numDaysInOffice) numDaysInOffice = [];
+    // Find unique days with physical meetings
+    const meetingSet = new Set();
+    for (const meeting of this.myPhysicalMeetings) {
+      const meetingString = new Date(meeting.startTime).toLocaleDateString("en-US");
+      if (!meetingSet.has(meetingString)) {
+        meetingSet.add(meetingString);
+      }
+    }
     this.wfoAllowanceCount =
-      this.user.wfoMonthlyAllocation - numDaysInOffice.length;
+      this.user.wfoMonthlyAllocation - numDaysInOffice.length - meetingSet.size;
+    console.log(this.user.wfoMonthlyAllocation, numDaysInOffice.length, meetingSet.size)
   }
 
   escViewWfoMode() {
@@ -527,8 +538,22 @@ export class CalendarComponent implements OnInit {
       this.isWfoSelectionMode &&
       this.isWithinWfoRange(day) &&
       day.getDay() != 0 &&
-      day.getDay() != 6
+      day.getDay() != 6 &&
+      !this.isPhysicalOfficeDay(day) &&
+      !this.isLeaveDate(day) &&
+      !this.isBlockoutDate(day)
     );
+  }
+  isPhysicalOfficeDay(day: Date) {
+    const dates = this.myPhysicalMeetings.filter((item) => {
+      const d = new Date(item.startTime);
+      return (
+        d.getDate() == day.getDate() &&
+        d.getMonth() == day.getMonth() &&
+        d.getFullYear() == day.getFullYear()
+      );
+    });
+    return dates.length > 0;
   }
   isWfoSelected(day: Date) {
     const dates = this.datesInOffice.filter((item) => {
