@@ -234,17 +234,13 @@ export class CreateNewMeetingComponent implements OnInit {
       let employee = this.assignedMeetingEmployees.find(
         (item) => item.userId === employeeId
       );
-      console.log(employee);
       for (let unavailableDate of employee.unavailableDates) {
         const date = new Date(unavailableDate.unavailableDates);
-        console.log(date);
         if (
           this.datesToDisable.find(
             (item) => item.toDateString() === date.toDateString()
           ) === undefined
         ) {
-          console.log('INSIDE IF BLOCK');
-          //wtf?????
           this.datesToDisable[this.datesToDisable.length] = date;
           this.meetingDate = null;
         }
@@ -274,12 +270,24 @@ export class CreateNewMeetingComponent implements OnInit {
   }
 
   async assignMeetingEmployee(employee: NgForm): Promise<void> {
-    const assignedEmployee = employee.value.selectedMeetingEmployees;
+    let assignedEmployee = employee.value.selectedMeetingEmployees;
     if (
       !this.assignedMeetingEmployees.find(
         (item) => item.userId === assignedEmployee.userId
       )
     ) {
+      let isEmployeeDisabled = assignedEmployee.isInfected
+        ? true
+        : this.assignedPhysicalEmployees[0]
+        ? this.assignedPhysicalEmployees[0].alternateWfoTeam ===
+          assignedEmployee.alternateWfoTeam
+          ? false
+          : true
+        : false;
+      assignedEmployee = {
+        ...assignedEmployee,
+        isDisabled: isEmployeeDisabled,
+      };
       this.assignedMeetingEmployees.push(assignedEmployee);
       const indexToRemove = this.employees.findIndex(
         (item) => item.userId === assignedEmployee.userId
@@ -315,6 +323,15 @@ export class CreateNewMeetingComponent implements OnInit {
         (item) => item.userId === assignedEmployee.userId
       );
       this.assignedMeetingEmployees.splice(indexToRemove, 1);
+
+      for (let i = 0; i < this.assignedMeetingEmployees.length; i++) {
+        if (
+          this.assignedMeetingEmployees[i].alternateWfoTeam !==
+          this.assignedPhysicalEmployees[0].alternateWfoTeam
+        ) {
+          this.assignedMeetingEmployees[i].isDisabled = true;
+        }
+      }
     } else {
       this.messageService.add({
         severity: 'error',
@@ -370,10 +387,40 @@ export class CreateNewMeetingComponent implements OnInit {
     this.assignedPhysicalEmployees.splice(indexToRemove, 1);
 
     if (user.userId !== this.user.userId) {
+      user = {
+        ...user,
+        isDisabled: false,
+      };
       this.employees.push(user);
     } else {
+      user = {
+        ...user,
+        isDisabled: false,
+      };
       this.assignedMeetingEmployees.push(user);
     }
+
+    if (this.assignedMeetingEmployees.length !== 0) {
+      for (let i = 0; i < this.assignedMeetingEmployees.length; i++) {
+        let employee = this.assignedMeetingEmployees[i];
+        let isEmployeeDisabled = employee.isInfected
+          ? true
+          : this.assignedPhysicalEmployees[0]
+          ? this.assignedPhysicalEmployees[0].alternateWfoTeam ===
+            employee.alternateWfoTeam
+            ? false
+            : true
+          : false;
+        this.assignedMeetingEmployees[i].isDisabled = isEmployeeDisabled;
+      }
+    } else {
+      for (let i = 0; i < this.assignedMeetingEmployees.length; i++) {
+        let employee = this.assignedMeetingEmployees[i];
+        let isEmployeeDisabled = employee.isInfected;
+        this.assignedMeetingEmployees[0].isDisabled = isEmployeeDisabled;
+      }
+    }
+
     if (this.assignedPhysicalEmployees.length === 0) {
       this.rooms.forEach((room) => {
         room.isSelected = false;
@@ -391,8 +438,16 @@ export class CreateNewMeetingComponent implements OnInit {
     this.assignedVirtualEmployees.splice(indexToRemove, 1);
 
     if (user.userId !== this.user.userId) {
+      user = {
+        ...user,
+        isDisabled: false,
+      };
       this.employees.push(user);
     } else {
+      user = {
+        ...user,
+        isDisabled: false,
+      };
       this.assignedMeetingEmployees.push(user);
     }
 
@@ -405,7 +460,10 @@ export class CreateNewMeetingComponent implements OnInit {
       (item) => item.userId === user.userId
     );
     this.assignedMeetingEmployees.splice(indexToRemove, 1);
-
+    user = {
+      ...user,
+      isDisabled: false,
+    };
     this.employees.push(user);
 
     await this.updateDatePicker(user.userId, 'UNASSIGN');
@@ -1017,8 +1075,6 @@ export class CreateNewMeetingComponent implements OnInit {
       this.assignedVirtualEmployees.forEach((item) =>
         assignedVirtualEmployeeIds.push(item.userId)
       );
-
-      console.log(this.chosenGoal);
 
       let meeting = {
         title: this.meetingTitle,

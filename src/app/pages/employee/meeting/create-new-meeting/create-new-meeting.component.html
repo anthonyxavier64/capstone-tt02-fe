@@ -213,7 +213,7 @@
                   [filter]="true"
                   filterBy="fullName"
                   [style]="{ width: '15vw' }"
-                  optionDisabled="isInfected"
+                  optionDisabled="isDisabled"
                 >
                   <ng-template let-user pTemplate="item">
                     <div fxLayout="row" fxLayoutGap="3%">
@@ -259,12 +259,16 @@
                   >
                     <div fxLayout="row" fxLayoutGap="3%">
                       <img
-                        *ngIf="physicalEmployee.isVaccinated"
+                        *ngIf="user.isVaccinated && !user.isInfected"
                         src="../../../../../assets/images/vaccinatedIcon.svg"
                       />
                       <img
-                        *ngIf="!physicalEmployee.isVaccinated"
+                        *ngIf="!user.isVaccinated && !user.isInfected"
                         src="../../../../../assets/images/unvaccinatedIcon.svg"
+                      />
+                      <img
+                        *ngIf="user.isInfected"
+                        src="../../../../../assets/images/covidIcon.svg"
                       />
                       <p style="white-space: nowrap; font-size: 1.4vw">
                         {{ physicalEmployee.fullName }}
