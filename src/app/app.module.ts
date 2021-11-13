@@ -1,30 +1,3 @@
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireStorageModule } from '@angular/fire/storage';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatDividerModule } from '@angular/material/divider';
-import {
-  MatFormFieldModule,
-  MAT_FORM_FIELD_DEFAULT_OPTIONS,
-} from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { JwtModule } from '@auth0/angular-jwt';
 import {
   CalendarDateFormatter,
   CalendarModule,
@@ -45,6 +18,35 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { StyleClassModule } from 'primeng/styleclass';
 import { TableModule } from 'primeng/table';
 import { environment } from 'src/environments/environment.dev';
+
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import {
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  MatFormFieldModule,
+} from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JwtModule } from '@auth0/angular-jwt';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TOKEN_KEY } from './config';
@@ -57,6 +59,8 @@ import { AdminAnnouncementManagementComponent } from './pages/admin/announcement
 import { DeleteAnnouncementComponent } from './pages/admin/announcement-management/delete-announcement/delete-announcement.component';
 import { EditAnnouncementComponent } from './pages/admin/announcement-management/edit-announcement/edit-announcement.component';
 import { ViewAnnouncementComponent } from './pages/admin/announcement-management/view-announcement/view-announcement.component';
+import { EditBlockoutDateDialogComponent } from './pages/admin/company-details/blockout-dates/edit-blockout-date-dialog/edit-blockout-date-dialog.component';
+import { ManageBlockoutDateComponent } from './pages/admin/company-details/blockout-dates/manage-blockout-date/manage-blockout-date.component';
 import { AdminCompanyDetailsManagementComponent } from './pages/admin/company-details/company-details-management/admin-company-details-management.component';
 import { AddRoomDialogComponent } from './pages/admin/company-details/office-space-config/add-room-dialog/add-room-dialog.component';
 import { EditOfficeDetailsDialogComponent } from './pages/admin/company-details/office-space-config/edit-office-details-dialog/edit-office-details-dialog.component';
@@ -95,6 +99,7 @@ import { DeleteMeetingDialogComponent } from './pages/employee/meeting/delete-me
 import { UpdateMeetingComponent } from './pages/employee/meeting/update-meeting/update-meeting.component';
 import { TaskDetailDialogComponent } from './pages/employee/task/task-detail-dialog/task-detail-dialog.component';
 import { TaskComponent } from './pages/employee/task/task.component';
+import { FeedbackComponent } from './pages/feedback/feedback.component';
 import { IndexComponent } from './pages/index/index.component';
 import { ForgotPasswordDialogComponent } from './pages/index/login/forgot-password-dialog/forgot-password-dialog.component';
 import { LoginComponent } from './pages/index/login/login.component';
@@ -103,13 +108,11 @@ import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 import { TierInfoDialogComponent } from './pages/index/sign-up/tier-info-dialog/tier-info-dialog.component';
 import { ChangePasswordComponent } from './pages/profile/change-password/change-password.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { NavbarComponent } from './pages/shared-components/navbar/navbar.component';
-import { ManageBlockoutDateComponent } from './pages/admin/company-details/blockout-dates/manage-blockout-date/manage-blockout-date.component';
-import { EditBlockoutDateDialogComponent } from './pages/admin/company-details/blockout-dates/edit-blockout-date-dialog/edit-blockout-date-dialog.component';
-import { ManageUnavailableDateComponent } from './pages/profile/unavailable-dates/manage-unavailable-date/manage-unavailable-date.component';
 import { EditUnavailableDateDialogComponent } from './pages/profile/unavailable-dates/edit-unavailable-date-dialog/edit-unavailable-date-dialog.component';
 import { NgxStripeModule } from 'ngx-stripe';
 import { SubscriptionComponent } from './pages/index/sign-up/payment/subscription/subscription.component';
+import { ManageUnavailableDateComponent } from './pages/profile/unavailable-dates/manage-unavailable-date/manage-unavailable-date.component';
+import { NavbarComponent } from './pages/shared-components/navbar/navbar.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -184,6 +187,7 @@ export function tokenGetter() {
     ManageUnavailableDateComponent,
     EditUnavailableDateDialogComponent,
     SubscriptionComponent,
+    FeedbackComponent,
   ],
   imports: [
     CommonModule,
@@ -273,4 +277,4 @@ export function tokenGetter() {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

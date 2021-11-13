@@ -1,7 +1,3 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AdminGuideComponent } from 'src/app/pages/admin/admin-landing/admin-guide/admin-guide.component';
 import { ViewArtComponent } from 'src/app/pages/admin/employee-management/view-art-dialog/view-art-dialog.component';
@@ -14,6 +10,11 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { TaskService } from 'src/app/services/task/task.service';
 import { AuthService } from 'src/app/services/user/auth.service';
 import { UserService } from 'src/app/services/user/user.service';
+
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -108,6 +109,9 @@ export class NavbarComponent implements OnInit {
 
   handleCalendar() {
     this.router.navigateByUrl('/calendar');
+  }
+  handleFeedback() {
+    this.router.navigateByUrl('/feedback');
   }
   chooseIcon(notification: any) {
     if (notification.taskId) {
