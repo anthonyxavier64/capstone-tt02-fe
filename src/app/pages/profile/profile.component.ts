@@ -4,8 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { throttle } from 'rxjs/operators';
+
 import { UserService } from 'src/app/services/user/user.service';
+import { CompanyService } from 'src/app/services/company/company.service';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @Component({
@@ -16,8 +17,9 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 })
 export class ProfileComponent implements OnInit {
   user: any | null;
-  dept: any | null;
-  mdept: any | null;
+  dept: any[] = [];
+  mdept: any[] = [];
+  company: any | null;
 
   fullName: string;
   contactNumber: string;
@@ -31,6 +33,7 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
+    private companyService: CompanyService,
     private messageService: MessageService,
     public dialog: MatDialog
   ) {
@@ -43,10 +46,31 @@ export class ProfileComponent implements OnInit {
       this.user = JSON.parse(currentUser);
       this.fullName = this.user.fullName;
       this.contactNumber = this.user.contactNumber;
-      console.log(this.user.email);
-      this.userService.getDepartments(this.user.email).subscribe(
+
+      this.companyService.getCompany(this.user.companyId).subscribe(
         (response) => {
-          this.dept = response;
+          this.company = response.company;
+
+          if (this.company.wfoArrangement === 'OFFICE_QUOTAS') {
+            this.hasWFOMonthlyCap = true;
+          } else if (this.company.wfoArrangement === 'ALTERNATE_WORK_TEAMS') {
+            this.hasWFOTeam = true;
+          }
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error retrieving company.',
+          });
+          console.log(error);
+        }
+      );
+      console.log(this.user);
+
+      this.userService.getDepartments(this.user.userId).subscribe(
+        (response) => {
+          this.dept = response.dept;
         },
         (error) => {
           this.messageService.add({
@@ -57,9 +81,9 @@ export class ProfileComponent implements OnInit {
           console.log(error);
         }
       );
-      this.userService.getManagedDepartments(this.user.email).subscribe(
+      this.userService.getManagedDepartments(this.user.userId).subscribe(
         (response) => {
-          this.mdept = response;
+          this.mdept = response.mdept;
         },
         (error) => {
           this.messageService.add({
@@ -69,14 +93,6 @@ export class ProfileComponent implements OnInit {
           });
         }
       );
-    }
-
-    if (this.user.wfoMonthlyAllocation) {
-      this.hasWFOMonthlyCap = true;
-    }
-
-    if (this.user.alternateWfoTeam) {
-      this.hasWFOTeam = true;
     }
   }
 
@@ -92,8 +108,14 @@ export class ProfileComponent implements OnInit {
       data: 'test',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      // this.message = result;
+    dialogRef.afterClosed().subscribe((response) => {
+      if (response.action === 'SUCCESS') {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Password changed successfully.`,
+        });
+      }
     });
   }
 

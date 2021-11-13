@@ -25,17 +25,15 @@ export class UserService {
       .pipe(catchError(handleError));
   }
 
-  getDepartments(email: any): Observable<any> {
-    let params = new HttpParams().set('email', email);
+  getDepartments(userId: string): Observable<any> {
     return this.httpClient
-      .get<any>(this.baseUrl + '/get-departments', { params })
+      .get<any>(this.baseUrl + '/get-departments/' + userId)
       .pipe(catchError(handleError));
   }
 
-  getManagedDepartments(email: any): Observable<any> {
-    let params = new HttpParams().set('email', email);
+  getManagedDepartments(userId: string): Observable<any> {
     return this.httpClient
-      .get<any>(this.baseUrl + '/get-managed-departments', { params })
+      .get<any>(this.baseUrl + '/get-managed-departments/' + userId)
       .pipe(catchError(handleError));
   }
 

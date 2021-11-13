@@ -50,6 +50,6 @@
   max-width: inherit;
 }
 
-p {
-  color: rgba(var(--theme-primary-color), 0.8);
+.light-font {
+  opacity: 0.5;
 }
