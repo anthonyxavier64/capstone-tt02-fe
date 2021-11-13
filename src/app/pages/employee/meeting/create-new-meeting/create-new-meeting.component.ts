@@ -77,6 +77,8 @@ export class CreateNewMeetingComponent implements OnInit {
 
   alternateWorkTeamsConfig: string;
 
+  minDate: Date;
+
   constructor(
     private router: Router,
     private _location: Location,
@@ -109,6 +111,10 @@ export class CreateNewMeetingComponent implements OnInit {
     this.isUserFetched = false;
     this.isUserFetched = false;
     const currentUser = localStorage.getItem('currentUser');
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+    const currentDate = new Date().getDate();
+    this.minDate = new Date(currentYear, currentMonth, currentDate);
     if (currentUser) {
       this.userService
         .getUser(JSON.parse(currentUser).userId)
@@ -184,6 +190,7 @@ export class CreateNewMeetingComponent implements OnInit {
       async (response) => {
         this.isLoading = true;
         this.company = response.company;
+
         this.rooms = this.company.rooms;
         this.rooms.forEach((room) => {
           room = { ...room, isSelected: false };
@@ -201,6 +208,11 @@ export class CreateNewMeetingComponent implements OnInit {
           this.alternateWorkTeamsConfig =
             altWorkTeamsConfig.alternateWorkTeamsConfig.scheduleType;
           console.log(this.alternateWorkTeamsConfig);
+        }
+
+        let companyBlockoutDates = this.company.blockoutDates;
+        for (let blockoutDate of companyBlockoutDates) {
+          this.datesToDisable.push(new Date(blockoutDate.date));
         }
         this.isCompanyFetched = true;
         if (
