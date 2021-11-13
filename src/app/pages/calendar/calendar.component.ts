@@ -1,9 +1,7 @@
-import {
-  CalendarEvent,
-  CalendarMonthViewBeforeRenderEvent,
-  CalendarView,
-  DAYS_OF_WEEK,
-} from 'angular-calendar';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { CalendarEvent, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { Subject } from 'rxjs';
@@ -12,16 +10,6 @@ import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSu
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UnavailableDateService } from 'src/app/services/unavailableDate/unavailable-date.service';
 import { UserService } from 'src/app/services/user/user.service';
-
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ComponentFactoryResolver,
-  OnInit,
-} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-
 import { DayComponent } from './day/day.component';
 import { ViewMeetingDetailsDialogComponent } from './view-meeting-details-dialog/view-meeting-details-dialog.component';
 
@@ -49,6 +37,7 @@ export class CalendarComponent implements OnInit {
   activeDayIsOpen: boolean = true;
   currentPeriodStart: Date;
   currentPeriodEnd: Date;
+  currMonth: number = new Date().getMonth();
   wfoAllowanceCount: number;
 
   officeUsersThisMonth: any[];
@@ -152,7 +141,10 @@ export class CalendarComponent implements OnInit {
 
     this.meetingService.getAllMeetingsParticipant(this.user.userId).subscribe(
       (response) => {
-        this.myPhysicalMeetings = response.physicalMeetings.filter((meeting) => new Date(meeting.startTime).getMonth() == new Date().getMonth());
+        this.myPhysicalMeetings = response.physicalMeetings.filter(
+          (meeting) =>
+            new Date(meeting.startTime).getMonth() == new Date().getMonth()
+        );
         for (const meeting of response.physicalMeetings) {
           var colorNumbers = meeting.color.substring(4, 17);
           var opacityIncluded = 'rgba(' + colorNumbers + ', 0.3)';
@@ -310,14 +302,20 @@ export class CalendarComponent implements OnInit {
     // Find unique days with physical meetings
     const meetingSet = new Set();
     for (const meeting of this.myPhysicalMeetings) {
-      const meetingString = new Date(meeting.startTime).toLocaleDateString("en-US");
+      const meetingString = new Date(meeting.startTime).toLocaleDateString(
+        'en-US'
+      );
       if (!meetingSet.has(meetingString)) {
         meetingSet.add(meetingString);
       }
     }
     this.wfoAllowanceCount =
       this.user.wfoMonthlyAllocation - numDaysInOffice.length - meetingSet.size;
-    console.log(this.user.wfoMonthlyAllocation, numDaysInOffice.length, meetingSet.size)
+    console.log(
+      this.user.wfoMonthlyAllocation,
+      numDaysInOffice.length,
+      meetingSet.size
+    );
   }
 
   escViewWfoMode() {
