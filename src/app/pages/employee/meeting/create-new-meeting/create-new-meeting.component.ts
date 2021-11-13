@@ -176,10 +176,8 @@ export class CreateNewMeetingComponent implements OnInit {
                     });
                   }
                   let updatedEmployee = null;
-                  if (typeof updatedEmployee === typeof '') {
-                    let datesInOffice = JSON.parse(
-                      updatedEmployee.datesInOffice
-                    );
+                  if (typeof employee.datesInOffice === typeof '') {
+                    let datesInOffice = JSON.parse(employee.datesInOffice);
                     updatedEmployee = {
                       ...employee,
                       datesInOffice: datesInOffice,
@@ -231,7 +229,6 @@ export class CreateNewMeetingComponent implements OnInit {
             .toPromise();
           this.alternateWorkTeamsConfig =
             altWorkTeamsConfig.alternateWorkTeamsConfig.scheduleType;
-          console.log(this.alternateWorkTeamsConfig);
         }
 
         let companyBlockoutDates = this.company.blockoutDates;
@@ -407,7 +404,6 @@ export class CreateNewMeetingComponent implements OnInit {
         this.company.officeQuotaConfigurationId !== null &&
         this.company.wfoArrangement === 'OFFICE_QUOTAS'
       ) {
-        console.log(this.company);
         if (
           assignedEmployee.datesInOffice.length <
             assignedEmployee.wfoMonthlyAllocation &&
@@ -741,7 +737,6 @@ export class CreateNewMeetingComponent implements OnInit {
               let dayNumber = Math.floor(diff / oneDay);
               let weekNumber = Math.floor(dayNumber / 7);
               if (weekNumber % 2 !== 0 && day !== 0 && day !== 6) {
-                console.log('HERE');
                 const dateToEnable = d.toDateString();
                 return dateToEnable !== d.toDateString();
               } else {
@@ -961,7 +956,6 @@ export class CreateNewMeetingComponent implements OnInit {
               let dayNumber = Math.floor(diff / oneDay);
               let weekNumber = Math.floor(dayNumber / 7);
               if (weekNumber % 2 !== 0 && day !== 0 && day !== 6) {
-                console.log('HERE');
                 const dateToEnable = d.toDateString();
                 return (
                   this.datesToDisable.find(
