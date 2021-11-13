@@ -132,10 +132,21 @@ export class CreateNewMeetingComponent implements OnInit {
             });
             this.datesToDisable.push(new Date(item.date));
           }
-          this.user = {
-            ...user,
-            unavailableDates: userUnavailDates,
-          };
+
+          if (typeof user.datesInOffice === typeof '') {
+            let datesInOffice = JSON.parse(user.datesInOffice);
+            this.user = {
+              ...user,
+              datesInOffice: datesInOffice,
+              unavailableDates: userUnavailDates,
+            };
+          } else {
+            this.user = {
+              ...user,
+              unavailableDates: userUnavailDates,
+            };
+          }
+
           this.allInvolvedEmployees.push(this.user.userId);
           this.assignedMeetingEmployees.push(this.user);
 
@@ -164,10 +175,23 @@ export class CreateNewMeetingComponent implements OnInit {
                       unavailableDates: item.date,
                     });
                   }
-                  let updatedEmployee = {
-                    ...employee,
-                    unavailableDates: employeeUnavailDates,
-                  };
+                  let updatedEmployee = null;
+                  if (typeof updatedEmployee === typeof '') {
+                    let datesInOffice = JSON.parse(
+                      updatedEmployee.datesInOffice
+                    );
+                    updatedEmployee = {
+                      ...employee,
+                      datesInOffice: datesInOffice,
+                      unavailableDates: employeeUnavailDates,
+                    };
+                  } else {
+                    updatedEmployee = {
+                      ...employee,
+                      unavailableDates: employeeUnavailDates,
+                    };
+                  }
+
                   this.employees.push(updatedEmployee);
                 }
                 this.isUsersFetched = true;
@@ -360,16 +384,16 @@ export class CreateNewMeetingComponent implements OnInit {
         (item) => item.userId === assignedEmployee.userId
       )
     ) {
-      this.assignedPhysicalEmployees.push(assignedEmployee);
-      const indexToRemove = this.assignedMeetingEmployees.findIndex(
-        (item) => item.userId === assignedEmployee.userId
-      );
-      this.assignedMeetingEmployees.splice(indexToRemove, 1);
-
       if (
         this.company.alternateWorkTeamsConfigurationId !== null &&
         this.company.wfoArrangement === 'ALTERNATE_WORK_TEAMS'
       ) {
+        this.assignedPhysicalEmployees.push(assignedEmployee);
+        const indexToRemove = this.assignedMeetingEmployees.findIndex(
+          (item) => item.userId === assignedEmployee.userId
+        );
+        this.assignedMeetingEmployees.splice(indexToRemove, 1);
+
         // handle change in droplist option disabling
         for (let i = 0; i < this.assignedMeetingEmployees.length; i++) {
           if (
@@ -379,6 +403,42 @@ export class CreateNewMeetingComponent implements OnInit {
             this.assignedMeetingEmployees[i].isDisabled = true;
           }
         }
+      } else if (
+        this.company.officeQuotaConfigurationId !== null &&
+        this.company.wfoArrangement === 'OFFICE_QUOTAS'
+      ) {
+        console.log(this.company);
+        if (
+          assignedEmployee.datesInOffice.length <
+            assignedEmployee.wfoMonthlyAllocation &&
+          this.assignedPhysicalEmployees.length < this.company.officeCapacity
+        ) {
+          this.assignedPhysicalEmployees.push(assignedEmployee);
+          const indexToRemove = this.assignedMeetingEmployees.findIndex(
+            (item) => item.userId === assignedEmployee.userId
+          );
+          this.assignedMeetingEmployees.splice(indexToRemove, 1);
+        } else if (
+          this.assignedPhysicalEmployees.length >= this.company.officeCapacity
+        ) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `Employee ${assignedEmployee.fullName} cannot be assigned. Office Max Capacity has been reached.`,
+          });
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `Employee ${assignedEmployee.fullName} has hit the wfo quota limit.`,
+          });
+        }
+      } else {
+        this.assignedPhysicalEmployees.push(assignedEmployee);
+        const indexToRemove = this.assignedMeetingEmployees.findIndex(
+          (item) => item.userId === assignedEmployee.userId
+        );
+        this.assignedMeetingEmployees.splice(indexToRemove, 1);
       }
     } else {
       this.messageService.add({
