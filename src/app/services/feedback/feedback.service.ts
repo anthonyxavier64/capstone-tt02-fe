@@ -26,7 +26,7 @@ export class FeedbackService {
   }
   getFeedbackReceived(receiverId: string): Observable<any> {
     return this.httpClient
-      .get<any>(`${this.baseUrl}/get-all-feedbacks-by-receiverId/${receiverId}`)
+      .get<any>(`${this.baseUrl}/get-all-feedbacks-by-recipientId/${receiverId}`)
       .pipe(catchError(handleError));
   }
   createNewFeedback(feedback: any): Observable<any> {

@@ -58,13 +58,28 @@ export class FeedbackComponent implements OnInit {
           const dateB = moment(b.createdAt);
           return dateB.diff(dateA);
         });
-        console.log(this.feedbackSent);
       },
       (error) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
           detail: `Unable to retrieve sent feedback: ${error.message}`,
+        });
+      }
+    )
+    this.feedbackService.getFeedbackReceived(this.user.userId).subscribe(
+      (response) => {
+        this.feedbackReceived = response.feedbacks.sort((a, b) => {
+          const dateA = moment(a.createdAt);
+          const dateB = moment(b.createdAt);
+          return dateB.diff(dateA);
+        });
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `Unable to retrieve received feedback: ${error.message}`,
         });
       }
     )
