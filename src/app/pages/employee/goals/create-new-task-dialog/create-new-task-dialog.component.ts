@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TaskService } from 'src/app/services/task/task.service';
 import { UserService } from 'src/app/services/user/user.service';
+
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-create-new-task-dialog',
@@ -51,7 +52,7 @@ export class CreateNewTaskDialogComponent implements OnInit {
         );
         this.employees.splice(userIndexToRemove, 1);
       },
-      (error) => {}
+      (error) => { }
     );
   }
 

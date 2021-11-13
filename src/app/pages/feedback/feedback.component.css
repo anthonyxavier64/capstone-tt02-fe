@@ -5,3 +5,19 @@
   width: 100%;
   padding: 1.5rem 1rem;
 }
+.viewcard {
+  position: relative;
+  top: 0;
+  opacity: 1;
+  width: 300px;
+  height: 200px;
+  border-radius: 10px;
+  margin-top: 20px;
+  background-color: rgba(var(--primary-card-color), 0.2);
+}
+.date-description {
+  display: absolute;
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
