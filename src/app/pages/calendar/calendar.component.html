@@ -109,7 +109,11 @@
     >
       <h1>{{ company.name }}'s Calendar</h1>
       <button
-        *ngIf="!isWfoSelectionMode && viewDate.getMonth() === currMonth"
+        *ngIf="
+          !isWfoSelectionMode &&
+          viewDate.getMonth() === currMonth &&
+          selectedConfig === 'OFFICE_QUOTAS'
+        "
         button
         mat-button
         class="blue-btn"
