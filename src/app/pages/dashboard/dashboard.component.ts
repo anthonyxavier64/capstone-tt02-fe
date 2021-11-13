@@ -216,6 +216,7 @@ export class DashboardComponent implements OnInit {
         .subscribe(
           (response) => {
             var meeting = response.meeting;
+            this.user.datesInOffice.push(meeting.startTime);
             if (isPhysicalRsvp) {
               if (
                 moment(meeting.startTime).isAfter(this.startDate) &&
