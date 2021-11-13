@@ -13,6 +13,7 @@ import { AlternateWorkTeamsConfigurationService } from '../../../../services/wfo
   providers: [MessageService],
 })
 export class AlternateWorkTeamsConfigComponent implements OnInit {
+  user: any;
   company: any | null;
   alternateWorkTeamsConfigurationId: number;
   alternateWorkTeamsConfig: any | null;
@@ -44,11 +45,10 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const currentUser = localStorage.getItem('currentUser');
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
 
-    if (currentUser) {
-      const { companyId } = JSON.parse(currentUser);
-      this.companyDetailsService.getCompanyById(companyId).subscribe(
+    if (this.user) {
+      this.companyDetailsService.getCompanyById(this.user.companyId).subscribe(
         (result) => {
           this.company = result.company;
 
@@ -57,10 +57,12 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
             this.isDailySelected = true;
             this.isLoading = false;
 
-            this.userService.getUsers(companyId).subscribe((response) => {
-              this.teamAUsers = response.users;
-              this.teamBUsers = response.users;
-            });
+            this.userService
+              .getUsers(this.user.companyId)
+              .subscribe((response) => {
+                this.teamAUsers = response.users;
+                this.teamBUsers = response.users;
+              });
           } else {
             this.alternateWorkTeamsConfigurationService
               .getAlternateWorkTeamsConfiguration(
@@ -86,32 +88,34 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
                   this.isMonthlySelected = true;
                 }
 
-                this.userService.getUsers(companyId).subscribe((response) => {
-                  const populateTeamAArr = [];
-                  const populateTeamBArr = [];
-                  for (let user of response.users) {
-                    const userModel = {
-                      userId: user.userId,
-                      fullName: user.fullName,
-                      isVaccinated: user.isVaccinated,
-                    };
+                this.userService
+                  .getUsers(this.user.companyId)
+                  .subscribe((response) => {
+                    const populateTeamAArr = [];
+                    const populateTeamBArr = [];
+                    for (let user of response.users) {
+                      const userModel = {
+                        userId: user.userId,
+                        fullName: user.fullName,
+                        isVaccinated: user.isVaccinated,
+                      };
 
-                    const insideTeamA = this.teamA.find(
-                      (item) => item.userId === userModel.userId
-                    );
-                    const insideTeamB = this.teamB.find(
-                      (item) => item.userId === userModel.userId
-                    );
+                      const insideTeamA = this.teamA.find(
+                        (item) => item.userId === userModel.userId
+                      );
+                      const insideTeamB = this.teamB.find(
+                        (item) => item.userId === userModel.userId
+                      );
 
-                    if (!insideTeamA && !insideTeamB) {
-                      populateTeamAArr.push(userModel);
-                      populateTeamBArr.push(userModel);
+                      if (!insideTeamA && !insideTeamB) {
+                        populateTeamAArr.push(userModel);
+                        populateTeamBArr.push(userModel);
+                      }
                     }
-                  }
 
-                  this.teamAUsers = populateTeamAArr;
-                  this.teamBUsers = populateTeamBArr;
-                });
+                    this.teamAUsers = populateTeamAArr;
+                    this.teamBUsers = populateTeamBArr;
+                  });
 
                 this.isLoading = false;
               });
@@ -363,5 +367,15 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
     } else {
       this.updateAlternateWorkTeamsConfiguration();
     }
+
+    this.userService.getUser(this.user.userId).subscribe(
+      (response) => {
+        const newUser = response.user;
+        if (this.user.alternateWfoTeam != newUser.alternateWfoTeam)
+          this.user = newUser;
+        localStorage.setItem('currentUser', JSON.stringify(newUser));
+      },
+      (error) => {}
+    );
   }
 }

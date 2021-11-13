@@ -34,7 +34,6 @@ export class ChangePasswordComponent implements OnInit {
     this.oldPassword = '';
     this.newPassword = '';
     this.cfmPassword = '';
-    this.resultSuccess = false;
   }
 
   ngOnInit() {
@@ -58,11 +57,14 @@ export class ChangePasswordComponent implements OnInit {
         )
         .subscribe(
           (response) => {
-            this.resultSuccess = true;
-            this.message = 'Your password has been reset successfully.';
+            this.dialogRef.close({ action: 'SUCCESS' });
           },
           (error) => {
-            this.message = `An error has occurred, at least one of the fields is invalid!`;
+            if (this.newPassword != this.cfmPassword) {
+              this.message = 'New passwords are not matching!';
+            } else {
+              this.message = 'Given old password is invalid!';
+            }
           }
         );
     }

@@ -31,10 +31,16 @@
             viewProfileDetails: !editDetailsMode
           }"
         >
-          <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+          <div
+            fxLayout="column"
+            fxLayoutAlign="flex-start"
+            fxLayoutGap=".125em"
+          >
             <label for="fullName">Name</label>
 
-            <p *ngIf="!editDetailsMode">{{ user.fullName }}</p>
+            <p class="light-font" *ngIf="!editDetailsMode">
+              {{ user.fullName }}
+            </p>
             <input
               pInputText
               ngNativeValidate
@@ -48,16 +54,26 @@
             />
           </div>
 
-          <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+          <div
+            fxLayout="column"
+            fxLayoutAlign="flex-start"
+            fxLayoutGap=".125em"
+          >
             <label for="email">Email</label>
 
-            <p>{{ user.email }}</p>
+            <p class="light-font">{{ user.email }}</p>
           </div>
 
-          <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+          <div
+            fxLayout="column"
+            fxLayoutAlign="flex-start"
+            fxLayoutGap=".125em"
+          >
             <label for="contactNumber">Contact</label>
 
-            <p *ngIf="!editDetailsMode">{{ user.contactNumber }}</p>
+            <p class="light-font" *ngIf="!editDetailsMode">
+              {{ user.contactNumber }}
+            </p>
             <input
               pInputText
               ngNativeValidate
@@ -126,16 +142,17 @@
         fxLayoutAlign="space-between stretch"
         fxLayoutGap="45%"
       >
-        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap=".125em">
           <label for="name">Vaccination Status</label>
 
-          <span>isVaccinated</span>
+          <p class="light-font" *ngIf="user.isVaccinated">Vaccinated</p>
+          <p class="light-font" *ngIf="!user.isVaccinated">Not Vaccinated</p>
         </div>
 
-        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap=".125em">
           <label for="name">WFH Productivity Status</label>
 
-          <p>Test</p>
+          <p class="light-font">Test</p>
         </div>
       </div>
       <div
@@ -146,23 +163,23 @@
         <div
           fxLayout="column"
           fxLayoutAlign="flex-start"
-          fxLayoutGap="5%"
+          fxLayoutGap=".125em"
           *ngIf="hasWFOMonthlyCap"
         >
-          <label for="name">WFO Monthly Cap</label>
+          <label for="name">Work From Office Monthly Quota</label>
 
-          <p>{{ user.wfoMonthlyAllocation }}</p>
+          <p class="light-font">{{ user.wfoMonthlyAllocation }} Days</p>
         </div>
 
         <div
           fxLayout="column"
           fxLayoutAlign="flex-start"
-          fxLayoutGap="5%"
+          fxLayoutGap=".125em"
           *ngIf="hasWFOTeam"
         >
-          <label for="name">WFO Team</label>
+          <label for="name">Work From Office Team</label>
 
-          <span>{{ user.alternateWfoTeam }}</span>
+          <p class="light-font">Team {{ user.alternateWfoTeam }}</p>
         </div>
       </div>
     </mat-card-group>
@@ -187,19 +204,19 @@
         fxLayoutAlign="space-between stretch"
         fxLayoutGap="25%"
       >
-        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap=".125em">
           <label for="name">Position</label>
-          <p>{{ user.position }}</p>
+          <p class="light-font">{{ user.position }}</p>
         </div>
 
-        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap=".125em">
           <label for="name">In-charge of</label>
-          <p>Finance Department</p>
+          <p class="light-font" *ngFor="let m of mdept">{{ m.name }}</p>
         </div>
 
-        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap="5%">
+        <div fxLayout="column" fxLayoutAlign="flex-start" fxLayoutGap=".125em">
           <label for="name">Part of</label>
-          <p>Executive Comittee</p>
+          <p class="light-font" *ngFor="let d of dept">{{ d.name }}</p>
         </div>
       </div>
     </mat-card-group>
