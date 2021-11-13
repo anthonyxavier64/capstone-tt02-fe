@@ -435,6 +435,7 @@
             #meetingDateInput="ngModel"
             [matDatepicker]="picker"
             [matDatepickerFilter]="filter"
+            [min]="minDate"
             [disabled]="
               assignedMeetingEmployees.length === 0 &&
               assignedVirtualEmployees.length === 0 &&
