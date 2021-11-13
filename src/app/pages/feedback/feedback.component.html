@@ -44,7 +44,7 @@
             <mat-form-field style="width: 60%; height: 100%">
               <mat-label>Feedback Message:</mat-label>
               <textarea matInput id="description" name="description" #description="ngModel" [(ngModel)]="message"
-                required="true" rows="8"></textarea>
+                required="true" rows="8" [maxLength]="1000"></textarea>
               <mat-error *ngIf="
               description.invalid &&
               (description.dirty || description.touched)
@@ -72,9 +72,14 @@
               <mat-card *ngFor="let feedback of feedbackSent" class="viewcard">
                 <mat-card-title>{{ feedback.title }}</mat-card-title>
                 <mat-card-content>
+                  <div style="display: flex; flex-direction: row; justify-content: start; align-items: center;">
+                    <h4 style="font-weight: 500; margin: 0 8px 0 0;">Recipient:</h4>
+                    <h4 style="font-weight: 400; margin: 0 8px 0 0;">{{feedback.recipient.fullName}}</h4>
+                  </div>
+                  <div class="snippet">
+                    <h4 class="snippet-text">{{feedback.content}}</h4>
+                  </div>
                   <p class="date-description">Posted On: {{ feedback.createdAt | date: "short" }}</p>
-                  <h3>Content:</h3>
-                  <h4>{{feedback.content}}</h4>
                 </mat-card-content>
               </mat-card>
             </div>

@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { FeedbackService } from 'src/app/services/feedback/feedback.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -52,7 +53,11 @@ export class FeedbackComponent implements OnInit {
     );
     this.feedbackService.getFeedbackSent(this.user.userId).subscribe(
       (response) => {
-        this.feedbackSent = response.feedbacks;
+        this.feedbackSent = response.feedbacks.sort((a, b) => {
+          const dateA = moment(a.createdAt);
+          const dateB = moment(b.createdAt);
+          return dateB.diff(dateA);
+        });
         console.log(this.feedbackSent);
       },
       (error) => {
@@ -67,7 +72,7 @@ export class FeedbackComponent implements OnInit {
   submitFeedback() {
     const feedback = {
       title: this.title,
-      content: this.message,
+      content: this.message.trim(),
       senderId: this.user.userId,
       recipientId: this.selectedRecipient.userId
     }
@@ -78,8 +83,10 @@ export class FeedbackComponent implements OnInit {
           summary: 'Success',
           detail: 'Feedback submitted.',
         });
+        this.feedbackSent.unshift(response.feedback);
       },
       error => {
+        console.log(this.message, this.title, this.selectedRecipient.userId);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -98,7 +105,7 @@ export class FeedbackComponent implements OnInit {
   }
   messageIsValid() {
     const feedback = this.message?.trim();
-    if (!this.message || !feedback || feedback === "") return false;
+    if (!this.message || !feedback || feedback === "" || this.message.length > 1000) return false;
     return true;
   }
   recipientIsValid() {

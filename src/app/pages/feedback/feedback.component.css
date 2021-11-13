@@ -21,3 +21,21 @@
   font-weight: 400;
   margin-bottom: 16px;
 }
+.snippet {
+  border-radius: 1px;
+  background-color: rgb(var(--secondary-card-color), 0.8);
+  padding: 8px 12px;
+  height: 96px;
+  margin: 4px 0;
+}
+.snippet-text {
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  font-style: italic;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
