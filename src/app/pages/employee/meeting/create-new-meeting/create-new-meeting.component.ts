@@ -762,95 +762,54 @@ export class CreateNewMeetingComponent implements OnInit {
 
           if (
             this.assignedPhysicalEmployees.length > 0 &&
-            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'B'
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'A'
           ) {
-            if (month % 2 === 0 && day !== 0 && day !== 6) {
-              let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
-              let offsetDate = d.getDate() + firstWeekday - 1;
-              let weekNumber = Math.floor(offsetDate / 7);
+            let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
+            let offsetDate = d.getDate() + firstWeekday - 1;
+            let weekNumber = Math.floor(offsetDate / 7);
 
-              if (weeksInMonth === 6) {
-                if (weekNumber === 0 || weekNumber === 1 || weekNumber === 2) {
-                  let dateToEnable = d.toDateString();
-                  return dateToEnable !== d.toDateString();
-                } else {
-                  return day !== 0 && day !== 6;
-                }
+            if (weeksInMonth === 6) {
+              if (weekNumber === 2 || weekNumber === 3) {
+                let dateToEnable = d.toDateString();
+                return dateToEnable !== d.toDateString();
               } else {
-                if (weekNumber === 0 || weekNumber === 1) {
-                  let dateToEnable = d.toDateString();
-                  return dateToEnable !== d.toDateString();
-                } else {
-                  return day !== 0 && day !== 6;
-                }
-              }
-            } else if (month % 2 === 1 && day !== 0 && day !== 6) {
-              let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
-              let offsetDate = d.getDate() + firstWeekday - 1;
-              let weekNumber = Math.floor(offsetDate / 7);
-              if (weeksInMonth === 6) {
-                if (weekNumber === 3 || weekNumber === 4 || weekNumber === 5) {
-                  let dateToEnable = d.toDateString();
-                  return dateToEnable !== d.toDateString();
-                } else {
-                  return day !== 0 && day !== 6;
-                }
-              } else {
-                if (weekNumber === 3 || weekNumber === 4 || weekNumber === 5) {
-                  let dateToEnable = d.toDateString();
-                  return dateToEnable !== d.toDateString();
-                } else {
-                  return day !== 0 && day !== 6;
-                }
+                return day !== 0 && day !== 6;
               }
             } else {
-              return day !== 0 && day !== 6;
+              if (weekNumber === 2 || weekNumber === 3) {
+                let dateToEnable = d.toDateString();
+                return dateToEnable !== d.toDateString();
+              } else {
+                return day !== 0 && day !== 6;
+              }
             }
           } else if (
             this.assignedPhysicalEmployees.length > 0 &&
-            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'A'
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'B'
           ) {
-            if (month % 2 === 1 && day !== 0 && day !== 6) {
-              let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
-              let offsetDate = d.getDate() + firstWeekday - 1;
-              let weekNumber = Math.floor(offsetDate / 7);
+            let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
+            let offsetDate = d.getDate() + firstWeekday - 1;
+            let weekNumber = Math.floor(offsetDate / 7);
 
-              if (weeksInMonth === 6) {
-                if (weekNumber === 0 || weekNumber === 1 || weekNumber === 2) {
-                  let dateToEnable = d.toDateString();
-                  return dateToEnable !== d.toDateString();
-                } else {
-                  return day !== 0 && day !== 6;
-                }
+            if (weeksInMonth === 6) {
+              if (
+                weekNumber === 0 ||
+                weekNumber === 1 ||
+                weekNumber === 4 ||
+                weekNumber === 5
+              ) {
+                let dateToEnable = d.toDateString();
+                return dateToEnable !== d.toDateString();
               } else {
-                if (weekNumber === 0 || weekNumber === 1) {
-                  let dateToEnable = d.toDateString();
-                  return dateToEnable !== d.toDateString();
-                } else {
-                  return day !== 0 && day !== 6;
-                }
-              }
-            } else if (month % 2 === 0 && day !== 0 && day !== 6) {
-              let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
-              let offsetDate = d.getDate() + firstWeekday - 1;
-              let weekNumber = Math.floor(offsetDate / 7);
-              if (weeksInMonth === 6) {
-                if (weekNumber === 0 || weekNumber === 1 || weekNumber === 2) {
-                  let dateToEnable = d.toDateString();
-                  return dateToEnable === d.toDateString();
-                } else {
-                  return false;
-                }
-              } else {
-                if (weekNumber === 2 || weekNumber === 3 || weekNumber === 4) {
-                  let dateToEnable = d.toDateString();
-                  return dateToEnable !== d.toDateString();
-                } else {
-                  return day !== 0 && day !== 6;
-                }
+                return day !== 0 && day !== 6;
               }
             } else {
-              return day !== 0 && day !== 6;
+              if (weekNumber === 0 || weekNumber === 1 || weekNumber === 4) {
+                let dateToEnable = d.toDateString();
+                return dateToEnable !== d.toDateString();
+              } else {
+                return day !== 0 && day !== 6;
+              }
             }
           } else {
             return day !== 0 && day !== 6;
@@ -1069,181 +1028,94 @@ export class CreateNewMeetingComponent implements OnInit {
 
           if (
             this.assignedPhysicalEmployees.length > 0 &&
-            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'B'
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'A'
           ) {
-            if (month % 2 === 0 && day !== 0 && day !== 6) {
-              let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
-              let offsetDate = d.getDate() + firstWeekday - 1;
-              let weekNumber = Math.floor(offsetDate / 7);
+            let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
+            let offsetDate = d.getDate() + firstWeekday - 1;
+            let weekNumber = Math.floor(offsetDate / 7);
 
-              if (weeksInMonth === 6) {
-                if (weekNumber === 0 || weekNumber === 1 || weekNumber === 2) {
-                  let dateToEnable = d.toDateString();
-                  return (
-                    this.datesToDisable.find(
-                      (item) => item.toDateString() === d.toDateString()
-                    ) === undefined && dateToEnable !== d.toDateString()
-                  );
-                } else {
-                  return (
-                    day !== 0 &&
-                    day !== 6 &&
-                    this.datesToDisable.find(
-                      (item) => item.toDateString() === d.toDateString()
-                    ) === undefined
-                  );
-                }
+            if (weeksInMonth === 6) {
+              if (weekNumber === 2 || weekNumber === 3) {
+                let dateToEnable = d.toDateString();
+                return (
+                  this.datesToDisable.find(
+                    (item) => item.toDateString() === d.toDateString()
+                  ) === undefined && dateToEnable !== d.toDateString()
+                );
               } else {
-                if (weekNumber === 0 || weekNumber === 1) {
-                  let dateToEnable = d.toDateString();
-                  return (
-                    this.datesToDisable.find(
-                      (item) => item.toDateString() === d.toDateString()
-                    ) === undefined && dateToEnable !== d.toDateString()
-                  );
-                } else {
-                  return (
-                    day !== 0 &&
-                    day !== 6 &&
-                    this.datesToDisable.find(
-                      (item) => item.toDateString() === d.toDateString()
-                    ) === undefined
-                  );
-                }
-              }
-            } else if (month % 2 === 1 && day !== 0 && day !== 6) {
-              let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
-              let offsetDate = d.getDate() + firstWeekday - 1;
-              let weekNumber = Math.floor(offsetDate / 7);
-              if (weeksInMonth === 6) {
-                if (weekNumber === 3 || weekNumber === 4 || weekNumber === 5) {
-                  let dateToEnable = d.toDateString();
-                  return (
-                    this.datesToDisable.find(
-                      (item) => item.toDateString() === d.toDateString()
-                    ) === undefined && dateToEnable !== d.toDateString()
-                  );
-                } else {
-                  return (
-                    day !== 0 &&
-                    day !== 6 &&
-                    this.datesToDisable.find(
-                      (item) => item.toDateString() === d.toDateString()
-                    ) === undefined
-                  );
-                }
-              } else {
-                if (weekNumber === 3 || weekNumber === 4 || weekNumber === 5) {
-                  let dateToEnable = d.toDateString();
-                  return (
-                    this.datesToDisable.find(
-                      (item) => item.toDateString() === d.toDateString()
-                    ) === undefined && dateToEnable !== d.toDateString()
-                  );
-                } else {
-                  return (
-                    day !== 0 &&
-                    day !== 6 &&
-                    this.datesToDisable.find(
-                      (item) => item.toDateString() === d.toDateString()
-                    ) === undefined
-                  );
-                }
+                return (
+                  day !== 0 &&
+                  day !== 6 &&
+                  this.datesToDisable.find(
+                    (item) => item.toDateString() === d.toDateString()
+                  ) === undefined
+                );
               }
             } else {
-              return (
-                day !== 0 &&
-                day !== 6 &&
-                this.datesToDisable.find(
-                  (item) => item.toDateString() === d.toDateString()
-                ) === undefined
-              );
+              if (weekNumber === 2 || weekNumber === 3) {
+                let dateToEnable = d.toDateString();
+                return (
+                  this.datesToDisable.find(
+                    (item) => item.toDateString() === d.toDateString()
+                  ) === undefined && dateToEnable !== d.toDateString()
+                );
+              } else {
+                return (
+                  day !== 0 &&
+                  day !== 6 &&
+                  this.datesToDisable.find(
+                    (item) => item.toDateString() === d.toDateString()
+                  ) === undefined
+                );
+              }
             }
           } else if (
             this.assignedPhysicalEmployees.length > 0 &&
-            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'A'
+            this.assignedPhysicalEmployees[0].alternateWfoTeam === 'B'
           ) {
-            if (month % 2 === 1 && day !== 0 && day !== 6) {
-              let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
-              let offsetDate = d.getDate() + firstWeekday - 1;
-              let weekNumber = Math.floor(offsetDate / 7);
+            let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
+            let offsetDate = d.getDate() + firstWeekday - 1;
+            let weekNumber = Math.floor(offsetDate / 7);
 
-              if (weeksInMonth === 6) {
-                if (weekNumber === 0 || weekNumber === 1 || weekNumber === 2) {
-                  let dateToEnable = d.toDateString();
-                  return (
-                    this.datesToDisable.find(
-                      (item) => item.toDateString() === d.toDateString()
-                    ) === undefined && dateToEnable !== d.toDateString()
-                  );
-                } else {
-                  return (
-                    day !== 0 &&
-                    day !== 6 &&
-                    this.datesToDisable.find(
-                      (item) => item.toDateString() === d.toDateString()
-                    ) === undefined
-                  );
-                }
+            if (weeksInMonth === 6) {
+              if (
+                weekNumber === 0 ||
+                weekNumber === 1 ||
+                weekNumber === 4 ||
+                weekNumber === 5
+              ) {
+                let dateToEnable = d.toDateString();
+                return (
+                  this.datesToDisable.find(
+                    (item) => item.toDateString() === d.toDateString()
+                  ) === undefined && dateToEnable !== d.toDateString()
+                );
               } else {
-                if (weekNumber === 0 || weekNumber === 1) {
-                  let dateToEnable = d.toDateString();
-                  return (
-                    this.datesToDisable.find(
-                      (item) => item.toDateString() === d.toDateString()
-                    ) === undefined && dateToEnable !== d.toDateString()
-                  );
-                } else {
-                  return (
-                    day !== 0 &&
-                    day !== 6 &&
-                    this.datesToDisable.find(
-                      (item) => item.toDateString() === d.toDateString()
-                    ) === undefined
-                  );
-                }
-              }
-            } else if (month % 2 === 0 && day !== 0 && day !== 6) {
-              let firstWeekday = new Date(d.getFullYear(), month, 1).getDay();
-              let offsetDate = d.getDate() + firstWeekday - 1;
-              let weekNumber = Math.floor(offsetDate / 7);
-              if (weeksInMonth === 6) {
-                if (weekNumber === 0 || weekNumber === 1 || weekNumber === 2) {
-                  let dateToEnable = d.toDateString();
-                  return (
-                    this.datesToDisable.find(
-                      (item) => item.toDateString() === d.toDateString()
-                    ) === undefined && dateToEnable === d.toDateString()
-                  );
-                } else {
-                  return false;
-                }
-              } else {
-                if (weekNumber === 2 || weekNumber === 3 || weekNumber === 4) {
-                  let dateToEnable = d.toDateString();
-                  return (
-                    this.datesToDisable.find(
-                      (item) => item.toDateString() === d.toDateString()
-                    ) === undefined && dateToEnable !== d.toDateString()
-                  );
-                } else {
-                  return (
-                    day !== 0 &&
-                    day !== 6 &&
-                    this.datesToDisable.find(
-                      (item) => item.toDateString() === d.toDateString()
-                    ) === undefined
-                  );
-                }
+                return (
+                  day !== 0 &&
+                  day !== 6 &&
+                  this.datesToDisable.find(
+                    (item) => item.toDateString() === d.toDateString()
+                  ) === undefined
+                );
               }
             } else {
-              return (
-                day !== 0 &&
-                day !== 6 &&
-                this.datesToDisable.find(
-                  (item) => item.toDateString() === d.toDateString()
-                ) === undefined
-              );
+              if (weekNumber === 0 || weekNumber === 1 || weekNumber === 4) {
+                let dateToEnable = d.toDateString();
+                return (
+                  this.datesToDisable.find(
+                    (item) => item.toDateString() === d.toDateString()
+                  ) === undefined && dateToEnable !== d.toDateString()
+                );
+              } else {
+                return (
+                  day !== 0 &&
+                  day !== 6 &&
+                  this.datesToDisable.find(
+                    (item) => item.toDateString() === d.toDateString()
+                  ) === undefined
+                );
+              }
             }
           } else {
             return (
