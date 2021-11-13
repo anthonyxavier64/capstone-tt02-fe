@@ -8,6 +8,7 @@ import {
 import { adapterFactory } from 'angular-calendar/date-adapters/moment';
 import * as moment from 'moment';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { NgxStripeModule } from 'ngx-stripe';
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
@@ -62,10 +63,12 @@ import { ViewAnnouncementComponent } from './pages/admin/announcement-management
 import { EditBlockoutDateDialogComponent } from './pages/admin/company-details/blockout-dates/edit-blockout-date-dialog/edit-blockout-date-dialog.component';
 import { ManageBlockoutDateComponent } from './pages/admin/company-details/blockout-dates/manage-blockout-date/manage-blockout-date.component';
 import { AdminCompanyDetailsManagementComponent } from './pages/admin/company-details/company-details-management/admin-company-details-management.component';
+import { CreditcardDialogComponent } from './pages/admin/company-details/creditcard/creditcard-dialog/creditcard-dialog.component';
 import { AddRoomDialogComponent } from './pages/admin/company-details/office-space-config/add-room-dialog/add-room-dialog.component';
 import { EditOfficeDetailsDialogComponent } from './pages/admin/company-details/office-space-config/edit-office-details-dialog/edit-office-details-dialog.component';
 import { EditRoomDetailsDialogComponent } from './pages/admin/company-details/office-space-config/edit-room-details-dialog/edit-room-details-dialog.component';
 import { OfficeSpaceConfigComponent } from './pages/admin/company-details/office-space-config/office-space-config.component';
+import { SubscriptionDialogComponent } from './pages/admin/company-details/subscription/subscription-dialog/subscription-dialog.component';
 import { AdminEmployeeManagementComponent } from './pages/admin/employee-management/admin-employee-management.component';
 import { DeleteEmployeeDialogComponent } from './pages/admin/employee-management/delete-employee-dialog/delete-employee-dialog.component';
 import { DepartmentInChargeOfComponent } from './pages/admin/employee-management/department-in-charge-of/department-in-charge-of.component';
@@ -77,6 +80,8 @@ import { NewDepartmentComponent } from './pages/admin/employee-management/new-de
 import { ViewArtComponent } from './pages/admin/employee-management/view-art-dialog/view-art-dialog.component';
 import { ViewShnDeclarationDialog } from './pages/admin/employee-management/view-shn-dialog/view-shn-dialog.component';
 import { ViewVaccinationDialogComponent } from './pages/admin/employee-management/view-vaccination-dialog/view-vaccination-dialog.component';
+import { ProductivityManagementComponent } from './pages/admin/productivity-tracking/productivity-management/productivity-management.component';
+import { ViewProductivityDialogComponent } from './pages/admin/productivity-tracking/view-productivity-stats/view-productivity-dialog/view-productivity-dialog.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfo-management/admin-wfo-management.component';
 import { AlternateWorkTeamsConfigComponent } from './pages/admin/wfo-management/alternate-work-teams-config/alternate-work-teams-config.component';
 import { EditExceptionDialogComponent } from './pages/admin/wfo-management/office-quota-config/edit-exception-dialog/edit-exception-dialog.component';
@@ -106,19 +111,14 @@ import { IndexComponent } from './pages/index/index.component';
 import { ForgotPasswordDialogComponent } from './pages/index/login/forgot-password-dialog/forgot-password-dialog.component';
 import { LoginComponent } from './pages/index/login/login.component';
 import { CompanyDetailsDialogComponent } from './pages/index/sign-up/company-details-dialog/company-details-dialog.component';
+import { SubscriptionComponent } from './pages/index/sign-up/payment/subscription/subscription.component';
 import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 import { TierInfoDialogComponent } from './pages/index/sign-up/tier-info-dialog/tier-info-dialog.component';
 import { ChangePasswordComponent } from './pages/profile/change-password/change-password.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { EditUnavailableDateDialogComponent } from './pages/profile/unavailable-dates/edit-unavailable-date-dialog/edit-unavailable-date-dialog.component';
-import { NgxStripeModule } from 'ngx-stripe';
-import { SubscriptionComponent } from './pages/index/sign-up/payment/subscription/subscription.component';
 import { ManageUnavailableDateComponent } from './pages/profile/unavailable-dates/manage-unavailable-date/manage-unavailable-date.component';
 import { NavbarComponent } from './pages/shared-components/navbar/navbar.component';
-import { SubscriptionDialogComponent } from './pages/admin/company-details/subscription/subscription-dialog/subscription-dialog.component';
-import { ProductivityManagementComponent } from './pages/admin/productivity-tracking/productivity-management/productivity-management.component';
-import { ViewProductivityDialogComponent } from './pages/admin/productivity-tracking/view-productivity-stats/view-productivity-dialog/view-productivity-dialog.component';
-import { CreditcardDialogComponent } from './pages/admin/company-details/creditcard/creditcard-dialog/creditcard-dialog.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);

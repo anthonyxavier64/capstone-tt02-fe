@@ -9,6 +9,7 @@ import { ManageBlockoutDateComponent } from './pages/admin/company-details/block
 import { AdminCompanyDetailsManagementComponent } from './pages/admin/company-details/company-details-management/admin-company-details-management.component';
 import { OfficeSpaceConfigComponent } from './pages/admin/company-details/office-space-config/office-space-config.component';
 import { AdminEmployeeManagementComponent } from './pages/admin/employee-management/admin-employee-management.component';
+import { ProductivityManagementComponent } from './pages/admin/productivity-tracking/productivity-management/productivity-management.component';
 import { AdminWfoManagementComponent } from './pages/admin/wfo-management/admin-wfo-management.component';
 import { AlternateWorkTeamsConfigComponent } from './pages/admin/wfo-management/alternate-work-teams-config/alternate-work-teams-config.component';
 import { OfficeQuotaConfigComponent } from './pages/admin/wfo-management/office-quota-config/office-quota-config.component';
@@ -23,11 +24,10 @@ import { FeedbackComponent } from './pages/feedback/feedback.component';
 import { ViewFeedbackComponent } from './pages/feedback/view-feedback/view-feedback.component';
 import { IndexComponent } from './pages/index/index.component';
 import { LoginComponent } from './pages/index/login/login.component';
+import { SubscriptionComponent } from './pages/index/sign-up/payment/subscription/subscription.component';
 import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ManageUnavailableDateComponent } from './pages/profile/unavailable-dates/manage-unavailable-date/manage-unavailable-date.component';
-import { SubscriptionComponent } from './pages/index/sign-up/payment/subscription/subscription.component';
-import { ProductivityManagementComponent } from './pages/admin/productivity-tracking/productivity-management/productivity-management.component';
 
 const user = JSON.parse(localStorage.getItem('currentUser'));
 
