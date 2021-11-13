@@ -3,17 +3,19 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { MessageService } from 'primeng/api';
 import { Announcement } from 'src/app/models/announcement';
 import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { TaskService } from 'src/app/services/task/task.service';
+import { UserService } from 'src/app/services/user/user.service';
 import { ViewAnnouncementComponent } from '../admin/announcement-management/view-announcement/view-announcement.component';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  providers: [DatePipe],
+  providers: [DatePipe, MessageService],
 })
 export class DashboardComponent implements OnInit {
   user: any | null;
@@ -45,19 +47,40 @@ export class DashboardComponent implements OnInit {
     private meetingService: MeetingService,
     private taskService: TaskService,
     private matDialog: MatDialog,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private userService: UserService,
+    private messageService: MessageService
   ) {
     this.taskProgress = 0;
   }
 
   ngOnInit() {
     const currentUser = localStorage.getItem('currentUser');
+    let cachedUser = null;
     if (currentUser) {
-      this.user = JSON.parse(currentUser);
+      cachedUser = JSON.parse(currentUser);
     }
 
+    this.userService.getUser(cachedUser.userId).subscribe(
+      (response) => {
+        let user = response.user;
+        if (typeof user.datesInOffice === typeof '') {
+          let datesInOffice = JSON.parse(user.datesInOffice);
+          this.user = {
+            ...user,
+            datesInOffice: datesInOffice,
+          };
+        } else {
+          this.user = {
+            ...user,
+          };
+        }
+      },
+      (error) => {}
+    );
+
     this.announcementService
-      .getCovidAnnouncements(this.user.companyId)
+      .getCovidAnnouncements(cachedUser.companyId)
       .subscribe(
         (response) => {
           this.covidAnnouncements = response.announcements;
@@ -68,7 +91,7 @@ export class DashboardComponent implements OnInit {
       );
 
     this.announcementService
-      .getGeneralAnnouncements(this.user.companyId)
+      .getGeneralAnnouncements(cachedUser.companyId)
       .subscribe(
         (response) => {
           this.generalAnnouncements = response.announcements;
@@ -78,7 +101,7 @@ export class DashboardComponent implements OnInit {
         }
       );
 
-    this.taskService.getAllTasksByUser(this.user.userId).subscribe(
+    this.taskService.getAllTasksByUser(cachedUser.userId).subscribe(
       (response) => {
         this.allTasks = response.tasks;
         this.numCompleted = 0;
@@ -104,7 +127,7 @@ export class DashboardComponent implements OnInit {
       }
     );
 
-    this.meetingService.getAllMeetingsParticipant(this.user.userId).subscribe(
+    this.meetingService.getAllMeetingsParticipant(cachedUser.userId).subscribe(
       (response) => {
         console.log(response);
         for (const meeting of response.physicalMeetings) {
@@ -130,7 +153,7 @@ export class DashboardComponent implements OnInit {
       }
     );
 
-    this.meetingService.getAllMeetingsRsvp(this.user.userId).subscribe(
+    this.meetingService.getAllMeetingsRsvp(cachedUser.userId).subscribe(
       (response) => {
         for (const meeting of response.physicalRsvps) {
           this.physicalRsvps.push(meeting);
@@ -187,48 +210,56 @@ export class DashboardComponent implements OnInit {
   }
 
   acceptRsvp(meetingId: string, isPhysicalRsvp: boolean, userId: string) {
-    this.meetingService
-      .rsvpToMeeting(meetingId, isPhysicalRsvp, userId)
-      .subscribe(
-        (response) => {
-          var meeting = response.meeting;
-          if (isPhysicalRsvp) {
-            if (
-              moment(meeting.startTime).isAfter(this.startDate) &&
-              moment(meeting.startTime).isBefore(this.endDate)
-            ) {
-              this.physicalMeetings.push(meeting);
-              this.physicalMeetings.sort((a, b) => {
-                var aMoment = moment(a.startTime);
-                var bMoment = moment(b.startTime);
-                return aMoment.isAfter(bMoment) ? 1 : -11;
-              });
+    if (this.user.datesInOffice.length < this.user.wfoMonthlyAllocation) {
+      this.meetingService
+        .rsvpToMeeting(meetingId, isPhysicalRsvp, userId)
+        .subscribe(
+          (response) => {
+            var meeting = response.meeting;
+            if (isPhysicalRsvp) {
+              if (
+                moment(meeting.startTime).isAfter(this.startDate) &&
+                moment(meeting.startTime).isBefore(this.endDate)
+              ) {
+                this.physicalMeetings.push(meeting);
+                this.physicalMeetings.sort((a, b) => {
+                  var aMoment = moment(a.startTime);
+                  var bMoment = moment(b.startTime);
+                  return aMoment.isAfter(bMoment) ? 1 : -11;
+                });
+              }
+              var indexToRemove = this.physicalRsvps.findIndex(
+                (item) => item.meetingId === meetingId
+              );
+              this.physicalRsvps.splice(indexToRemove, 1);
+            } else {
+              if (
+                moment(meeting.startTime).isAfter(this.startDate) &&
+                moment(meeting.startTime).isBefore(this.endDate)
+              ) {
+                this.virtualMeetings.push(meeting);
+                this.virtualMeetings.sort((a, b) => {
+                  var aMoment = moment(a.startTime);
+                  var bMoment = moment(b.startTime);
+                  return aMoment.isAfter(bMoment) ? 1 : -11;
+                });
+              }
+              var indexToRemove = this.virtualRsvps.findIndex(
+                (item) => item.meetingId === meetingId
+              );
+              this.virtualRsvps.splice(indexToRemove, 1);
             }
-            var indexToRemove = this.physicalRsvps.findIndex(
-              (item) => item.meetingId === meetingId
-            );
-            this.physicalRsvps.splice(indexToRemove, 1);
-          } else {
-            if (
-              moment(meeting.startTime).isAfter(this.startDate) &&
-              moment(meeting.startTime).isBefore(this.endDate)
-            ) {
-              this.virtualMeetings.push(meeting);
-              this.virtualMeetings.sort((a, b) => {
-                var aMoment = moment(a.startTime);
-                var bMoment = moment(b.startTime);
-                return aMoment.isAfter(bMoment) ? 1 : -11;
-              });
-            }
-            var indexToRemove = this.virtualRsvps.findIndex(
-              (item) => item.meetingId === meetingId
-            );
-            this.virtualRsvps.splice(indexToRemove, 1);
+          },
+          (error) => {
+            console.log(error);
           }
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+        );
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: `Your work from office quota limit for the month has been reached.`,
+      });
+    }
   }
 }
