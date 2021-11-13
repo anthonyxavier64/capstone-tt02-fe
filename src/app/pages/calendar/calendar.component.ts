@@ -10,6 +10,7 @@ import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSu
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UnavailableDateService } from 'src/app/services/unavailableDate/unavailable-date.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { AlternateWorkTeamsConfigurationService } from './../../services/wfoConfiguration/alternateWorkTeamsConfiguration/alternate-work-teams-configuration.service';
 import { DayComponent } from './day/day.component';
 import { ViewMeetingDetailsDialogComponent } from './view-meeting-details-dialog/view-meeting-details-dialog.component';
 
@@ -39,6 +40,8 @@ export class CalendarComponent implements OnInit {
   currentPeriodEnd: Date;
   currMonth: number = new Date().getMonth();
   wfoAllowanceCount: number;
+  selectedConfig: string;
+  alternateWorkTeamsConfig: string;
 
   officeUsersThisMonth: any[];
   meetings: any[];
@@ -73,7 +76,8 @@ export class CalendarComponent implements OnInit {
     private covidDocumentSubmissionService: CovidDocumentSubmissionService,
     public dialog: MatDialog,
     private messageService: MessageService,
-    private unavailableDateService: UnavailableDateService
+    private unavailableDateService: UnavailableDateService,
+    private alternateWorkTeamsService: AlternateWorkTeamsConfigurationService
   ) {
     this.datesInOffice = [];
     this.meetings = [];
@@ -86,11 +90,17 @@ export class CalendarComponent implements OnInit {
     this.isVirtual = true;
     this.myMeetings = false;
 
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
-    this.datesInOffice = this.user.datesInOffice;
+    let cachedUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.userService.getUser(cachedUser.userId).subscribe(
+      (response) => {
+        this.user = response.user;
+        this.datesInOffice = this.user.datesInOffice;
+      },
+      (error) => {}
+    );
 
     this.unavailableDateService
-      .getUnavailableDateByUid(this.user.userId)
+      .getUnavailableDateByUid(cachedUser.userId)
       .subscribe(
         (result) => {
           this.leaveDates = result.unavailableDate;
@@ -104,9 +114,19 @@ export class CalendarComponent implements OnInit {
         }
       );
 
-    this.companyService.getCompany(this.user.companyId).subscribe(
-      (response) => {
+    this.companyService.getCompany(cachedUser.companyId).subscribe(
+      async (response) => {
         this.company = response.company;
+        this.selectedConfig = this.company.wfoArrangement;
+        if (this.selectedConfig === 'ALTERNATE_WORK_TEAMS') {
+          let alternateWorkTeamConfig = await this.alternateWorkTeamsService
+            .getAlternateWorkTeamsConfiguration(
+              this.company.alternateWorkTeamsConfigurationId
+            )
+            .toPromise();
+          this.alternateWorkTeamsConfig =
+            alternateWorkTeamConfig.alternateWorkTeamsConfig.scheduleType;
+        }
         this.blockoutDates = this.company.blockoutDates;
       },
       (error) => {
@@ -118,7 +138,7 @@ export class CalendarComponent implements OnInit {
       }
     );
 
-    this.meetingService.getAllCompanyMeetings(this.user.companyId).subscribe(
+    this.meetingService.getAllCompanyMeetings(cachedUser.companyId).subscribe(
       (response) => {
         this.meetings = response.meetings;
         this.meetings.forEach((item) => {
@@ -139,7 +159,7 @@ export class CalendarComponent implements OnInit {
       }
     );
 
-    this.meetingService.getAllMeetingsParticipant(this.user.userId).subscribe(
+    this.meetingService.getAllMeetingsParticipant(cachedUser.userId).subscribe(
       (response) => {
         this.myPhysicalMeetings = response.physicalMeetings.filter(
           (meeting) =>
@@ -167,17 +187,17 @@ export class CalendarComponent implements OnInit {
       }
     );
 
-    this.userService.getUsers(this.user.companyId).subscribe((response) => {
+    this.userService.getUsers(cachedUser.companyId).subscribe((response) => {
       this.employees = response.users;
     });
 
     this.userService
-      .getOfficeUsersByMonth(this.user.companyId, new Date().getMonth())
+      .getOfficeUsersByMonth(cachedUser.companyId, new Date().getMonth())
       .subscribe((response) => {
         this.officeUsersThisMonth = response.users;
       });
 
-    this.covidDocumentSubmissionService.getUserMcs(this.user.userId).subscribe(
+    this.covidDocumentSubmissionService.getUserMcs(cachedUser.userId).subscribe(
       (response) => {
         const latestMc = response.document;
         if (latestMc) {
@@ -543,26 +563,211 @@ export class CalendarComponent implements OnInit {
     );
   }
   isPhysicalOfficeDay(day: Date) {
-    const dates = this.myPhysicalMeetings.filter((item) => {
-      const d = new Date(item.startTime);
-      return (
-        d.getDate() == day.getDate() &&
-        d.getMonth() == day.getMonth() &&
-        d.getFullYear() == day.getFullYear()
-      );
-    });
-    return dates.length > 0;
+    if (this.selectedConfig === 'OFFICE_QUOTAS') {
+      const dates = this.myPhysicalMeetings.filter((item) => {
+        const d = new Date(item.startTime);
+        return (
+          d.getDate() == day.getDate() &&
+          d.getMonth() == day.getMonth() &&
+          d.getFullYear() == day.getFullYear()
+        );
+      });
+      return dates.length > 0;
+    } else {
+      return false;
+    }
   }
-  isWfoSelected(day: Date) {
-    const dates = this.datesInOffice.filter((item) => {
-      const d = new Date(item);
-      return (
-        d.getDate() == day.getDate() &&
-        d.getMonth() == day.getMonth() &&
-        d.getFullYear() == day.getFullYear()
-      );
-    });
-    return dates.length > 0;
+  isWfoSelected(day: Date): boolean {
+    if (this.selectedConfig === 'OFFICE_QUOTAS') {
+      const dates = this.datesInOffice.filter((item) => {
+        const d = new Date(item);
+        return (
+          d.getDate() == day.getDate() &&
+          d.getMonth() == day.getMonth() &&
+          d.getFullYear() == day.getFullYear()
+        );
+      });
+      return dates.length > 0;
+    } else {
+      let retDay = day.getDay();
+      if (this.alternateWorkTeamsConfig === 'DAILY') {
+        if (this.user.alternateWfoTeam === 'A') {
+          return (
+            retDay !== 0 &&
+            retDay !== 1 &&
+            retDay !== 3 &&
+            retDay !== 5 &&
+            retDay !== 6
+          );
+        } else if (this.user.alternateWfoTeam === 'B') {
+          return retDay !== 0 && retDay !== 2 && retDay !== 4 && retDay !== 6;
+        } else {
+          return retDay !== 0 && retDay !== 6;
+        }
+      } else if (this.alternateWorkTeamsConfig === 'WEEKLY') {
+        if (this.user.alternateWfoTeam === 'B') {
+          // To factor in leap years
+          let numDaysInYear =
+            (day.getFullYear() % 4 === 0 && day.getFullYear() % 100 > 0) ||
+            day.getFullYear() % 400 == 0
+              ? 366
+              : 365;
+
+          if (numDaysInYear === 365) {
+            // non leap year logic
+            let start = new Date(day.getFullYear(), 0, 2);
+            let diff = day.getTime() - start.getTime();
+            let oneDay = 1000 * 60 * 60 * 24;
+            let dayNumber = Math.floor(diff / oneDay);
+            let weekNumber = Math.floor(dayNumber / 7);
+            if (weekNumber % 2 !== 0 && retDay !== 0 && retDay !== 6) {
+              const dateToEnable = day.toDateString();
+              return dateToEnable !== day.toDateString();
+            } else {
+              return retDay !== 0 && retDay !== 6;
+            }
+          } else {
+            // leap year logic
+            let start = new Date(day.getFullYear(), 0, 1);
+            let diff = day.getTime() - start.getTime();
+            let oneDay = 1000 * 60 * 60 * 24;
+            let dayNumber = Math.floor(diff / oneDay);
+            let weekNumber = Math.floor(dayNumber / 7);
+            if (weekNumber % 2 !== 0 && retDay !== 0 && retDay !== 6) {
+              const dateToEnable = day.toDateString();
+              return dateToEnable !== day.toDateString();
+            } else {
+              return retDay !== 0 && retDay !== 6;
+            }
+          }
+        } else if (this.user.alternateWfoTeam === 'A') {
+          // To factor in leap years
+          let numDaysInYear =
+            (day.getFullYear() % 4 === 0 && day.getFullYear() % 100 > 0) ||
+            day.getFullYear() % 400 == 0
+              ? 366
+              : 365;
+
+          if (numDaysInYear === 365) {
+            // non leap year logic
+            let start = new Date(day.getFullYear(), 0, 2);
+            let diff = day.getTime() - start.getTime();
+            let oneDay = 1000 * 60 * 60 * 24;
+            let dayNumber = Math.floor(diff / oneDay);
+            let weekNumber = Math.floor(dayNumber / 7);
+            if (weekNumber % 2 !== 1 && retDay !== 0 && retDay !== 6) {
+              const dateToEnable = day.toDateString();
+              return dateToEnable !== day.toDateString();
+            } else {
+              return retDay !== 0 && retDay !== 6;
+            }
+          } else {
+            // leap year logic
+            let start = new Date(day.getFullYear(), 0, 1);
+            let diff = day.getTime() - start.getTime();
+            let oneDay = 1000 * 60 * 60 * 24;
+            let dayNumber = Math.floor(diff / oneDay);
+            let weekNumber = Math.floor(dayNumber / 7);
+            if (weekNumber % 2 !== 1 && retDay !== 0 && retDay !== 6) {
+              const dateToEnable = day.toDateString();
+              return dateToEnable !== day.toDateString();
+            } else {
+              return retDay !== 0 && retDay !== 6;
+            }
+          }
+        } else {
+          return retDay !== 0 && retDay !== 6;
+        }
+      } else if (this.alternateWorkTeamsConfig === 'BIWEEKLY') {
+        let month = day.getMonth();
+
+        //num of weeks in the month
+        let firstOfMonth = new Date(day.getFullYear(), month, 1);
+        let dayOfFirst = firstOfMonth.getDay() || 6;
+        dayOfFirst = dayOfFirst === 1 ? 0 : dayOfFirst;
+        if (dayOfFirst) {
+          dayOfFirst--;
+        }
+        let diff = 7 - dayOfFirst;
+        let lastOfMonth = new Date(day.getFullYear(), month, 0);
+        let lastDate = lastOfMonth.getDate();
+        if (lastOfMonth.getDay() === 1) {
+          diff--;
+        }
+        let weeksInMonth = Math.ceil((lastDate - diff) / 7) + 1;
+
+        if (this.user.alternateWfoTeam === 'A') {
+          let firstWeekday = new Date(day.getFullYear(), month, 1).getDay();
+          let offsetDate = day.getDate() + firstWeekday - 1;
+          let weekNumber = Math.floor(offsetDate / 7);
+
+          if (weeksInMonth === 6) {
+            if (weekNumber === 2 || weekNumber === 3) {
+              let dateToEnable = day.toDateString();
+              return dateToEnable !== day.toDateString();
+            } else {
+              return retDay !== 0 && retDay !== 6;
+            }
+          } else {
+            if (weekNumber === 2 || weekNumber === 3) {
+              let dateToEnable = day.toDateString();
+              return dateToEnable !== day.toDateString();
+            } else {
+              return retDay !== 0 && retDay !== 6;
+            }
+          }
+        } else if (this.user.alternateWfoTeam === 'B') {
+          let firstWeekday = new Date(day.getFullYear(), month, 1).getDay();
+          let offsetDate = day.getDate() + firstWeekday - 1;
+          let weekNumber = Math.floor(offsetDate / 7);
+
+          if (weeksInMonth === 6) {
+            if (
+              weekNumber === 0 ||
+              weekNumber === 1 ||
+              weekNumber === 4 ||
+              weekNumber === 5
+            ) {
+              let dateToEnable = day.toDateString();
+              return dateToEnable !== day.toDateString();
+            } else {
+              return retDay !== 0 && retDay !== 6;
+            }
+          } else {
+            if (weekNumber === 0 || weekNumber === 1 || weekNumber === 4) {
+              let dateToEnable = day.toDateString();
+              return dateToEnable !== day.toDateString();
+            } else {
+              return retDay !== 0 && retDay !== 6;
+            }
+          }
+        } else {
+          return retDay !== 0 && retDay !== 6;
+        }
+      } else if (this.alternateWorkTeamsConfig === 'MONTHLY') {
+        if (this.user.alternateWfoTeam === 'B') {
+          let month = day.getMonth();
+          if (month % 2 === 0 && retDay !== 0 && retDay !== 6) {
+            let dateToEnable = day.toDateString();
+            return dateToEnable !== day.toDateString();
+          } else {
+            return retDay !== 0 && retDay !== 6;
+          }
+        } else if (this.user.alternateWfoTeam === 'A') {
+          let month = day.getMonth();
+          if (month % 2 === 1 && retDay !== 0 && retDay !== 6) {
+            let dateToEnable = day.toDateString();
+            return dateToEnable !== day.toDateString();
+          } else {
+            return retDay !== 0 && retDay !== 6;
+          }
+        } else {
+          return retDay !== 0 && retDay !== 6;
+        }
+      } else {
+        return retDay !== 0 && retDay !== 6;
+      }
+    }
   }
   isSelectorDisabled(day: Date) {
     if (this.isMcDay(day) || this.user.isInfected) return true;
