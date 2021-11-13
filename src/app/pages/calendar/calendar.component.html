@@ -1,93 +1,202 @@
-<div fxLayout="column" fxLayoutGap="2%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
+<div
+  fxLayout="column"
+  fxLayoutGap="2%"
+  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+>
   <app-navbar></app-navbar>
 
   <div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="space-around center">
     <mat-spinner style="color: aquamarine; margin-top: 15%"></mat-spinner>
   </div>
 
-  <div *ngIf="!isLoading" fxLayout="column" fxLayoutGap="2%" style="width: 100%; height: 100%; padding: 0 2%">
+  <div
+    *ngIf="!isLoading"
+    fxLayout="column"
+    fxLayoutGap="2%"
+    style="width: 100%; height: 100%; padding: 0 2%"
+  >
     <ng-template #customCellTemplate let-day="day" let-locale="locale">
       <div class="cal-cell-top" (click)="viewDay(day.date, day.events)">
-        <span [ngClass]="{
+        <span
+          [ngClass]="{
             'cal-day-number': !isBlockoutDate(day.date),
             'blockout-date': isBlockoutDate(day.date) || isLeaveDate(day.date)
-          }">{{ day.date | calendarDate: "monthViewDayNumber":locale }}</span>
-        <span *ngIf="isBlockoutDate(day.date)" class="blockout-date">{{ blockoutDate.title }}
+          }"
+          >{{ day.date | calendarDate: "monthViewDayNumber":locale }}</span
+        >
+        <span *ngIf="isBlockoutDate(day.date)" class="blockout-date"
+          >{{ blockoutDate.title }}
         </span>
         <span *ngIf="isLeaveDate(day.date)" class="leave-tag">Leave</span>
-        <span id="selectedWfoDay" *ngIf="isPhysicalOfficeDay(day.date)" class="wfo-selector">
+        <span
+          id="selectedWfoDay"
+          *ngIf="isPhysicalOfficeDay(day.date)"
+          class="wfo-selector"
+        >
           <div class="cal-wfo-circle filled lightblue"></div>
         </span>
-        <span *ngIf="!isWfoSelectable(day.date) && !isPhysicalOfficeDay(day.date)" class="wfo-selector">
-          <div *ngIf="!isSelectorDisabled(day.date) && isWfoSelected(day.date)" class="cal-wfo-circle filled"></div>
+        <span
+          *ngIf="!isWfoSelectable(day.date) && !isPhysicalOfficeDay(day.date)"
+          class="wfo-selector"
+        >
+          <div
+            *ngIf="!isSelectorDisabled(day.date) && isWfoSelected(day.date)"
+            class="cal-wfo-circle filled"
+          ></div>
         </span>
         <span *ngIf="isWfoSelectable(day.date)" class="wfo-selector">
-          <div *ngIf="isSelectorDisabled(day.date) && isWfoSelected(day.date)" class="cal-wfo-circle filled grey"></div>
-          <div *ngIf="isSelectorDisabled(day.date) && !isWfoSelected(day.date)" class="cal-wfo-circle grey"></div>
-          <div *ngIf="!isSelectorDisabled(day.date) && isWfoSelected(day.date)" class="cal-wfo-circle filled"
-            (click)="onUnselectDay(day.date); $event.stopPropagation()"></div>
-          <div *ngIf="!isSelectorDisabled(day.date) && !isWfoSelected(day.date)" class="cal-wfo-circle"
-            (click)="onSelectDay(day.date); $event.stopPropagation()"></div>
+          <div
+            *ngIf="isSelectorDisabled(day.date) && isWfoSelected(day.date)"
+            class="cal-wfo-circle filled grey"
+          ></div>
+          <div
+            *ngIf="isSelectorDisabled(day.date) && !isWfoSelected(day.date)"
+            class="cal-wfo-circle grey"
+          ></div>
+          <div
+            *ngIf="!isSelectorDisabled(day.date) && isWfoSelected(day.date)"
+            class="cal-wfo-circle filled"
+            (click)="onUnselectDay(day.date); $event.stopPropagation()"
+          ></div>
+          <div
+            *ngIf="!isSelectorDisabled(day.date) && !isWfoSelected(day.date)"
+            class="cal-wfo-circle"
+            (click)="onSelectDay(day.date); $event.stopPropagation()"
+          ></div>
         </span>
       </div>
       <div *ngFor="let event of day.events; index as i">
-        <button mat-button *ngIf="i < 2" class="cal-event-btn" [ngStyle]="{ 'background-color': event.color }"
-          (click)="viewMeeting(event)">
+        <button
+          mat-button
+          *ngIf="i < 2"
+          class="cal-event-btn"
+          [ngStyle]="{ 'background-color': event.color }"
+          (click)="viewMeeting(event)"
+        >
           {{ event.title }}
         </button>
       </div>
       <div *ngIf="day.events.length > 2">
-        <button mat-button class="cal-event-btn" (click)="viewDay(day.date, day.events)">
+        <button
+          mat-button
+          class="cal-event-btn"
+          (click)="viewDay(day.date, day.events)"
+        >
           + {{ day.events.length - 2 }} others
         </button>
       </div>
     </ng-template>
 
-    <ng-template #customEventTemplate let-weekEvent="weekEvent" let-locale="locale">
-      <button mat-button class="cal-week-btn" [ngStyle]="{ 'background-color': weekEvent.event.color }"
-        (click)="viewMeeting(weekEvent.event)">
+    <ng-template
+      #customEventTemplate
+      let-weekEvent="weekEvent"
+      let-locale="locale"
+    >
+      <button
+        mat-button
+        class="cal-week-btn"
+        [ngStyle]="{ 'background-color': weekEvent.event.color }"
+        (click)="viewMeeting(weekEvent.event)"
+      >
         {{ weekEvent.event.title }}
       </button>
     </ng-template>
 
-    <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%; height: 100%">
+    <div
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+      style="width: 100%; height: 100%"
+    >
       <h1>{{ company.name }}'s Calendar</h1>
-      <button *ngIf="!isWfoSelectionMode" button mat-button class="blue-btn" (click)="viewWfoMode()">
+      <button
+        *ngIf="!isWfoSelectionMode && viewDate.getMonth() === currMonth"
+        button
+        mat-button
+        class="blue-btn"
+        (click)="viewWfoMode()"
+      >
         Work From Office
       </button>
-      <button *ngIf="isWfoSelectionMode" mat-button class="{{ wfoAllowanceCount >= 0 ? 'blue-btn' : 'red-btn' }}"
-        disabled="{{ wfoAllowanceCount < 0 }}" (click)="escViewWfoMode()">
+      <button
+        *ngIf="isWfoSelectionMode"
+        mat-button
+        class="{{ wfoAllowanceCount >= 0 ? 'blue-btn' : 'red-btn' }}"
+        disabled="{{ wfoAllowanceCount < 0 }}"
+        (click)="escViewWfoMode()"
+      >
         Save Changes (quota remaining: {{ wfoAllowanceCount }})
       </button>
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%; height: 100%">
-      <div fxLayout="row" fxLayoutAlign="left center" fxLayoutGap="2%" style="width: 80%">
+    <div
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+      style="width: 100%; height: 100%"
+    >
+      <div
+        fxLayout="row"
+        fxLayoutAlign="left center"
+        fxLayoutGap="2%"
+        style="width: 80%"
+      >
         <div class="btn-group-border">
-          <button mat-button [ngClass]="{ 'peach-btn': view == CalendarView.Month }"
-            (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month"
-            style="color: rgb(var(--theme-primary-color))">
+          <button
+            mat-button
+            [ngClass]="{ 'peach-btn': view == CalendarView.Month }"
+            (click)="setView(CalendarView.Month)"
+            [class.active]="view === CalendarView.Month"
+            style="color: rgb(var(--theme-primary-color))"
+          >
             Month
           </button>
-          <button mat-button [ngClass]="{ 'peach-btn': view == CalendarView.Week }" (click)="setView(CalendarView.Week)"
-            [class.active]="view === CalendarView.Week" style="color: rgb(var(--theme-primary-color))">
+          <button
+            mat-button
+            [ngClass]="{ 'peach-btn': view == CalendarView.Week }"
+            (click)="setView(CalendarView.Week)"
+            [class.active]="view === CalendarView.Week"
+            style="color: rgb(var(--theme-primary-color))"
+          >
             Week
           </button>
         </div>
-        <mat-checkbox [checked]="isPhysical" (change)="togglePhysical()">In-Office</mat-checkbox>
-        <mat-checkbox [checked]="isVirtual" (change)="toggleVirtual()">Online</mat-checkbox>
-        <mat-checkbox [checked]="myMeetings" (change)="toggleMine()" style="display: none">My Meetings Only
+        <mat-checkbox [checked]="isPhysical" (change)="togglePhysical()"
+          >In-Office</mat-checkbox
+        >
+        <mat-checkbox [checked]="isVirtual" (change)="toggleVirtual()"
+          >Online</mat-checkbox
+        >
+        <mat-checkbox
+          [checked]="myMeetings"
+          (change)="toggleMine()"
+          style="display: none"
+          >My Meetings Only
         </mat-checkbox>
-        <p-multiSelect [options]="employees" optionLabel="fullName" [(ngModel)]="selectedEmployees"
-          placeholder="Filter by attendees" [filter]="true" [showToggleAll]="false" filterBy="fullName"
-          [style]="{ width: '16vw' }" (onPanelHide)="handleAttendees()" (onChange)="handleAttendees()">
+        <p-multiSelect
+          [options]="employees"
+          optionLabel="fullName"
+          [(ngModel)]="selectedEmployees"
+          placeholder="Filter by attendees"
+          [filter]="true"
+          [showToggleAll]="false"
+          filterBy="fullName"
+          [style]="{ width: '16vw' }"
+          (onPanelHide)="handleAttendees()"
+          (onChange)="handleAttendees()"
+        >
           <ng-template let-user pTemplate="item">
             <div fxLayout="row" fxLayoutGap="3%">
-              <img *ngIf="user.isVaccinated && !user.isInfected"
-                src="../../../../../assets/images/vaccinatedIcon.svg" />
-              <img *ngIf="!user.isVaccinated && !user.isInfected"
-                src="../../../../../assets/images/unvaccinatedIcon.svg" />
-              <img *ngIf="user.isInfected" src="../../../../../assets/images/covidIcon.svg" />
+              <img
+                *ngIf="user.isVaccinated && !user.isInfected"
+                src="../../../../../assets/images/vaccinatedIcon.svg"
+              />
+              <img
+                *ngIf="!user.isVaccinated && !user.isInfected"
+                src="../../../../../assets/images/unvaccinatedIcon.svg"
+              />
+              <img
+                *ngIf="user.isInfected"
+                src="../../../../../assets/images/covidIcon.svg"
+              />
               <div>{{ user.fullName }}</div>
             </div>
           </ng-template>
@@ -98,30 +207,60 @@
       </button>
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="3%" style="width: 100%; height: 100%">
-      <div class="btn-arrow" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
-        (viewDateChange)="closeOpenMonthViewDay()">
-        < </div>
-
-          <div style="text-align: center">
-            <h1>{{ viewDate | calendarDate: view + "ViewTitle":"en" }}</h1>
-          </div>
-
-          <div class="btn-arrow" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
-            (viewDateChange)="closeOpenMonthViewDay()">
-            >
-          </div>
+    <div
+      fxLayout="row"
+      fxLayoutAlign="center center"
+      fxLayoutGap="3%"
+      style="width: 100%; height: 100%"
+    >
+      <div
+        class="btn-arrow"
+        mwlCalendarPreviousView
+        [view]="view"
+        [(viewDate)]="viewDate"
+        *ngIf="!isWfoSelectionMode"
+        (viewDateChange)="closeOpenMonthViewDay()"
+      >
+        <
       </div>
 
-      <div [ngSwitch]="view">
-        <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events"
-          [cellTemplate]="customCellTemplate">
-        </mwl-calendar-month-view>
-        <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events"
-          [eventTemplate]="customEventTemplate">
-        </mwl-calendar-week-view>
-        <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events">
-        </mwl-calendar-day-view>
+      <div style="text-align: center">
+        <h1>{{ viewDate | calendarDate: view + "ViewTitle":"en" }}</h1>
+      </div>
+
+      <div
+        class="btn-arrow"
+        mwlCalendarNextView
+        [view]="view"
+        [(viewDate)]="viewDate"
+        *ngIf="!isWfoSelectionMode"
+        (viewDateChange)="closeOpenMonthViewDay()"
+      >
+        >
       </div>
     </div>
+
+    <div [ngSwitch]="view">
+      <mwl-calendar-month-view
+        *ngSwitchCase="'month'"
+        [viewDate]="viewDate"
+        [events]="events"
+        [cellTemplate]="customCellTemplate"
+      >
+      </mwl-calendar-month-view>
+      <mwl-calendar-week-view
+        *ngSwitchCase="'week'"
+        [viewDate]="viewDate"
+        [events]="events"
+        [eventTemplate]="customEventTemplate"
+      >
+      </mwl-calendar-week-view>
+      <mwl-calendar-day-view
+        *ngSwitchCase="'day'"
+        [viewDate]="viewDate"
+        [events]="events"
+      >
+      </mwl-calendar-day-view>
+    </div>
   </div>
+</div>
