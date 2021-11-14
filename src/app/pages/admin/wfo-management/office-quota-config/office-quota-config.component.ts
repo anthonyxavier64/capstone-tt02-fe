@@ -56,7 +56,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
       this.user = JSON.parse(currentUser);
       const { companyId } = this.user;
       this.companyDetailsService.getCompanyById(companyId).subscribe(
-        (result) => {
+        async (result) => {
           this.company = result.company;
           if (this.company.officeQuotaConfigurationId === null) {
             this.officeQuotaConfigId = null;
@@ -64,53 +64,44 @@ export class OfficeQuotaConfigComponent implements OnInit {
             this.deletedExceptions = [];
             this.numEmployeesPerDay = null;
             this.numDaysAllowedPerMonth = null;
-
-            this.userService.getUsers(companyId).subscribe((response) => {
-              this.users = response.users;
-              for (let exception of this.exceptions) {
-                if (
-                  this.users.find((item) => item.userId === exception.userId)
-                ) {
-                  const indexToRemove = this.users.findIndex(
-                    (item) => item.userId === exception.userId
-                  );
-                  this.users.splice(indexToRemove, 1);
-                }
+            let users = await this.userService.getUsers(companyId).toPromise();
+            this.users = users.users;
+            for (let exception of this.exceptions) {
+              if (this.users.find((item) => item.userId === exception.userId)) {
+                const indexToRemove = this.users.findIndex(
+                  (item) => item.userId === exception.userId
+                );
+                this.users.splice(indexToRemove, 1);
               }
-
-              this.isLoading = false;
-            });
+            }
+            this.isLoading = false;
           } else {
             this.officeQuotaConfigId = this.company.officeQuotaConfigurationId;
 
-            this.officeQuotaConfigurationService
-              .getOfficeQuotaConfiguration(this.officeQuotaConfigId)
-              .subscribe((response) => {
-                this.officeQuotaConfig = response.officeQuotaConfig;
-                this.numEmployeesPerDay =
-                  this.officeQuotaConfig.numEmployeesPerDay;
-                this.numDaysAllowedPerMonth =
-                  this.officeQuotaConfig.numDaysAllowedPerMonth;
-                this.exceptions = this.officeQuotaConfig.exceptions;
+            let officeQuotaConfigResponse =
+              await this.officeQuotaConfigurationService
+                .getOfficeQuotaConfiguration(this.officeQuotaConfigId)
+                .toPromise();
 
-                this.userService.getUsers(companyId).subscribe((response) => {
-                  this.users = response.users;
-                  for (let exception of this.exceptions) {
-                    if (
-                      this.users.find(
-                        (item) => item.userId === exception.userId
-                      )
-                    ) {
-                      const indexToRemove = this.users.findIndex(
-                        (item) => item.userId === exception.userId
-                      );
-                      this.users.splice(indexToRemove, 1);
-                    }
-                  }
+            this.officeQuotaConfig =
+              officeQuotaConfigResponse.officeQuotaConfig;
+            this.numEmployeesPerDay = this.officeQuotaConfig.numEmployeesPerDay;
+            this.numDaysAllowedPerMonth =
+              this.officeQuotaConfig.numDaysAllowedPerMonth;
+            this.exceptions = this.officeQuotaConfig.exceptions;
 
-                  this.isLoading = false;
-                });
-              });
+            let users = await this.userService.getUsers(companyId).toPromise();
+            this.users = users.users;
+            for (let exception of this.exceptions) {
+              if (this.users.find((item) => item.userId === exception.userId)) {
+                const indexToRemove = this.users.findIndex(
+                  (item) => item.userId === exception.userId
+                );
+                this.users.splice(indexToRemove, 1);
+              }
+            }
+
+            this.isLoading = false;
           }
         },
         (error) => {
@@ -159,12 +150,10 @@ export class OfficeQuotaConfigComponent implements OnInit {
           const indexToRemove = this.users.findIndex(
             (item) => item.userId === exception.userId
           );
-          console.log(exception);
           this.users.splice(indexToRemove, 1);
         } else {
           this.exceptions.push(exception);
 
-          console.log(exception);
           const indexToRemove = this.users.findIndex(
             (item) => item.userId === exception.userId
           );
@@ -205,7 +194,6 @@ export class OfficeQuotaConfigComponent implements OnInit {
   }
 
   updateUserWFoAllowance(newUser: any) {
-    console.log(newUser);
     if (this.user.wfoMonthlyAllocation < newUser.wfoMonthlyAllocation) {
     }
     this.user = newUser;
@@ -304,7 +292,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
       );
   }
 
-  async updateOfficeQuotaConfig(officeQuotaConfigForm: NgForm): Promise<void> {
+  updateOfficeQuotaConfig(officeQuotaConfigForm: NgForm): void {
     const formValues = officeQuotaConfigForm.value;
     const updatedOfficeQuotaConfig = {
       officeQuotaConfigurationId: this.officeQuotaConfigId,
@@ -314,7 +302,6 @@ export class OfficeQuotaConfigComponent implements OnInit {
     };
     //Logic to set default wfoMonthlyAllocation for users
     for (let user of this.users) {
-      console.log(user);
       const updatedUser = {
         ...user,
         wfoMonthlyAllocation: formValues.numDaysAllowedPerMonth,
@@ -360,11 +347,26 @@ export class OfficeQuotaConfigComponent implements OnInit {
       .updateOfficeQuotaConfiguration(updatedOfficeQuotaConfig)
       .subscribe(
         (response) => {
+          let usersNotified = response.responseObj.usersToNotify;
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
             detail: 'Office Quota Configuration has been updated.',
           });
+          let uniqueUsersNotified = [...new Set(usersNotified)];
+          for (let userId of uniqueUsersNotified) {
+            if (userId !== this.user.userId) {
+              let user = this.users.find((item) => item.userId === userId);
+              if (user === undefined) {
+                user = this.exceptions.find((item) => item.userId === userId);
+              }
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: `${user.fullName} has been notified of the change.`,
+              });
+            }
+          }
         },
         (error) => {
           this.messageService.add({
@@ -376,7 +378,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
       );
   }
 
-  async submit(officeQuotaConfigForm: NgForm) {
+  submit(officeQuotaConfigForm: NgForm) {
     if (
       officeQuotaConfigForm.value.numEmployeesPerDay !== '' &&
       officeQuotaConfigForm.value.numDaysAllowedPerMonth !== ''
@@ -384,7 +386,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
       if (this.officeQuotaConfigId === null) {
         this.createNewOfficeConfig(officeQuotaConfigForm);
       } else {
-        await this.updateOfficeQuotaConfig(officeQuotaConfigForm);
+        this.updateOfficeQuotaConfig(officeQuotaConfigForm);
       }
     } else {
       this.messageService.add({
