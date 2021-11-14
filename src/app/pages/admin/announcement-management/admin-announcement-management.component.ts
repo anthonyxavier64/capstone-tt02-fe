@@ -223,6 +223,7 @@ export class AdminAnnouncementManagementComponent implements OnInit {
         title: 'Delete Announcement Confirmation',
         message: 'Are you sure you want to delete this announcement?',
       },
+      disableClose: true,
     });
     confirmDialog.afterClosed().subscribe((result) => {
       if (result === false) {
