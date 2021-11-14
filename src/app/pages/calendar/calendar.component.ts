@@ -94,7 +94,11 @@ export class CalendarComponent implements OnInit {
     this.userService.getUser(cachedUser.userId).subscribe(
       (response) => {
         this.user = response.user;
-        this.datesInOffice = JSON.parse(this.user.datesInOffice);
+        if (typeof this.user.datesInOffice === typeof '') {
+          this.datesInOffice = JSON.parse(this.user.datesInOffice);
+        } else {
+          this.datesInOffice = this.user.datesInOffice;
+        }
       },
       (error) => {}
     );
