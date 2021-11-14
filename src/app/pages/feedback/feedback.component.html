@@ -86,7 +86,7 @@
 
           <mat-tab label="Received">
             <div fxLayout="row wrap" fxLayoutAlign="space-evenly" style="width: 100%">
-              <mat-card *ngFor="let feedback of feedbackReceived" class="viewcard">
+              <mat-card *ngFor="let feedback of feedbackReceived" class="viewcard" (click)="openFeedback(feedback)">
                 <mat-card-title>{{ feedback.title }}</mat-card-title>
                 <mat-card-content>
                   <div style="display: flex; flex-direction: row; justify-content: start; align-items: center;">

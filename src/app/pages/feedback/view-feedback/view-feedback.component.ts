@@ -73,6 +73,7 @@ export class ViewFeedbackComponent implements OnInit {
       .subscribe(
         (response) => {
           this.comments.push(response.comment);
+          this.newCommentMessage = "";
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
