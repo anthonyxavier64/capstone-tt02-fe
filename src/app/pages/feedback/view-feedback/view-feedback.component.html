@@ -76,12 +76,13 @@
               fxLayout="row"
               fxLayoutAlign="space-between center"
               style="width: 100%"
+              fxLayoutGap="8px"
             >
               <div
                 fxLayout="row"
                 fxLayoutAlign="start center"
                 fxLayoutGap="16px"
-                style="width: calc(100% - 1.3em)"
+                style="width: calc(100% - 3em)"
               >
                 <div>{{ renderCommentSender(comment) }}:</div>
                 <div>{{ comment.content }}</div>
@@ -92,6 +93,13 @@
                 alt="edit comment"
                 class="action-icon"
                 (click)="openEditMode(comment)"
+              />
+              <img
+                *ngIf="renderCommentSender(comment) === 'Me'"
+                src="../../../../assets/images/deleteIcon.png"
+                alt="delete comment"
+                class="action-icon"
+                (click)="openDeleteDialog(comment)"
               />
             </div>
             <!-- To edit comment  -->

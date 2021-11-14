@@ -37,4 +37,9 @@ export class CommentService {
       httpOptions
     );
   }
+  deleteComment(commentId: string): Observable<any> {
+    return this.httpClient
+      .delete<any>(`${this.baseUrl}/delete-comment/${commentId}`)
+      .pipe(catchError(handleError));
+  }
 }

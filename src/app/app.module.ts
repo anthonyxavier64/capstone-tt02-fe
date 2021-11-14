@@ -99,6 +99,7 @@ import { DeleteMeetingDialogComponent } from './pages/employee/meeting/delete-me
 import { UpdateMeetingComponent } from './pages/employee/meeting/update-meeting/update-meeting.component';
 import { TaskDetailDialogComponent } from './pages/employee/task/task-detail-dialog/task-detail-dialog.component';
 import { TaskComponent } from './pages/employee/task/task.component';
+import { DeleteCommentComponent } from './pages/feedback/delete-comment/delete-comment.component';
 import { FeedbackComponent } from './pages/feedback/feedback.component';
 import { ViewFeedbackComponent } from './pages/feedback/view-feedback/view-feedback.component';
 import { IndexComponent } from './pages/index/index.component';
@@ -190,6 +191,7 @@ export function tokenGetter() {
     SubscriptionComponent,
     FeedbackComponent,
     ViewFeedbackComponent,
+    DeleteCommentComponent,
   ],
   imports: [
     CommonModule,

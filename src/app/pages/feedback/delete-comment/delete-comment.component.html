@@ -1,0 +1,11 @@
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+  <h1 mat-dialog-title>{{ data.title }}?</h1>
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px">
+    <button mat-button class="peach-btn" [mat-dialog-close]="true">
+      Confirm
+    </button>
+    <button mat-button class="grey-btn" [mat-dialog-close]="false">
+      Cancel
+    </button>
+  </div>
+</div>

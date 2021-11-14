@@ -4,7 +4,10 @@ import { FeedbackService } from 'src/app/services/feedback/feedback.service';
 
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+
+import { DeleteCommentComponent } from '../delete-comment/delete-comment.component';
 
 @Component({
   selector: 'app-view-feedback',
@@ -24,6 +27,7 @@ export class ViewFeedbackComponent implements OnInit {
   updatedContent: string = "";
 
   constructor(
+    private matDialog: MatDialog,
     private route: ActivatedRoute,
     private messageService: MessageService,
     private feedbackService: FeedbackService,
@@ -105,6 +109,37 @@ export class ViewFeedbackComponent implements OnInit {
   }
   isInEditMode(comment) {
     return (this.commentToEdit && this.commentToEdit.commentId === comment.commentId);
+  }
+  openDeleteDialog(comment) {
+    const confirmDialog = this.matDialog.open(DeleteCommentComponent, {
+      data: {
+        title: 'Delete Comment',
+      },
+      disableClose: true,
+    });
+    confirmDialog.afterClosed().subscribe((result) => {
+      if (result === false) {
+        return;
+      }
+      this.commentService.deleteComment(comment.commentId).subscribe(
+        () => {
+          this.comments = this.comments.filter((item) => {
+            return item.commentId !== comment.commentId;
+          })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Comment deleted.',
+          });
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `An error has occured: ${error.message}`,
+          });
+        })
+    });
   }
   openEditMode(comment) {
     this.commentToEdit = comment;
