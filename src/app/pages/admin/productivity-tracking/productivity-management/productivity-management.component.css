@@ -10,10 +10,16 @@
   background-color: rgb(var(--primary-button-color));
   border-radius: 15px;
   height: auto;
+<<<<<<< HEAD
   width: 45%;
   padding: 1rem;
   box-shadow: none;
   margin-bottom: 2%;
+=======
+  width: 25%;
+  padding: 1rem;
+  box-shadow: none;
+>>>>>>> 2729b6b ([Productivity] My Employees Page, View Employee Details Dialog Box & Productivity Calc done)
 }
 
 .colorSelector {

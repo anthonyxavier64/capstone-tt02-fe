@@ -9,7 +9,11 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ViewProductivityDialogComponent } from '../view-productivity-stats/view-productivity-dialog/view-productivity-dialog.component';
 
 export interface user {
+<<<<<<< HEAD
   userId: string;
+=======
+  userId: number;
+>>>>>>> 2729b6b ([Productivity] My Employees Page, View Employee Details Dialog Box & Productivity Calc done)
   fullName: string;
   email: string;
   createdAt: string;
@@ -76,7 +80,12 @@ export class ProductivityManagementComponent implements OnInit {
         }
       );
     }
+<<<<<<< HEAD
 
+=======
+    // Below is the correct code
+    // this.isLoading = false;
+>>>>>>> 2729b6b ([Productivity] My Employees Page, View Employee Details Dialog Box & Productivity Calc done)
     this.userService.getUsers(this.user.companyId).subscribe(
       (response) => {
         this.allUsers = response.users;
@@ -84,11 +93,15 @@ export class ProductivityManagementComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
+<<<<<<< HEAD
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
           detail: 'Could not retrieve users',
         });
+=======
+        console.log(error);
+>>>>>>> 2729b6b ([Productivity] My Employees Page, View Employee Details Dialog Box & Productivity Calc done)
       }
     );
   }
@@ -119,15 +132,20 @@ export class ProductivityManagementComponent implements OnInit {
       },
       (error) => {
         this.isLoading = false;
+<<<<<<< HEAD
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
           detail: 'Could not retrieve users',
         });
+=======
+        console.log(error);
+>>>>>>> 2729b6b ([Productivity] My Employees Page, View Employee Details Dialog Box & Productivity Calc done)
       }
     );
   }
 
+<<<<<<< HEAD
   handleDepartmentSelection() {
     if (!!this.selectedDepartment) {
       this.isLoading = true;
@@ -180,6 +198,8 @@ export class ProductivityManagementComponent implements OnInit {
     }
   }
 
+=======
+>>>>>>> 2729b6b ([Productivity] My Employees Page, View Employee Details Dialog Box & Productivity Calc done)
   openViewEmployeeDialog(chosenUser: {
     userId: number;
     fullName: string;
