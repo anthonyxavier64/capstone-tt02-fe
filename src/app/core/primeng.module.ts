@@ -8,6 +8,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ListboxModule } from 'primeng/listbox';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   exports: [
@@ -19,6 +20,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ListboxModule,
     MultiSelectModule,
     ConfirmDialogModule,
+    TooltipModule,
   ],
 })
 export class PrimeNgModule {}

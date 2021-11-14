@@ -111,6 +111,8 @@ import { EditUnavailableDateDialogComponent } from './pages/profile/unavailable-
 import { NgxStripeModule } from 'ngx-stripe';
 import { SubscriptionComponent } from './pages/index/sign-up/payment/subscription/subscription.component';
 import { SubscriptionDialogComponent } from './pages/admin/company-details/subscription/subscription-dialog/subscription-dialog.component';
+import { ProductivityManagementComponent } from './pages/admin/productivity-tracking/productivity-management/productivity-management.component';
+import { ViewProductivityDialogComponent } from './pages/admin/productivity-tracking/view-productivity-stats/view-productivity-dialog/view-productivity-dialog.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -186,6 +188,8 @@ export function tokenGetter() {
     EditUnavailableDateDialogComponent,
     SubscriptionComponent,
     SubscriptionDialogComponent,
+    ProductivityManagementComponent,
+    ViewProductivityDialogComponent,
   ],
   imports: [
     CommonModule,
