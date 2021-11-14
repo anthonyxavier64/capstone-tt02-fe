@@ -320,44 +320,6 @@ export class OfficeQuotaConfigComponent implements OnInit {
         wfoMonthlyAllocation: formValues.numDaysAllowedPerMonth,
       };
 
-      let physicalDates = user.datesInOffice.filter((item) => {
-        let itemDate = new Date(item);
-        let month = itemDate.getMonth();
-        let year = itemDate.getFullYear();
-        let curr = new Date();
-
-        return curr.getMonth() === month && curr.getFullYear() === year;
-      });
-
-      let userMeetings = await this.meetingService
-        .getAllMeetingsParticipant(user.userId)
-        .toPromise();
-
-      let physicalMeetingsInMonth = userMeetings.physicalMeetings.filter(
-        (item) => {
-          let date = new Date(item.startTime);
-          let match: boolean = false;
-          for (let physicalDate of physicalDates) {
-            let formattedPhysicalDate = new Date(physicalDate);
-
-            if (
-              date.getFullYear() === formattedPhysicalDate.getFullYear() &&
-              date.getMonth() === formattedPhysicalDate.getMonth()
-            ) {
-              match = true;
-            }
-          }
-          if (match) return item;
-        }
-      );
-
-      //sort the dates in order so that we can update the last few
-      physicalMeetingsInMonth.sort((a, b) =>
-        a.startTime < b.startTime ? -1 : 1
-      );
-
-      console.log(physicalMeetingsInMonth);
-
       this.userService
         .updateUserDetailsByUserId(user.userId, updatedUser)
         .subscribe((response) => {
