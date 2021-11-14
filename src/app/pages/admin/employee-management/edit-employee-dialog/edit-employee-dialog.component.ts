@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UserService } from 'src/app/services/user/user.service';
+
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-employee-dialog',
@@ -53,15 +54,21 @@ export class EditEmployeeDialogComponent implements OnInit {
 
     this.userService.updateUserDetails(this.config.data).subscribe(
       (response) => {
+        this.config.data.confirmEdit = true;
+        this.config.data.hasBeenUpdated = true;
         this.ref.close(this.config.data);
       },
       (error) => {
+        this.config.data.confirmEdit = true;
+        this.config.data.hasBeenUpdated = false;
+        this.ref.close(this.config.data);
         console.log(error);
       }
     );
   }
 
   onCloseClick() {
-    this.ref.close();
+    this.config.data.confirmEdit = false;
+    this.ref.close(this.config.data);
   }
 }
