@@ -110,7 +110,11 @@ export class AdminEmployeeManagementComponent implements OnInit {
                 this.departments = response.departments;
               },
               (error) => {
-                console.log(error);
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: 'Departments not found',
+                });
               }
             );
         },
@@ -131,7 +135,11 @@ export class AdminEmployeeManagementComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Users not found',
+        });
       }
     );
 
@@ -180,9 +188,18 @@ export class AdminEmployeeManagementComponent implements OnInit {
       data: { partOfDepartments: this.partOfDepartments },
     });
 
-    deptPartOfDialogRef.afterClosed().subscribe((result) => {
-      this.partOfDepartments = result;
-    });
+    deptPartOfDialogRef.afterClosed().subscribe(
+      (result) => {
+        this.partOfDepartments = result;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Part of Departments not saved',
+        });
+      }
+    );
   }
 
   downloadCSVTemplate() {
@@ -196,9 +213,18 @@ export class AdminEmployeeManagementComponent implements OnInit {
       }
     );
 
-    this.downloadCsvDialogRef.onClose.subscribe((response) => {
+    this.downloadCsvDialogRef.onClose.subscribe(
+      (response) => {
       this.downloadCsvDialogRef = null;
-    });
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Download CSV Template not cleared',
+        });
+      }
+    );
   }
 
   openUploadCSVDialog(event) {
@@ -249,6 +275,11 @@ export class AdminEmployeeManagementComponent implements OnInit {
           },
           (error) => {
             errorUsers.push(user);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Unable to create new user',
+            });
           }
         );
       }
@@ -283,7 +314,11 @@ export class AdminEmployeeManagementComponent implements OnInit {
                     this.allUsers = response.users;
                   },
                   (error) => {
-                    console.log(error);
+                    this.messageService.add({
+                      severity: 'error',
+                      summary: 'Error',
+                      detail: 'Users in company not found',
+                    });
                   }
                 );
               },
@@ -342,9 +377,19 @@ export class AdminEmployeeManagementComponent implements OnInit {
                 (response) => {
                   console.log('IN CHARGE OF DEPT CREATED', response.department);
                   deptsInChargeOfIds.push(response.department.departmentId);
+                  this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Department In Charge Of:' + dept + 'has been created.',
+                  });
                 },
                 (error) => {
                   console.log('Department In Charge of could not be created');
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Department In Charge Of:' + dept + 'could not be created.',
+                  });
                 }
               );
             }
@@ -370,9 +415,19 @@ export class AdminEmployeeManagementComponent implements OnInit {
                 (response) => {
                   console.log('PART OF DEPT CREATED', response.department);
                   deptsPartOfIds.push(response.department.departmentId);
+                  this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Department Part Of:' + dept + 'has been created.',
+                  });
                 },
                 (error) => {
                   console.log('Department Part of could not be created');
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Department Part Of:' + dept + 'could not be created.',
+                  });
                 }
               );
             }
@@ -436,13 +491,27 @@ export class AdminEmployeeManagementComponent implements OnInit {
     };
 
     let newUserId = null;
-    this.userService.createNewUser(user).subscribe((response) => {
-      newUserId = response.user.userId;
-      if (!newUserId) {
-      } else {
-        this.ngOnInit();
+    this.userService.createNewUser(user).subscribe(
+      (response) => {
+        newUserId = response.user.userId;
+        if (!newUserId) {
+        } else {
+          this.ngOnInit();
+        }
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Employee has been added.',
+        });
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error when adding Employee.',
+        });
       }
-    });
+    );
   }
 
   openMassInviteInfoDialog(): void {
@@ -524,10 +593,29 @@ export class AdminEmployeeManagementComponent implements OnInit {
       contentStyle: { 'max-height': '50vw', overflow: 'auto' },
       data: selectedUser,
     });
+    this.editDialogRef.onClose.subscribe(
+      (data) => {
+        if (data.confirmEdit) {
+          if (data.hasBeenUpdated) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Employee details updated.',
+            }); 
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Error when updating Employee details.',
+            });
+          }
+        }
+      }
+    );
   }
 
   onDeleteEmployeeClick(selectedUser: {
-    userId: number;
+    userId: string;
     fullName: string;
     email: string;
     createdAt: string;
@@ -548,6 +636,25 @@ export class AdminEmployeeManagementComponent implements OnInit {
         data: { selectedUser, confirmDelete: false },
       }
     );
+    this.deleteDialogRef.onClose
+      .subscribe(
+        (data) => {
+          if (data.confirmDelete) {
+            if (data.hasBeenDeleted) {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'Employee has been deleted.',
+              }); 
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Error when deleting Employee.',
+              });
+            }
+          }
+        }); 
 
     this.deleteDialogRef.onClose.subscribe(() => {
       this.ngOnInit();

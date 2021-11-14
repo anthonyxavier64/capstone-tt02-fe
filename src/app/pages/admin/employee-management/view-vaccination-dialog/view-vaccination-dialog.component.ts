@@ -30,6 +30,7 @@ export class ViewVaccinationDialogComponent implements OnInit {
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     private userService: UserService,
+    private messageService: MessageService,
     private covidDocumentSubmissionService: CovidDocumentSubmissionService
   ) {
     this.uploadProgress = -1;
@@ -50,6 +51,11 @@ export class ViewVaccinationDialogComponent implements OnInit {
       },
       (error) => {
         console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Cannot find User',
+        });
       }
     );
 
@@ -73,6 +79,11 @@ export class ViewVaccinationDialogComponent implements OnInit {
         },
         (error) => {
           console.log(error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot retrieve User Vaccination Certificate',
+          });
         }
       );
   }
@@ -134,9 +145,20 @@ export class ViewVaccinationDialogComponent implements OnInit {
               response.covidDocumentSubmission.documentApprovalStatus;
 
             this.isVaccinated = response.user.isVaccinated;
+
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Approval status updated',
+            });
           },
           (error) => {
             console.log(error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Cannot update approval status',
+            });
           }
         );
     }

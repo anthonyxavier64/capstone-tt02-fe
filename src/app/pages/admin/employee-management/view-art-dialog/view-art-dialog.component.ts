@@ -30,6 +30,7 @@ export class ViewArtComponent implements OnInit {
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     private userService: UserService,
+    private messageService: MessageService,
     private afStorage: AngularFireStorage,
     private covidDocumentSubmissionService: CovidDocumentSubmissionService
   ) {
@@ -50,6 +51,11 @@ export class ViewArtComponent implements OnInit {
       },
       (error) => {
         console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Cannot find User',
+        });
       }
     );
     this.covidDocumentSubmissionService
@@ -73,6 +79,11 @@ export class ViewArtComponent implements OnInit {
         },
         (error) => {
           console.log(error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot retrieve User ART/FET Test Results',
+          });
         }
       );
   }
@@ -143,9 +154,20 @@ export class ViewArtComponent implements OnInit {
 
             this.documentApprovalStatus =
               response.covidDocumentSubmission.documentApprovalStatus;
+
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'Approval status updated',
+              });
           },
           (error) => {
             console.log(error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Cannot update approval status',
+            });
           }
         );
     }
