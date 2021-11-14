@@ -1,12 +1,11 @@
-import { MessageService } from 'primeng/api';
-import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
-import { OfficeQuotaConfigurationService } from 'src/app/services/wfoConfiguration/officeQuotaConfiguration/office-quota-configuration.service';
-
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-
+import { MessageService } from 'primeng/api';
+import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
+import { MeetingService } from 'src/app/services/meeting/meeting.service';
+import { OfficeQuotaConfigurationService } from 'src/app/services/wfoConfiguration/officeQuotaConfiguration/office-quota-configuration.service';
 import { UserService } from '../../../../services/user/user.service';
 import { EditExceptionDialogComponent } from './edit-exception-dialog/edit-exception-dialog.component';
 
@@ -45,8 +44,9 @@ export class OfficeQuotaConfigComponent implements OnInit {
     private companyDetailsService: CompanyDetailsService,
     private officeQuotaConfigurationService: OfficeQuotaConfigurationService,
     private userService: UserService,
+    private meetingService: MeetingService,
     public dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -207,7 +207,6 @@ export class OfficeQuotaConfigComponent implements OnInit {
   updateUserWFoAllowance(newUser: any) {
     console.log(newUser);
     if (this.user.wfoMonthlyAllocation < newUser.wfoMonthlyAllocation) {
-
     }
     this.user = newUser;
     localStorage.setItem('currentUser', JSON.stringify(newUser));
@@ -305,7 +304,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
       );
   }
 
-  updateOfficeQuotaConfig(officeQuotaConfigForm: NgForm): void {
+  async updateOfficeQuotaConfig(officeQuotaConfigForm: NgForm): Promise<void> {
     const formValues = officeQuotaConfigForm.value;
     const updatedOfficeQuotaConfig = {
       officeQuotaConfigurationId: this.officeQuotaConfigId,
@@ -315,10 +314,50 @@ export class OfficeQuotaConfigComponent implements OnInit {
     };
     //Logic to set default wfoMonthlyAllocation for users
     for (let user of this.users) {
+      console.log(user);
       const updatedUser = {
         ...user,
         wfoMonthlyAllocation: formValues.numDaysAllowedPerMonth,
       };
+
+      let physicalDates = user.datesInOffice.filter((item) => {
+        let itemDate = new Date(item);
+        let month = itemDate.getMonth();
+        let year = itemDate.getFullYear();
+        let curr = new Date();
+
+        return curr.getMonth() === month && curr.getFullYear() === year;
+      });
+
+      let userMeetings = await this.meetingService
+        .getAllMeetingsParticipant(user.userId)
+        .toPromise();
+
+      let physicalMeetingsInMonth = userMeetings.physicalMeetings.filter(
+        (item) => {
+          let date = new Date(item.startTime);
+          let match: boolean = false;
+          for (let physicalDate of physicalDates) {
+            let formattedPhysicalDate = new Date(physicalDate);
+
+            if (
+              date.getFullYear() === formattedPhysicalDate.getFullYear() &&
+              date.getMonth() === formattedPhysicalDate.getMonth()
+            ) {
+              match = true;
+            }
+          }
+          if (match) return item;
+        }
+      );
+
+      //sort the dates in order so that we can update the last few
+      physicalMeetingsInMonth.sort((a, b) =>
+        a.startTime < b.startTime ? -1 : 1
+      );
+
+      console.log(physicalMeetingsInMonth);
+
       this.userService
         .updateUserDetailsByUserId(user.userId, updatedUser)
         .subscribe((response) => {
@@ -375,7 +414,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
       );
   }
 
-  submit(officeQuotaConfigForm: NgForm) {
+  async submit(officeQuotaConfigForm: NgForm) {
     if (
       officeQuotaConfigForm.value.numEmployeesPerDay !== '' &&
       officeQuotaConfigForm.value.numDaysAllowedPerMonth !== ''
@@ -383,7 +422,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
       if (this.officeQuotaConfigId === null) {
         this.createNewOfficeConfig(officeQuotaConfigForm);
       } else {
-        this.updateOfficeQuotaConfig(officeQuotaConfigForm);
+        await this.updateOfficeQuotaConfig(officeQuotaConfigForm);
       }
     } else {
       this.messageService.add({
