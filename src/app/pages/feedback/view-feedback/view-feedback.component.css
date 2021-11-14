@@ -36,3 +36,19 @@
   background-color: rgba(var(--secondary-card-color));
   width: 90%;
 }
+.comment-line.mine {
+  background-color: rgba(var(--primary-card-color), 0.3);
+  width: 90%;
+}
+.action-icon {
+  height: 1.3em;
+  width: 1.3em;
+}
+.grey-btn.compact {
+  font-size: 8px !important;
+  padding: 0 !important;
+}
+.peach-btn.compact {
+  font-size: 8px !important;
+  padding: 0 !important;
+}

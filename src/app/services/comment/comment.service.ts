@@ -30,4 +30,11 @@ export class CommentService {
       .post<any>(this.baseUrl + '/create-comment', comment)
       .pipe(catchError(handleError));
   }
+  updateComment(comment: any): Observable<any> {
+    return this.httpClient.patch(
+      `${this.baseUrl}/update-comment`,
+      comment,
+      httpOptions
+    );
+  }
 }

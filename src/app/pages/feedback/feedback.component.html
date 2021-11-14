@@ -66,14 +66,14 @@
         <h2><u>Feedback Records</u></h2>
         <br />
         <mat-tab-group>
-          <mat-tab label="Sent">
+          <mat-tab label="Received">
             <div fxLayout="row wrap" fxLayoutAlign="space-evenly" style="width: 100%">
-              <mat-card *ngFor="let feedback of feedbackSent" class="viewcard" (click)="openFeedback(feedback)">
+              <mat-card *ngFor="let feedback of feedbackReceived" class="viewcard" (click)="openFeedback(feedback)">
                 <mat-card-title>{{ feedback.title }}</mat-card-title>
                 <mat-card-content>
                   <div style="display: flex; flex-direction: row; justify-content: start; align-items: center;">
-                    <h4 style="font-weight: 500; margin: 0 8px 0 0;">Recipient:</h4>
-                    <h4 style="font-weight: 400; margin: 0 8px 0 0;">{{feedback.recipient.fullName}}</h4>
+                    <h4 style="font-weight: 500; margin: 0 8px 0 0;">Sender:</h4>
+                    <h4 style="font-weight: 400; margin: 0 8px 0 0;">{{feedback.sender.fullName}}</h4>
                   </div>
                   <div class="snippet">
                     <h4 class="snippet-text">{{feedback.content}}</h4>
@@ -83,15 +83,14 @@
               </mat-card>
             </div>
           </mat-tab>
-
-          <mat-tab label="Received">
+          <mat-tab label="Sent">
             <div fxLayout="row wrap" fxLayoutAlign="space-evenly" style="width: 100%">
-              <mat-card *ngFor="let feedback of feedbackReceived" class="viewcard" (click)="openFeedback(feedback)">
+              <mat-card *ngFor="let feedback of feedbackSent" class="viewcard" (click)="openFeedback(feedback)">
                 <mat-card-title>{{ feedback.title }}</mat-card-title>
                 <mat-card-content>
                   <div style="display: flex; flex-direction: row; justify-content: start; align-items: center;">
-                    <h4 style="font-weight: 500; margin: 0 8px 0 0;">Sender:</h4>
-                    <h4 style="font-weight: 400; margin: 0 8px 0 0;">{{feedback.sender.fullName}}</h4>
+                    <h4 style="font-weight: 500; margin: 0 8px 0 0;">Recipient:</h4>
+                    <h4 style="font-weight: 400; margin: 0 8px 0 0;">{{feedback.recipient.fullName}}</h4>
                   </div>
                   <div class="snippet">
                     <h4 class="snippet-text">{{feedback.content}}</h4>

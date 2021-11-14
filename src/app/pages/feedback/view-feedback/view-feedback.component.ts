@@ -20,6 +20,9 @@ export class ViewFeedbackComponent implements OnInit {
   newCommentMessage: string = "";
   comments: any[] = [];
 
+  commentToEdit: any | null = null;
+  updatedContent: string = "";
+
   constructor(
     private route: ActivatedRoute,
     private messageService: MessageService,
@@ -94,6 +97,58 @@ export class ViewFeedbackComponent implements OnInit {
     }
     return comment.sender.fullName;
   }
+  renderCommentColor(comment) {
+    if (comment.sender.userId === this.user.userId) {
+      return "mine";
+    }
+    return "other";
+  }
+  isInEditMode(comment) {
+    return (this.commentToEdit && this.commentToEdit.commentId === comment.commentId);
+  }
+  openEditMode(comment) {
+    this.commentToEdit = comment;
+    this.updatedContent = comment.content;
+  }
+  closeEditMode() {
+    this.commentToEdit = null;
+    this.updatedContent = "";
+  }
+  updatedCommentIsValid() {
+    const comment = this.updatedContent?.trim();
+    if (!this.updatedContent || !comment || comment === "" || this.updatedContent.length > 500) return false;
+    return true;
+  }
+  updateComment() {
+    let updatedComment = this.commentToEdit;
+    updatedComment.content = this.updatedContent;
+    this.commentService.updateComment(updatedComment).subscribe(
+      (response) => {
+        console.log(response);
+        this.comments.map((item) => {
+          if (item.commentId === this.commentToEdit.commentId) {
+            let newComment = item;
+            newComment.content = response.comment.content;
+            return newComment;
+          }
+          return item;
+        })
+        this.closeEditMode();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Comment updated.',
+        });
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `An error has occured: ${error.message}`,
+        });
+      })
+  }
+
   commentIsValid() {
     const comment = this.newCommentMessage?.trim();
     if (!this.newCommentMessage || !comment || comment === "" || this.newCommentMessage.length > 500) return false;
