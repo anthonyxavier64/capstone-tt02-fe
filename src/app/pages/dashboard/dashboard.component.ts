@@ -1,12 +1,14 @@
-import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { MessageService } from 'primeng/api';
+
+import { Component, OnInit } from '@angular/core';
+
 import { Announcement } from 'src/app/models/announcement';
 import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
+import { DatePipe } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 import { TaskService } from 'src/app/services/task/task.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { ViewAnnouncementComponent } from '../admin/announcement-management/view-announcement/view-announcement.component';
@@ -262,5 +264,28 @@ export class DashboardComponent implements OnInit {
         detail: `Your work from office quota limit for the month has been reached.`,
       });
     }
+  }
+
+  rejectRsvp(meetingId: string, isPhysicalRsvp: boolean, userId: string) {
+    this.meetingService
+      .rejectRsvpToMeeting(meetingId, isPhysicalRsvp, userId)
+      .subscribe(
+        (response) => {
+          if (isPhysicalRsvp) {
+            var indexToRemove = this.physicalRsvps.findIndex(
+              (item) => item.meetingId === meetingId
+            );
+            this.physicalRsvps.splice(indexToRemove, 1);
+          } else {
+            var indexToRemove = this.virtualRsvps.findIndex(
+              (item) => item.meetingId === meetingId
+            );
+            this.virtualRsvps.splice(indexToRemove, 1);
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 }
