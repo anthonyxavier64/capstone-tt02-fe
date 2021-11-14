@@ -1,0 +1,63 @@
+<p-toast></p-toast>
+<div fxLayout="column" fxLayoutGap="2%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
+  <app-navbar></app-navbar>
+  <div *ngIf="pageIsLoading()" fxLayout="column" fxLayoutAlign="space-around center">
+    <mat-spinner style="color: aquamarine; margin-top: 15%"></mat-spinner>
+  </div>
+  <div *ngIf="!pageIsLoading()" fxLayout="column" style="width: 100%; height: 100%; padding: 0 2%;">
+    <div style="width: 100%; margin: 8px 0" fxLayoutAlign="space-between center">
+      <h1 style="font-size: 32px"><u>{{feedback.title}}</u></h1>
+      <button mat-button class="grey-btn" (click)="onBackClick()">
+        Back
+      </button>
+    </div>
+    <p class="date-description">Posted On: {{ feedback.createdAt | date: "short" }}</p>
+    <div fxLayout="row" fxLayoutGap="3%" fxLayoutAlign="start center">
+      <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
+        <h3>To: </h3>
+        <h3 style="font-weight: 400">{{feedback.recipient.fullName}},</h3>
+      </div>
+      <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
+        <h3>From: </h3>
+        <h3 style="font-weight: 400">{{feedback.sender.fullName}}</h3>
+      </div>
+    </div>
+    <br />
+    <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="5%">
+      <p>{{feedback.content}}</p>
+    </mat-card>
+    <br />
+    <br />
+    <h1><u>Discussion</u></h1>
+    <br />
+    <mat-card class="peach-card" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="2%">
+      <div fxLayout="column" fxLayoutAlign="start center" style="width: 60%">
+        <h3>Thread</h3>
+        <br />
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2%" style="width: 100%">
+          <mat-card class="comment-line" *ngFor="let comment of comments" fxLayout="row" fxLayoutAlign="start center"
+            fxLayoutGap="16px">
+            <div>{{renderCommentSender(comment)}}:</div>
+            <div>{{comment.content}}</div>
+          </mat-card>
+        </div>
+      </div>
+      <hr class="vertical-divider" />
+      <div fxLayout="column" fxLayoutAlign="start center" style="width: 40%">
+        <h3>New Comment</h3>
+        <br />
+        <mat-card class="comment-block" fxLayout="column" fxLayoutAlign="center start" style="width: 100%;">
+          <mat-form-field style="width: 100%; height: 100%">
+            <mat-label>Message:</mat-label>
+            <textarea matInput [(ngModel)]="newCommentMessage" rows="8" [maxLength]="500"></textarea>
+          </mat-form-field>
+          <br />
+          <div fxLayout="row" fxLayoutAlign="end center" style="width: 100%">
+            <button mat-button class="peach-btn" [disabled]="!commentIsValid()"
+              (click)="submitComment()">Submit</button>
+          </div>
+        </mat-card>
+      </div>
+    </mat-card>
+  </div>
+</div>

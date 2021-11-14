@@ -20,6 +20,7 @@ import { CreateNewMeetingComponent } from './pages/employee/meeting/create-new-m
 import { UpdateMeetingComponent } from './pages/employee/meeting/update-meeting/update-meeting.component';
 import { TaskComponent } from './pages/employee/task/task.component';
 import { FeedbackComponent } from './pages/feedback/feedback.component';
+import { ViewFeedbackComponent } from './pages/feedback/view-feedback/view-feedback.component';
 import { IndexComponent } from './pages/index/index.component';
 import { LoginComponent } from './pages/index/login/login.component';
 import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
@@ -114,6 +115,11 @@ const routes: Routes = [
   {
     path: 'feedback',
     component: FeedbackComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'view-feedback/:feedbackId',
+    component: ViewFeedbackComponent,
     canActivate: [AuthGuard],
   },
   {

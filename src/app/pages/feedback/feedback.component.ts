@@ -4,6 +4,7 @@ import { FeedbackService } from 'src/app/services/feedback/feedback.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-feedback',
@@ -13,7 +14,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FeedbackComponent implements OnInit {
   user: any | null;
-  isLoading: boolean = true;
+  employeesIsLoading: boolean = true;
+  receivedFeedbackIsLoading: boolean = true;
+  sentFeedbackIsLoading: boolean = true;
 
   title: string | null;
   employees: any[] = [];
@@ -27,6 +30,7 @@ export class FeedbackComponent implements OnInit {
     private userService: UserService,
     private feedbackService: FeedbackService,
     private messageService: MessageService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -34,10 +38,10 @@ export class FeedbackComponent implements OnInit {
     if (currentUser) {
       this.user = JSON.parse(currentUser);
     }
-    this.isLoading = false;
     this.userService.getUsers(this.user.companyId).subscribe(
       (response) => {
         this.employees = response.users;
+        this.employeesIsLoading = false;
         const userIndexToRemove = this.employees.findIndex(
           (item) => item.userId === this.user.userId
         );
@@ -54,6 +58,7 @@ export class FeedbackComponent implements OnInit {
     this.feedbackService.getFeedbackSent(this.user.userId).subscribe(
       (response) => {
         this.feedbackSent = response.feedbacks.sort((a, b) => {
+          this.sentFeedbackIsLoading = false;
           const dateA = moment(a.createdAt);
           const dateB = moment(b.createdAt);
           return dateB.diff(dateA);
@@ -69,6 +74,7 @@ export class FeedbackComponent implements OnInit {
     )
     this.feedbackService.getFeedbackReceived(this.user.userId).subscribe(
       (response) => {
+        this.receivedFeedbackIsLoading = false;
         this.feedbackReceived = response.feedbacks.sort((a, b) => {
           const dateA = moment(a.createdAt);
           const dateB = moment(b.createdAt);
@@ -101,7 +107,6 @@ export class FeedbackComponent implements OnInit {
         this.feedbackSent.unshift(response.feedback);
       },
       error => {
-        console.log(this.message, this.title, this.selectedRecipient.userId);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -126,5 +131,11 @@ export class FeedbackComponent implements OnInit {
   recipientIsValid() {
     if (this.selectedRecipient) return true;
     return false;
+  }
+  openFeedback(feedback: any) {
+    this.router.navigateByUrl(`/view-feedback/${feedback.feedbackId}`);
+  }
+  pageIsLoading() {
+    return this.sentFeedbackIsLoading && this.receivedFeedbackIsLoading && this.employeesIsLoading;
   }
 }

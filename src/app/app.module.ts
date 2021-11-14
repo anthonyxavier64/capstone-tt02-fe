@@ -100,6 +100,7 @@ import { UpdateMeetingComponent } from './pages/employee/meeting/update-meeting/
 import { TaskDetailDialogComponent } from './pages/employee/task/task-detail-dialog/task-detail-dialog.component';
 import { TaskComponent } from './pages/employee/task/task.component';
 import { FeedbackComponent } from './pages/feedback/feedback.component';
+import { ViewFeedbackComponent } from './pages/feedback/view-feedback/view-feedback.component';
 import { IndexComponent } from './pages/index/index.component';
 import { ForgotPasswordDialogComponent } from './pages/index/login/forgot-password-dialog/forgot-password-dialog.component';
 import { LoginComponent } from './pages/index/login/login.component';
@@ -188,6 +189,7 @@ export function tokenGetter() {
     EditUnavailableDateDialogComponent,
     SubscriptionComponent,
     FeedbackComponent,
+    ViewFeedbackComponent,
   ],
   imports: [
     CommonModule,

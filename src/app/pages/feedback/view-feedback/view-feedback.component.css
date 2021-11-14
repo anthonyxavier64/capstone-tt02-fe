@@ -1,0 +1,38 @@
+.date-description {
+  display: absolute;
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+.beige-block {
+  background-color: rgba(var(--secondary-card-color));
+  border-radius: 25px;
+  height: auto;
+  min-height: 200px;
+  max-height: 400px;
+  width: 100%;
+  padding: 1.5rem 1rem;
+  overflow-y: auto;
+}
+.peach-card {
+  background-color: rgba(var(--primary-card-color), 0.2);
+  border-radius: 25px;
+  min-height: 300px;
+  height: auto;
+  width: 100%;
+  padding: 1.5rem 1rem;
+  overflow-y: auto;
+}
+.vertical-divider {
+  border: none;
+  border-right: 1px solid rgba(115, 123, 125, 0.5);
+  height: 320px;
+}
+.comment-block {
+  background-color: rgba(var(--secondary-card-color));
+  height: 100%;
+}
+.comment-line {
+  background-color: rgba(var(--secondary-card-color));
+  width: 90%;
+}

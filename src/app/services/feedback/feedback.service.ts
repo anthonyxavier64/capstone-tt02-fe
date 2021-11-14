@@ -29,6 +29,11 @@ export class FeedbackService {
       .get<any>(`${this.baseUrl}/get-all-feedbacks-by-recipientId/${receiverId}`)
       .pipe(catchError(handleError));
   }
+  getFeedbackByFeedbackId(feedbackId: string): Observable<any> {
+    return this.httpClient
+    .get<any>(`${this.baseUrl}/get-feedback/${feedbackId}`)
+    .pipe(catchError(handleError));
+  }
   createNewFeedback(feedback: any): Observable<any> {
     // console.log(department);
     return this.httpClient

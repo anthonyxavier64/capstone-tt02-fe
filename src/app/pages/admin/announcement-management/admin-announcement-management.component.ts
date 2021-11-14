@@ -3,12 +3,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
+
 import { Announcement } from '../../../models/announcement';
 import { AnnouncementType } from '../../../models/announcement-type';
 import { AnnouncementService } from '../../../services/announcement/announcement.service';
-import { ViewAnnouncementComponent } from './view-announcement/view-announcement.component';
 import { DeleteAnnouncementComponent } from './delete-announcement/delete-announcement.component';
 import { EditAnnouncementComponent } from './edit-announcement/edit-announcement.component';
+import { ViewAnnouncementComponent } from './view-announcement/view-announcement.component';
 
 let counter: number = 1;
 @Component({
