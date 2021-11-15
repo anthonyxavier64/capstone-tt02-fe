@@ -1,7 +1,7 @@
 <p-toast></p-toast>
 <div *ngIf="user">
-  <div class="dialog-container">
-    <h1>ART/FET Test Results</h1>
+  <div style="padding: 1% 0" class="dialog-container">
+    <h1>{{ user.fullName }}'s ART/FET Test Results</h1>
     <p class="last-updated" *ngIf="renderLastUpdate()">
       Last updated: {{ renderLastUpdate() | date: "dd/MM/yyyy" }}
     </p>
@@ -9,74 +9,118 @@
       <div class="art-status {{ fetApprovalStyle() }}"></div>
       <p class="text">{{ renderFetApprovalStatus() }}</p>
     </div>
-    <button *ngIf="user.latestArtTestResult; else noFile" mat-button class="peach-btn"
-      disabled="{{ this.artTests[0] ? false : true }}" (click)="onClickDownload()">
+    <button
+      *ngIf="user.latestArtTestResult; else noFile"
+      mat-button
+      class="peach-btn"
+      disabled="{{ this.artTests[0] ? false : true }}"
+      (click)="onClickDownload()"
+    >
       Download
     </button>
 
     <ng-template #noFile>
       <div fxLayout fxLayoutAlign="center">
-        {{ user.fullName }} has not uploaded any document.
+        <span>{{ user.fullName }} has not uploaded any document.</span>
       </div>
     </ng-template>
 
-    <div>
-      <!-- <div>
-      <input type="radio" id="positive" name="isPositive" value={{true}}
-             checked>
-      <label for="stay-home-notice">Positive</label>
-    </div>
-    <div>
-      <input type="radio" id="negative" name="isPositive" value={{false}}>
-      <label for="quarantine-order">Negative</label>
-    </div> -->
-    </div>
+    <div></div>
     <br />
   </div>
-  <form #responseForm="ngForm" (ngSubmit)="onSaveClick(responseForm)" novalidate>
-    <div fxLayout fxLayoutAlign="center" *ngIf="
+  <form
+    #responseForm="ngForm"
+    (ngSubmit)="onSaveClick(responseForm)"
+    novalidate
+  >
+    <div
+      fxLayout
+      fxLayoutAlign="center"
+      *ngIf="
         documentApprovalStatus &&
         documentApprovalStatus === 'PENDING' &&
         artTests[0].employeeId !== currentUser.userId
-      ">
+      "
+    >
       <div fxLayout="row" fxLayoutGap="5%">
         <div fxLayout="row">
           <label for="accept">Accept</label>
-          <input id="accept" type="radio" value="accept" name="response" ngModel />
+          <input
+            id="accept"
+            type="radio"
+            value="accept"
+            name="response"
+            ngModel
+          />
         </div>
 
         <div fxLayout="row">
           <label for="reject">Reject</label>
-          <input id="reject" type="radio" value="reject" name="response" ngModel />
+          <input
+            id="reject"
+            type="radio"
+            value="reject"
+            name="response"
+            ngModel
+          />
         </div>
       </div>
     </div>
 
-    <div *ngIf="isSubmitted && invalid" fxLayout fxLayoutAlign="center" style="color: red">
+    <div
+      *ngIf="isSubmitted && invalid"
+      fxLayout
+      fxLayoutAlign="center"
+      style="color: red"
+    >
       Please select a response.
     </div>
 
-    <div *ngIf="documentApprovalStatus && documentApprovalStatus === 'APPROVED'" fxLayout fxLayoutAlign="center">
+    <div
+      *ngIf="documentApprovalStatus && documentApprovalStatus === 'APPROVED'"
+      fxLayout
+      fxLayoutAlign="center"
+    >
       Latest submission has been approved.
     </div>
 
-    <div *ngIf="documentApprovalStatus && documentApprovalStatus === 'REJECTED'" fxLayout fxLayoutAlign="center">
+    <div
+      *ngIf="documentApprovalStatus && documentApprovalStatus === 'REJECTED'"
+      fxLayout
+      fxLayoutAlign="center"
+    >
       Latest submission has been rejected.
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="3%" style="
+    <div
+      fxLayout="row"
+      fxLayoutAlign="center"
+      fxLayoutGap="3%"
+      style="
         margin-top: 3%;
         display: flex;
         align-items: center;
         justify-content: center;
-      ">
-      <button mat-button class="peach-btn" type="submit" *ngIf="
-        responseForm.value.response 
-        && artTests[0].documentApprovalStatus === 'PENDING' 
-        && artTests[0].employeeId !== currentUser.userId">
+      "
+    >
+      <button
+        mat-button
+        class="peach-btn"
+        type="submit"
+        *ngIf="
+          responseForm.value.response &&
+          artTests[0].documentApprovalStatus === 'PENDING' &&
+          artTests[0].employeeId !== currentUser.userId
+        "
+      >
         Save
       </button>
-      <button mat-button type="button" class="closeBtn" (click)="onCloseClick()">
+      <button
+        mat-button
+        type="button"
+        class="closeBtn"
+        (click)="onCloseClick()"
+      >
         Close
       </button>
     </div>

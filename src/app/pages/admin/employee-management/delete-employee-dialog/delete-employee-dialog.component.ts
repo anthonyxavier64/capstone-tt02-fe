@@ -1,7 +1,7 @@
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { UserService } from 'src/app/services/user/user.service';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-delete-employee-dialog',
@@ -10,32 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DeleteEmployeeDialogComponent implements OnInit {
   constructor(
-    public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig,
-    private userService: UserService,
+    public dialogRef: MatDialogRef<DeleteEmployeeDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {}
 
   onConfirmClick() {
-    this.userService
-      .deleteUser(this.config.data.selectedUser.userId)
-      .subscribe(
-        (response) => {
-          this.config.data.confirmDelete = true;
-          this.config.data.hasBeenDeleted = true;
-          this.ref.close(this.config.data);
-        },
-        (error) => {
-          this.config.data.confirmDelete = true;
-          this.config.data.hasBeenDeleted = false;
-          this.ref.close(this.config.data);
-        }
-      );
+    this.userService.deleteUser(this.data.userId).subscribe((response) => {
+      this.data.confirmDelete = true;
+      this.dialogRef.close({ action: 'SUCCESS' });
+    });
   }
 
   onCloseClick() {
-    this.config.data.confirmDelete = false;
-    this.ref.close(this.config.data);
+    this.dialogRef.close();
   }
 }

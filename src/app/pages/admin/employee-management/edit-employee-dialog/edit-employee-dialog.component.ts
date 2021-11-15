@@ -97,6 +97,9 @@ export class EditEmployeeDialogComponent implements OnInit {
     if (formValue.contactNumber !== '') {
       this.data.contactNumber = formValue.contactNumber;
     }
+    if (formValue.position !== '') {
+      this.data.position = formValue.position;
+    }
     if (formValue.isAdmin === true) {
       this.data.accessRight = 'ADMIN';
     }

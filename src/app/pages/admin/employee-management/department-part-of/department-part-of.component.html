@@ -1,14 +1,23 @@
-<mat-card>
-  <h2>New user is part of:</h2>
-  <div *ngFor="let department of allDepartments">
-    <mat-checkbox [(ngModel)]="department.isSelected">
-      {{ department.name }}
-    </mat-checkbox>
+<div
+  style="padding: 1% 0"
+  fxLayout="column"
+  fxLayoutAlign="center"
+  fxLayoutGap="5%"
+>
+  <mat-card>
+    <h2>New user is part of:</h2>
+    <div *ngFor="let department of allDepartments">
+      <mat-checkbox [(ngModel)]="department.isSelected">
+        {{ department.name }}
+      </mat-checkbox>
+    </div>
+  </mat-card>
+  <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="5%">
+    <button mat-button class="grey-btn" (click)="openNewDepartmentDialog()">
+      Add new Department
+    </button>
+    <button mat-button class="peach-btn" (click)="confirmDepartmentPartOf()">
+      Confirm
+    </button>
   </div>
-</mat-card>
-<div fxLayout="row">
-  <button mat-button (click)="openNewDepartmentDialog()">
-    Add new Department
-  </button>
-  <button mat-button (click)="confirmDepartmentPartOf()">Confirm</button>
 </div>

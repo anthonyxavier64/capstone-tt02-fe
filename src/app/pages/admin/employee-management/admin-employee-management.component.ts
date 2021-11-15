@@ -4,7 +4,6 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MessageService } from 'primeng/api';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { finalize } from 'rxjs/operators';
 import { DepartmentService } from 'src/app/services/department/department.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -56,17 +55,11 @@ export class AdminEmployeeManagementComponent implements OnInit {
 
   csvDownloadUrl: string;
 
-  downloadCsvDialogRef: DynamicDialogRef;
-  massInviteDialogRef: DynamicDialogRef;
   uploadProgress: number;
   showWarningMessage: boolean;
   reader: FileReader;
   inputCsvData: any[];
 
-  artTestDialogRef: DynamicDialogRef;
-  shnDeclarationDialogRef: DynamicDialogRef;
-  vaccinationDialogRef: DynamicDialogRef;
-  deleteDialogRef: DynamicDialogRef;
   selectedEmployee: any;
 
   constructor(
@@ -74,7 +67,6 @@ export class AdminEmployeeManagementComponent implements OnInit {
     private userService: UserService,
     private departmentService: DepartmentService,
     private dialog: MatDialog,
-    public dialogService: DialogService,
     private afStorage: AngularFireStorage,
     private companyDetailsService: CompanyDetailsService,
     private messageService: MessageService
@@ -150,19 +142,6 @@ export class AdminEmployeeManagementComponent implements OnInit {
         });
       }
     );
-
-    // Below is for when the DB is unaccessible
-
-    // var deptLocalStorage = localStorage.getItem('allDepts');
-    // if (deptLocalStorage != null) {
-    //   this.allDepartments = JSON.parse(deptLocalStorage);
-    //   console.log(this.allDepartments);
-    // }
-    // var userLocalStorage = localStorage.getItem('allUsers');
-    // if (userLocalStorage != null) {
-    //   this.allUsers = JSON.parse(userLocalStorage);
-    //   this.isLoading = false;
-    // }
   }
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
 
@@ -179,7 +158,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
       DepartmentInChargeOfComponent,
       {
         width: '50%',
-        height: '50%',
+        height: 'auto',
         data: { inChargeOfDepartments: this.inChargeOfDepartments },
       }
     );
@@ -192,7 +171,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
   openPartOfDialog() {
     const deptPartOfDialogRef = this.dialog.open(DepartmentPartOfComponent, {
       width: '50%',
-      height: '50%',
+      height: 'auto',
       data: { partOfDepartments: this.partOfDepartments },
     });
 
@@ -211,28 +190,11 @@ export class AdminEmployeeManagementComponent implements OnInit {
   }
 
   downloadCSVTemplate() {
-    this.downloadCsvDialogRef = this.dialogService.open(
-      DownloadCsvDialogComponent,
-      {
-        header: 'Download CSV Template',
-        width: '70%',
-        contentStyle: { 'max-height': '50vw', overflow: 'auto' },
-        data: { company: this.company, downloadLink: this.csvDownloadUrl },
-      }
-    );
-
-    this.downloadCsvDialogRef.onClose.subscribe(
-      (response) => {
-      this.downloadCsvDialogRef = null;
-      },
-      (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Download CSV Template not cleared',
-        });
-      }
-    );
+    let downloadCsvDialogRef = this.dialog.open(DownloadCsvDialogComponent, {
+      width: '40%',
+      height: 'auto',
+      data: { company: this.company, downloadLink: this.csvDownloadUrl },
+    });
   }
 
   openUploadCSVDialog(event) {
@@ -388,7 +350,8 @@ export class AdminEmployeeManagementComponent implements OnInit {
                   this.messageService.add({
                     severity: 'success',
                     summary: 'Success',
-                    detail: 'Department In Charge Of:' + dept + 'has been created.',
+                    detail:
+                      'Department In Charge Of:' + dept + 'has been created.',
                   });
                 },
                 (error) => {
@@ -396,7 +359,10 @@ export class AdminEmployeeManagementComponent implements OnInit {
                   this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
-                    detail: 'Department In Charge Of:' + dept + 'could not be created.',
+                    detail:
+                      'Department In Charge Of:' +
+                      dept +
+                      'could not be created.',
                   });
                 }
               );
@@ -434,7 +400,8 @@ export class AdminEmployeeManagementComponent implements OnInit {
                   this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
-                    detail: 'Department Part Of:' + dept + 'could not be created.',
+                    detail:
+                      'Department Part Of:' + dept + 'could not be created.',
                   });
                 }
               );
@@ -523,65 +490,54 @@ export class AdminEmployeeManagementComponent implements OnInit {
   }
 
   openMassInviteInfoDialog(): void {
-    this.massInviteDialogRef = this.dialogService.open(
-      MassInviteInfoDialogComponent,
-      {
-        header: 'Mass Inviting Employees',
-        width: '60%',
-        contentStyle: { 'max-height': '80vw', overflow: 'auto' },
-      }
-    );
-  }
-
-  openArtTestDialog(selectedUser: {
-    userId: number;
-    fullName: string;
-    email: string;
-    createdAt: string;
-    contactNumber: string;
-    isActivated: boolean;
-    isVaccinated: boolean;
-  }) {
-    this.artTestDialogRef = this.dialogService.open(ViewArtComponent, {
-      header: selectedUser.fullName + "'s ART Tests",
-      width: '70%',
-      contentStyle: { 'max-height': '50vw', overflow: 'auto' },
-      data: selectedUser,
+    let massInviteDialogRef = this.dialog.open(MassInviteInfoDialogComponent, {
+      width: '40%',
+      height: 'auto',
     });
   }
-  openShnDeclarationDialog(selectedUser: {
-    userId: number;
-    fullName: string;
-    email: string;
-    createdAt: string;
-    contactNumber: string;
-    isActivated: boolean;
-  }) {
-    this.shnDeclarationDialogRef = this.dialogService.open(
-      ViewShnDeclarationDialog,
-      {
-        header: selectedUser.fullName + "'s SHN/QO Declaration",
-        width: '70%',
-        contentStyle: { 'max-height': '50vw', overflow: 'auto' },
-        data: selectedUser,
-      }
-    );
+
+  openArtTestDialog(selectedUser: any) {
+    let artTestDialogRef = this.dialog.open(ViewArtComponent, {
+      data: {
+        userId: selectedUser.userId,
+        fullName: selectedUser.fullName,
+        email: selectedUser.email,
+        createdAt: selectedUser.createdAt,
+        contactNumber: selectedUser.contactNumber,
+        isActivated: selectedUser.isActivated,
+      },
+      width: '40%',
+      height: 'auto',
+    });
   }
-  openVaccinationDialog(selectedUser: {
-    userId: number;
-    fullName: string;
-    email: string;
-    createdAt: string;
-    contactNumber: string;
-    isActivated: boolean;
-  }) {
-    this.vaccinationDialogRef = this.dialogService.open(
+  openShnDeclarationDialog(selectedUser: any) {
+    let shnDeclarationDialogRef = this.dialog.open(ViewShnDeclarationDialog, {
+      data: {
+        userId: selectedUser.userId,
+        fullName: selectedUser.fullName,
+        email: selectedUser.email,
+        createdAt: selectedUser.createdAt,
+        contactNumber: selectedUser.contactNumber,
+        isActivated: selectedUser.isActivated,
+      },
+      width: '40%',
+      height: 'auto',
+    });
+  }
+  openVaccinationDialog(selectedUser: any) {
+    let vaccinationDialogRef = this.dialog.open(
       ViewVaccinationDialogComponent,
       {
-        header: selectedUser.fullName + "'s Vaccination Certificate",
-        width: '70%',
-        contentStyle: { 'max-height': '50vw', overflow: 'auto' },
-        data: selectedUser,
+        data: {
+          userId: selectedUser.userId,
+          fullName: selectedUser.fullName,
+          email: selectedUser.email,
+          createdAt: selectedUser.createdAt,
+          contactNumber: selectedUser.contactNumber,
+          isActivated: selectedUser.isActivated,
+        },
+        width: '40%',
+        height: 'auto',
       }
     );
   }
@@ -602,29 +558,18 @@ export class AdminEmployeeManagementComponent implements OnInit {
       width: '70%',
       height: 'auto',
     });
-<<<<<<< HEAD
-    this.editDialogRef.onClose.subscribe(
-      (data) => {
-        if (data.confirmEdit) {
-          if (data.hasBeenUpdated) {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Success',
-              detail: 'Employee details updated.',
-            }); 
-          } else {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Error when updating Employee details.',
-            });
-          }
-        }
-=======
 
     editDialogRef.afterClosed().subscribe(
       (response) => {
         if (response.action === 'SUCCESS') {
+          this.userService.getUsers(this.user.companyId).subscribe(
+            (response) => {
+              this.allUsers = response.users;
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -638,55 +583,42 @@ export class AdminEmployeeManagementComponent implements OnInit {
           summary: 'Error',
           detail: `User could not be updated.`,
         });
->>>>>>> 9842688... bugfix edit employees
       }
     );
   }
 
-  onDeleteEmployeeClick(selectedUser: {
-    userId: string;
-    fullName: string;
-    email: string;
-    createdAt: string;
-    contactNumber: string;
-    isActivated: boolean;
-  }) {
-    this.deleteDialogRef = this.dialogService.open(
-      DeleteEmployeeDialogComponent,
-      {
-        header:
-          'Delete Employee ' +
-          selectedUser.fullName +
-          ' (' +
-          selectedUser.userId +
-          ')',
-        width: '30%',
-        contentStyle: { 'max-height': '20vw', overflow: 'auto' },
-        data: { selectedUser, confirmDelete: false },
+  onDeleteEmployeeClick(selectedUser: any) {
+    let deleteDialogRef = this.dialog.open(DeleteEmployeeDialogComponent, {
+      data: { userId: selectedUser.userId, confirmDelete: false },
+      width: '30%',
+      height: 'auto',
+    });
+
+    deleteDialogRef.afterClosed().subscribe(
+      (response) => {
+        if (response.action === 'SUCCESS') {
+          this.userService.getUsers(this.user.companyId).subscribe(
+            (response) => {
+              this.allUsers = response.users;
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: `User ${selectedUser.userId} has been deleted`,
+          });
+        }
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `User could not be deleted.`,
+        });
       }
     );
-    this.deleteDialogRef.onClose
-      .subscribe(
-        (data) => {
-          if (data.confirmDelete) {
-            if (data.hasBeenDeleted) {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Success',
-                detail: 'Employee has been deleted.',
-              }); 
-            } else {
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Error when deleting Employee.',
-              });
-            }
-          }
-        }); 
-
-    this.deleteDialogRef.onClose.subscribe(() => {
-      this.ngOnInit();
-    });
   }
 }

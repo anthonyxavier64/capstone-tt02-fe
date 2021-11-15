@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-download-csv-dialog',
   templateUrl: './download-csv-dialog.component.html',
@@ -11,11 +10,11 @@ export class DownloadCsvDialogComponent implements OnInit {
   templateDownloadUrl: string;
 
   constructor(
-    public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig
+    public dialogRef: MatDialogRef<DownloadCsvDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.company = this.config.data.company;
-    this.templateDownloadUrl = this.config.data.downloadLink;
+    this.company = this.data.company;
+    this.templateDownloadUrl = this.data.downloadLink;
   }
 
   ngOnInit(): void {}
