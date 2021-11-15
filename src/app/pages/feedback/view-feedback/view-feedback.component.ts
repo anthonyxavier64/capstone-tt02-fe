@@ -3,7 +3,7 @@ import { CommentService } from 'src/app/services/comment/comment.service';
 import { FeedbackService } from 'src/app/services/feedback/feedback.service';
 
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -16,6 +16,7 @@ import { DeleteCommentComponent } from '../delete-comment/delete-comment.compone
   providers: [MessageService],
 })
 export class ViewFeedbackComponent implements OnInit {
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   user: any;
   feedbackIsLoading: boolean = true;
   commentsIsLoading: boolean = true;
@@ -69,6 +70,7 @@ export class ViewFeedbackComponent implements OnInit {
         });
       }
     )
+    this.scrollToBottom();
   }
   submitComment() {
     this.commentService.createNewComment({
@@ -79,6 +81,7 @@ export class ViewFeedbackComponent implements OnInit {
       .subscribe(
         (response) => {
           this.comments.push(response.comment);
+          this.scrollToBottom();
           this.newCommentMessage = "";
           this.messageService.add({
             severity: 'success',
@@ -192,5 +195,10 @@ export class ViewFeedbackComponent implements OnInit {
   }
   pageIsLoading() {
     return this.feedbackIsLoading && this.commentsIsLoading;
+  }
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch (err) { }
   }
 }

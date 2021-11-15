@@ -26,11 +26,16 @@
 .vertical-divider {
   border: none;
   border-right: 1px solid rgba(115, 123, 125, 0.5);
-  height: 320px;
+  height: 420px;
 }
 .comment-block {
   background-color: rgba(var(--secondary-card-color));
   height: 100%;
+}
+.comment-container {
+  height: 380px;
+  overflow-y: auto;
+  width: 100%;
 }
 .comment-line {
   background-color: rgba(var(--secondary-card-color));

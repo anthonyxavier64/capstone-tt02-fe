@@ -5,7 +5,7 @@ import { DeleteCommentComponent } from 'src/app/pages/feedback/delete-comment/de
 import { CommentService } from 'src/app/services/comment/comment.service';
 import { TaskService } from 'src/app/services/task/task.service';
 
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
   providers: [MessageService],
 })
 export class TaskDetailDialogComponent implements OnInit {
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   task: any;
   goal: any;
   allGoals: any;
@@ -89,6 +90,7 @@ export class TaskDetailDialogComponent implements OnInit {
         });
       }
     )
+    this.scrollToBottom();
     const employees = this.dialogConfig.data.employees;
     this.personnel = this.task.employees.filter(
       (emp) => emp.userId !== this.task.supervisor.userId
@@ -426,5 +428,10 @@ export class TaskDetailDialogComponent implements OnInit {
     const comment = this.newCommentMessage?.trim();
     if (!this.newCommentMessage || !comment || comment === "" || this.newCommentMessage.length > 500) return false;
     return true;
+  }
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch (err) { }
   }
 }

@@ -62,10 +62,11 @@
         <h3>Thread</h3>
         <br />
         <div
+          class="comment-container"
+          #scrollMe [scrollTop]="scrollMe.scrollHeight"
           fxLayout="column"
-          fxLayoutAlign="center center"
+          fxLayoutAlign="start center"
           fxLayoutGap="2%"
-          style="width: 100%"
         >
           <h4 *ngIf="comments.length === 0">
             You have no comments on this feedback
@@ -83,7 +84,7 @@
             >
               <div
                 fxLayout="row"
-                fxLayoutAlign="start center"
+                fxLayoutAlign="start start"
                 fxLayoutGap="16px"
                 style="width: calc(100% - 3em)"
               >
