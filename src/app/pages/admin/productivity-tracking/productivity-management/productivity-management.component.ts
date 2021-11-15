@@ -137,7 +137,6 @@ export class ProductivityManagementComponent implements OnInit {
         this.userService.getDepartments(u.userId).subscribe(
           (response) => {
             var responseDept = response.dept;
-            console.log(`Response Department: ${responseDept}`);
             for (let r of responseDept) {
               if (r.name === this.selectedDepartment.name && !employees.includes(u)) {
                 employees.push(u);
@@ -157,7 +156,6 @@ export class ProductivityManagementComponent implements OnInit {
         this.userService.getManagedDepartments(u.userId).subscribe(
           (response) => {
             var responseMDept = response.mdept;
-            console.log(`Response Managed Department: ${responseMDept}`);
             for (let r of responseMDept) {
               if (r.name === this.selectedDepartment.name && !employees.includes(u)) {
                 employees.push(u);
