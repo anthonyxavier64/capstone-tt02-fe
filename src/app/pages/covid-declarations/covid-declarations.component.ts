@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covid-document-submission.service';
 
@@ -15,7 +16,7 @@ import { UploadVaccinationDialogComponent } from './upload-vaccination-dialog/up
   selector: 'app-covid-declarations',
   templateUrl: './covid-declarations.component.html',
   styleUrls: ['./covid-declarations.component.css'],
-  providers: [DatePipe],
+  providers: [DatePipe, MessageService],
 })
 export class CovidDeclarationsComponent implements OnInit {
   user: any;
@@ -35,7 +36,8 @@ export class CovidDeclarationsComponent implements OnInit {
     private router: Router,
     private covidDocumentSubmissionService: CovidDocumentSubmissionService,
     public dialogService: DialogService,
-    private location: Location
+    private location: Location,
+    private messageService: MessageService,
   ) {
     this.covidDocumentSubmissions = [];
     this.fetSubmissions = [];
@@ -81,6 +83,11 @@ export class CovidDeclarationsComponent implements OnInit {
           },
           (error) => {
             console.log(error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Unable to retrieve user COVID-19 document submissions.',
+            });
           }
         );
     }

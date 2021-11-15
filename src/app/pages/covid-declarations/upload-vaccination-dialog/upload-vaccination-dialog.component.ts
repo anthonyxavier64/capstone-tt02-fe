@@ -27,6 +27,7 @@ export class UploadVaccinationDialogComponent implements OnInit {
     private userService: UserService,
     private covidDocumentSubmissionService: CovidDocumentSubmissionService,
     private afStorage: AngularFireStorage,
+    private messageService: MessageService,
   ) {
     this.uploadProgress = -1;
     this.showWarningMessage = false;
@@ -55,6 +56,11 @@ export class UploadVaccinationDialogComponent implements OnInit {
         },
         error => {
           console.log(error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Unable to retrieve vaccination status. Please try again.',
+          });
         }
       );
   }
@@ -75,9 +81,19 @@ export class UploadVaccinationDialogComponent implements OnInit {
               console.log("updated!")
               this.user = response.user;
               localStorage.setItem("currentUser", JSON.stringify(this.user));
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'User vaccination certificate updated.',
+              });
             },
             (error) => {
               console.log(error);
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Failed to update user vaccination certificate. Please try again.',
+              });
             }
           );
         });
@@ -91,13 +107,28 @@ export class UploadVaccinationDialogComponent implements OnInit {
                 if (response.covidDocumentSubmission) {
                   this.covidDocumentSubmissions.unshift(response.covidDocumentSubmission);
                   this.vaccinationCerts.unshift(response.covidDocumentSubmission);
+                  this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Vaccination certificate uploaded successfully!',
+                  });
                 }
               } else {
                 console.log("A problem has occured", response);
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: 'A problem has occurred when uploading. Please try again.',
+                });
               }
             },
             (error) => {
               console.log(error);
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Unable to upload user vaccination certificate. Please try again.',
+              });
             }
           );
       })
