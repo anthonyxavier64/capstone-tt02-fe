@@ -1,14 +1,17 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { NgForm, NgModel } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { CompanyService } from 'src/app/services/company/company.service';
 import { GoalService } from 'src/app/services/goal/goal.service';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { OfficeQuotaConfigurationService } from 'src/app/services/wfoConfiguration/officeQuotaConfiguration/office-quota-configuration.service';
+
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { NgForm, NgModel } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+
 import { UnavailableDateService } from './../../../../services/unavailableDate/unavailable-date.service';
 import { AlternateWorkTeamsConfigurationService } from './../../../../services/wfoConfiguration/alternateWorkTeamsConfiguration/alternate-work-teams-configuration.service';
 import { ColorSelectorDialogComponent } from './color-selector-dialog/color-selector-dialog.component';
@@ -76,6 +79,9 @@ export class CreateNewMeetingComponent implements OnInit {
   invalidTime: boolean;
 
   alternateWorkTeamsConfig: string;
+  officeQuotaConfiguration: any = null;
+
+  numEmployeesAllowedPerDay: number = 0;
 
   minDate: Date;
 
@@ -89,7 +95,8 @@ export class CreateNewMeetingComponent implements OnInit {
     private goalService: GoalService,
     private colorSelectorDialog: MatDialog,
     private unavailableDateService: UnavailableDateService,
-    private alternateWorkTeamsConfigService: AlternateWorkTeamsConfigurationService
+    private alternateWorkTeamsConfigService: AlternateWorkTeamsConfigurationService,
+    private officeQuotaConfigService: OfficeQuotaConfigurationService
   ) {
     this.selectedGoal = '';
     this.colors = [
@@ -200,14 +207,17 @@ export class CreateNewMeetingComponent implements OnInit {
                 ) {
                   this.isLoading = false;
                 }
-                console.log('USER', this.user);
-                console.log('EMPLOYEE', this.employees);
               },
-              (error) => {}
+              (error) => {
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: `An error has occured: ${error.message}`,
+                });
+              }
             );
         });
     }
-
     this.companyService.getCompany(JSON.parse(currentUser).companyId).subscribe(
       async (response) => {
         this.isLoading = true;
@@ -217,6 +227,23 @@ export class CreateNewMeetingComponent implements OnInit {
         this.rooms.forEach((room) => {
           room = { ...room, isSelected: false };
         });
+        this.numEmployeesAllowedPerDay = this.company.officeCapacity;
+
+        if (this.company.officeQuotaConfigurationId) {
+          this.officeQuotaConfigService.getOfficeQuotaConfiguration(this.company.officeQuotaConfigurationId).subscribe(
+            (response) => {
+              this.officeQuotaConfiguration = response.officeQuotaConfig;
+              this.numEmployeesAllowedPerDay = Math.min(this.numEmployeesAllowedPerDay, this.officeQuotaConfiguration.numEmployeesPerDay);
+            },
+            (error) => {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: `An error has occured: ${error.message}`,
+              });
+            }
+          )
+        }
 
         if (
           this.company.alternateWorkTeamsConfigurationId !== null &&
@@ -244,7 +271,13 @@ export class CreateNewMeetingComponent implements OnInit {
           this.isLoading = false;
         }
       },
-      (error) => {}
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `An error has occured: ${error.message}`,
+        });
+      }
     );
 
     this.goalService
@@ -253,7 +286,7 @@ export class CreateNewMeetingComponent implements OnInit {
         (response) => {
           this.allGoals = response.goals;
         },
-        (error) => {}
+        (error) => { }
       );
   }
 
@@ -335,11 +368,11 @@ export class CreateNewMeetingComponent implements OnInit {
         let isEmployeeDisabled = assignedEmployee.isInfected
           ? true
           : this.assignedPhysicalEmployees[0]
-          ? this.assignedPhysicalEmployees[0].alternateWfoTeam ===
-            assignedEmployee.alternateWfoTeam
-            ? false
-            : true
-          : false;
+            ? this.assignedPhysicalEmployees[0].alternateWfoTeam ===
+              assignedEmployee.alternateWfoTeam
+              ? false
+              : true
+            : false;
         assignedEmployee = {
           ...assignedEmployee,
           isDisabled: isEmployeeDisabled,
@@ -406,21 +439,19 @@ export class CreateNewMeetingComponent implements OnInit {
       ) {
         if (
           assignedEmployee.datesInOffice.length <
-            assignedEmployee.wfoMonthlyAllocation &&
-          this.assignedPhysicalEmployees.length < this.company.officeCapacity
+          assignedEmployee.wfoMonthlyAllocation &&
+          this.assignedPhysicalEmployees.length < this.numEmployeesAllowedPerDay
         ) {
           this.assignedPhysicalEmployees.push(assignedEmployee);
           const indexToRemove = this.assignedMeetingEmployees.findIndex(
             (item) => item.userId === assignedEmployee.userId
           );
           this.assignedMeetingEmployees.splice(indexToRemove, 1);
-        } else if (
-          this.assignedPhysicalEmployees.length >= this.company.officeCapacity
-        ) {
+        } else if (this.assignedPhysicalEmployees.length >= this.numEmployeesAllowedPerDay) {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: `Employee ${assignedEmployee.fullName} cannot be assigned. Office Max Capacity has been reached.`,
+            detail: `Employee ${assignedEmployee.fullName} cannot be assigned. Office Max Occupancy has been reached.`,
           });
         } else {
           this.messageService.add({
@@ -536,11 +567,11 @@ export class CreateNewMeetingComponent implements OnInit {
           let isEmployeeDisabled = employee.isInfected
             ? true
             : this.assignedPhysicalEmployees[0]
-            ? this.assignedPhysicalEmployees[0].alternateWfoTeam ===
-              employee.alternateWfoTeam
-              ? false
-              : true
-            : false;
+              ? this.assignedPhysicalEmployees[0].alternateWfoTeam ===
+                employee.alternateWfoTeam
+                ? false
+                : true
+              : false;
           this.assignedMeetingEmployees[i].isDisabled = isEmployeeDisabled;
         }
       } else {
@@ -735,7 +766,7 @@ export class CreateNewMeetingComponent implements OnInit {
             // To factor in leap years
             let numDaysInYear =
               (d.getFullYear() % 4 === 0 && d.getFullYear() % 100 > 0) ||
-              d.getFullYear() % 400 == 0
+                d.getFullYear() % 400 == 0
                 ? 366
                 : 365;
 
@@ -773,7 +804,7 @@ export class CreateNewMeetingComponent implements OnInit {
             // To factor in leap years
             let numDaysInYear =
               (d.getFullYear() % 4 === 0 && d.getFullYear() % 100 > 0) ||
-              d.getFullYear() % 400 == 0
+                d.getFullYear() % 400 == 0
                 ? 366
                 : 365;
 
@@ -954,7 +985,7 @@ export class CreateNewMeetingComponent implements OnInit {
             // To factor in leap years
             let numDaysInYear =
               (d.getFullYear() % 4 === 0 && d.getFullYear() % 100 > 0) ||
-              d.getFullYear() % 400 == 0
+                d.getFullYear() % 400 == 0
                 ? 366
                 : 365;
 
@@ -1012,7 +1043,7 @@ export class CreateNewMeetingComponent implements OnInit {
             // To factor in leap years
             let numDaysInYear =
               (d.getFullYear() % 4 === 0 && d.getFullYear() % 100 > 0) ||
-              d.getFullYear() % 400 == 0
+                d.getFullYear() % 400 == 0
                 ? 366
                 : 365;
 
