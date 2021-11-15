@@ -132,14 +132,17 @@ export class ProductivityManagementComponent implements OnInit {
     if (!!this.selectedDepartment) {
       this.isLoading = true;
       let employees = [];
+
       for (let u of this.allUsers) {
         console.log(`User Email: ${u.email}`);
         this.userService.getDepartments(u.email).subscribe(
           (response) => {
             var responseDept = response.userDept;
             console.log(`Response Department: ${responseDept}`);
-            if (responseDept === this.selectedDepartment) {
-              employees.push(u);
+            for (let r of responseDept) {
+              if (r.name === this.selectedDepartment.name && !employees.includes(u)) {
+                employees.push(u);
+              }
             }
             this.isLoading = false;
           },
@@ -156,8 +159,10 @@ export class ProductivityManagementComponent implements OnInit {
           (response) => {
             var responseMDept = response.userDept;
             console.log(`Response Managed Department: ${responseMDept}`);
-            if (responseMDept === this.selectedDepartment) {
-              employees.push(u);
+            for (let r of responseMDept) {
+              if (r.name === this.selectedDepartment.name && !employees.includes(u)) {
+                employees.push(u);
+              }
             }
             this.isLoading = false;
           },
