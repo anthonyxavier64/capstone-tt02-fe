@@ -1,5 +1,9 @@
 <p-toast></p-toast>
-<div fxLayout="column" fxLayoutGap="3%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
+<div
+  fxLayout="column"
+  fxLayoutGap="3%"
+  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+>
   <app-navbar></app-navbar>
 
   <div fxLayout="row" fxLayoutAlign="space-between start">
@@ -9,39 +13,102 @@
     </div>
   </div>
 
-  <div fxLayout="row" class="inviteEmployeeCard" fxLayoutAlign="space-around center">
-    <div fxLayout="column" fxLayoutAlign="space-evenly center" fxFlex="100" fxLayoutGap="3%" style="margin-left: 5vw">
-      <h2 style="text-decoration: underline; text-align: center">
+  <div
+    fxLayout="row"
+    class="inviteEmployeeCard"
+    fxLayoutAlign="space-around center"
+  >
+    <div
+      fxLayout="column"
+      fxLayoutAlign="space-evenly center"
+      fxFlex="100"
+      fxLayoutGap="3%"
+      style="margin-left: 5vw"
+    >
+      <h2
+        *ngIf="companyLimit === -1"
+        style="text-decoration: underline; text-align: center"
+      >
         Invite Employee
+      </h2>
+      <h2
+        *ngIf="companyLimit !== -1"
+        style="text-decoration: underline; text-align: center"
+      >
+        Invite Employee (Number of employees: {{ company.numOfEmployees }} /
+        {{ companyLimit }})
       </h2>
       <div fxLayout="row" fxLayoutGap="8%" fxLayoutAlign="space-evenly center">
         <div fxLayout="row" fxLayoutGap="5%">
           <div fxLayout="column" fxLayoutGap="5%">
             <h3>Employee Full Name:</h3>
-            <input type="text" placeholder="Name" [(ngModel)]="currNewUserFullName" #fullName="ngModel" ngModel required
-              pInputText />
-            <div *ngIf="fullName.touched && fullName.value === ''" class="errorText" style="color: red">
+            <input
+              type="text"
+              placeholder="Name"
+              [(ngModel)]="currNewUserFullName"
+              #fullName="ngModel"
+              ngModel
+              required
+              pInputText
+            />
+            <div
+              *ngIf="fullName.touched && fullName.value === ''"
+              class="errorText"
+              style="color: red"
+            >
               Full name cannot be empty.
             </div>
             <h3>Email Address:</h3>
-            <input type="email" placeholder="Email" [(ngModel)]="currNewUserEmail" #emailText="ngModel" email="true"
-              required pInputText />
-            <div *ngIf="emailText.touched && emailText.invalid" class="errorText" style="color: red">
+            <input
+              type="email"
+              placeholder="Email"
+              [(ngModel)]="currNewUserEmail"
+              #emailText="ngModel"
+              email="true"
+              required
+              pInputText
+            />
+            <div
+              *ngIf="emailText.touched && emailText.invalid"
+              class="errorText"
+              style="color: red"
+            >
               Email must be valid.
             </div>
           </div>
         </div>
         <div fxLayout="column" fxLayoutGap="10px">
           <h3>Employee Position:</h3>
-          <input type="text" placeholder="Position" [(ngModel)]="currNewUserPosition" #employeePosition="ngModel"
-            required pInputText />
-          <div *ngIf="employeePosition.touched && employeePosition.value === ''" class="errorText" style="color: red">
+          <input
+            type="text"
+            placeholder="Position"
+            [(ngModel)]="currNewUserPosition"
+            #employeePosition="ngModel"
+            required
+            pInputText
+          />
+          <div
+            *ngIf="employeePosition.touched && employeePosition.value === ''"
+            class="errorText"
+            style="color: red"
+          >
             Employee position cannot be empty.
           </div>
           <h3>Contact Number:</h3>
-          <input type="tel" placeholder="Contact Number" [(ngModel)]="currNewUserContactNumber" #contactNum="ngModel"
-            pattern="[689][0-9]{7}" required pInputText />
-          <div *ngIf="contactNum.invalid && contactNum.touched" class="errorText" style="color: red">
+          <input
+            type="tel"
+            placeholder="Contact Number"
+            [(ngModel)]="currNewUserContactNumber"
+            #contactNum="ngModel"
+            pattern="[689][0-9]{7}"
+            required
+            pInputText
+          />
+          <div
+            *ngIf="contactNum.invalid && contactNum.touched"
+            class="errorText"
+            style="color: red"
+          >
             A valid 8-digit Singapore contact number is required.
           </div>
         </div>
@@ -63,50 +130,89 @@
           </mat-checkbox>
         </div>
       </div>
-      <button mat-raised-button (click)="createNewEmployee()" [disabled]="
+      <button
+        mat-raised-button
+        (click)="createNewEmployee()"
+        [disabled]="
           fullName.value === '' ||
           fullName.value === null ||
           emailText.invalid ||
           employeePosition.value === '' ||
           employeePosition.value === null ||
           contactNum.invalid
-        ">
+        "
+      >
         Invite Employee
       </button>
     </div>
     <div class="verticalDivider"></div>
-    <div fxLayout="column" fxLayoutAlign="space-evenly center" fxFlex="100" fxLayoutGap="3%">
+    <div
+      fxLayout="column"
+      fxLayoutAlign="space-evenly center"
+      fxFlex="100"
+      fxLayoutGap="3%"
+    >
       <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="3%">
-        <h2 style="
+        <h2
+          style="
             text-decoration: underline;
             text-align: center;
             white-space: nowrap;
-          ">
+          "
+        >
           Mass Invite Employee
         </h2>
-        <img src="../../../../assets/images/infoLogo.png" (click)="openMassInviteInfoDialog()" />
+        <img
+          src="../../../../assets/images/infoLogo.png"
+          (click)="openMassInviteInfoDialog()"
+        />
       </div>
-      <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="8%">
+      <div
+        fxLayout="column"
+        fxLayoutAlign="space-around center"
+        fxLayoutGap="8%"
+      >
         <button class="massInviteButtons" (click)="downloadCSVTemplate()">
-          <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="2%" style="padding: 2% 2% 2% 2%">
+          <div
+            fxLayout="column"
+            fxLayoutAlign="space-around center"
+            fxLayoutGap="2%"
+            style="padding: 2% 2% 2% 2%"
+          >
             <p style="font-size: 1.2vw">Download</p>
             <p style="font-size: 1.2vw">Template CSV</p>
           </div>
         </button>
         <label>
-          <input class="massInviteButtons" type="file" (change)="openUploadCSVDialog($event)" accept=".csv" />
+          <input
+            class="massInviteButtons"
+            type="file"
+            (change)="openUploadCSVDialog($event)"
+            accept=".csv"
+          />
           <div class="massInviteButtons">
-            <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="2%" style="padding: 2% 2% 2% 2%">
+            <div
+              fxLayout="column"
+              fxLayoutAlign="space-around center"
+              fxLayoutGap="2%"
+              style="padding: 2% 2% 2% 2%"
+            >
               <p style="font-size: 1.2vw">Upload</p>
               <p style="font-size: 1.2vw">Employee CSV</p>
             </div>
           </div>
         </label>
-        <progress *ngIf="uploadProgress !== -1" max="100" [value]="uploadProgress"></progress>
+        <progress
+          *ngIf="uploadProgress !== -1"
+          max="100"
+          [value]="uploadProgress"
+        ></progress>
         <div *ngIf="uploadProgress === 100">File successfully uploaded!</div>
-        <div class="warning-message {{
+        <div
+          class="warning-message {{
             showWarningMessage && uploadProgress !== 100 ? 'visible' : 'hidden'
-          }}">
+          }}"
+        >
           Please wait for your file to be uploaded!
         </div>
       </div>
@@ -115,20 +221,32 @@
 
   <div class="employeeTableCard" fxLayout="column" fxLayoutAlign=" center">
     <h2 style="padding-top: 2vw; padding-bottom: 2vw">Existing Employees</h2>
-    <div style="
+    <div
+      style="
         max-width: 90%;
         min-height: 20vw;
         overflow-y: auto;
         margin-bottom: 3vw;
-      ">
-      <p-table #employeeTable [value]="allUsers" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[10, 25, 50]" [loading]="isLoading" styleClass="p-datatable-gridlines" [paginator]="true"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [globalFilterFields]="[
+      "
+    >
+      <p-table
+        #employeeTable
+        [value]="allUsers"
+        dataKey="id"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [loading]="isLoading"
+        styleClass="p-datatable-gridlines"
+        [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="[
           'fullName',
           'email',
           'dateCreated',
           'contactNumber'
-        ]">
+        ]"
+      >
         <!-- <ng-template pTemplate="caption">
         <div class="p-d-flex">
           <span class="p-input-icon-left p-ml-auto">
@@ -208,18 +326,42 @@
               {{ user.contactNumber }}
             </td>
             <td>
-              <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="1%" class="btnGroup">
-                <img class="actionIcon" (click)="openArtTestDialog(user)" src="../../../../assets/images/test-tube.png"
-                  style="cursor: pointer; height: 1.5em; width: 1.5em" />
-                <img class="actionIcon" (click)="openShnDeclarationDialog(user)"
+              <div
+                fxLayout="row"
+                fxLayoutAlign="space-around center"
+                fxLayoutGap="1%"
+                class="btnGroup"
+              >
+                <img
+                  class="actionIcon"
+                  (click)="openArtTestDialog(user)"
+                  src="../../../../assets/images/test-tube.png"
+                  style="cursor: pointer; height: 1.5em; width: 1.5em"
+                />
+                <img
+                  class="actionIcon"
+                  (click)="openShnDeclarationDialog(user)"
                   src="../../../../assets/images/health-cert.png"
-                  style="cursor: pointer; height: 1.5em; width: 1.5em" />
-                <img class="actionIcon" (click)="openVaccinationDialog(user)"
-                  src="../../../../assets/images/injection.png" style="cursor: pointer; height: 1.5em; width: 1.5em" />
-                <img class="actionIcon" *ngIf="user === this.user" (click)="openEditEmployeeDialog(user)"
-                  src="../../../../assets/images/editIcon.png" style="cursor: pointer; height: 1.5em; width: 1.5em" />
-                <img class="actionIcon" (click)="onDeleteEmployeeClick(user)"
-                  src="../../../../assets/images/deleteIcon.png" />
+                  style="cursor: pointer; height: 1.5em; width: 1.5em"
+                />
+                <img
+                  class="actionIcon"
+                  (click)="openVaccinationDialog(user)"
+                  src="../../../../assets/images/injection.png"
+                  style="cursor: pointer; height: 1.5em; width: 1.5em"
+                />
+                <img
+                  class="actionIcon"
+                  *ngIf="user === this.user"
+                  (click)="openEditEmployeeDialog(user)"
+                  src="../../../../assets/images/editIcon.png"
+                  style="cursor: pointer; height: 1.5em; width: 1.5em"
+                />
+                <img
+                  class="actionIcon"
+                  (click)="onDeleteEmployeeClick(user)"
+                  src="../../../../assets/images/deleteIcon.png"
+                />
               </div>
             </td>
           </tr>
