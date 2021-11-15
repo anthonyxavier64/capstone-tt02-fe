@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MessageService } from 'primeng/api';
 import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
+import { CompanyService } from 'src/app/services/company/company.service';
 
 @Component({
   selector: 'app-edit-office-details-dialog',
@@ -11,12 +12,14 @@ import { CompanyDetailsService } from 'src/app/services/company/company-details.
   providers: [MessageService],
 })
 export class EditOfficeDetailsDialogComponent implements OnInit {
+  user: any;
   company: any;
 
   officeName: string;
   officeAddress: string;
   officeOpeningHour: string;
   officeClosingHour: string;
+  officeCapacity: number;
 
   constructor(
     public dialogRef: MatDialogRef<EditOfficeDetailsDialogComponent>,
@@ -29,9 +32,10 @@ export class EditOfficeDetailsDialogComponent implements OnInit {
     this.officeAddress = this.company.officeAddress;
     this.officeOpeningHour = this.company.officeOpeningHour.substring(0, 5);
     this.officeClosingHour = this.company.officeClosingHour.substring(0, 5);
+    this.officeCapacity = this.company.officeCapacity;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   submitOfficeDetailsForm(officeDetailsForm: NgForm) {
     const officeDetails = officeDetailsForm.value;
@@ -41,6 +45,7 @@ export class EditOfficeDetailsDialogComponent implements OnInit {
 
     this.company.officeOpeningHour = officeDetails.openingHour;
     this.company.officeClosingHour = officeDetails.closingHour;
+    this.company.officeCapacity = officeDetails.officeCapacity;
 
     this.companyDetailsService.updateCompany(this.company).subscribe(
       (response) => {

@@ -18,6 +18,7 @@ import { EditRoomDetailsDialogComponent } from './edit-room-details-dialog/edit-
   providers: [MessageService],
 })
 export class OfficeSpaceConfigComponent implements OnInit {
+  user: any;
   rooms: any[] = [];
 
   company: any | undefined;
@@ -44,7 +45,8 @@ export class OfficeSpaceConfigComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.companyService.getCompany(this.companyId).subscribe(
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.companyService.getCompany(this.user.companyId).subscribe(
       (response) => {
         this.company = response.company;
         this.rooms = this.company.rooms;
