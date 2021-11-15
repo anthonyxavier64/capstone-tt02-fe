@@ -6,18 +6,29 @@
 >
   <app-navbar></app-navbar>
 
-  <div fxLayout="row" fxLayoutAlign="space-between start" style="width: 100%">
-    <h1>Welcome {{ user.fullName }}.</h1>
-    <div>
-      <button mat-button class="peach-btn" (click)="onCovidDeclarationsClick()">
-        Covid Declarations
-      </button>
-      &nbsp;
-      <button mat-button class="red-btn">Close Contacts</button>
-    </div>
+  <div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="space-around center">
+    <mat-spinner style="color: aquamarine; margin-top: 15%"></mat-spinner>
   </div>
 
-  <mat-card-group fxLayout="row" fxLayoutGap="5%" style="padding: 0 3vw">
+  <div
+    *ngIf="!isLoading"
+    fxLayout="row"
+    fxLayoutAlign="space-between start"
+    style="width: 100%"
+  >
+    <h1>Welcome {{ user.fullName }}.</h1>
+
+    <button mat-button class="peach-btn" (click)="onCovidDeclarationsClick()">
+      Covid Declarations
+    </button>
+  </div>
+
+  <mat-card-group
+    *ngIf="!isLoading"
+    fxLayout="row"
+    fxLayoutGap="5%"
+    style="padding: 0 3vw"
+  >
     <mat-card
       class="beige-block"
       fxLayout="column"

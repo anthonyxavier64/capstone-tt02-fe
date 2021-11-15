@@ -36,6 +36,8 @@ export class DashboardComponent implements OnInit {
   numCompleted: number;
   taskProgress: number;
 
+  isLoading: boolean = true;
+
   // My Weekly Meetings progress
   today = new Date();
   weekday = this.datePipe.transform(this.today, 'EEEE');
@@ -152,7 +154,6 @@ export class DashboardComponent implements OnInit {
 
     this.meetingService.getAllMeetingsParticipant(cachedUser.userId).subscribe(
       (response) => {
-        console.log(response);
         for (const meeting of response.physicalMeetings) {
           if (
             moment(meeting.startTime).isAfter(this.startDate) &&
@@ -190,6 +191,7 @@ export class DashboardComponent implements OnInit {
         for (const meeting of response.virtualRsvps) {
           this.virtualRsvps.push(meeting);
         }
+        this.isLoading = false;
       },
       (error) => {
         console.log('Error obtaining organised meetings:  ' + error);
