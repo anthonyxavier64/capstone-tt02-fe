@@ -13,6 +13,7 @@ import { CompanyDetailsService } from '../../../services/company/company-details
   providers: [MessageService],
 })
 export class AdminWfoManagementComponent implements OnInit {
+  user: any | null;
   company: any | null;
   companyWfoConfigType: string;
   officeQuotaConfig: any | null;
@@ -46,6 +47,7 @@ export class AdminWfoManagementComponent implements OnInit {
 
   ngOnInit(): void {
     const currentUser = localStorage.getItem('currentUser');
+    this.user = JSON.parse(currentUser);
 
     if (currentUser) {
       const { companyId } = JSON.parse(currentUser);
@@ -104,7 +106,6 @@ export class AdminWfoManagementComponent implements OnInit {
       });
     } else {
       this.company.wfoArrangement = 'ALTERNATE_WORK_TEAMS';
-      console.log(this.company);
       this.isAltWorkTeamSelectBtnClicked = true;
       this.isOfficeQuotaSelectBtnClicked = false;
       this.altWorkTeamSelectBtn = 'selectedButton';
@@ -112,10 +113,42 @@ export class AdminWfoManagementComponent implements OnInit {
       this.officeQuotaSelectBtn = 'selectButton';
       this.officeQuotaSelection = 'wfoSelection';
 
-      this.companyDetailsService.updateCompany(this.company).subscribe(
-        (response) => {},
-        (error) => {}
-      );
+      this.companyDetailsService
+        .updateCompanyWfoSelection(this.company)
+        .subscribe(
+          (response) => {
+            console.log(response.returnObj);
+            let usersNotified = response.returnObj.usersToNotify;
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Work From Office Configuration has been updated.',
+            });
+
+            let uniqueUsersNotified = [];
+            for (let userItem of usersNotified) {
+              if (userItem.userId !== this.user.userId) {
+                if (
+                  uniqueUsersNotified.find(
+                    (item) => item.userId === userItem.userId
+                  ) === undefined
+                ) {
+                  uniqueUsersNotified.push(userItem);
+                }
+              }
+            }
+            console.log(uniqueUsersNotified);
+            for (let user of uniqueUsersNotified) {
+              console.log('INSIDE');
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: `${user.fullName} has been notified of the change.`,
+              });
+            }
+          },
+          (error) => {}
+        );
     }
   }
 
@@ -134,10 +167,14 @@ export class AdminWfoManagementComponent implements OnInit {
       this.altWorkTeamSelectBtn = 'selectButton';
       this.altWorkTeamsSelection = 'wfoSelection';
 
-      this.companyDetailsService.updateCompany(this.company).subscribe(
-        (response) => {},
-        (error) => {}
-      );
+      this.companyDetailsService
+        .updateCompanyWfoSelection(this.company)
+        .subscribe(
+          (response) => {
+            console.log(response.returnObj);
+          },
+          (error) => {}
+        );
     }
   }
 
