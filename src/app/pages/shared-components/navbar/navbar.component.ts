@@ -1,3 +1,7 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AdminGuideComponent } from 'src/app/pages/admin/admin-landing/admin-guide/admin-guide.component';
@@ -5,17 +9,13 @@ import { ViewArtComponent } from 'src/app/pages/admin/employee-management/view-a
 import { ViewShnDeclarationDialog } from 'src/app/pages/admin/employee-management/view-shn-dialog/view-shn-dialog.component';
 import { ViewVaccinationDialogComponent } from 'src/app/pages/admin/employee-management/view-vaccination-dialog/view-vaccination-dialog.component';
 import { TaskDetailDialogComponent } from 'src/app/pages/employee/task/task-detail-dialog/task-detail-dialog.component';
+import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
 import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covid-document-submission.service';
 import { GoalService } from 'src/app/services/goal/goal.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { AuthService } from 'src/app/services/user/auth.service';
 import { UserService } from 'src/app/services/user/user.service';
-
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -28,8 +28,10 @@ export class NavbarComponent implements OnInit {
   readNotifications: any[];
   numUnread: number;
   user: any;
+  company: any;
   ref: DynamicDialogRef | undefined;
   accessRight: string;
+  navbarDisabled: boolean;
 
   constructor(
     private router: Router,
@@ -40,6 +42,7 @@ export class NavbarComponent implements OnInit {
     private taskService: TaskService,
     private goalService: GoalService,
     private userService: UserService,
+    private companyService: CompanyDetailsService,
     private covidDocumentSubmissionService: CovidDocumentSubmissionService
   ) {
     this.unreadNotifications = [];
@@ -49,14 +52,16 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.notificationService.getUnreadNotifications(this.user.userId).subscribe(
       (response) => {
-        this.unreadNotifications = response.sortedUnreadNotifications
-          .sort((a, b) => {
+        this.unreadNotifications = response.sortedUnreadNotifications.sort(
+          (a, b) => {
             const dateA = moment(a.createdAt);
             const dateB = moment(b.createdAt);
             return dateB.diff(dateA);
-          });
+          }
+        );
         this.numUnread = this.unreadNotifications.length;
       },
       (error) => {
@@ -65,16 +70,41 @@ export class NavbarComponent implements OnInit {
     );
     this.notificationService.getReadNotifications(this.user.userId).subscribe(
       (response) => {
-        this.readNotifications = response.readNotifications
-          .sort((a, b) => {
-            const dateA = moment(a.createdAt);
-            const dateB = moment(b.createdAt);
-            return dateB.diff(dateA);
-          });
+        this.readNotifications = response.readNotifications.sort((a, b) => {
+          const dateA = moment(a.createdAt);
+          const dateB = moment(b.createdAt);
+          return dateB.diff(dateA);
+        });
       },
       (error) => {
         console.log(error);
       }
+    );
+    this.companyService.getCompanyById(this.user.companyId).subscribe(
+      async (response) => {
+        this.company = response.company;
+        let usersResolved = await this.userService
+          .getUsers(this.company.companyId)
+          .toPromise();
+        let users = usersResolved.users;
+        if (
+          (this.company.officeQuotaConfigurationId === null &&
+            this.company.alternateWorkTeamsConfigurationId === null) ||
+          this.company.officeName === '' ||
+          this.company.officeName === null ||
+          this.company.officeAddress === '' ||
+          this.company.officeAddress === null ||
+          this.company.officeOpeningHour === '' ||
+          this.company.officeOpeningHour === null ||
+          this.company.officeClosingHour === '' ||
+          this.company.officeClosingHour === null ||
+          this.company.rooms.length === 0 ||
+          users.length === 1
+        ) {
+          this.navbarDisabled = true;
+        }
+      },
+      (error) => {}
     );
   }
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
@@ -148,15 +178,14 @@ export class NavbarComponent implements OnInit {
           this.readNotifications.push(notif);
           this.unreadNotifications = [];
           this.numUnread = 0;
-          this.readNotifications = this.readNotifications
-            .sort((a, b) => {
-              const dateA = moment(a.createdAt);
-              const dateB = moment(b.createdAt);
-              return dateB.diff(dateA);
-            });
+          this.readNotifications = this.readNotifications.sort((a, b) => {
+            const dateA = moment(a.createdAt);
+            const dateB = moment(b.createdAt);
+            return dateB.diff(dateA);
+          });
         },
-        (error) => {
-        })
+        (error) => {}
+      );
     }
   }
   onClickNotification(notification: any) {
@@ -173,9 +202,7 @@ export class NavbarComponent implements OnInit {
           this.readNotifications.unshift(response.notification);
           this.numUnread--;
         },
-        (error) => {
-
-        }
+        (error) => {}
       );
     }
     if (notification.feedbackId) {
@@ -191,14 +218,12 @@ export class NavbarComponent implements OnInit {
             .subscribe(
               (response) => {
                 const goals = response.goals;
-                const taskGoal = goals.filter(
-                  (goal) => {
-                    for (const task of goal.assignedTasks) {
-                      if (task.taskId === notification.taskId) return true;
-                    }
-                    return false;
+                const taskGoal = goals.filter((goal) => {
+                  for (const task of goal.assignedTasks) {
+                    if (task.taskId === notification.taskId) return true;
                   }
-                )[0];
+                  return false;
+                })[0];
                 const employees = task.employees;
                 const isSupervisor =
                   this.user.userId === task.userId ? true : false;

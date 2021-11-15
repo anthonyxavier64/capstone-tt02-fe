@@ -1,72 +1,149 @@
 <div class="navbar" fxLayout="row" fxLayoutAlign="space-between center">
   <div class="leftNavbar" fxLayout="row" fxLayoutAlign="space-between center">
-    <button class="homeButton" mat-fab color="basic" (click)="onCompanyLogoClick()" fxLayoutAlign="space-around center"
-      *ngIf="accessRight === 'ADMIN'">
+    <button
+      class="homeButton"
+      mat-fab
+      color="basic"
+      (click)="onCompanyLogoClick()"
+      fxLayoutAlign="space-around center"
+      *ngIf="accessRight === 'ADMIN'"
+    >
       <mat-icon class="homeIcon">home</mat-icon>
     </button>
     <button class="navbarItem" mat-button (click)="onDashboardClick()">
       Dashboard
     </button>
-    <button class="navbarItem" mat-button [matMenuTriggerFor]="workMenu" #clickMenuTrigger="matMenuTrigger">
+    <button
+      class="navbarItem"
+      mat-button
+      [matMenuTriggerFor]="workMenu"
+      #clickMenuTrigger="matMenuTrigger"
+      [disabled]="navbarDisabled"
+    >
       Work
     </button>
 
     <mat-menu class="workDropList" #workMenu="matMenu">
       <h3 class="workDropListHeader">Work</h3>
       <hr class="headerDivider" />
-      <button class="workDropListItem" mat-menu-item (click)="handleGoals()">
+      <button
+        class="workDropListItem"
+        mat-menu-item
+        (click)="handleGoals()"
+        [disabled]="navbarDisabled"
+      >
         <img class="goalIcon" src="../../../assets/images/goalIcon.png" />
         <p class="workDropListItemText">Goals</p>
         <img class="arrowIcon" src="../../../assets/images/arrowIcon.png" />
       </button>
       <hr class="itemDivider" />
-      <button class="workDropListItem" mat-menu-item (click)="handleTasks()">
+      <button
+        class="workDropListItem"
+        mat-menu-item
+        (click)="handleTasks()"
+        [disabled]="navbarDisabled"
+      >
         <img class="taskIcon" src="../../../assets/images/taskIcon.png" />
         <p class="workDropListItemText">Tasks</p>
         <img class="arrowIcon" src="../../../assets/images/arrowIcon.png" />
       </button>
     </mat-menu>
 
-    <button class="navbarItem" mat-button (click)="handleCalendar()">
+    <button
+      class="navbarItem"
+      mat-button
+      (click)="handleCalendar()"
+      [disabled]="navbarDisabled"
+    >
       Calendar
     </button>
-    <button class="navbarItem" mat-button (click)="handleFeedback()">
+    <button
+      class="navbarItem"
+      mat-button
+      (click)="handleFeedback()"
+      [disabled]="navbarDisabled"
+    >
       Feedback
     </button>
-    <button class="navbarItem" mat-button (click)="onMyEmployeesClick()">My Employees</button>
+    <button
+      class="navbarItem"
+      mat-button
+      (click)="onMyEmployeesClick()"
+      [disabled]="navbarDisabled"
+    >
+      My Employees
+    </button>
   </div>
   <!-- for table maybe can have a burger menu -->
-  <div class="rightNavbar" fxLayout="row" fxLayoutAlign="space-between end" fxLayoutGap="1%">
-    <button mat-button [matBadge]="numUnread" matBadgeSize="medium" matBadgePosition="before" matBadgeColor="warn"
-      [matBadgeHidden]="numUnread <= 0" [matMenuTriggerFor]="notificationMenu" #clickMenuTrigger="matMenuTrigger"
-      class="navbarItem">
-      <img class="notificationIcon" src="../../../assets/images/notificationIcon.png" />
+  <div
+    class="rightNavbar"
+    fxLayout="row"
+    fxLayoutAlign="space-between end"
+    fxLayoutGap="1%"
+  >
+    <button
+      mat-button
+      [matBadge]="numUnread"
+      matBadgeSize="medium"
+      matBadgePosition="before"
+      matBadgeColor="warn"
+      [matBadgeHidden]="numUnread <= 0"
+      [matMenuTriggerFor]="notificationMenu"
+      #clickMenuTrigger="matMenuTrigger"
+      class="navbarItem"
+    >
+      <img
+        class="notificationIcon"
+        src="../../../assets/images/notificationIcon.png"
+      />
     </button>
     <mat-menu class="notificationDropList" #notificationMenu="matMenu">
-      <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%; padding: 8px 16px">
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        style="width: 100%; padding: 8px 16px"
+      >
         <h3><u>Notifications</u></h3>
-        <button class="peach-btn" (click)="markAllAsRead(); $event.stopPropagation()">
+        <button
+          class="peach-btn"
+          (click)="markAllAsRead(); $event.stopPropagation()"
+        >
           Mark all as read
         </button>
       </div>
-      <button *ngFor="let notification of unreadNotifications"
-        class="workDropListItem {{ notification.isRead ? 'read' : 'unread' }}" mat-menu-item
-        (click)="onClickNotification(notification)">
+      <button
+        *ngFor="let notification of unreadNotifications"
+        class="workDropListItem {{ notification.isRead ? 'read' : 'unread' }}"
+        mat-menu-item
+        (click)="onClickNotification(notification)"
+      >
         <img class="defaultIcon" src="{{ chooseIcon(notification) }}" />
         <p class="workDropListItemText">{{ notification.message }}</p>
       </button>
-      <button *ngFor="let notification of readNotifications"
-        class="workDropListItem {{ notification.isRead ? 'read' : 'unread' }}" mat-menu-item
-        (click)="onClickNotification(notification)">
+      <button
+        *ngFor="let notification of readNotifications"
+        class="workDropListItem {{ notification.isRead ? 'read' : 'unread' }}"
+        mat-menu-item
+        (click)="onClickNotification(notification)"
+      >
         <img class="defaultIcon" src="{{ chooseIcon(notification) }}" />
         <p class="workDropListItemText">{{ notification.message }}</p>
       </button>
     </mat-menu>
 
-    <button class="profileIcon" mat-fab color="accent" [matMenuTriggerFor]="profileMenu"
-      #clickMenuTrigger="matMenuTrigger"></button>
+    <button
+      class="profileIcon"
+      mat-fab
+      color="accent"
+      [matMenuTriggerFor]="profileMenu"
+      #clickMenuTrigger="matMenuTrigger"
+    ></button>
     <mat-menu class="workDropList" #profileMenu="matMenu">
-      <button class="workDropListItem" mat-menu-item (click)="onProfileLogoClick()">
+      <button
+        class="workDropListItem"
+        mat-menu-item
+        (click)="onProfileLogoClick()"
+      >
         <img class="goalIcon" src="../../../assets/images/profileIcon.png" />
         <p class="workDropListItemText">My Profile</p>
       </button>
@@ -77,8 +154,11 @@
         <img class="arrowIcon" src="../../../assets/images/arrowIcon.png" />
       </button>
       <hr class="itemDivider" />
-      <button class="workDropListItem" mat-menu-item
-        onClick="window.open('https://www.who.int/news-room/q-a-detail/coronavirus-disease-covid-19-health-and-safety-in-the-workplace')">
+      <button
+        class="workDropListItem"
+        mat-menu-item
+        onClick="window.open('https://www.who.int/news-room/q-a-detail/coronavirus-disease-covid-19-health-and-safety-in-the-workplace')"
+      >
         <img class="goalIcon" src="../../../assets/images/whoIcon.png" />
         <p class="workDropListItemText">WHO Covid Resources</p>
         <img class="arrowIcon" src="../../../assets/images/arrowIcon.png" />
