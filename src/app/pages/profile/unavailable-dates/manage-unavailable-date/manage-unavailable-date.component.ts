@@ -1,9 +1,11 @@
+import { MessageService } from 'primeng/api';
+import { UnavailableDateService } from 'src/app/services/unavailableDate/unavailable-date.service';
+
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { UnavailableDateService } from 'src/app/services/unavailableDate/unavailable-date.service';
+
 import { EditUnavailableDateDialogComponent } from '../edit-unavailable-date-dialog/edit-unavailable-date-dialog.component';
 
 @Component({
@@ -63,14 +65,14 @@ export class ManageUnavailableDateComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Blockout date has been added.',
+          detail: 'Leave date has been added.',
         });
       },
       (error) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Error adding blockout date. Please try again.',
+          detail: 'Error adding leave date. Please try again.',
         });
       }
     );
@@ -87,18 +89,19 @@ export class ManageUnavailableDateComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(
       (response) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Leave date updated successfully.',
-        });
-      },
-      (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Unable to update. Please try again.',
-        });
+        if (response.action === 'SUCCESS') {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Leave date updated successfully.',
+          });
+        } else if (response.action === 'ERROR') {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Unable to update leave date. Please try again.',
+          });
+        }
       }
     );
   }

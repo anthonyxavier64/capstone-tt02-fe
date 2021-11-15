@@ -41,28 +41,19 @@ export class EditUnavailableDateDialogComponent implements OnInit {
 
     this.unavailableDateService.updateUnavailableDate(oldLeave).subscribe(
       (response) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Leave date is updated.',
-        });
+        this.dialogRef.close({ action: 'SUCCESS' });
       },
       (error) => {
         oldLeave.name = storedOldBod.name;
         oldLeave.location = storedOldBod.location;
         oldLeave.capacity = storedOldBod.capacity;
 
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Unable to update. Please try again.',
-        });
+        this.dialogRef.close({ action: 'ERROR' });
       }
     );
-    this.dialogRef.close();
   }
 
   closeDialog(): void {
-    this.dialogRef.close();
+    this.dialogRef.close({ action: 'CLOSED' });
   }
 }
