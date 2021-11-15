@@ -108,6 +108,8 @@ import { ManageBlockoutDateComponent } from './pages/admin/company-details/block
 import { EditBlockoutDateDialogComponent } from './pages/admin/company-details/blockout-dates/edit-blockout-date-dialog/edit-blockout-date-dialog.component';
 import { ManageUnavailableDateComponent } from './pages/profile/unavailable-dates/manage-unavailable-date/manage-unavailable-date.component';
 import { EditUnavailableDateDialogComponent } from './pages/profile/unavailable-dates/edit-unavailable-date-dialog/edit-unavailable-date-dialog.component';
+import { NgxStripeModule } from 'ngx-stripe';
+import { SubscriptionComponent } from './pages/index/sign-up/payment/subscription/subscription.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -181,6 +183,7 @@ export function tokenGetter() {
     EditBlockoutDateDialogComponent,
     ManageUnavailableDateComponent,
     EditUnavailableDateDialogComponent,
+    SubscriptionComponent,
   ],
   imports: [
     CommonModule,
@@ -251,6 +254,7 @@ export function tokenGetter() {
         },
       }
     ),
+    NgxStripeModule.forRoot(environment.STRIPE_SECRET),
   ],
   providers: [
     {

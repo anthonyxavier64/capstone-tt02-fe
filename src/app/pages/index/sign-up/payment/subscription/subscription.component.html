@@ -1,0 +1,65 @@
+<p-toast></p-toast>
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5%">
+  <img src="../../../../../../assets/images/flexiworkLogo.png" class="logo" />
+
+  <p>
+    Thank you for the email verification!
+    <br />
+    <br />
+    Please make the first payment to activate your subscription.
+    <br />
+    After activation, your account credentials will be sent to your email.
+  </p>
+
+  <div class="paymentDetailsCard">
+    <h1>Payment Details</h1>
+    <div style="margin-top: 20px">
+      <span>Subscription Type: </span>
+      <span>{{ subscriptionType ? subscriptionType : "" }}</span>
+    </div>
+    <div style="margin-top: 10px">
+      <span>Amount: </span>
+      <span>SGD {{ amount ? amount : "" }}</span>
+    </div>
+  </div>
+
+  <div class="CCDetailsCard">
+    <div style="text-align: center">
+      <h1>Credit Card Details</h1>
+      <h5>(Please edit if details are incorrect)</h5>
+    </div>
+    <div style="margin-top: 20px">
+      <span>Card Holder Name </span>
+      <input pInputText [(ngModel)]="cardHolderName" />
+    </div>
+    <div style="margin-top: 10px">
+      <span>Credit Card Number </span>
+      <input pInputText [(ngModel)]="creditCardNumber" />
+    </div>
+    <div style="margin-top: 10px">
+      <span>CVV </span>
+      <input pInputText [(ngModel)]="cvv" />
+    </div>
+    <div style="margin-top: 10px">
+      <span>Expiry Date </span>
+      <input pInputText placeholder="{{ expiry }}" [matDatepicker]="dp" />
+      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+      <mat-datepicker
+        #dp
+        startView="multi-year"
+        (monthSelected)="selectMonth($event, dp)"
+      ></mat-datepicker>
+    </div>
+
+    <div style="margin-top: 30px; text-align: center">
+      <p-confirmDialog
+        [style]="{ width: '50vw' }"
+        [baseZIndex]="10000"
+        rejectButtonStyleClass="p-button-text"
+      ></p-confirmDialog>
+      <button mat-button class="peach-btn" (click)="openConfirmDialog()">
+        Pay
+      </button>
+    </div>
+  </div>
+</div>

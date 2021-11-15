@@ -1,0 +1,50 @@
+.logo {
+  height: 200px;
+  width: 500px;
+}
+
+p {
+  text-align: center;
+}
+
+table,
+td,
+th {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 0.5em 0.5em 0.5em;
+  font-size: 15px;
+}
+
+thead {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.paymentDetailsCard {
+  background: #faf9f6;
+  border: 1px solid rgba(0, 55, 100, 0.2);
+  box-sizing: border-box;
+  border-radius: 5px;
+  height: 15vw;
+  width: 50%;
+  padding: 2% 2% 2% 2%;
+}
+
+.CCDetailsCard {
+  background: #faf9f6;
+  border: 1px solid rgba(0, 55, 100, 0.2);
+  box-sizing: border-box;
+  border-radius: 5px;
+  height: 35vw;
+  width: 50%;
+  padding: 2% 2% 2% 2%;
+}
+
+span {
+  color: #003672;
+}
+
+h5 {
+  color: #003672;
+}
