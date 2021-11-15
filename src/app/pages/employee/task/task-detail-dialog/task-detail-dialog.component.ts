@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DeleteCommentComponent } from 'src/app/pages/feedback/delete-comment/delete-comment.component';
+import { CommentService } from 'src/app/services/comment/comment.service';
 import { TaskService } from 'src/app/services/task/task.service';
+
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-task-detail-dialog',
@@ -30,11 +34,19 @@ export class TaskDetailDialogComponent implements OnInit {
   updateGoal: any;
   isSupervisor: boolean;
 
+  comments: any[] = [];
+  newCommentMessage: string = "";
+  user: any;
+  commentToEdit: any = null;
+  updatedContent: string = "";
+
   constructor(
     private dialogConfig: DynamicDialogConfig,
     private ref: DynamicDialogRef,
     private taskService: TaskService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private commentService: CommentService,
+    private matDialog: MatDialog
   ) {
     this.task = this.dialogConfig.data.task;
     this.task = {
@@ -61,23 +73,35 @@ export class TaskDetailDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.user = JSON.parse(currentUser);
+    }
+    this.commentService.getAllCommentsByFeedbackId(this.task.taskId).subscribe(
+      (response) => {
+        this.comments = response.comments;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `An error has occured: ${error.message}`,
+        });
+      }
+    )
     const employees = this.dialogConfig.data.employees;
-
     this.personnel = this.task.employees.filter(
       (emp) => emp.userId !== this.task.supervisor.userId
     );
-
     this.unassignedPersonnel = employees.filter((emp) => {
       if (emp.userId === this.task.supervisor.userId) {
         return false;
       }
-
       for (const person of this.personnel) {
         if (person.userId === emp.userId) {
           return false;
         }
       }
-
       return true;
     });
   }
@@ -110,8 +134,19 @@ export class TaskDetailDialogComponent implements OnInit {
           .subscribe(
             (response) => {
               this.taskToPassBack = response.task;
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'Task assigned.',
+              });
             },
-            (error) => {}
+            (error) => {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: `An error has occured: ${error.message}`,
+              });
+            }
           );
 
         this.selectedEmployees = [];
@@ -123,7 +158,6 @@ export class TaskDetailDialogComponent implements OnInit {
     this.taskService.deleteUserFromTask(userId, this.task.taskId).subscribe(
       (response) => {
         let employee;
-
         for (let i = 0; i < this.personnel.length; i++) {
           if (this.personnel[i].userId === userId) {
             employee = this.personnel[i];
@@ -132,10 +166,20 @@ export class TaskDetailDialogComponent implements OnInit {
           }
         }
         this.unassignedPersonnel = [...this.unassignedPersonnel, employee];
-
         this.taskToPassBack = response.task;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'User removed.',
+        });
       },
-      (error) => {}
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `An error has occured: ${error.message}`,
+        });
+      }
     );
   }
 
@@ -145,8 +189,19 @@ export class TaskDetailDialogComponent implements OnInit {
         (response) => {
           this.taskToPassBack = response.task;
           this.ref.close(this.taskToPassBack);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Task archived.',
+          });
         },
-        (error) => {}
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `An error has occured: ${error.message}`,
+          });
+        }
       );
     } else {
       this.messageService.add({
@@ -161,9 +216,20 @@ export class TaskDetailDialogComponent implements OnInit {
     this.taskService.unarchiveTask(this.task.taskId).subscribe(
       (response) => {
         this.taskToPassBack = response.task;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Task unarchived.',
+        });
         this.ref.close(this.taskToPassBack);
       },
-      (error) => {}
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `An error has occured: ${error.message}`,
+        });
+      }
     );
     this.task.completionDate = null;
     const updatedTask = {
@@ -175,8 +241,19 @@ export class TaskDetailDialogComponent implements OnInit {
         this.task = updatedTask;
         this.taskToPassBack = updatedTask;
         this.isEditMode = false;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Task updated.',
+        });
       },
-      (error) => {}
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `An error has occured: ${error.message}`,
+        });
+      }
     );
   }
 
@@ -200,8 +277,19 @@ export class TaskDetailDialogComponent implements OnInit {
           this.task = updatedTask;
           this.taskToPassBack = updatedTask;
           this.isEditMode = false;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Task updated.',
+          });
         },
-        (error) => {}
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `An error has occured: ${error.message}`,
+          });
+        }
       );
     } else {
       this.messageService.add({
@@ -221,5 +309,122 @@ export class TaskDetailDialogComponent implements OnInit {
       ? this.allGoals.find((item) => item.goalId === this.task.goalId)
       : null;
     this.isEditMode = !this.isEditMode;
+  }
+
+  submitComment() {
+    this.commentService.createNewComment({
+      content: this.newCommentMessage.trim(),
+      taskId: this.task.taskId,
+      senderId: this.user.userId
+    })
+      .subscribe(
+        (response) => {
+          this.comments.push(response.comment);
+          this.newCommentMessage = "";
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Comment submitted.',
+          });
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `An error has occured: ${error.message}`,
+          });
+        })
+  }
+  renderCommentSender(comment) {
+    if (comment.sender.userId === this.user.userId) {
+      return "Me";
+    }
+    return comment.sender.fullName;
+  }
+  renderCommentColor(comment) {
+    if (comment.sender.userId === this.user.userId) {
+      return "mine";
+    }
+    return "other";
+  }
+  isInEditCommentMode(comment) {
+    return (this.commentToEdit && this.commentToEdit.commentId === comment.commentId);
+  }
+  openDeleteCommentDialog(comment) {
+    const confirmDialog = this.matDialog.open(DeleteCommentComponent, {
+      data: {
+        title: 'Delete Comment',
+      },
+      disableClose: true,
+    });
+    confirmDialog.afterClosed().subscribe((result) => {
+      if (result === false) {
+        return;
+      }
+      this.commentService.deleteComment(comment.commentId).subscribe(
+        () => {
+          this.comments = this.comments.filter((item) => {
+            return item.commentId !== comment.commentId;
+          })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Comment deleted.',
+          });
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `An error has occured: ${error.message}`,
+          });
+        })
+    });
+  }
+  openEditCommentMode(comment) {
+    this.commentToEdit = comment;
+    this.updatedContent = comment.content;
+  }
+  closeEditCommentMode() {
+    this.commentToEdit = null;
+    this.updatedContent = "";
+  }
+  updatedCommentIsValid() {
+    const comment = this.updatedContent?.trim();
+    if (!this.updatedContent || !comment || comment === "" || this.updatedContent.length > 500) return false;
+    return true;
+  }
+  updateComment() {
+    let updatedComment = this.commentToEdit;
+    updatedComment.content = this.updatedContent;
+    this.commentService.updateComment(updatedComment).subscribe(
+      (response) => {
+        this.comments.map((item) => {
+          if (item.commentId === this.commentToEdit.commentId) {
+            let newComment = item;
+            newComment.content = response.comment.content;
+            return newComment;
+          }
+          return item;
+        })
+        this.closeEditCommentMode();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Comment updated.',
+        });
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `An error has occured: ${error.message}`,
+        });
+      })
+  }
+  commentIsValid() {
+    const comment = this.newCommentMessage?.trim();
+    if (!this.newCommentMessage || !comment || comment === "" || this.newCommentMessage.length > 500) return false;
+    return true;
   }
 }

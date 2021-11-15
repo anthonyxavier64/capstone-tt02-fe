@@ -24,6 +24,11 @@ export class CommentService {
       .get<any>(`${this.baseUrl}/get-all-comments-by-feedbackId/${feedbackId}`)
       .pipe(catchError(handleError));
   }
+  getAllCommentsByTaskId(taskId: string): Observable<any> {
+    return this.httpClient
+      .get<any>(`${this.baseUrl}/get-all-comments-by-taskId/${taskId}`)
+      .pipe(catchError(handleError));
+  }
   createNewComment(comment: any): Observable<any> {
     // console.log(department);
     return this.httpClient

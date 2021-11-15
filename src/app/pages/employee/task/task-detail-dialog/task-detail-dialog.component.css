@@ -3,12 +3,11 @@
   border-width: 1px;
   font-family: var(--primary-font);
   font-size: 1.25rem;
-  color: rgba(var(--theme-primary-color), .80);
+  color: rgba(var(--theme-primary-color), 0.8);
   text-align: center;
   border-radius: 10px;
   box-shadow: rgb(0 0 10 / 10%) 1px 1px 3px 0px;
 }
-
 
 .green-icon {
   color: green;
@@ -26,4 +25,53 @@
 
 .progress-bar {
   color: rgba(var(--primary-button-color), 0.5);
+}
+.beige-block {
+  background-color: rgba(var(--secondary-card-color));
+  border-radius: 25px;
+  height: auto;
+  min-height: 200px;
+  max-height: 400px;
+  width: 100%;
+  padding: 1.5rem 1rem;
+  overflow-y: auto;
+}
+.peach-card {
+  background-color: rgba(var(--primary-card-color), 0.2);
+  border-radius: 25px;
+  min-height: 300px;
+  height: auto;
+  width: 100%;
+  padding: 1.5rem 1rem;
+  overflow-y: auto;
+}
+.vertical-divider {
+  border: none;
+  border-right: 1px solid rgba(115, 123, 125, 0.5);
+  height: 356px;
+}
+.comment-block {
+  background-color: rgba(var(--secondary-card-color));
+  height: 100%;
+}
+.comment-line {
+  background-color: rgba(var(--secondary-card-color));
+  width: 90%;
+}
+.comment-line.mine {
+  background-color: rgba(var(--primary-card-color), 0.3);
+  width: 90%;
+}
+.action-icon {
+  height: 1.3em;
+  width: 1.3em;
+  cursor: pointer;
+}
+.grey-btn.compact {
+  font-size: 8px !important;
+  padding: 0 !important;
+}
+.peach-btn.compact {
+  font-size: 8px !important;
+  padding: 0 !important;
 }

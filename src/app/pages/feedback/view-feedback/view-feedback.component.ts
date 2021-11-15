@@ -58,7 +58,6 @@ export class ViewFeedbackComponent implements OnInit {
       });
     this.commentService.getAllCommentsByFeedbackId(feedbackId).subscribe(
       (response) => {
-        console.log(response.comments);
         this.comments = response.comments;
         this.commentsIsLoading = false;
       },
@@ -159,7 +158,6 @@ export class ViewFeedbackComponent implements OnInit {
     updatedComment.content = this.updatedContent;
     this.commentService.updateComment(updatedComment).subscribe(
       (response) => {
-        console.log(response);
         this.comments.map((item) => {
           if (item.commentId === this.commentToEdit.commentId) {
             let newComment = item;
