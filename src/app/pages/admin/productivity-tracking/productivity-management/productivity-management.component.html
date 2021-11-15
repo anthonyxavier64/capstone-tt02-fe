@@ -6,27 +6,34 @@
   </div>
 
   <mat-card-group fxLayout="row" fxLayoutGap="5%" style="padding: 0 3vw">
-    <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="2%">
+    <mat-card class="beige-block" fxLayout="column wrap" fxLayoutAlign="start center" fxLayoutGap="2%">
       <mat-card-title> Search for Employee </mat-card-title>
-      <span class="p-input-icon-right" style="margin-top: 20px">
-        <i class="pi pi-search" (click)="handleSearch()"></i>
-        <input type="text" placeholder="Search Employee" [(ngModel)]="searchQuery" pInputText
-          (keyup)="handleSearch()" />
-      </span>
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2%">
+        <span class="p-input-icon-right" style="margin-top: 20px">
+          <i class="pi pi-search" (click)="handleSearch()"></i>
+          <input type="text" placeholder="Search Employee" [(ngModel)]="searchQuery" pInputText
+            (keyup)="handleSearch()" />
+        </span>
+        <p-dropdown [options]="departments" [(ngModel)]="selectedDepartment" optionLabel="name" [showClear]="true"
+          [filter]="true" filterBy="name" placeholder="Select a department" (onChange)="handleDepartmentSelection()">
+        </p-dropdown>
+      </div>
       <!--<input matInput [(ngModel)]="searchQuery" #searchQueryInput="ngModel" class="input" type="text"
         placeholder="Search" />
       <button mat-button class="peach-btn" (click)="searchUsers()">Search</button>
       -->
-      <mat-card *ngFor="let user of searchResults" class="general-tab" fxLayout="column wrap"
-        fxLayoutAlign="start start">
-        <h2>{{ user.fullName }}</h2>
-        <p>Email: {{ user.email }}</p>
-        <p>Contact Details: {{ user.contactNumber }}</p>
-        <br />
-        <mat-card-actions style="text-align: center;">
-          <button mat-button class="grey-btn" (click)="openViewEmployeeDialog(user)">Details</button>
-        </mat-card-actions>
-      </mat-card>
+      <div fxLayout="row wrap" fxLayoutGap="2%">
+        <mat-card *ngFor="let user of searchResults" class="general-tab" fxLayout="column wrap"
+          fxLayoutAlign="start start">
+          <h2>{{ user.fullName }}</h2>
+          <p>Email: {{ user.email }}</p>
+          <p>Contact Details: {{ user.contactNumber }}</p>
+          <br />
+          <mat-card-actions style="text-align: center;">
+            <button mat-button class="grey-btn" (click)="openViewEmployeeDialog(user)">Details</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
     </mat-card>
   </mat-card-group>
 </div>

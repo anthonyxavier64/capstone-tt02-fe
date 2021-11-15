@@ -76,8 +76,7 @@ export class ProductivityManagementComponent implements OnInit {
         }
       );
     }
-    // Below is the correct code
-    // this.isLoading = false;
+
     this.userService.getUsers(this.user.companyId).subscribe(
       (response) => {
         this.allUsers = response.users;
@@ -119,6 +118,46 @@ export class ProductivityManagementComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  handleDepartmentSelection() {
+    if (!!this.selectedDepartment) {
+      this.isLoading = true;
+      let employees = [];
+      for (let u of this.allUsers) {
+        console.log(`User Email: ${u.email}`);
+        this.userService.getDepartments(u.email).subscribe(
+          (response) => {
+            var responseDept = response.userDept;
+            console.log(`Response Department: ${responseDept}`);
+            if (responseDept === this.selectedDepartment) {
+              employees.push(u);
+            }
+            this.isLoading = false;
+          },
+          (error) => {
+            this.isLoading = false;
+          }
+        );
+        this.userService.getManagedDepartments(u.email).subscribe(
+          (response) => {
+            var responseMDept = response.userDept;
+            console.log(`Response Managed Department: ${responseMDept}`);
+            if (responseMDept === this.selectedDepartment) {
+              employees.push(u);
+            }
+            this.isLoading = false;
+          },
+          (error) => {
+            this.isLoading = false;
+          }
+        );
+      }
+      this.searchResults = employees;
+    }
+    else {
+      this.searchResults = this.allUsers;
+    }
   }
 
   openViewEmployeeDialog(chosenUser: {
