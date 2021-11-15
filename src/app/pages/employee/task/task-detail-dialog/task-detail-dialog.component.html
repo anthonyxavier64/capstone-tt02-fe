@@ -236,6 +236,7 @@
         fxLayoutGap="2%"
         style="width: 100%"
       >
+        <h4 *ngIf="comments.length === 0">You have no comments on this task</h4>
         <mat-card
           *ngFor="let comment of comments"
           class="comment-line {{ renderCommentColor(comment) }}"
