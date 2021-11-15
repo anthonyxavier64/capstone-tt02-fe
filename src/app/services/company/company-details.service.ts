@@ -48,4 +48,14 @@ export class CompanyDetailsService {
       .patch<any>(this.baseUrl + '/update-company', company, httpOptions)
       .pipe(catchError(handleError));
   }
+
+  updateCompanyWfoSelection(company: any): Observable<any> {
+    return this.httpClient
+      .patch<any>(
+        this.baseUrl + '/update-company-wfo-config',
+        company,
+        httpOptions
+      )
+      .pipe(catchError(handleError));
+  }
 }
