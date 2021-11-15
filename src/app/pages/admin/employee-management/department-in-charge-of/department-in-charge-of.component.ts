@@ -44,14 +44,6 @@ export class DepartmentInChargeOfComponent implements OnInit {
         console.log(error);
       }
     );
-
-    // var deptLocalStorage = localStorage.getItem('allDepts');
-    // if (deptLocalStorage != null) {
-    //   this.allDepartments = JSON.parse(deptLocalStorage);
-    //   for (let dept of this.allDepartments) {
-    //     dept.isSelected = false;
-    //   }
-    // }
   }
 
   confirmDepartmentInChargeOf() {
@@ -69,17 +61,6 @@ export class DepartmentInChargeOfComponent implements OnInit {
       width: '50%',
       height: '50%',
     });
-
-    // Use this if the DB is down
-    // newDepartmentDialogRef.afterClosed().subscribe(() => {
-    //   var deptLocalStorage = localStorage.getItem('allDepts');
-    //   if (deptLocalStorage != null) {
-    //     this.allDepartments = JSON.parse(deptLocalStorage);
-    //     for (let dept of this.allDepartments) {
-    //       dept.isSelected = false;
-    //     }
-    //   }
-    // });
 
     // Below is the correct code if the DB works
     newDepartmentDialogRef.afterClosed().subscribe(() => {

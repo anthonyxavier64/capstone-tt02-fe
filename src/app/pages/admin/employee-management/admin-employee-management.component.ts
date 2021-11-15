@@ -66,7 +66,6 @@ export class AdminEmployeeManagementComponent implements OnInit {
   artTestDialogRef: DynamicDialogRef;
   shnDeclarationDialogRef: DynamicDialogRef;
   vaccinationDialogRef: DynamicDialogRef;
-  editDialogRef: DynamicDialogRef;
   deleteDialogRef: DynamicDialogRef;
   selectedEmployee: any;
 
@@ -185,9 +184,9 @@ export class AdminEmployeeManagementComponent implements OnInit {
       }
     );
 
-    // deptInChargeOfDialogRef.afterClosed().subscribe((result) => {
-    //   this.inChargeOfDepartments = result;
-    // });
+    deptInChargeOfDialogRef.afterClosed().subscribe((result) => {
+      this.inChargeOfDepartments = result;
+    });
   }
 
   openPartOfDialog() {
@@ -587,21 +586,23 @@ export class AdminEmployeeManagementComponent implements OnInit {
     );
   }
 
-  openEditEmployeeDialog(selectedUser: {
-    userId: number;
-    fullName: string;
-    email: string;
-    createdAt: string;
-    contactNumber: string;
-    isActivated: boolean;
-    accessRight: string;
-  }) {
-    this.editDialogRef = this.dialogService.open(EditEmployeeDialogComponent, {
-      header: selectedUser.fullName + ' (' + selectedUser.userId + ')',
+  openEditEmployeeDialog(selectedUser: any) {
+    let editDialogRef = this.dialog.open(EditEmployeeDialogComponent, {
+      data: {
+        userId: selectedUser.userId,
+        fullName: selectedUser.fullName,
+        email: selectedUser.email,
+        createdAt: selectedUser.createdAt,
+        contactNumber: selectedUser.contactNumber,
+        isActivated: selectedUser.isActivated,
+        accessRight: selectedUser.accessRight,
+        position: selectedUser.position,
+        companyId: selectedUser.companyId,
+      },
       width: '70%',
-      contentStyle: { 'max-height': '50vw', overflow: 'auto' },
-      data: selectedUser,
+      height: 'auto',
     });
+<<<<<<< HEAD
     this.editDialogRef.onClose.subscribe(
       (data) => {
         if (data.confirmEdit) {
@@ -619,6 +620,26 @@ export class AdminEmployeeManagementComponent implements OnInit {
             });
           }
         }
+=======
+
+    editDialogRef.afterClosed().subscribe(
+      (response) => {
+        if (response.action === 'SUCCESS') {
+          const userId = response.userId;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: `User ${userId} has been updated`,
+          });
+        }
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `User could not be updated.`,
+        });
+>>>>>>> 9842688... bugfix edit employees
       }
     );
   }

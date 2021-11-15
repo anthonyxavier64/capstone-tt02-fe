@@ -1,28 +1,50 @@
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { UserService } from 'src/app/services/user/user.service';
-
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
-
+import { UserService } from 'src/app/services/user/user.service';
+import { MessageService } from 'primeng/api';
+import { DepartmentService } from 'src/app/services/department/department.service';
+import { DepartmentInChargeOfComponent } from '../department-in-charge-of/department-in-charge-of.component';
+import { DepartmentPartOfComponent } from '../department-part-of/department-part-of.component';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 @Component({
   selector: 'app-edit-employee-dialog',
   templateUrl: './edit-employee-dialog.component.html',
   styleUrls: ['./edit-employee-dialog.component.css'],
+  providers: [MessageService],
 })
 export class EditEmployeeDialogComponent implements OnInit {
   user: any;
   isAdmin: boolean;
   fullName: string;
   contactNumber: number;
+  position: string;
+  userId: any;
+  companyId: any;
+  email: any;
+
+  allDept: any[] = [];
+  dept: any[] = [];
+  mdept: any[] = [];
+  allMDept: any[] = [];
 
   constructor(
-    public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig,
-    private userService: UserService
+    private userService: UserService,
+    private messageService: MessageService,
+    private departmentService: DepartmentService,
+    private dialog: MatDialog,
+    public dialogRef: MatDialogRef<EditEmployeeDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log(config.data);
-    this.fullName = config.data.fullName;
-    this.contactNumber = config.data.contactNumber;
+    this.fullName = this.data.fullName;
+    this.contactNumber = this.data.contactNumber;
+    this.position = this.data.position;
+    this.userId = this.data.userId;
+    this.companyId = this.data.companyId;
+    this.email = this.data.email;
   }
 
   ngOnInit(): void {
@@ -30,33 +52,61 @@ export class EditEmployeeDialogComponent implements OnInit {
     if (currentUser) {
       this.user = JSON.parse(currentUser);
     }
-    if (this.config.data.accessRight === 'ADMIN') {
+    if (this.data.accessRight === 'ADMIN') {
       this.isAdmin = true;
-    } else if (this.config.data.accessRight === 'GENERAL') {
+    } else if (this.data.accessRight === 'GENERAL') {
       this.isAdmin = false;
     }
+
+    this.userService.getDepartments(this.userId).subscribe(
+      (response) => {
+        this.dept = response.dept;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Departments not found',
+        });
+        console.log(error);
+      }
+    );
+
+    this.userService.getManagedDepartments(this.userId).subscribe(
+      (response) => {
+        this.mdept = response.mdept;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Managed departments not found',
+        });
+      }
+    );
   }
 
   saveDetails(form: NgForm) {
     var formValue = form.value;
     if (formValue.fullName !== '') {
-      this.config.data.fullName = formValue.fullName;
+      this.data.fullName = formValue.fullName;
+    }
+    if (formValue.email !== '') {
+      this.data.email = formValue.email;
     }
     if (formValue.contactNumber !== '') {
-      this.config.data.contactNumber = formValue.contactNumber;
+      this.data.contactNumber = formValue.contactNumber;
     }
     if (formValue.isAdmin === true) {
-      this.config.data.accessRight = 'ADMIN';
+      this.data.accessRight = 'ADMIN';
     }
     if (formValue.isAdmin === false) {
-      this.config.data.accessRight = 'GENERAL';
+      this.data.accessRight = 'GENERAL';
     }
 
-    this.userService.updateUserDetails(this.config.data).subscribe(
+    this.userService.updateUserDetails(this.data).subscribe(
       (response) => {
-        this.config.data.confirmEdit = true;
-        this.config.data.hasBeenUpdated = true;
-        this.ref.close(this.config.data);
+        this.dialogRef.close({ action: 'SUCCESS', useruserId: this.userId });
       },
       (error) => {
         this.config.data.confirmEdit = true;
@@ -67,8 +117,34 @@ export class EditEmployeeDialogComponent implements OnInit {
     );
   }
 
+  openInChargeOfDialog() {
+    const deptInChargeOfDialogRef = this.dialog.open(
+      DepartmentInChargeOfComponent,
+      {
+        width: '50%',
+        height: '50%',
+        data: { inChargeOfDepartments: this.mdept },
+      }
+    );
+
+    deptInChargeOfDialogRef.afterClosed().subscribe((result) => {
+      this.mdept = result;
+    });
+  }
+
+  openPartOfDialog() {
+    const deptPartOfDialogRef = this.dialog.open(DepartmentPartOfComponent, {
+      width: '50%',
+      height: '50%',
+      data: { partOfDepartments: this.dept },
+    });
+
+    deptPartOfDialogRef.afterClosed().subscribe((result) => {
+      this.dept = result;
+    });
+  }
+
   onCloseClick() {
-    this.config.data.confirmEdit = false;
-    this.ref.close(this.config.data);
+    this.dialogRef.close();
   }
 }

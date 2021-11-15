@@ -1,47 +1,87 @@
-<form
-  #editEmployeeDetailsForm="ngForm"
-  name="roomDetailsForm"
-  (ngSubmit)="saveDetails(editEmployeeDetailsForm)"
->
-  <div fxLayout="column" fxLayoutAlign="space-around center">
-    <table class="editEmployeeDetailsTbl">
-      <tr>
-        <th class="text">
-          <label for="fullName">Full Name:</label>
-        </th>
-        <td class="text">
-          <input
-            type="text"
-            placeholder="Full Name"
-            name="fullName"
-            [(ngModel)]="fullName"
-            #fullNameInput="ngModel"
-            pInputText
-          />
-          <div
-            *ngIf="
-              (fullNameInput.touched || fullNameInput.dirty) &&
-              fullNameInput.value.length === 0
-            "
-            class="errorText"
-            style="color: red; font-size: small"
-          >
-            Full name cannot be empty.
-          </div>
-        </td>
-        <th>
-          <label for="contactNumber">Contact Number:</label>
-        </th>
-        <td class="text">
-          <input
-            type="tel"
-            placeholder="Contact Number"
-            name="contactNumber"
-            [(ngModel)]="contactNumber"
-            #contactNumInput="ngModel"
-            pattern="[689][0-9]{7}"
-            pInputText
-          />
+<div style="padding: 1% 0">
+  <h1 style="text-align: center">Edit {{ this.data.fullName }}'s Details</h1>
+  <form
+    #editEmployeeDetailsForm="ngForm"
+    name="roomDetailsForm"
+    (ngSubmit)="saveDetails(editEmployeeDetailsForm)"
+  >
+    <div fxLayout="column" fxLayoutAlign="space-around center">
+      <table class="editEmployeeDetailsTbl">
+        <tr>
+          <th class="text">
+            <label for="fullName">Full Name:</label>
+          </th>
+          <td class="text">
+            <input
+              type="text"
+              placeholder="Full Name"
+              name="fullName"
+              [(ngModel)]="fullName"
+              #fullNameInput="ngModel"
+              pInputText
+            />
+            <div
+              *ngIf="
+                (fullNameInput.touched || fullNameInput.dirty) &&
+                fullNameInput.value.length === 0
+              "
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Full name cannot be empty.
+            </div>
+          </td>
+          <th class="text">
+            <label>Created At:</label>
+          </th>
+          <td>
+            <p>{{ this.data.createdAt | date: "short" }}</p>
+          </td>
+        </tr>
+        <tr>
+          <th class="text">
+            <label for="email">Email:</label>
+          </th>
+          <td class="text">
+            <input
+              type="email"
+              placeholder="Email"
+              name="email"
+              [(ngModel)]="email"
+              #emailInput="ngModel"
+              pInputText
+            />
+            <div
+              *ngIf="
+                (emailInput.touched || emailInput.dirty) &&
+                emailInput.value.length === 0
+              "
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Email cannot be empty.
+            </div>
+          </td>
+          <th class="text"><label>Account Activated:</label></th>
+          <td>
+            <p>{{ this.data.isActivated }}</p>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <label for="contactNumber">Contact Number:</label>
+          </th>
+          <td class="text">
+            <input
+              type="tel"
+              placeholder="Contact Number"
+              name="contactNumber"
+              [(ngModel)]="contactNumber"
+              #contactNumInput="ngModel"
+              pattern="[689][0-9]{7}"
+              pInputText
+            />
+          </td>
           <div
             *ngIf="
               contactNumInput.invalid &&
@@ -52,49 +92,65 @@
           >
             A valid 8-digit Singapore contact number is required.
           </div>
-        </td>
-      </tr>
-      <tr>
-        <th class="text">
-          <label for="location">Email:</label>
-        </th>
-        <td class="text">
-          {{ config.data.email }}
-        </td>
-        <th><label>Account Activated:</label></th>
-        <td>{{ config.data.isActivated }}</td>
-      </tr>
-      <tr>
-        <th class="text">
-          <label>Created At:</label>
-        </th>
-        <td class="text">
-          {{ config.data.createdAt }}
-        </td>
-        <th class="text">
-          <label>Admin Status:</label>
-        </th>
-        <td class="text">
-          <mat-checkbox
-            [(ngModel)]="isAdmin"
-            name="isAdmin"
-            [disabled]="this.user.userId === config.data.userId"
-          >
-          </mat-checkbox>
-        </td>
-      </tr>
-    </table>
+          <th class="text">
+            <label>Admin Status:</label>
+          </th>
+          <td class="text">
+            <mat-checkbox
+              [(ngModel)]="isAdmin"
+              name="isAdmin"
+              [disabled]="this.user.userId === this.data.userId"
+            >
+            </mat-checkbox>
+          </td>
+        </tr>
+        <tr>
+          <th class="text">
+            <label for="position">Position:</label>
+          </th>
+          <td class="text">
+            <input
+              type="position"
+              placeholder="Position"
+              name="position"
+              [(ngModel)]="position"
+              #positionInput="ngModel"
+              pInputText
+            />
+            <div
+              *ngIf="
+                (positionInput.touched || positionInput.dirty) &&
+                positionInput.value.length === 0
+              "
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Position cannot be empty.
+            </div>
+          </td>
+          <th class="text">
+            <label>Associated Departments:</label>
+          </th>
+          <button mat-raised-button (click)="openInChargeOfDialog()">
+            In Charge of
+          </button>
+          <button mat-raised-button (click)="openPartOfDialog()">
+            Part Of
+          </button>
+        </tr>
+      </table>
 
-    <div
-      fxLayout="row"
-      fxLayoutAlign="center"
-      fxLayoutGap="3%"
-      style="margin-top: 3%"
-    >
-      <button mat-button class="peach-btn" type="submit">Save Details</button>
-      <button mat-button class="grey-btn" (click)="onCloseClick()">
-        Close
-      </button>
+      <div
+        fxLayout="row"
+        fxLayoutAlign="center"
+        fxLayoutGap="3%"
+        style="margin-top: 3%"
+      >
+        <button mat-button class="peach-btn" type="submit">Save Details</button>
+        <button mat-button class="grey-btn" (click)="onCloseClick()">
+          Close
+        </button>
+      </div>
     </div>
-  </div>
-</form>
+  </form>
+</div>
