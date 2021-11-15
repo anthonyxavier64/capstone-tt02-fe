@@ -55,6 +55,7 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
           if (this.company.alternateWorkTeamsConfigurationId === null) {
             this.alternateWorkTeamsConfigurationId = null;
             this.isDailySelected = true;
+            this.selectedConfig = "DAILY"
             this.isLoading = false;
 
             this.userService
