@@ -1,0 +1,23 @@
+.beige-block {
+  background-color: rgb(var(--secondary-card-color));
+  border-radius: 25px;
+  height: auto;
+  width: 100%;
+  padding: 1.5rem 1rem;
+}
+
+.general-tab {
+  background-color: rgb(var(--primary-button-color));
+  border-radius: 15px;
+  height: auto;
+  width: 45%;
+  padding: 1rem;
+  box-shadow: none;
+  margin-bottom: 2%;
+}
+
+.colorSelector {
+  transition:background-color 0.2s linear;
+  height: 2.3vw;
+  width: 1vw
+}

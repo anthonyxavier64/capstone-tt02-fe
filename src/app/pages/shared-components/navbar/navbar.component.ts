@@ -110,6 +110,10 @@ export class NavbarComponent implements OnInit {
     this.router.navigateByUrl('/dashboard');
   }
 
+  onMyEmployeesClick() {
+    this.router.navigateByUrl('/my-employees');
+  }
+
   handleGoals() {
     this.router.navigateByUrl('/goals');
   }

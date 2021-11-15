@@ -27,6 +27,7 @@ import { SignUpComponent } from './pages/index/sign-up/sign-up.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ManageUnavailableDateComponent } from './pages/profile/unavailable-dates/manage-unavailable-date/manage-unavailable-date.component';
 import { SubscriptionComponent } from './pages/index/sign-up/payment/subscription/subscription.component';
+import { ProductivityManagementComponent } from './pages/admin/productivity-tracking/productivity-management/productivity-management.component';
 
 const user = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -147,6 +148,10 @@ const routes: Routes = [
   {
     path: 'subscription/:hash',
     component: SubscriptionComponent,
+  },
+  {
+    path: 'my-employees',
+    component: ProductivityManagementComponent,
   },
 ];
 
