@@ -84,7 +84,11 @@ export class ProductivityManagementComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Could not retrieve users',
+        });
       }
     );
   }
@@ -115,7 +119,11 @@ export class ProductivityManagementComponent implements OnInit {
       },
       (error) => {
         this.isLoading = false;
-        console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Could not retrieve users',
+        });
       }
     );
   }
@@ -137,6 +145,11 @@ export class ProductivityManagementComponent implements OnInit {
           },
           (error) => {
             this.isLoading = false;
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Could not retrieve departments',
+            });
           }
         );
         this.userService.getManagedDepartments(u.email).subscribe(
@@ -150,6 +163,11 @@ export class ProductivityManagementComponent implements OnInit {
           },
           (error) => {
             this.isLoading = false;
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Could not retrieve managed departments',
+            });
           }
         );
       }
