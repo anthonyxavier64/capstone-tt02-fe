@@ -12,7 +12,6 @@ import { MessageService } from 'primeng/api';
   providers: [MessageService],
 })
 export class ViewProductivityDialogComponent implements OnInit {
-
   user: any;
   fullName: string;
   contactNumber: number;
@@ -38,7 +37,6 @@ export class ViewProductivityDialogComponent implements OnInit {
     private taskService: TaskService,
     private messageService: MessageService
   ) {
-    console.log(config.data);
     this.id = config.data.userId;
     this.fullName = config.data.fullName;
     this.contactNumber = config.data.contactNumber;
@@ -58,7 +56,6 @@ export class ViewProductivityDialogComponent implements OnInit {
           if (task.completionDate !== null) {
             this.completedTasks.push(task);
           }
-          console.log(this.completedTasks);
         }
 
         this.calculateProductivity();
@@ -74,50 +71,44 @@ export class ViewProductivityDialogComponent implements OnInit {
   }
 
   calculateProductivity() {
-    //console.log(`Completed Tasks Length: ${this.completedTasks.length}`);
-
     if (this.completedTasks.length === 0) {
       this.productivity = 'Insufficient Data';
-    }
-    else {
+    } else {
       for (let task of this.completedTasks) {
         this.sumOfComplexities += task.complexityLevel;
       }
-      //console.log(this.sumOfComplexities);
 
       let tasksByStartDate = this.completedTasks;
-      tasksByStartDate = tasksByStartDate.sort((val1, val2) => val1.startDate - val2.startDate);
-      // for (let t of tasksByStartDate) {
-      //   console.log(`Completed Tasks by Start Date: ${t.startDate}`);
-      // }
+      tasksByStartDate = tasksByStartDate.sort(
+        (val1, val2) => val1.startDate - val2.startDate
+      );
 
-      const earliestStartDate = moment(tasksByStartDate[tasksByStartDate.length - 1].startDate.substring(0, 10));
-      //console.log(earliestStartDate);
+      const earliestStartDate = moment(
+        tasksByStartDate[tasksByStartDate.length - 1].startDate.substring(0, 10)
+      );
 
-      let tasksByCompletionDate = this.completedTasks
-      tasksByCompletionDate = tasksByCompletionDate.sort((val1, val2) => val2.completionDate - val1.completionDate);
-      // for (let t2 of tasksByCompletionDate) {
-      //   console.log(`Completed Tasks by Completion Date: ${t2.completionDate}`);
-      // }
+      let tasksByCompletionDate = this.completedTasks;
+      tasksByCompletionDate = tasksByCompletionDate.sort(
+        (val1, val2) => val2.completionDate - val1.completionDate
+      );
 
-      const latestCompletionDate = moment(tasksByCompletionDate[0].completionDate.substring(0, 10));
-      //console.log(latestCompletionDate);
+      const latestCompletionDate = moment(
+        tasksByCompletionDate[0].completionDate.substring(0, 10)
+      );
 
       const oneDay = 1000 * 60 * 60 * 24;
-      this.numDays = Math.round((latestCompletionDate.toDate().getTime() - earliestStartDate.toDate().getTime()) / oneDay);
+      this.numDays = Math.round(
+        (latestCompletionDate.toDate().getTime() -
+          earliestStartDate.toDate().getTime()) /
+          oneDay
+      );
       this.numWeeks = Math.round(this.numDays / 7);
-      //console.log(this.numWeeks);
 
       if (this.numWeeks === 0) {
         this.productivity = 'Insufficient Data';
-      }
-      else {
+      } else {
         this.productivity = this.sumOfComplexities / this.numWeeks;
-        //console.log(this.productivity);
       }
-
     }
-
   }
-
 }

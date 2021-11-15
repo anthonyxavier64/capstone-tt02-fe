@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../../services/user/user.service';
-import { CompanyDetailsService } from "../../../../services/company/company-details.service";
+import { CompanyDetailsService } from '../../../../services/company/company-details.service';
 import { DepartmentService } from 'src/app/services/department/department.service';
 
 import { MessageService } from 'primeng/api';
@@ -23,7 +23,6 @@ export interface user {
   providers: [MatDialog, MessageService],
 })
 export class ProductivityManagementComponent implements OnInit {
-
   user;
   company: any | undefined;
   departments: any | undefined;
@@ -42,11 +41,13 @@ export class ProductivityManagementComponent implements OnInit {
 
   viewDialogRef: DynamicDialogRef;
 
-  constructor(private userService: UserService,
+  constructor(
+    private userService: UserService,
     private companyDetailsService: CompanyDetailsService,
     private departmentService: DepartmentService,
     private messageService: MessageService,
-    private dialogService: DialogService) { }
+    private dialogService: DialogService
+  ) {}
 
   ngOnInit(): void {
     const currentUser = localStorage.getItem('currentUser');
@@ -103,7 +104,7 @@ export class ProductivityManagementComponent implements OnInit {
       this.handleUserSelection();
     } else {
       this.searchResults = this.searchResults.filter((user) =>
-        user.fullName.toLowerCase().includes(this.searchQuery.toLowerCase())
+        user.fullName.toLowerCase().startsWith(this.searchQuery.toLowerCase())
       );
     }
   }
@@ -137,7 +138,10 @@ export class ProductivityManagementComponent implements OnInit {
           (response) => {
             var responseDept = response.dept;
             for (let r of responseDept) {
-              if (r.name === this.selectedDepartment.name && !employees.includes(u)) {
+              if (
+                r.name === this.selectedDepartment.name &&
+                !employees.includes(u)
+              ) {
                 employees.push(u);
               }
             }
@@ -156,7 +160,10 @@ export class ProductivityManagementComponent implements OnInit {
           (response) => {
             var responseMDept = response.mdept;
             for (let r of responseMDept) {
-              if (r.name === this.selectedDepartment.name && !employees.includes(u)) {
+              if (
+                r.name === this.selectedDepartment.name &&
+                !employees.includes(u)
+              ) {
                 employees.push(u);
               }
             }
@@ -173,8 +180,7 @@ export class ProductivityManagementComponent implements OnInit {
         );
       }
       this.searchResults = employees;
-    }
-    else {
+    } else {
       this.searchResults = this.allUsers;
     }
   }
@@ -187,12 +193,14 @@ export class ProductivityManagementComponent implements OnInit {
     numLeavesTaken: number;
     datesInOffice: any;
   }) {
-    this.viewDialogRef = this.dialogService.open(ViewProductivityDialogComponent, {
-      header: chosenUser.fullName + ' (' + chosenUser.userId + ')',
-      width: '70%',
-      contentStyle: { 'max-height': '50vw', overflow: 'auto' },
-      data: chosenUser,
-    });
+    this.viewDialogRef = this.dialogService.open(
+      ViewProductivityDialogComponent,
+      {
+        header: chosenUser.fullName + ' (' + chosenUser.userId + ')',
+        width: '70%',
+        contentStyle: { 'max-height': '50vw', overflow: 'auto' },
+        data: chosenUser,
+      }
+    );
   }
-
 }
