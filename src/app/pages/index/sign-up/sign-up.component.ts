@@ -1,6 +1,8 @@
+import { MessageService } from 'primeng/api';
+
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MessageService } from 'primeng/api';
+
 import { CompanyDetailsDialogComponent } from './company-details-dialog/company-details-dialog.component';
 import { TierInfoDialogComponent } from './tier-info-dialog/tier-info-dialog.component';
 
@@ -108,6 +110,24 @@ export class SignUpComponent implements OnInit {
           hrAdminFullName: this.hrAdminFullName,
         },
       });
+
+      dialogRef.afterClosed().subscribe(
+        (result) => {
+          if (result.action === 'SUCCESS') {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Company sign-up success!',
+            });
+        } else if (result.action === 'ERROR') {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error in company sign-up. Please try again.',
+          });
+        }
+      });
+
     } else {
       this.messageService.add({
         severity: 'error',

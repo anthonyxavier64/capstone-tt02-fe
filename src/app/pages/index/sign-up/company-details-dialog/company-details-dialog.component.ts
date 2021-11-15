@@ -29,7 +29,7 @@ export class CompanyDetailsDialogComponent implements OnInit {
   onSignUpClick(): void {
     this.companyService.createCreationRequest(this.data).subscribe(
       (response) => {
-        this.location.back();
+        this.dialogRef.close({ action: 'SUCCESS'});
       },
       (error) => {
         this.messageService.add({
@@ -37,13 +37,12 @@ export class CompanyDetailsDialogComponent implements OnInit {
           summary: 'Error',
           detail: 'Unable to send request. Please try again.',
         });
+        this.dialogRef.close({ action: 'ERROR'});
       }
     );
-
-    this.dialogRef.close();
   }
 
   onCloseClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close({ action: 'CLOSED'});
   }
 }
