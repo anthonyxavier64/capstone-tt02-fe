@@ -137,9 +137,7 @@ export class AdminWfoManagementComponent implements OnInit {
                 }
               }
             }
-            console.log(uniqueUsersNotified);
             for (let user of uniqueUsersNotified) {
-              console.log('INSIDE');
               this.messageService.add({
                 severity: 'success',
                 summary: 'Success',
