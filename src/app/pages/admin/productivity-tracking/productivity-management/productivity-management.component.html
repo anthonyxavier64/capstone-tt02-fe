@@ -22,18 +22,16 @@
         placeholder="Search" />
       <button mat-button class="peach-btn" (click)="searchUsers()">Search</button>
       -->
-      <div fxLayout="row wrap" fxLayoutGap="2%">
-        <mat-card *ngFor="let user of searchResults" class="general-tab" fxLayout="column wrap"
-          fxLayoutAlign="start start">
-          <h2>{{ user.fullName }}</h2>
-          <p>Email: {{ user.email }}</p>
-          <p>Contact Details: {{ user.contactNumber }}</p>
-          <br />
-          <mat-card-actions style="text-align: center;">
-            <button mat-button class="grey-btn" (click)="openViewEmployeeDialog(user)">Details</button>
-          </mat-card-actions>
-        </mat-card>
-      </div>
+      <mat-card *ngFor="let user of searchResults" class="general-tab" fxLayout="column wrap"
+        fxLayoutAlign="start start">
+        <h2>{{ user.fullName }}</h2>
+        <p>Email: {{ user.email }}</p>
+        <p>Contact Details: {{ user.contactNumber }}</p>
+        <br />
+        <mat-card-actions style="text-align: center;">
+          <button mat-button class="grey-btn" (click)="openViewEmployeeDialog(user)">Details</button>
+        </mat-card-actions>
+      </mat-card>
     </mat-card>
   </mat-card-group>
 </div>
