@@ -37,6 +37,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
   user;
   company: any | undefined;
   departments: any | undefined;
+  companyLimit: number | undefined;
 
   currNewUserEmail: String;
   currNewUserPosition: String;
@@ -93,6 +94,7 @@ export class AdminEmployeeManagementComponent implements OnInit {
     this.showWarningMessage = false;
     this.reader = new FileReader();
     this.inputCsvData = [];
+    this.companyLimit = 0;
   }
 
   ngOnInit(): void {
@@ -113,6 +115,13 @@ export class AdminEmployeeManagementComponent implements OnInit {
                 console.log(error);
               }
             );
+          if (result.company.subscriptionType == 'TIER1') {
+            this.companyLimit = 30;
+          } else if (result.company.subscriptionType == 'TIER2') {
+            this.companyLimit = 80;
+          } else if (result.company.subscriptionType == 'TIER3') {
+            this.companyLimit = -1;
+          }
         },
         (error) => {
           this.messageService.add({
