@@ -430,11 +430,21 @@ export class CreateNewMeetingComponent implements OnInit {
           });
         }
       } else {
-        this.assignedPhysicalEmployees.push(assignedEmployee);
-        const indexToRemove = this.assignedMeetingEmployees.findIndex(
-          (item) => item.userId === assignedEmployee.userId
-        );
-        this.assignedMeetingEmployees.splice(indexToRemove, 1);
+        if (
+          this.assignedPhysicalEmployees.length < this.company.officeCapacity
+        ) {
+          this.assignedPhysicalEmployees.push(assignedEmployee);
+          const indexToRemove = this.assignedMeetingEmployees.findIndex(
+            (item) => item.userId === assignedEmployee.userId
+          );
+          this.assignedMeetingEmployees.splice(indexToRemove, 1);
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `Number of physical employees cannot exceed the office capacity.`,
+          });
+        }
       }
     } else {
       this.messageService.add({
