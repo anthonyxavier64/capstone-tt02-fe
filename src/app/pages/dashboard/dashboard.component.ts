@@ -1,17 +1,18 @@
 import * as moment from 'moment';
-
-import { Component, OnInit } from '@angular/core';
-
+import { MessageService } from 'primeng/api';
 import { Announcement } from 'src/app/models/announcement';
 import { AnnouncementService } from 'src/app/services/announcement/announcement.service';
-import { DatePipe } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
-import { Router } from '@angular/router';
 import { TaskService } from 'src/app/services/task/task.service';
 import { UserService } from 'src/app/services/user/user.service';
+
+import { DatePipe } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+
 import { ViewAnnouncementComponent } from '../admin/announcement-management/view-announcement/view-announcement.component';
-import { MessageService } from 'primeng/api';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -77,7 +78,13 @@ export class DashboardComponent implements OnInit {
           };
         }
       },
-      (error) => {}
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Cannot retrieve user.',
+        });
+      }
     );
 
     this.announcementService
@@ -88,6 +95,11 @@ export class DashboardComponent implements OnInit {
         },
         (error) => {
           console.log('Error obtaining covid announcements:  ' + error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error retrieving COVID-19 announcements.',
+          });
         }
       );
 
@@ -99,6 +111,11 @@ export class DashboardComponent implements OnInit {
         },
         (error) => {
           console.log('Error obtaining general announcements:  ' + error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error retrieving general announcements.',
+          });
         }
       );
 
@@ -125,6 +142,11 @@ export class DashboardComponent implements OnInit {
       },
       (error) => {
         console.log('Error obtaining user tasks:  ' + error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error retrieving user tasks.',
+        });
       }
     );
 
@@ -151,6 +173,11 @@ export class DashboardComponent implements OnInit {
       },
       (error) => {
         console.log('Error obtaining organised meetings:  ' + error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error retrieving meetings.',
+        });
       }
     );
 
@@ -166,6 +193,11 @@ export class DashboardComponent implements OnInit {
       },
       (error) => {
         console.log('Error obtaining organised meetings:  ' + error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error retrieving meeting RSVPs.',
+        });
       }
     );
   }
@@ -197,9 +229,19 @@ export class DashboardComponent implements OnInit {
     this.taskService.updateTask(task).subscribe(
       (response) => {
         console.log(response);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Task status updated!',
+        });
       },
       (error) => {
         console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error updating task status. Please try again.',
+        });
       }
     );
 
