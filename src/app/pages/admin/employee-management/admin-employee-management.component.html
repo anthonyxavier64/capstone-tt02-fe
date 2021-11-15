@@ -307,6 +307,12 @@
                 ></p-columnFilter>
               </div>
             </th>
+            <th pSortableColumn="isActivated">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Activated?
+                <p-sortIcon field="isActivated"></p-sortIcon>
+              </div>
+            </th>
 
             <th style="width: 15rem">
               <div class="p-d-flex p-jc-between p-ai-center">Actions</div>
@@ -324,6 +330,9 @@
             </td>
             <td>
               {{ user.contactNumber }}
+            </td>
+            <td>
+              {{ user.isActivated }}
             </td>
             <td>
               <div
