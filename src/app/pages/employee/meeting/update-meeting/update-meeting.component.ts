@@ -329,7 +329,7 @@ export class UpdateMeetingComponent implements OnInit {
       DeleteMeetingDialogComponent,
       {
         width: '30%',
-        height: '40%',
+        height: 'auto',
         data: { meetingId: this.originalMeeting.meetingId },
       }
     );
