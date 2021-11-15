@@ -147,6 +147,9 @@ export class NavbarComponent implements OnInit {
         }
       );
     }
+    if (notification.feedbackId) {
+      this.router.navigateByUrl(`/view-feedback/${notification.feedbackId}`);
+    }
     if (notification.taskId) {
       this.taskService.getTaskById(notification.taskId).subscribe(
         (response) => {
@@ -157,18 +160,21 @@ export class NavbarComponent implements OnInit {
             .subscribe(
               (response) => {
                 const goals = response.goals;
-
-                const goal = goals.filter(
-                  (goal) => goal.goalId === task.goalId
-                );
-
+                const taskGoal = goals.filter(
+                  (goal) => {
+                    for (const task of goal.assignedTasks) {
+                      if (task.taskId === notification.taskId) return true;
+                    }
+                    return false;
+                  }
+                )[0];
                 const employees = task.employees;
                 const isSupervisor =
                   this.user.userId === task.userId ? true : false;
 
                 this.ref = this.dialogService.open(TaskDetailDialogComponent, {
                   data: {
-                    goal,
+                    goal: taskGoal,
                     allGoals: goals,
                     task,
                     employees,
