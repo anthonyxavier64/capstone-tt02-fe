@@ -1,3 +1,5 @@
+import { MessageService } from 'primeng/api';
+
 import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -16,6 +18,7 @@ let counter: number = 1;
   selector: 'app-admin-announcementManagement',
   templateUrl: './admin-announcement-management.component.html',
   styleUrls: ['./admin-announcement-management.component.css'],
+  providers: [MessageService],
 })
 export class AdminAnnouncementManagementComponent implements OnInit {
   user: any;
@@ -37,7 +40,8 @@ export class AdminAnnouncementManagementComponent implements OnInit {
   constructor(
     private announcementService: AnnouncementService,
     private matDialog: MatDialog,
-    private location: Location
+    private location: Location,
+    private messageService: MessageService,
   ) {
     this.submitted = false;
     this.newAnnouncement = new Announcement();
@@ -61,9 +65,11 @@ export class AdminAnnouncementManagementComponent implements OnInit {
           this.covidAnnouncements = response.announcements;
         },
         (error) => {
-          console.log(
-            '********** AdminAnnouncementManagementComponent.ts: ' + error
-          );
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot retrieve COVID-19 announcements.',
+          });
         }
       );
 
@@ -74,9 +80,11 @@ export class AdminAnnouncementManagementComponent implements OnInit {
           this.generalAnnouncements = response.announcements;
         },
         (error) => {
-          console.log(
-            '********** AdminAnnouncementManagementComponent.ts: ' + error
-          );
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot retrieve general announcements.',
+          });
         }
       );
   }
@@ -101,8 +109,11 @@ export class AdminAnnouncementManagementComponent implements OnInit {
 
     if (createAnnouncementForm.invalid) {
       this.resultSuccess = false;
-      this.message =
-        'An error has occurred while creating the new announcement';
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Please fill in all fields!',
+      });
     }
 
     this.resultSuccess = true;
@@ -124,18 +135,27 @@ export class AdminAnnouncementManagementComponent implements OnInit {
           } else {
             this.generalAnnouncements.push(response.announcement);
           }
-          this.message =
-            'New announcement with id ' +
-            response.announcement.announcementId +
-            ' created successfully';
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'New announcement with id ' + response.announcement.announcementId
+              + ' created successfully',
+          });
         } else {
-          this.message = 'An error has occured: ' + response.message;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'An error has occured: ' + response.message,
+          });
         }
       },
       (error) => {
         this.resultSuccess = false;
-        this.message =
-          'An error has occurred while creating the new announcement: ' + error;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'An error has occurred while creating the new announcement: ' + error,
+        });
       }
     );
   }
@@ -175,16 +195,21 @@ export class AdminAnnouncementManagementComponent implements OnInit {
         .subscribe((response) => {
           if (!response.status) {
             this.resultSuccess = false;
-            this.message =
-              'An error has occurred while editing: ' + response.message;
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'An error has occurred while editing: ' + response.message,
+            });
           } else {
             this.submitted = true;
             this.resultSuccess = true;
             const updatedAnnouncement = response.announcement;
-            this.message =
-              'Announcement with id: ' +
-              updatedAnnouncement.announcementId +
-              ' updated successfully';
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Announcement with id: ' + updatedAnnouncement.announcementId +
+                ' updated successfully',
+            });
 
             if (
               announcement.announcementType === AnnouncementType.COVID_RELATED
@@ -234,13 +259,19 @@ export class AdminAnnouncementManagementComponent implements OnInit {
         .deleteAnnouncement(announcement.announcementId)
         .subscribe((response) => {
           if (!response.status) {
-            this.message = 'Unable to delete announcement: ' + response.message;
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Unable to delete announcement: ' + response.message,
+            });
             return;
           }
-          this.message =
-            'Announcement with id: ' +
-            announcement.announcementId +
-            ' deleted successfully';
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Announcement with id: ' + announcement.announcementId
+              + ' deleted successfully',
+          });
           if (announcement.announcementType == AnnouncementType.COVID_RELATED) {
             var announcementIndex = this.covidAnnouncements.findIndex(
               (existing) => {
