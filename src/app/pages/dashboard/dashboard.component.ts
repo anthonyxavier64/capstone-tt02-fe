@@ -50,10 +50,7 @@ export class DashboardComponent implements OnInit {
     private taskService: TaskService,
     private matDialog: MatDialog,
     private datePipe: DatePipe,
-<<<<<<< HEAD
     private userService: UserService,
-=======
->>>>>>> 4dee3d0... toasts and delete meeting dialog style edits
     private messageService: MessageService
   ) {
     this.taskProgress = 0;
@@ -255,11 +252,20 @@ export class DashboardComponent implements OnInit {
               );
               this.virtualRsvps.splice(indexToRemove, 1);
             }
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Meeting RSVP accepted.',
+            });
           },
           (error) => {
             console.log(error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Error accepting meeting RSVP.',
+            });
           }
-<<<<<<< HEAD
         );
     } else {
       this.messageService.add({
@@ -268,23 +274,6 @@ export class DashboardComponent implements OnInit {
         detail: `Your work from office quota limit for the month has been reached.`,
       });
     }
-=======
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Meeting RSVP accepted.',
-          });
-        },
-        (error) => {
-          console.log(error);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Error accepting meeting RSVP.',
-          });
-        }
-      );
->>>>>>> 4dee3d0... toasts and delete meeting dialog style edits
   }
 
   rejectRsvp(meetingId: string, isPhysicalRsvp: boolean, userId: string) {
