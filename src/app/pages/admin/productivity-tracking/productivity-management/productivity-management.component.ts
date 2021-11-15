@@ -134,8 +134,7 @@ export class ProductivityManagementComponent implements OnInit {
       let employees = [];
 
       for (let u of this.allUsers) {
-        console.log(`User Email: ${u.email}`);
-        this.userService.getDepartments(u.email).subscribe(
+        this.userService.getDepartments(u.userId).subscribe(
           (response) => {
             var responseDept = response.userDept;
             console.log(`Response Department: ${responseDept}`);
@@ -155,7 +154,7 @@ export class ProductivityManagementComponent implements OnInit {
             });
           }
         );
-        this.userService.getManagedDepartments(u.email).subscribe(
+        this.userService.getManagedDepartments(u.userId).subscribe(
           (response) => {
             var responseMDept = response.userDept;
             console.log(`Response Managed Department: ${responseMDept}`);
