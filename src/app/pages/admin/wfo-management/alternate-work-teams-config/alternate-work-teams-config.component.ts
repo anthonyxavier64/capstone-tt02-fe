@@ -55,7 +55,7 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
           if (this.company.alternateWorkTeamsConfigurationId === null) {
             this.alternateWorkTeamsConfigurationId = null;
             this.isDailySelected = true;
-            this.selectedConfig = "DAILY"
+            this.selectedConfig = 'DAILY';
             this.isLoading = false;
 
             this.userService
@@ -305,7 +305,7 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
       });
   }
 
-  updateAlternateWorkTeamsConfiguration() {
+  async updateAlternateWorkTeamsConfiguration() {
     const newConfig = {
       alternateWorkTeamsConfigurationId: this.alternateWorkTeamsConfigurationId,
       scheduleType: this.selectedConfig,
@@ -320,12 +320,9 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
         fullName: user.fullName,
         alternateWfoTeam: 'A',
       };
-      this.userService
+      await this.userService
         .updateUserDetailsByUserId(user.userId, wfoTeamAllocation)
-        .subscribe(
-          (response) => {},
-          (error) => {}
-        );
+        .toPromise();
     }
 
     for (let user of this.teamB) {
@@ -334,15 +331,12 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
         fullName: user.fullName,
         alternateWfoTeam: 'B',
       };
-      this.userService
+      await this.userService
         .updateUserDetailsByUserId(user.userId, wfoTeamAllocation)
-        .subscribe(
-          (response) => {},
-          (error) => {}
-        );
+        .toPromise();
     }
 
-    this.alternateWorkTeamsConfigurationService
+    await this.alternateWorkTeamsConfigurationService
       .updateAlternateWorkTeamsConfiguration(newConfig)
       .subscribe(
         (response) => {
@@ -351,6 +345,53 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
             summary: 'Success',
             detail: 'Alternate Work Teams Configuration has been updated.',
           });
+
+          this.company = {
+            ...this.company,
+            wfoArrangement: 'ALTERNATE_WORK_TEAMS',
+          };
+
+          this.companyDetailsService
+            .updateCompanyWfoSelection(this.company)
+            .subscribe(
+              (response) => {
+                console.log(response.returnObj);
+                let usersNotified = response.returnObj.usersToNotify;
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: 'Work From Office Configuration has been updated.',
+                });
+
+                let uniqueUsersNotified = [];
+                for (let userItem of usersNotified) {
+                  if (userItem.userId !== this.user.userId) {
+                    if (
+                      uniqueUsersNotified.find(
+                        (item) => item.userId === userItem.userId
+                      ) === undefined
+                    ) {
+                      uniqueUsersNotified.push(userItem);
+                    }
+                  }
+                }
+                for (let user of uniqueUsersNotified) {
+                  this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: `${user.fullName} has been notified of the change.`,
+                  });
+                }
+              },
+              (error) => {
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail:
+                    'Alternate Work Teams have been configured but cannot be selected. Please try again',
+                });
+              }
+            );
         },
         (error) => {
           this.messageService.add({
