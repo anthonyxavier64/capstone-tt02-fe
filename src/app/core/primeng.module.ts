@@ -7,6 +7,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { ListboxModule } from 'primeng/listbox';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   exports: [
@@ -17,6 +18,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     DialogModule,
     ListboxModule,
     MultiSelectModule,
+    ConfirmDialogModule,
   ],
 })
 export class PrimeNgModule {}
