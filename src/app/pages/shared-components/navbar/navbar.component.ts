@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AdminGuideComponent } from 'src/app/pages/admin/admin-landing/admin-guide/admin-guide.component';
@@ -52,7 +53,12 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.notificationService.getUnreadNotifications(this.user.userId).subscribe(
       (response) => {
-        this.unreadNotifications = response.sortedUnreadNotifications;
+        this.unreadNotifications = response.sortedUnreadNotifications
+          .sort((a, b) => {
+            const dateA = moment(a.createdAt);
+            const dateB = moment(b.createdAt);
+            return dateB.diff(dateA);
+          });
         this.numUnread = this.unreadNotifications.length;
       },
       (error) => {
@@ -61,7 +67,12 @@ export class NavbarComponent implements OnInit {
     );
     this.notificationService.getReadNotifications(this.user.userId).subscribe(
       (response) => {
-        this.readNotifications = response.readNotifications;
+        this.readNotifications = response.readNotifications
+          .sort((a, b) => {
+            const dateA = moment(a.createdAt);
+            const dateB = moment(b.createdAt);
+            return dateB.diff(dateA);
+          });
       },
       (error) => {
         console.log(error);
@@ -135,6 +146,12 @@ export class NavbarComponent implements OnInit {
           this.readNotifications.push(notif);
           this.unreadNotifications = [];
           this.numUnread = 0;
+          this.readNotifications = this.readNotifications
+            .sort((a, b) => {
+              const dateA = moment(a.createdAt);
+              const dateB = moment(b.createdAt);
+              return dateB.diff(dateA);
+            });
         },
         (error) => {
           this.messageService.add({
@@ -156,10 +173,7 @@ export class NavbarComponent implements OnInit {
 
           this.unreadNotifications = [...filterUnread];
 
-          this.readNotifications.push(response.notification);
-          this.readNotifications = this.readNotifications.sort(
-            (first, second) => second.notificationDate - first.notificationDate
-          );
+          this.readNotifications.unshift(response.notification);
           this.numUnread--;
         },
         (error) => {
