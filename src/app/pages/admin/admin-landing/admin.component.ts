@@ -11,7 +11,6 @@ import { AdminGuideComponent } from './admin-guide/admin-guide.component';
 })
 export class AdminComponent implements OnInit {
   user: any | null;
-  openedOnce: boolean | undefined;
 
   constructor(private router: Router, public dialog: MatDialog) {
     this.user = null;
@@ -22,11 +21,6 @@ export class AdminComponent implements OnInit {
     if (currentUser) {
       this.user = JSON.parse(currentUser);
     }
-    if (!this.openedOnce) {
-      // this.openDialog();
-      console.log(this.openedOnce);
-    }
-    this.openedOnce === true;
   }
 
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
