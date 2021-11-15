@@ -34,4 +34,20 @@ export class PaymentService {
       )
       .pipe(catchError(handleError));
   }
+
+  updateSubscription(
+    companyId: string,
+    subscriptionType: string
+  ): Observable<any> {
+    return this.httpClient
+      .post<any>(
+        this.baseUrl + '/update-subscription',
+        {
+          companyId,
+          subscriptionType,
+        },
+        httpOptions
+      )
+      .pipe(catchError(handleError));
+  }
 }

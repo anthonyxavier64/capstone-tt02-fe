@@ -4,6 +4,12 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+import { SubscriptionDialogComponent } from '../subscription/subscription-dialog/subscription-dialog.component';
 
 @Component({
   selector: 'app-admin-companyDetailsManagement',
@@ -22,7 +28,8 @@ export class AdminCompanyDetailsManagementComponent implements OnInit {
     private router: Router,
     private location: Location,
     private companyDetailsService: CompanyDetailsService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -99,5 +106,25 @@ export class AdminCompanyDetailsManagementComponent implements OnInit {
 
   onEmailTextChange(emailText: any) {
     console.log(emailText);
+  }
+
+  handleManageSubscription() {
+    const dialogRef = this.dialog.open(SubscriptionDialogComponent, {
+      width: '250px',
+      data: {
+        subscriptionType: this.company.subscriptionType,
+        companyId: this.company.companyId,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Subscription Tier has been updated.',
+      });
+
+      this.company.subscriptionType = result;
+    });
   }
 }
