@@ -1,5 +1,4 @@
 import * as moment from 'moment';
-import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AdminGuideComponent } from 'src/app/pages/admin/admin-landing/admin-guide/admin-guide.component';
 import { ViewArtComponent } from 'src/app/pages/admin/employee-management/view-art-dialog/view-art-dialog.component';
@@ -40,7 +39,6 @@ export class NavbarComponent implements OnInit {
     private dialogService: DialogService,
     private taskService: TaskService,
     private goalService: GoalService,
-    private messageService: MessageService,
     private userService: UserService,
     private covidDocumentSubmissionService: CovidDocumentSubmissionService
   ) {
@@ -154,11 +152,6 @@ export class NavbarComponent implements OnInit {
             });
         },
         (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: `An error has occured: ${error.message}`,
-          });
         })
     }
   }
@@ -177,11 +170,7 @@ export class NavbarComponent implements OnInit {
           this.numUnread--;
         },
         (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: `An error has occured: ${error.message}`,
-          });
+
         }
       );
     }

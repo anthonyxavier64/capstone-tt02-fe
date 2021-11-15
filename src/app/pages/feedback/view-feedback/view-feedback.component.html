@@ -22,21 +22,21 @@
       fxLayoutAlign="space-between center"
     >
       <h1 style="font-size: 32px">
-        <u>{{ feedback.title }}</u>
+        <u>{{ feedback?.title }}</u>
       </h1>
       <button mat-button class="grey-btn" (click)="onBackClick()">Back</button>
     </div>
     <p class="date-description">
-      Posted On: {{ feedback.createdAt | date: "short" }}
+      Posted On: {{ feedback?.createdAt | date: "short" }}
     </p>
     <div fxLayout="row" fxLayoutGap="3%" fxLayoutAlign="start center">
       <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
         <h3>To:</h3>
-        <h3 style="font-weight: 400">{{ feedback.recipient.fullName }},</h3>
+        <h3 style="font-weight: 400">{{ feedback?.recipient.fullName }},</h3>
       </div>
       <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
         <h3>From:</h3>
-        <h3 style="font-weight: 400">{{ feedback.sender.fullName }}</h3>
+        <h3 style="font-weight: 400">{{ feedback?.sender.fullName }}</h3>
       </div>
     </div>
     <br />
@@ -46,7 +46,7 @@
       fxLayoutAlign="center start"
       fxLayoutGap="5%"
     >
-      <p>{{ feedback.content }}</p>
+      <p>{{ feedback?.content }}</p>
     </mat-card>
     <br />
     <br />
@@ -63,7 +63,8 @@
         <br />
         <div
           class="comment-container"
-          #scrollMe [scrollTop]="scrollMe.scrollHeight"
+          #scrollMe
+          [scrollTop]="scrollMe.scrollHeight"
           fxLayout="column"
           fxLayoutAlign="start center"
           fxLayoutGap="2%"

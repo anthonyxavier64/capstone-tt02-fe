@@ -1,64 +1,142 @@
 <p-toast></p-toast>
-<div fxLayout="column" fxLayoutGap="2%" style="width: 100%; height: 100%; padding: 2% 2% 2% 2%">
+<div
+  fxLayout="column"
+  fxLayoutGap="2%"
+  style="width: 100%; height: 100%; padding: 2% 2% 2% 2%"
+>
   <app-navbar></app-navbar>
 
-  <div *ngIf="pageIsLoading()" fxLayout="column" fxLayoutAlign="space-around center">
+  <div
+    *ngIf="pageIsLoading()"
+    fxLayout="column"
+    fxLayoutAlign="space-around center"
+  >
     <mat-spinner style="color: aquamarine; margin-top: 15%"></mat-spinner>
   </div>
 
-  <div *ngIf="!pageIsLoading()" fxLayout="column" fxLayoutGap="2%" style="width: 100%; height: 100%; padding: 0 2%">
-    <h1>Welcome {{user.fullName}}, here are your feedback records:</h1>
+  <div
+    *ngIf="!pageIsLoading()"
+    fxLayout="column"
+    fxLayoutGap="2%"
+    style="width: 100%; height: 100%; padding: 0 2%"
+  >
+    <h1>Welcome {{ user.fullName }}, here are your feedback records:</h1>
     <mat-card-group fxLayout="column" fxLayoutGap="2%" style="padding: 0 3vw">
-      <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="5%">
-        <form #submitFeedbackForm="ngForm" (ngSubmit)="submitFeedback()" style="width: 100%">
+      <mat-card
+        class="beige-block"
+        fxLayout="column"
+        fxLayoutAlign="center start"
+        fxLayoutGap="5%"
+      >
+        <form
+          #submitFeedbackForm="ngForm"
+          (ngSubmit)="submitFeedback()"
+          style="width: 100%"
+        >
           <h2><u>Submit New Feedback</u></h2>
           <br />
-          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5%" fxLayoutAlign="center start"
-            style="width: 100%">
-            <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="2%" style="width: 40%">
+          <div
+            fxLayout="row"
+            fxLayoutAlign="center center"
+            fxLayoutGap="5%"
+            fxLayoutAlign="center start"
+            style="width: 100%"
+          >
+            <div
+              fxLayout="column"
+              fxLayoutAlign="center start"
+              fxLayoutGap="2%"
+              style="width: 40%"
+            >
               <mat-form-field appearance="outline" style="width: 100%">
                 <mat-label>Title:</mat-label>
-                <input matInput [(ngModel)]="title" type="text" id="titleText" name="titleText" #titleText="ngModel"
-                  required="true" />
-                <mat-error *ngIf="
-              titleText.invalid &&
-              (titleText.dirty || titleText.touched)
-            ">
-                  <div *ngIf="
-                titleText.errors != null && titleText.errors.required
-              ">
+                <input
+                  matInput
+                  [(ngModel)]="title"
+                  type="text"
+                  id="titleText"
+                  name="titleText"
+                  #titleText="ngModel"
+                  required="true"
+                />
+                <mat-error
+                  *ngIf="
+                    titleText.invalid && (titleText.dirty || titleText.touched)
+                  "
+                >
+                  <div
+                    *ngIf="
+                      titleText.errors != null && titleText.errors.required
+                    "
+                  >
                     A title is required.
                   </div>
                 </mat-error>
               </mat-form-field>
-              <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="3%" style="width: 100%">
+              <div
+                fxLayout="column"
+                fxLayoutAlign="start start"
+                fxLayoutGap="3%"
+                style="width: 100%"
+              >
                 <label style="white-space: nowrap">Select Recipient:</label>
-                <div fxLayout="row" fxLayoutAlign="space-around start" fxLayoutGap="3%" style="width: 100%">
-                  <p-dropdown [options]="employees" optionLabel="fullName" name="selectedRecipient"
-                    [(ngModel)]="selectedRecipient" placeholder="Please select a recipient" [filter]="true"
-                    filterBy="fullName" [style]="{ width: '32vw'}">
+                <div
+                  fxLayout="row"
+                  fxLayoutAlign="space-around start"
+                  fxLayoutGap="3%"
+                  style="width: 100%"
+                >
+                  <p-dropdown
+                    [options]="employees"
+                    optionLabel="fullName"
+                    name="selectedRecipient"
+                    [(ngModel)]="selectedRecipient"
+                    placeholder="Please select a recipient"
+                    [filter]="true"
+                    filterBy="fullName"
+                    [style]="{ width: '32vw' }"
+                  >
                   </p-dropdown>
                 </div>
               </div>
             </div>
             <mat-form-field style="width: 60%; height: 100%">
               <mat-label>Feedback Message:</mat-label>
-              <textarea matInput id="description" name="description" #description="ngModel" [(ngModel)]="message"
-                required="true" rows="8" [maxLength]="1000"></textarea>
-              <mat-error *ngIf="
-              description.invalid &&
-              (description.dirty || description.touched)
-            ">
-                <div *ngIf="
-                description.errors != null && description.errors.required
-              ">
+              <textarea
+                matInput
+                id="description"
+                name="description"
+                #description="ngModel"
+                [(ngModel)]="message"
+                required="true"
+                rows="8"
+                [maxLength]="1000"
+              ></textarea>
+              <mat-error
+                *ngIf="
+                  description.invalid &&
+                  (description.dirty || description.touched)
+                "
+              >
+                <div
+                  *ngIf="
+                    description.errors != null && description.errors.required
+                  "
+                >
                   A message is required.
                 </div>
               </mat-error>
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayoutAlign="end center" style="width: 100%">
-            <button mat-button class="peach-btn" type="submit" [disabled]="!inputIsValid()">Submit</button>
+            <button
+              mat-button
+              class="peach-btn"
+              type="submit"
+              [disabled]="!inputIsValid()"
+            >
+              Submit
+            </button>
           </div>
         </form>
       </mat-card>
@@ -67,35 +145,75 @@
         <br />
         <mat-tab-group>
           <mat-tab label="Received">
-            <div fxLayout="row wrap" fxLayoutAlign="space-evenly" style="width: 100%">
-              <mat-card *ngFor="let feedback of feedbackReceived" class="viewcard" (click)="openFeedback(feedback)">
-                <mat-card-title>{{ feedback.title }}</mat-card-title>
+            <div
+              fxLayout="row wrap"
+              fxLayoutAlign="space-evenly"
+              style="width: 100%"
+            >
+              <mat-card
+                *ngFor="let feedback of feedbackReceived"
+                class="viewcard"
+                (click)="openFeedback(feedback)"
+              >
+                <mat-card-title>{{ feedback?.title }}</mat-card-title>
                 <mat-card-content>
-                  <div style="display: flex; flex-direction: row; justify-content: start; align-items: center;">
-                    <h4 style="font-weight: 500; margin: 0 8px 0 0;">Sender:</h4>
-                    <h4 style="font-weight: 400; margin: 0 8px 0 0;">{{feedback.sender.fullName}}</h4>
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: row;
+                      justify-content: start;
+                      align-items: center;
+                    "
+                  >
+                    <h4 style="font-weight: 500; margin: 0 8px 0 0">Sender:</h4>
+                    <h4 style="font-weight: 400; margin: 0 8px 0 0">
+                      {{ feedback?.sender.fullName }}
+                    </h4>
                   </div>
                   <div class="snippet">
-                    <h4 class="snippet-text">{{feedback.content}}</h4>
+                    <h4 class="snippet-text">{{ feedback?.content }}</h4>
                   </div>
-                  <p class="date-description">Posted On: {{ feedback.createdAt | date: "short" }}</p>
+                  <p class="date-description">
+                    Posted On: {{ feedback?.createdAt | date: "short" }}
+                  </p>
                 </mat-card-content>
               </mat-card>
             </div>
           </mat-tab>
           <mat-tab label="Sent">
-            <div fxLayout="row wrap" fxLayoutAlign="space-evenly" style="width: 100%">
-              <mat-card *ngFor="let feedback of feedbackSent" class="viewcard" (click)="openFeedback(feedback)">
-                <mat-card-title>{{ feedback.title }}</mat-card-title>
+            <div
+              fxLayout="row wrap"
+              fxLayoutAlign="space-evenly"
+              style="width: 100%"
+            >
+              <mat-card
+                *ngFor="let feedback of feedbackSent"
+                class="viewcard"
+                (click)="openFeedback(feedback)"
+              >
+                <mat-card-title>{{ feedback?.title }}</mat-card-title>
                 <mat-card-content>
-                  <div style="display: flex; flex-direction: row; justify-content: start; align-items: center;">
-                    <h4 style="font-weight: 500; margin: 0 8px 0 0;">Recipient:</h4>
-                    <h4 style="font-weight: 400; margin: 0 8px 0 0;">{{feedback.recipient.fullName}}</h4>
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: row;
+                      justify-content: start;
+                      align-items: center;
+                    "
+                  >
+                    <h4 style="font-weight: 500; margin: 0 8px 0 0">
+                      Recipient:
+                    </h4>
+                    <h4 style="font-weight: 400; margin: 0 8px 0 0">
+                      {{ feedback?.recipient.fullName }}
+                    </h4>
                   </div>
                   <div class="snippet">
-                    <h4 class="snippet-text">{{feedback.content}}</h4>
+                    <h4 class="snippet-text">{{ feedback?.content }}</h4>
                   </div>
-                  <p class="date-description">Posted On: {{ feedback.createdAt | date: "short" }}</p>
+                  <p class="date-description">
+                    Posted On: {{ feedback?.createdAt | date: "short" }}
+                  </p>
                 </mat-card-content>
               </mat-card>
             </div>
@@ -104,3 +222,4 @@
       </mat-card>
     </mat-card-group>
   </div>
+</div>

@@ -52,7 +52,13 @@ export class CreateNewTaskDialogComponent implements OnInit {
         );
         this.employees.splice(userIndexToRemove, 1);
       },
-      (error) => { }
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `Enable to retrieve users ${error.message}`,
+        });
+      }
     );
   }
 
