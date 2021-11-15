@@ -74,7 +74,6 @@ export class AdminWfoManagementComponent implements OnInit {
           ) {
             this.alternateWorkTeamsConfig =
               this.company.alternateWorkTeamsConfig;
-            console.log('HERE');
             this.isAltWorkTeamSelectBtnClicked = true;
             this.isOfficeQuotaSelectBtnClicked = false;
             this.altWorkTeamSelectBtn = 'selectedButton';
@@ -170,6 +169,32 @@ export class AdminWfoManagementComponent implements OnInit {
         .subscribe(
           (response) => {
             console.log(response.returnObj);
+            let usersNotified = response.returnObj.usersToNotify;
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Work From Office Configuration has been updated.',
+            });
+
+            let uniqueUsersNotified = [];
+            for (let userItem of usersNotified) {
+              if (userItem.userId !== this.user.userId) {
+                if (
+                  uniqueUsersNotified.find(
+                    (item) => item.userId === userItem.userId
+                  ) === undefined
+                ) {
+                  uniqueUsersNotified.push(userItem);
+                }
+              }
+            }
+            for (let user of uniqueUsersNotified) {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: `${user.fullName} has been notified of the change.`,
+              });
+            }
           },
           (error) => {}
         );
