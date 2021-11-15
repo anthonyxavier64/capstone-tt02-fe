@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { TaskService } from 'src/app/services/task/task.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { ViewAnnouncementComponent } from '../admin/announcement-management/view-announcement/view-announcement.component';
-
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -50,7 +50,10 @@ export class DashboardComponent implements OnInit {
     private taskService: TaskService,
     private matDialog: MatDialog,
     private datePipe: DatePipe,
+<<<<<<< HEAD
     private userService: UserService,
+=======
+>>>>>>> 4dee3d0... toasts and delete meeting dialog style edits
     private messageService: MessageService
   ) {
     this.taskProgress = 0;
@@ -256,6 +259,7 @@ export class DashboardComponent implements OnInit {
           (error) => {
             console.log(error);
           }
+<<<<<<< HEAD
         );
     } else {
       this.messageService.add({
@@ -264,6 +268,23 @@ export class DashboardComponent implements OnInit {
         detail: `Your work from office quota limit for the month has been reached.`,
       });
     }
+=======
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Meeting RSVP accepted.',
+          });
+        },
+        (error) => {
+          console.log(error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error accepting meeting RSVP.',
+          });
+        }
+      );
+>>>>>>> 4dee3d0... toasts and delete meeting dialog style edits
   }
 
   rejectRsvp(meetingId: string, isPhysicalRsvp: boolean, userId: string) {
@@ -282,9 +303,19 @@ export class DashboardComponent implements OnInit {
             );
             this.virtualRsvps.splice(indexToRemove, 1);
           }
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Meeting RSVP rejected.',
+          });
         },
         (error) => {
           console.log(error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error rejecting meeting RSVP.',
+          });
         }
       );
   }
