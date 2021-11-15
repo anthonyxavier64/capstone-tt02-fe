@@ -41,28 +41,19 @@ export class EditBlockoutDateDialogComponent implements OnInit {
 
     this.blockoutDateService.updateBlockoutDate(oldBod).subscribe(
       (response) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Blockout date is updated.',
-        });
+        this.dialogRef.close({ action: 'SUCCESS' });
       },
       (error) => {
         oldBod.name = storedOldBod.name;
         oldBod.location = storedOldBod.location;
         oldBod.capacity = storedOldBod.capacity;
 
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Unable to update. Please try again.',
-        });
+        this.dialogRef.close({ action: 'ERROR' });
       }
     );
-    this.dialogRef.close();
   }
 
   closeDialog(): void {
-    this.dialogRef.close();
+    this.dialogRef.close({ action: 'CLOSED' });
   }
 }

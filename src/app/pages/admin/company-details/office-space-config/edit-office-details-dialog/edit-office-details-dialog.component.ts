@@ -45,25 +45,15 @@ export class EditOfficeDetailsDialogComponent implements OnInit {
     this.companyDetailsService.updateCompany(this.company).subscribe(
       (response) => {
         this.company = response.company;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Office details have been updated.',
-        });
+        this.dialogRef.close({ action: 'SUCCESS' });
       },
       (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Unable to update. Please try again.',
-        });
+        this.dialogRef.close({ action: 'ERROR' });
       }
     );
-
-    this.dialogRef.close();
   }
 
   closeDialog(): void {
-    this.dialogRef.close();
+    this.dialogRef.close({ action: 'CLOSED' });
   }
 }

@@ -58,26 +58,16 @@ export class EditRoomDetailsDialogComponent implements OnInit {
     // api call
     this.roomService.updateRoom(oldRoom).subscribe(
       (response) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Room is updated.',
-        });
+        this.dialogRef.close({ action: 'UPDATE_ROOM SUCCESS' });
       },
       (error) => {
         oldRoom.name = storedOldRoom.name;
         oldRoom.location = storedOldRoom.location;
         oldRoom.capacity = storedOldRoom.capacity;
 
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Unable to update. Please try again.',
-        });
+        this.dialogRef.close({ action: 'UPDATE_ROOM ERROR' });
       }
     );
-
-    this.dialogRef.close();
   }
 
   deleteRoom() {
@@ -104,22 +94,13 @@ export class EditRoomDetailsDialogComponent implements OnInit {
 
       this.roomService.deleteRoom(roomToDelete.roomId).subscribe(
         (response) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Room is deleted.',
-          });
+          this.dialogRef.close({ action: 'DELETE_ROOM SUCCESS' });
         },
         (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Unable to delete room. Please try again.',
-          });
+          this.dialogRef.close({ action: 'DELETE_ROOM ERROR' });
         }
       );
 
-      this.dialogRef.close();
     } else {
       this.messageService.add({
         severity: 'error',
@@ -130,6 +111,6 @@ export class EditRoomDetailsDialogComponent implements OnInit {
   }
 
   closeDialog(): void {
-    this.dialogRef.close();
+    this.dialogRef.close({ action: 'CLOSED' });
   }
 }

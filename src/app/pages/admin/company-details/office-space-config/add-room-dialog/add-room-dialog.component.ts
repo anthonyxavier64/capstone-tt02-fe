@@ -56,25 +56,15 @@ export class AddRoomDialogComponent implements OnInit {
 
     this.roomService.createRoom(newRoom).subscribe(
       (response) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Room has been added.',
-        });
+        this.dialogRef.close({ action: 'SUCCESS' });
       },
       (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Problem adding room. Please try again.',
-        });
+        this.dialogRef.close({ action: 'ERROR' });
       }
     );
-
-    this.dialogRef.close();
   }
 
   closeDialog(): void {
-    this.dialogRef.close();
+    this.dialogRef.close({ action: 'CLOSED' });
   }
 }

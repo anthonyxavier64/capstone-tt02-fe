@@ -1,10 +1,12 @@
+import { MessageService } from 'primeng/api';
+import { CompanyService } from 'src/app/services/company/company.service';
+import { RoomService } from 'src/app/services/room/room.service';
+
 import { DatePipe, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { CompanyService } from 'src/app/services/company/company.service';
-import { RoomService } from 'src/app/services/room/room.service';
+
 import { AddRoomDialogComponent } from './add-room-dialog/add-room-dialog.component';
 import { EditOfficeDetailsDialogComponent } from './edit-office-details-dialog/edit-office-details-dialog.component';
 import { EditRoomDetailsDialogComponent } from './edit-room-details-dialog/edit-room-details-dialog.component';
@@ -49,7 +51,7 @@ export class OfficeSpaceConfigComponent implements OnInit {
       },
       (error) => {
         this.messageService.add({
-          severity: 'Error',
+          severity: 'error',
           summary: 'Error',
           detail: 'Unable to retrieve office details.',
         });
@@ -69,7 +71,22 @@ export class OfficeSpaceConfigComponent implements OnInit {
       panelClass: 'office-card',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe(
+      (result) => {
+        if (result.action === 'SUCCESS') {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Company office details updated successfully.',
+            });
+        } else if (result.action === 'ERROR') {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Unable to update company office details. Please try again.',
+          });
+        }
+      });
   }
 
   openEditRoomDetailsDialog(roomItem: any) {
@@ -100,6 +117,32 @@ export class OfficeSpaceConfigComponent implements OnInit {
           return 0;
         }
       });
+
+      if (result.action === 'UPDATE_ROOM SUCCESS') {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Room Details updated successfully.',
+        });
+      } else if (result.action === 'UPDATE_ROOM ERROR') {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Unable to update room details. Please try again.',
+        });
+      } else if (result.action === 'DELETE_ROOM SUCCESS') {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Room has been deleted.',
+        });
+      } else if (result.action === 'DELETE_ROOM ERROR') {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Unable to delete room. Please try again.',
+        });
+      }
     });
   }
 
@@ -112,6 +155,21 @@ export class OfficeSpaceConfigComponent implements OnInit {
       panelClass: 'room-card',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe(
+      (result) => {
+        if (result.action === 'SUCCESS') {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'New room added successfully.',
+          });
+      } else if (result.action === 'ERROR') {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Unable to add new room. Please try again.',
+        });
+      }
+    });
   }
 }
