@@ -77,7 +77,7 @@ export class TaskDetailDialogComponent implements OnInit {
     if (currentUser) {
       this.user = JSON.parse(currentUser);
     }
-    this.commentService.getAllCommentsByFeedbackId(this.task.taskId).subscribe(
+    this.commentService.getAllCommentsByTaskId(this.task.taskId).subscribe(
       (response) => {
         this.comments = response.comments;
       },
