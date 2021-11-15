@@ -28,6 +28,7 @@ export class ArtDialogComponent implements OnInit {
     private userService: UserService,
     private covidDocumentSubmissionService: CovidDocumentSubmissionService,
     private afStorage: AngularFireStorage,
+    private messageService: MessageService,
   ) {
     this.uploadProgress = -1;
     this.showWarningMessage = false;
@@ -57,6 +58,11 @@ export class ArtDialogComponent implements OnInit {
         },
         error => {
           console.log(error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Unable to retrieve ART test result. Please try again.',
+          });
         }
       );
   }
@@ -81,9 +87,19 @@ export class ArtDialogComponent implements OnInit {
               console.log("updated!")
               this.user = response.user;
               localStorage.setItem("currentUser", JSON.stringify(this.user));
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'User ART test result updated.',
+              });
             },
             (error) => {
               console.log(error);
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Failed to update user ART test result. Please try again.',
+              });
             }
           );
         });
@@ -96,12 +112,27 @@ export class ArtDialogComponent implements OnInit {
                 this.covidDocumentSubmissions.unshift(response.covidDocumentSubmission);
                 this.artTests.unshift(response.covidDocumentSubmission);
                 console.log(response.covidDocumentSubmission);
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: 'ART test result uploaded successfully!',
+                });
               } else {
                 console.log("A problem has occured", response);
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: 'A problem has occurred when uploading. Please try again.',
+                });
               }
             },
             (error) => {
               console.log(error);
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Unable to upload ART test result. Please try again.',
+              });
             }
           );
       })

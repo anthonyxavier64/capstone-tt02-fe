@@ -29,7 +29,8 @@ export class ShnDeclarationDialogComponent implements OnInit {
     public config: DynamicDialogConfig,
     private userService: UserService,
     private afStorage: AngularFireStorage,
-    private covidDocumentSubmissionService: CovidDocumentSubmissionService
+    private covidDocumentSubmissionService: CovidDocumentSubmissionService,
+    private messageService: MessageService,
   ) {
     this.uploadProgress = -1;
     this.showWarningMessage = false;
@@ -66,6 +67,11 @@ export class ShnDeclarationDialogComponent implements OnInit {
         },
         error => {
           console.log(error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Unable to retrieve medical certificates. Please try again.',
+          });
         }
       );
   }
@@ -108,9 +114,19 @@ export class ShnDeclarationDialogComponent implements OnInit {
                 console.log('updated!');
                 this.user = response.user;
                 localStorage.setItem('currentUser', JSON.stringify(this.user));
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: 'User medical certificates updated.',
+                });
               },
               (error) => {
                 console.log(error);
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: 'Failed to update user medical certificates. Please try again.',
+                });
               }
             );
           });
@@ -131,12 +147,27 @@ export class ShnDeclarationDialogComponent implements OnInit {
                   console.log('success!', response.covidDocumentSubmission);
                   this.covidDocumentSubmissions.unshift(response.covidDocumentSubmission);
                   this.mcs.unshift(response.covidDocumentSubmission);
+                  this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Medical certificate uploaded successfully!',
+                  });
                 } else {
                   console.log('A problem has occured', response);
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'A problem has occurred when uploading. Please try again.',
+                  });
                 }
               },
               (error) => {
                 console.log(error);
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: 'Unable to upload medical certificate. Please try again.',
+                });
               }
             );
         })
