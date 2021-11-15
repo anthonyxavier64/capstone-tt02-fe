@@ -337,68 +337,67 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
         .toPromise();
     }
 
-    await this.alternateWorkTeamsConfigurationService
+    let altWorkTeamsConfig = await this.alternateWorkTeamsConfigurationService
       .updateAlternateWorkTeamsConfiguration(newConfig)
+      .toPromise();
+
+    if (altWorkTeamsConfig.alternateWorkTeamsConfig) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Alternate Work Teams Configuration has been updated.',
+      });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Problem updating configuration. Please try again.',
+      });
+    }
+
+    this.company = {
+      ...this.company,
+      wfoArrangement: 'ALTERNATE_WORK_TEAMS',
+    };
+
+    this.companyDetailsService
+      .updateCompanyWfoSelection(this.company)
       .subscribe(
         (response) => {
+          console.log(response.returnObj);
+          let usersNotified = response.returnObj.usersToNotify;
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
-            detail: 'Alternate Work Teams Configuration has been updated.',
+            detail: 'Work From Office Configuration has been updated.',
           });
 
-          this.company = {
-            ...this.company,
-            wfoArrangement: 'ALTERNATE_WORK_TEAMS',
-          };
-
-          this.companyDetailsService
-            .updateCompanyWfoSelection(this.company)
-            .subscribe(
-              (response) => {
-                console.log(response.returnObj);
-                let usersNotified = response.returnObj.usersToNotify;
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Success',
-                  detail: 'Work From Office Configuration has been updated.',
-                });
-
-                let uniqueUsersNotified = [];
-                for (let userItem of usersNotified) {
-                  if (userItem.userId !== this.user.userId) {
-                    if (
-                      uniqueUsersNotified.find(
-                        (item) => item.userId === userItem.userId
-                      ) === undefined
-                    ) {
-                      uniqueUsersNotified.push(userItem);
-                    }
-                  }
-                }
-                for (let user of uniqueUsersNotified) {
-                  this.messageService.add({
-                    severity: 'success',
-                    summary: 'Success',
-                    detail: `${user.fullName} has been notified of the change.`,
-                  });
-                }
-              },
-              (error) => {
-                this.messageService.add({
-                  severity: 'error',
-                  summary: 'Error',
-                  detail:
-                    'Alternate Work Teams have been configured but cannot be selected. Please try again',
-                });
+          let uniqueUsersNotified = [];
+          for (let userItem of usersNotified) {
+            if (userItem.userId !== this.user.userId) {
+              if (
+                uniqueUsersNotified.find(
+                  (item) => item.userId === userItem.userId
+                ) === undefined
+              ) {
+                uniqueUsersNotified.push(userItem);
               }
-            );
+            }
+          }
+          for (let user of uniqueUsersNotified) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: `${user.fullName} has been notified of the change.`,
+            });
+          }
         },
         (error) => {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: 'Problem updating configuration. Please try again.',
+            detail:
+              'Alternate Work Teams have been configured but cannot be selected. Please try again',
           });
         }
       );
