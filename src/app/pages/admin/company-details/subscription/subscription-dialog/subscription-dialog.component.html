@@ -1,0 +1,11 @@
+<h1>Please select a plan</h1>
+<mat-form-field appearance="fill">
+  <mat-select [(value)]="subscriptionType">
+    <mat-option *ngFor="let sub of subscriptionTypes" [value]="sub">
+      {{ sub }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<button mat-button class="peach-btn" (click)="handleChangeSubscription()">
+  Save
+</button>
