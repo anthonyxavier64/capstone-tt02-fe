@@ -70,7 +70,12 @@
       />
     </button>
     <mat-menu class="notificationDropList" #notificationMenu="matMenu">
-      <div fxLayout="row" fxLayoutAlign="end end" style="width: 100%">
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        style="width: 100%; padding: 8px 16px"
+      >
+        <h3><u>Notifications</u></h3>
         <button
           class="peach-btn"
           (click)="markAllAsRead(); $event.stopPropagation()"
