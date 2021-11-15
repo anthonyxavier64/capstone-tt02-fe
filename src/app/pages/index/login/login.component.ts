@@ -1,3 +1,6 @@
+import { MessageService } from 'primeng/api';
+import { AuthService } from 'src/app/services/user/auth.service';
+
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -6,8 +9,7 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { AuthService } from 'src/app/services/user/auth.service';
+
 import { ForgotPasswordDialogComponent } from './forgot-password-dialog/forgot-password-dialog.component';
 
 @Component({
@@ -141,6 +143,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
             severity: 'success',
             summary: 'Success',
             detail: `A new password has been sent to ${response.email}`,
+          });
+        } else if (response.action === 'ERROR') {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error when resetting password.',
           });
         }
       },

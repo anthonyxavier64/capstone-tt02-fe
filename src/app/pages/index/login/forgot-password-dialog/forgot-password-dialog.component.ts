@@ -28,6 +28,7 @@ export class ForgotPasswordDialogComponent implements OnInit {
           },
           (error) => {
             console.log(error);
+            this.dialogRef.close({ action: 'ERROR'});
           }
         );
       },
