@@ -1,10 +1,12 @@
+import { MessageService } from 'primeng/api';
+import { BlockoutDateService } from 'src/app/services/blockoutDate/blockout-date.service';
+import { CompanyService } from 'src/app/services/company/company.service';
+
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { CompanyService } from 'src/app/services/company/company.service';
-import { BlockoutDateService } from 'src/app/services/blockoutDate/blockout-date.service';
-import { MessageService } from 'primeng/api';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+
 import { EditBlockoutDateDialogComponent } from '../edit-blockout-date-dialog/edit-blockout-date-dialog.component';
 
 @Component({
@@ -87,18 +89,19 @@ export class ManageBlockoutDateComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(
       (response) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Blockout date updated successfully.',
-        });
-      },
-      (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Unable to update. Please try again.',
-        });
+        if (response.action === 'SUCCESS') {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Blockout date updated successfully.',
+            });
+        } else if (response.action === 'ERROR') {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Unable to update. Please try again.',
+          });
+        }
       }
     );
   }
