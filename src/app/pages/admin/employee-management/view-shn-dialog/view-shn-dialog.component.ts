@@ -1,10 +1,10 @@
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covid-document-submission.service';
 import { UserService } from 'src/app/services/user/user.service';
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { NgForm } from '@angular/forms';
 
@@ -31,8 +31,8 @@ export class ViewShnDeclarationDialog implements OnInit {
   currentUser: any;
 
   constructor(
-    public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig,
+    public dialogRef: MatDialogRef<ViewShnDeclarationDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private userService: UserService,
     private messageService: MessageService,
     private afStorage: AngularFireStorage,
@@ -46,14 +46,14 @@ export class ViewShnDeclarationDialog implements OnInit {
     this.endDate = new Date().toISOString().slice(0, 10);
     this.covidDocumentSubmissions = [];
     this.mcs = [];
-    this.isVaccinated = this.config.data.isVaccinated;
+    this.isVaccinated = this.data.isVaccinated;
     this.isSubmitted = false;
     this.invalid = false;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   ngOnInit(): void {
-    this.userService.getUser(this.config.data.userId).subscribe(
+    this.userService.getUser(this.data.userId).subscribe(
       (response) => {
         this.user = response.user;
       },
@@ -68,7 +68,7 @@ export class ViewShnDeclarationDialog implements OnInit {
     );
 
     this.covidDocumentSubmissionService
-      .getUserSubmissions(this.config.data.userId)
+      .getUserSubmissions(this.data.userId)
       .subscribe(
         (response) => {
           this.covidDocumentSubmissions = response.covidDocumentSubmissions;
@@ -120,16 +120,16 @@ export class ViewShnDeclarationDialog implements OnInit {
   }
   onConfirmClick() {
     this.userService
-      .deleteUser(this.config.data.selectedUser.userId)
+      .deleteUser(this.data.selectedUser.userId)
       .subscribe((response) => {
-        this.config.data.confirmDelete = true;
-        this.ref.close(this.config);
+        this.data.confirmDelete = true;
+        this.dialogRef.close();
       });
   }
 
   onCloseClick() {
     if (this.uploadProgress === -1 || this.uploadProgress === 100) {
-      this.ref.close();
+      this.dialogRef.close();
     } else {
       this.showWarningMessage = true;
     }
@@ -147,7 +147,11 @@ export class ViewShnDeclarationDialog implements OnInit {
     //console.log(today);
     const endDate = new Date(this.mcs[0]?.endDate);
     endDate.setHours(23, 59, 59);
-    if (this.mcs[0]?.documentApprovalStatus !== 'REJECTED' && (today >= new Date(this.mcs[0]?.startDate)) && (today <= endDate)) {
+    if (
+      this.mcs[0]?.documentApprovalStatus !== 'REJECTED' &&
+      today >= new Date(this.mcs[0]?.startDate) &&
+      today <= endDate
+    ) {
       if (this.mcs[0]?.covidDocumentType === 'SHN_MEDICAL_CERTIFICATE') {
         return 'On stay home notice';
       } else {
@@ -160,10 +164,16 @@ export class ViewShnDeclarationDialog implements OnInit {
     const today = new Date();
     const endDate = new Date(this.mcs[0]?.endDate);
     endDate.setHours(23, 59, 59);
-    if (this.mcs[0]?.documentApprovalStatus !== 'REJECTED' && (today >= new Date(this.mcs[0]?.startDate)) && (today <= endDate)) {
+    if (
+      this.mcs[0]?.documentApprovalStatus !== 'REJECTED' &&
+      today >= new Date(this.mcs[0]?.startDate) &&
+      today <= endDate
+    ) {
       if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'APPROVED') {
         return 'red';
-      } else if (this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'PENDING') {
+      } else if (
+        this.mcs[0]?.documentApprovalStatus.toUpperCase() === 'PENDING'
+      ) {
         return 'grey';
       }
     }

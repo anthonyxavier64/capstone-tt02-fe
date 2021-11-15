@@ -1,10 +1,11 @@
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSubmission/covid-document-submission.service';
 import { UserService } from 'src/app/services/user/user.service';
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -27,8 +28,8 @@ export class ViewVaccinationDialogComponent implements OnInit {
   currentUser: any;
 
   constructor(
-    public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig,
+    public dialogRef: MatDialogRef<ViewVaccinationDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private userService: UserService,
     private messageService: MessageService,
     private covidDocumentSubmissionService: CovidDocumentSubmissionService
@@ -38,14 +39,14 @@ export class ViewVaccinationDialogComponent implements OnInit {
     this.vaccinationCerts = [];
     this.covidDocumentSubmissions = [];
     this.vaccinationCerts = [];
-    this.isVaccinated = this.config.data.isVaccinated;
+    this.isVaccinated = this.data.isVaccinated;
     this.isSubmitted = false;
     this.invalid = false;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   ngOnInit(): void {
-    this.userService.getUser(this.config.data.userId).subscribe(
+    this.userService.getUser(this.data.userId).subscribe(
       (response) => {
         this.user = response.user;
       },
@@ -60,7 +61,7 @@ export class ViewVaccinationDialogComponent implements OnInit {
     );
 
     this.covidDocumentSubmissionService
-      .getUserSubmissions(this.config.data.userId)
+      .getUserSubmissions(this.data.userId)
       .subscribe(
         (response) => {
           this.covidDocumentSubmissions = response.covidDocumentSubmissions;
@@ -94,7 +95,7 @@ export class ViewVaccinationDialogComponent implements OnInit {
 
   onCloseClick() {
     if (this.uploadProgress === -1 || this.uploadProgress === 100) {
-      this.ref.close();
+      this.dialogRef.close();
     } else {
       this.showWarningMessage = true;
     }
@@ -108,20 +109,32 @@ export class ViewVaccinationDialogComponent implements OnInit {
     return null;
   }
   renderVaccinationStatus() {
-    if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
-      return "Vaccinated";
-    } else if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "PENDING") {
-      return "Pending Approval";
+    if (
+      this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() ===
+      'APPROVED'
+    ) {
+      return 'Vaccinated';
+    } else if (
+      this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() ===
+      'PENDING'
+    ) {
+      return 'Pending Approval';
     }
-    return "Not Yet Vaccinated";
+    return 'Not Yet Vaccinated';
   }
   renderVaccinationStyle() {
-    if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "APPROVED") {
-      return "green";
-    } else if (this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() === "PENDING") {
-      return "grey";
+    if (
+      this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() ===
+      'APPROVED'
+    ) {
+      return 'green';
+    } else if (
+      this.vaccinationCerts[0]?.documentApprovalStatus.toUpperCase() ===
+      'PENDING'
+    ) {
+      return 'grey';
     }
-    return "red";
+    return 'red';
   }
   onSaveClick(form: NgForm) {
     this.isSubmitted = true;
