@@ -17,7 +17,9 @@
 
   <mat-divider></mat-divider>
 
-  <p style="text-align: center">Office Capacity:</p>
+  <p style="text-align: center">
+    Office Capacity: {{ this.numInOffice }} / {{ this.officeCapacityCount }}
+  </p>
 
   <div *ngIf="meetings.length == 0">
     <p>No meetings today.</p>

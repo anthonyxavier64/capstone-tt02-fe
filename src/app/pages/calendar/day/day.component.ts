@@ -24,6 +24,9 @@ export class DayComponent implements OnInit {
   meeting: any;
   meetings: any[] = [];
 
+  numInOffice: any;
+  officeCapacityCount: any;
+
   constructor(
     public dialogRef: MatDialogRef<DayComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -36,6 +39,8 @@ export class DayComponent implements OnInit {
     this.date = this.data.date;
     this.user = this.data.user;
     this.events = this.data.events;
+    this.numInOffice = this.data.numInOffice;
+    this.officeCapacityCount = this.data.officeCapacityCount;
 
     for (const e of this.events) {
       this.meetingService.getMeetingByTitleDate(e.title, e.start).subscribe(
