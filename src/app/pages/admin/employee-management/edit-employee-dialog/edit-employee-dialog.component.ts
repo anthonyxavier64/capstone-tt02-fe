@@ -106,7 +106,7 @@ export class EditEmployeeDialogComponent implements OnInit {
 
     this.userService.updateUserDetails(this.data).subscribe(
       (response) => {
-        this.dialogRef.close({ action: 'SUCCESS', useruserId: this.userId });
+        this.dialogRef.close({ action: 'SUCCESS' });
       },
       (error) => {
         this.config.data.confirmEdit = true;

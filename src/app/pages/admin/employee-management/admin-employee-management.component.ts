@@ -625,11 +625,10 @@ export class AdminEmployeeManagementComponent implements OnInit {
     editDialogRef.afterClosed().subscribe(
       (response) => {
         if (response.action === 'SUCCESS') {
-          const userId = response.userId;
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
-            detail: `User ${userId} has been updated`,
+            detail: `User ${selectedUser.userId} has been updated`,
           });
         }
       },
