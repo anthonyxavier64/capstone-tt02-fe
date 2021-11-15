@@ -20,7 +20,9 @@
         <span
           [ngClass]="{
             'cal-day-number': !isBlockoutDate(day.date),
-            'blockout-date': isBlockoutDate(day.date) || isLeaveDate(day.date)
+            'blockout-date': isBlockoutDate(day.date) || isLeaveDate(day.date),
+            'half-cap': isHalfCap(day.date),
+            'full-cap': isFullCap(day.date)
           }"
           >{{ day.date | calendarDate: "monthViewDayNumber":locale }}</span
         >
@@ -265,6 +267,24 @@
         [events]="events"
       >
       </mwl-calendar-day-view>
+    </div>
+    <div
+      fxLayout="row"
+      fxLayoutAlign="end end"
+      fxLayoutGap="2%"
+      style="width: 100%"
+    >
+      <span style="color: rgb(94, 123, 211)">&#9679; Work From Office</span>
+      <span
+        *ngIf="this.selectedConfig === 'OFFICE_QUOTAS'"
+        style="color: rgb(255, 122, 0)"
+        >&#9679; >50% Capacity</span
+      >
+      <span
+        *ngIf="this.selectedConfig === 'OFFICE_QUOTAS'"
+        style="color: rgb(255, 0, 0)"
+        >&#9679; Full Capacity</span
+      >
     </div>
   </div>
 </div>

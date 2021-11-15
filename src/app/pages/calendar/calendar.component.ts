@@ -565,6 +565,7 @@ export class CalendarComponent implements OnInit {
       });
     }
   }
+
   isWithinWfoRange(day: Date) {
     return day.getMonth() == new Date().getMonth();
   }
@@ -895,5 +896,29 @@ export class CalendarComponent implements OnInit {
       return numMeetingsInOfficeToday > 0;
     });
     this.numInOffice = num.length;
+  }
+
+  isHalfCap(day: Date) {
+    this.countNumEmployeesInOffice(day);
+    if (this.selectedConfig === 'OFFICE_QUOTAS') {
+      if (this.numInOffice > this.company.officeCapacity / 2) {
+        return true;
+      } else {
+        return false;
+      }
+    } else this.selectedConfig === 'ALTERNATE_WORK_TEAMS';
+    return false;
+  }
+
+  isFullCap(day: Date) {
+    this.countNumEmployeesInOffice(day);
+    if (this.selectedConfig === 'OFFICE_QUOTAS') {
+      if (this.numInOffice == this.company.officeCapacity) {
+        return true;
+      } else {
+        return false;
+      }
+    } else this.selectedConfig === 'ALTERNATE_WORK_TEAMS';
+    return false;
   }
 }
