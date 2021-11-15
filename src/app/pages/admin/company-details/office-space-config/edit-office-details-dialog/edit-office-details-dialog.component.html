@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <form
   #officeDetailsForm="ngForm"
   ngNativeValidate
@@ -137,7 +138,25 @@
       </tr>
       <tr>
         <th class="text"><label>Office Capacity:</label></th>
-        <td class="text">{{ company.officeCapacity }}</td>
+        <td class="text">
+          <div>
+            <input
+              type="number"
+              name="officeCapacity"
+              style="width: 15vw"
+              [(ngModel)]="officeCapacity"
+              #officeCapacityInput="ngModel"
+              required
+            />
+            <div
+              *ngIf="officeCapacityInput.touched || officeCapacityInput.dirty"
+              class="errorText"
+              style="color: red; font-size: small"
+            >
+              Office Capacity cannot be empty.
+            </div>
+          </div>
+        </td>
       </tr>
     </table>
 
