@@ -263,6 +263,7 @@ export class OfficeQuotaConfigComponent implements OnInit {
             ...this.company,
             officeQuotaConfigurationId:
               response.officeQuotaConfig.officeQuotaConfigurationId,
+            wfoArrangement: 'OFFICE_QUOTAS',
           };
           this.companyDetailsService.updateCompany(updateCompany).subscribe(
             (response) => {

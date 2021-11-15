@@ -74,7 +74,7 @@ export class AdminWfoManagementComponent implements OnInit {
           ) {
             this.alternateWorkTeamsConfig =
               this.company.alternateWorkTeamsConfig;
-
+            console.log('HERE');
             this.isAltWorkTeamSelectBtnClicked = true;
             this.isOfficeQuotaSelectBtnClicked = false;
             this.altWorkTeamSelectBtn = 'selectedButton';

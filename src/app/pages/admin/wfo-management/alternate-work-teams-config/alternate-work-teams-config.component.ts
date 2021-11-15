@@ -283,6 +283,7 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
           ...this.company,
           alternateWorkTeamsConfigurationId:
             this.alternateWorkTeamsConfigurationId,
+          wfoArrangement: 'ALTERNATE_WORK_TEAMS',
         };
 
         this.companyDetailsService.updateCompany(updateCompany).subscribe(
