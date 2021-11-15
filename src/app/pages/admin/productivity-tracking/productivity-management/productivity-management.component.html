@@ -6,7 +6,6 @@
   </div>
 
   <mat-card-group fxLayout="row" fxLayoutGap="5%" style="padding: 0 3vw">
-<<<<<<< HEAD
     <mat-card class="beige-block" fxLayout="column wrap" fxLayoutAlign="start center" fxLayoutGap="2%">
       <mat-card-title> Search for Employee </mat-card-title>
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2%">
@@ -19,15 +18,6 @@
           [filter]="true" filterBy="name" placeholder="Select a department" (onChange)="handleDepartmentSelection()">
         </p-dropdown>
       </div>
-=======
-    <mat-card class="beige-block" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="2%">
-      <mat-card-title> Search for Employee </mat-card-title>
-      <span class="p-input-icon-right" style="margin-top: 20px">
-        <i class="pi pi-search" (click)="handleSearch()"></i>
-        <input type="text" placeholder="Search Employee" [(ngModel)]="searchQuery" pInputText
-          (keyup)="handleSearch()" />
-      </span>
->>>>>>> 2729b6b ([Productivity] My Employees Page, View Employee Details Dialog Box & Productivity Calc done)
       <!--<input matInput [(ngModel)]="searchQuery" #searchQueryInput="ngModel" class="input" type="text"
         placeholder="Search" />
       <button mat-button class="peach-btn" (click)="searchUsers()">Search</button>
