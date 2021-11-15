@@ -9,7 +9,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ViewProductivityDialogComponent } from '../view-productivity-stats/view-productivity-dialog/view-productivity-dialog.component';
 
 export interface user {
-  userId: number;
+  userId: string;
   fullName: string;
   email: string;
   createdAt: string;
@@ -136,7 +136,7 @@ export class ProductivityManagementComponent implements OnInit {
       for (let u of this.allUsers) {
         this.userService.getDepartments(u.userId).subscribe(
           (response) => {
-            var responseDept = response.userDept;
+            var responseDept = response.dept;
             console.log(`Response Department: ${responseDept}`);
             for (let r of responseDept) {
               if (r.name === this.selectedDepartment.name && !employees.includes(u)) {
@@ -156,7 +156,7 @@ export class ProductivityManagementComponent implements OnInit {
         );
         this.userService.getManagedDepartments(u.userId).subscribe(
           (response) => {
-            var responseMDept = response.userDept;
+            var responseMDept = response.mdept;
             console.log(`Response Managed Department: ${responseMDept}`);
             for (let r of responseMDept) {
               if (r.name === this.selectedDepartment.name && !employees.includes(u)) {
