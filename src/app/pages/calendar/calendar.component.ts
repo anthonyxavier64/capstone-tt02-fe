@@ -1,3 +1,6 @@
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { CalendarEvent, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
@@ -7,11 +10,7 @@ import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSu
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UnavailableDateService } from 'src/app/services/unavailableDate/unavailable-date.service';
 import { UserService } from 'src/app/services/user/user.service';
-
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-
+import { OfficeQuotaConfigurationService } from 'src/app/services/wfoConfiguration/officeQuotaConfiguration/office-quota-configuration.service';
 import { AlternateWorkTeamsConfigurationService } from './../../services/wfoConfiguration/alternateWorkTeamsConfiguration/alternate-work-teams-configuration.service';
 import { DayComponent } from './day/day.component';
 import { ViewMeetingDetailsDialogComponent } from './view-meeting-details-dialog/view-meeting-details-dialog.component';
@@ -71,6 +70,8 @@ export class CalendarComponent implements OnInit {
   refresh: Subject<any> = new Subject();
   isLoading: boolean;
 
+  dailyEmployeeLimit: number = 0;
+
   constructor(
     private router: Router,
     private userService: UserService,
@@ -80,7 +81,8 @@ export class CalendarComponent implements OnInit {
     public dialog: MatDialog,
     private messageService: MessageService,
     private unavailableDateService: UnavailableDateService,
-    private alternateWorkTeamsService: AlternateWorkTeamsConfigurationService
+    private alternateWorkTeamsService: AlternateWorkTeamsConfigurationService,
+    private officeQuotaConfigService: OfficeQuotaConfigurationService
   ) {
     this.datesInOffice = [];
     this.meetings = [];
@@ -130,6 +132,8 @@ export class CalendarComponent implements OnInit {
     this.companyService.getCompany(cachedUser.companyId).subscribe(
       async (response) => {
         this.company = response.company;
+        this.dailyEmployeeLimit = this.company.officeCapacity;
+
         this.selectedConfig = this.company.wfoArrangement;
         if (this.selectedConfig === 'ALTERNATE_WORK_TEAMS') {
           let alternateWorkTeamConfig = await this.alternateWorkTeamsService
@@ -139,6 +143,26 @@ export class CalendarComponent implements OnInit {
             .toPromise();
           this.alternateWorkTeamsConfig =
             alternateWorkTeamConfig.alternateWorkTeamsConfig.scheduleType;
+        } else {
+          this.officeQuotaConfigService
+            .getOfficeQuotaConfiguration(
+              this.company.officeQuotaConfigurationId
+            )
+            .subscribe(
+              (response) => {
+                this.dailyEmployeeLimit =
+                  response.officeQuotaConfig.numEmployeesPerDay;
+              },
+              (error) => {
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail:
+                    'Error obtaining office quota configuration: ' +
+                    error.message,
+                });
+              }
+            );
         }
         this.blockoutDates = this.company.blockoutDates;
       },
@@ -200,27 +224,33 @@ export class CalendarComponent implements OnInit {
       }
     );
 
-    this.userService.getUsers(cachedUser.companyId).subscribe((response) => {
-      this.employees = response.users;
-      }, (error) => {
+    this.userService.getUsers(cachedUser.companyId).subscribe(
+      (response) => {
+        this.employees = response.users;
+      },
+      (error) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
           detail: 'Error obtaining users.',
         });
-    });
+      }
+    );
 
     this.userService
       .getOfficeUsersByMonth(cachedUser.companyId, new Date().getMonth())
-      .subscribe((response) => {
-        this.officeUsersThisMonth = response.users;
-      }, (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error obtaining office users by month.',
-        });
-      });
+      .subscribe(
+        (response) => {
+          this.officeUsersThisMonth = response.users;
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error obtaining office users by month.',
+          });
+        }
+      );
 
     this.covidDocumentSubmissionService.getUserMcs(cachedUser.userId).subscribe(
       (response) => {
@@ -358,8 +388,8 @@ export class CalendarComponent implements OnInit {
       (response) => {
         localStorage.setItem('currentUser', JSON.stringify(response.user));
       },
-      (error) => { 
-        console.log(error.message)
+      (error) => {
+        console.log(error.message);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -813,7 +843,7 @@ export class CalendarComponent implements OnInit {
       return numMeetingsInOfficeToday > 0;
     });
     // Disable if the number of people in the office today exceeds capacity
-    return dayUsers.length >= this.company.officeCapacity;
+    return dayUsers.length >= this.dailyEmployeeLimit;
   }
 
   onUnselectDay(day: Date) {
