@@ -63,6 +63,7 @@ export class CalendarComponent implements OnInit {
   selectedEmployees: any[];
   isWfoSelectionMode: boolean = false;
   datesInOffice: Date[];
+  numInOffice: any;
 
   mcStartDate: Date;
   mcEndDate: Date;
@@ -343,23 +344,9 @@ export class CalendarComponent implements OnInit {
       return new Date(item).getMonth() == new Date().getMonth();
     });
     if (!numDaysInOffice) numDaysInOffice = [];
-    // Find unique days with physical meetings
-    const meetingSet = new Set();
-    for (const meeting of this.myPhysicalMeetings) {
-      const meetingString = new Date(meeting.startTime).toLocaleDateString(
-        'en-US'
-      );
-      if (!meetingSet.has(meetingString)) {
-        meetingSet.add(meetingString);
-      }
-    }
+
     this.wfoAllowanceCount =
-      this.user.wfoMonthlyAllocation - numDaysInOffice.length - meetingSet.size;
-    console.log(
-      this.user.wfoMonthlyAllocation,
-      numDaysInOffice.length,
-      meetingSet.size
-    );
+      this.user.wfoMonthlyAllocation - numDaysInOffice.length;
   }
 
   escViewWfoMode() {
@@ -409,6 +396,8 @@ export class CalendarComponent implements OnInit {
   }
 
   viewDay(day: any, events: any) {
+    this.countNumEmployeesInOffice(day);
+    console.log('num: ' + this.numInOffice);
     if (
       moment(day).day() != DAYS_OF_WEEK.SATURDAY &&
       moment(day).day() != DAYS_OF_WEEK.SUNDAY &&
@@ -419,6 +408,8 @@ export class CalendarComponent implements OnInit {
           date: day,
           user: this.user,
           events: events,
+          numInOffice: this.numInOffice,
+          officeCapacityCount: this.company.officeCapacity,
         },
         panelClass: 'day-card',
       });
@@ -893,5 +884,16 @@ export class CalendarComponent implements OnInit {
       );
     });
     return dates.length > 0;
+  }
+
+  countNumEmployeesInOffice(day: Date) {
+    const num = this.officeUsersThisMonth.filter((u) => {
+      // Check if the user comes to office on this day
+      const numMeetingsInOfficeToday = u.datesInOffice.filter(
+        (item) => new Date(item).getDate() == day.getDate()
+      ).length;
+      return numMeetingsInOfficeToday > 0;
+    });
+    this.numInOffice = num.length;
   }
 }
