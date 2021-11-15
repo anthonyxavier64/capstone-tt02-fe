@@ -1,0 +1,32 @@
+<p-toast></p-toast>
+<h1>Credit Card Details</h1>
+<div style="margin-top: 20px">
+  <span>Card Holder Name </span>
+  <input pInputText [(ngModel)]="creditCard.cardHolderName" />
+</div>
+<div style="margin-top: 20px">
+  <span>Credit Card Number </span>
+  <input pInputText [(ngModel)]="creditCard.creditCardNumber" />
+</div>
+<div style="margin-top: 20px">
+  <span>CVV </span>
+  <input pInputText [(ngModel)]="creditCard.cvv" />
+</div>
+<div style="margin-top: 20px">
+  <span>Expiry Date </span>
+  <input pInputText placeholder="{{ expiry }}" [matDatepicker]="dp" />
+  <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+  <mat-datepicker
+    #dp
+    startView="multi-year"
+    (monthSelected)="selectMonth($event, dp)"
+  ></mat-datepicker>
+</div>
+<button
+  style="margin-top: 10px"
+  mat-button
+  class="peach-btn"
+  (click)="handleSave()"
+>
+  Save
+</button>

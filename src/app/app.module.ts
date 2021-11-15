@@ -118,6 +118,7 @@ import { NavbarComponent } from './pages/shared-components/navbar/navbar.compone
 import { SubscriptionDialogComponent } from './pages/admin/company-details/subscription/subscription-dialog/subscription-dialog.component';
 import { ProductivityManagementComponent } from './pages/admin/productivity-tracking/productivity-management/productivity-management.component';
 import { ViewProductivityDialogComponent } from './pages/admin/productivity-tracking/view-productivity-stats/view-productivity-dialog/view-productivity-dialog.component';
+import { CreditcardDialogComponent } from './pages/admin/company-details/creditcard/creditcard-dialog/creditcard-dialog.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -198,6 +199,7 @@ export function tokenGetter() {
     SubscriptionDialogComponent,
     ProductivityManagementComponent,
     ViewProductivityDialogComponent,
+    CreditcardDialogComponent,
   ],
   imports: [
     CommonModule,

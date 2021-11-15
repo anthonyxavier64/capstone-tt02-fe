@@ -190,6 +190,24 @@
         >
           Manage Subscription
         </button>
+        <button
+          mat-button
+          class="grey-btn"
+          style="width: 20vw"
+          *ngIf="!editDetailsMode"
+          (click)="handleEditCC()"
+        >
+          Edit Credit Card
+        </button>
+        <button
+          mat-button
+          *ngIf="editDetailsMode"
+          [disabled]="true"
+          class="grey-btn"
+          style="width: 20vw"
+        >
+          Edit Credit Card
+        </button>
       </div>
     </mat-card>
   </div>

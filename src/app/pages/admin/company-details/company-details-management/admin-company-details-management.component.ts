@@ -10,6 +10,7 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { SubscriptionDialogComponent } from '../subscription/subscription-dialog/subscription-dialog.component';
+import { CreditcardDialogComponent } from '../creditcard/creditcard-dialog/creditcard-dialog.component';
 
 @Component({
   selector: 'app-admin-companyDetailsManagement',
@@ -118,13 +119,47 @@ export class AdminCompanyDetailsManagementComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Subscription Tier has been updated.',
-      });
+      if (result) {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Subscription Tier has been updated.',
+        });
 
-      this.company.subscriptionType = result;
+        this.company.subscriptionType = result;
+      }
+    });
+  }
+
+  handleEditCC() {
+    const creditCard = {
+      CCDateOfExpiry: this.company.CCDateOfExpiry,
+      creditCardNumber: this.company.creditCardNumber,
+      cvv: this.company.cvv,
+      cardHolderName: this.company.cardHolderName,
+    };
+
+    const dialogRef = this.dialog.open(CreditcardDialogComponent, {
+      width: '500px',
+      data: {
+        creditCard,
+        companyId: this.company.companyId,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Credit card has been updated.',
+        });
+
+        this.company.CCDateOfExpiry = result.CCDateOfExpiry;
+        this.company.creditCardNumber = result.creditCardNumber;
+        this.company.cvv = result.cvv;
+        this.company.cardHolderName = result.cardHolderName;
+      }
     });
   }
 }

@@ -50,4 +50,14 @@ export class PaymentService {
       )
       .pipe(catchError(handleError));
   }
+
+  updateCreditCard(creditCardDetails: any, companyId: string): Observable<any> {
+    return this.httpClient
+      .post<any>(
+        this.baseUrl + '/update-card',
+        { creditCardDetails, companyId },
+        httpOptions
+      )
+      .pipe(catchError(handleError));
+  }
 }

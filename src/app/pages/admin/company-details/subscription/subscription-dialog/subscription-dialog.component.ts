@@ -34,24 +34,21 @@ export class SubscriptionDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   handleChangeSubscription() {
-    this.paymentService
-      .updateSubscription(this.data.companyId, this.subscriptionType)
-      .subscribe(
-        (response) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Subscription Tier has been updated.',
-          });
-          this.dialogRef.close(this.subscriptionType);
-        },
-        (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Unable to update subscription tier.',
-          });
-        }
-      );
+    if (this.subscriptionType !== '') {
+      this.paymentService
+        .updateSubscription(this.data.companyId, this.subscriptionType)
+        .subscribe(
+          (response) => {
+            this.dialogRef.close(this.subscriptionType);
+          },
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Unable to update subscription tier.',
+            });
+          }
+        );
+    }
   }
 }
