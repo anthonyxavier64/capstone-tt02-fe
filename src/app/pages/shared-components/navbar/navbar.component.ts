@@ -1,7 +1,3 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AdminGuideComponent } from 'src/app/pages/admin/admin-landing/admin-guide/admin-guide.component';
@@ -16,6 +12,11 @@ import { NotificationService } from 'src/app/services/notification/notification.
 import { TaskService } from 'src/app/services/task/task.service';
 import { AuthService } from 'src/app/services/user/auth.service';
 import { UserService } from 'src/app/services/user/user.service';
+
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -106,7 +107,7 @@ export class NavbarComponent implements OnInit {
           }
         }
       },
-      (error) => {}
+      (error) => { }
     );
   }
   @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
@@ -170,7 +171,7 @@ export class NavbarComponent implements OnInit {
     } else if (notification.feedbackId) {
       return '../../../assets/images/bubble-chat.png';
     }
-    return '';
+    return '../../../assets/images/bell.png';
   }
   markAllAsRead() {
     for (let notif of this.unreadNotifications) {
@@ -186,7 +187,7 @@ export class NavbarComponent implements OnInit {
             return dateB.diff(dateA);
           });
         },
-        (error) => {}
+        (error) => { }
       );
     }
   }
@@ -204,7 +205,7 @@ export class NavbarComponent implements OnInit {
           this.readNotifications.unshift(response.notification);
           this.numUnread--;
         },
-        (error) => {}
+        (error) => { }
       );
     }
     if (notification.feedbackId) {
