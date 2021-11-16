@@ -128,15 +128,24 @@
               Position cannot be empty.
             </div>
           </td>
+        </tr>
+        <tr>
           <th class="text">
-            <label>Associated Departments:</label>
+            <label>In Charge Of Departments:</label>
           </th>
-          <button mat-raised-button (click)="openInChargeOfDialog()">
-            In Charge of
-          </button>
-          <button mat-raised-button (click)="openPartOfDialog()">
-            Part Of
-          </button>
+          <div *ngFor="let department of allMDept">
+            <mat-checkbox [(ngModel)]="department.isSelected">
+              {{ department.name }}
+            </mat-checkbox>
+          </div>
+          <th class="text">
+            <label>Part Of Departments:</label>
+          </th>
+          <div *ngFor="let department of allDept">
+            <mat-checkbox [(ngModel)]="department.isSelected">
+              {{ department.name }}
+            </mat-checkbox>
+          </div>
         </tr>
       </table>
 
