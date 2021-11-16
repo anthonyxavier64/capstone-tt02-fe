@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../../../services/user/user.service';
-import { CompanyDetailsService } from '../../../../services/company/company-details.service';
+import { MessageService } from 'primeng/api';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DepartmentService } from 'src/app/services/department/department.service';
 
-import { MessageService } from 'primeng/api';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+
+import { CompanyDetailsService } from '../../../../services/company/company-details.service';
+import { UserService } from '../../../../services/user/user.service';
 import { ViewProductivityDialogComponent } from '../view-productivity-stats/view-productivity-dialog/view-productivity-dialog.component';
 
 export interface user {
@@ -65,6 +66,11 @@ export class ProductivityManagementComponent implements OnInit {
               },
               (error) => {
                 console.log(error);
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: 'Could not retrieve departments',
+                });
               }
             );
         },
