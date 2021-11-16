@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CompanyService } from 'src/app/services/company/company.service';
 import * as moment from 'moment';
 import { PaymentService } from 'src/app/services/payment/payment.service';
 import {
@@ -8,6 +7,7 @@ import {
   ConfirmEventType,
   MessageService,
 } from 'primeng/api';
+import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
 
 @Component({
   selector: 'app-subscription',
@@ -27,7 +27,7 @@ export class SubscriptionComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private companyService: CompanyService,
+    private companyDetailsService: CompanyDetailsService,
     private paymentService: PaymentService,
     private messageService: MessageService,
     private router: Router,
@@ -37,7 +37,7 @@ export class SubscriptionComponent implements OnInit {
   ngOnInit(): void {
     const hash = this.activatedRoute.snapshot.params.hash;
 
-    this.companyService.getCompanyCreationRequestByHash(hash).subscribe(
+    this.companyDetailsService.getCompanyCreationRequestByHash(hash).subscribe(
       (response) => {
         const request = response.companyCreationRequest;
 
@@ -61,7 +61,13 @@ export class SubscriptionComponent implements OnInit {
           this.amount = 500;
         }
       },
-      (error) => {}
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Unable to find company',
+        });
+      }
     );
   }
 
@@ -80,7 +86,7 @@ export class SubscriptionComponent implements OnInit {
     };
 
     this.paymentService
-      .createSubscription(this.companyCreationRequestId, creditCardDetails)
+      .createPayment(this.companyCreationRequestId, creditCardDetails)
       .subscribe(
         (response) => {
           this.messageService.add({
@@ -110,7 +116,7 @@ export class SubscriptionComponent implements OnInit {
     });
   }
 
-  openConfirmDialog() {
+  createPayment() {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to proceed?',
       header: 'Payment Confirmation',

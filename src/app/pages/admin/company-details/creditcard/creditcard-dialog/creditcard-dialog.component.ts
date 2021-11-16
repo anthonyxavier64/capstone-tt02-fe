@@ -42,12 +42,6 @@ export class CreditcardDialogComponent implements OnInit {
       .updateCreditCard(this.creditCard, this.data.companyId)
       .subscribe(
         (response) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Credit card has been updated.',
-          });
-
           this.dialogRef.close(this.creditCard);
         },
         (error) => {
