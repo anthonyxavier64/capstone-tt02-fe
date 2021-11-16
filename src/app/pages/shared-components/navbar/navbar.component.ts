@@ -129,7 +129,7 @@ export class NavbarComponent implements OnInit {
   openDialog(): void {
     let dialogRef = this.dialog.open(AdminGuideComponent, {
       width: '80%',
-      height: '95%',
+      height: 'auto',
       autoFocus: false,
     });
 
