@@ -1,6 +1,3 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { CalendarEvent, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
@@ -11,6 +8,11 @@ import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UnavailableDateService } from 'src/app/services/unavailableDate/unavailable-date.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { OfficeQuotaConfigurationService } from 'src/app/services/wfoConfiguration/officeQuotaConfiguration/office-quota-configuration.service';
+
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+
 import { AlternateWorkTeamsConfigurationService } from './../../services/wfoConfiguration/alternateWorkTeamsConfiguration/alternate-work-teams-configuration.service';
 import { DayComponent } from './day/day.component';
 import { ViewMeetingDetailsDialogComponent } from './view-meeting-details-dialog/view-meeting-details-dialog.component';
@@ -99,6 +101,7 @@ export class CalendarComponent implements OnInit {
     this.userService.getUser(cachedUser.userId).subscribe(
       (response) => {
         this.user = response.user;
+        localStorage.setItem('currentUser', JSON.stringify(response.user));
         if (typeof this.user.datesInOffice === typeof '') {
           this.datesInOffice = JSON.parse(this.user.datesInOffice);
         } else {
@@ -662,7 +665,7 @@ export class CalendarComponent implements OnInit {
           // To factor in leap years
           let numDaysInYear =
             (day.getFullYear() % 4 === 0 && day.getFullYear() % 100 > 0) ||
-            day.getFullYear() % 400 == 0
+              day.getFullYear() % 400 == 0
               ? 366
               : 365;
 
@@ -697,7 +700,7 @@ export class CalendarComponent implements OnInit {
           // To factor in leap years
           let numDaysInYear =
             (day.getFullYear() % 4 === 0 && day.getFullYear() % 100 > 0) ||
-            day.getFullYear() % 400 == 0
+              day.getFullYear() % 400 == 0
               ? 366
               : 365;
 
