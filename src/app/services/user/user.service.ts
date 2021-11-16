@@ -90,7 +90,7 @@ export class UserService {
     );
   }
 
-  deleteUser(userId: string) {
+  deleteUser(userId: String) {
     return this.httpClient
       .delete<any>(this.baseUrl + '/delete-user/' + userId)
       .pipe(catchError(handleError));
