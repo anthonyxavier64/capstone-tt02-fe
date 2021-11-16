@@ -1,11 +1,13 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { MessageService } from 'primeng/api';
 import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { OfficeQuotaConfigurationService } from 'src/app/services/wfoConfiguration/officeQuotaConfiguration/office-quota-configuration.service';
+
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+
 import { UserService } from '../../../../services/user/user.service';
 import { EditExceptionDialogComponent } from './edit-exception-dialog/edit-exception-dialog.component';
 
@@ -228,10 +230,17 @@ export class OfficeQuotaConfigComponent implements OnInit {
       this.users.splice(indexToRemoveFromUsers, 1);
       this.userService
         .updateUserDetailsByUserId(exception.userId, exception)
-        .subscribe((response) => {
-          if (exception.userId === this.user.userId) {
-            this.updateUserWFoAllowance(response.user);
-          }
+        .subscribe(
+          (response) => {
+            if (exception.userId === this.user.userId) {
+              this.updateUserWFoAllowance(response.user);
+            }
+          }, (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot update user. Please try again.',
+          });
         });
     }
 
@@ -247,6 +256,12 @@ export class OfficeQuotaConfigComponent implements OnInit {
           if (user.userId === this.user.userId) {
             this.updateUserWFoAllowance(response.user);
           }
+        }, (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot update user. Please try again.',
+          });
         });
     }
 
@@ -314,6 +329,12 @@ export class OfficeQuotaConfigComponent implements OnInit {
           if (user.userId === this.user.userId) {
             this.updateUserWFoAllowance(response.user);
           }
+        }, (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot update user. Please try again.',
+          });
         });
     }
     //Logic to update exception wfoMonthlyAllocation in the backend
@@ -324,6 +345,12 @@ export class OfficeQuotaConfigComponent implements OnInit {
           if (exception.userId === this.user.userId) {
             this.updateUserWFoAllowance(response.user);
           }
+        }, (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot update user. Please try again.',
+          });
         });
     }
     //Logic to reset the wfoMonthlyAllocation for deletedException
@@ -341,6 +368,12 @@ export class OfficeQuotaConfigComponent implements OnInit {
           if (deletedException.userId === this.user.userId) {
             this.updateUserWFoAllowance(response.user);
           }
+        }, (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Cannot update user. Please try again.',
+          });
         });
     }
 
