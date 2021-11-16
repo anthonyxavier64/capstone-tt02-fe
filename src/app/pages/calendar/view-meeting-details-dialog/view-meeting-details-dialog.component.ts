@@ -11,12 +11,13 @@ import { Router } from '@angular/router';
 
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { RoomService } from 'src/app/services/room/room.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-view-meeting-details-dialog',
   templateUrl: './view-meeting-details-dialog.component.html',
   styleUrls: ['./view-meeting-details-dialog.component.css'],
-  providers: [DatePipe],
+  providers: [DatePipe, MessageService],
 })
 export class ViewMeetingDetailsDialogComponent implements OnInit {
   title: any;
@@ -37,6 +38,7 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private meetingService: MeetingService,
     private roomService: RoomService,
+    private messageService: MessageService,
     public dialog: MatDialog,
     private router: Router
   ) {}
@@ -67,6 +69,11 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
           },
           (error) => {
             console.log(error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Error obtaining room.',
+            });
           }
         );
 
@@ -86,11 +93,21 @@ export class ViewMeetingDetailsDialogComponent implements OnInit {
             },
             (error) => {
               console.log(error);
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Error obtaining meeting attendees.',
+              });
             }
           );
       },
       (error) => {
         console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error obtaining meeting.',
+        });
       }
     );
   }
