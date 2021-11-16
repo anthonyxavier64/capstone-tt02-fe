@@ -50,12 +50,16 @@ export class CompanyDetailsService {
   }
 
   updateCompanyWfoSelection(company: any): Observable<any> {
+    return this.httpClient.patch<any>(
+      this.baseUrl + '/update-company-wfo-config',
+      company,
+      httpOptions
+    );
+  }
+
+  getCompanyCreationRequestByHash(hash: String): Observable<any> {
     return this.httpClient
-      .patch<any>(
-        this.baseUrl + '/update-company-wfo-config',
-        company,
-        httpOptions
-      )
+      .get<any>(this.baseUrl + '/get-request-hash/' + hash)
       .pipe(catchError(handleError));
   }
 }

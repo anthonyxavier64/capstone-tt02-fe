@@ -49,12 +49,4 @@ export class CompanyService {
       )
       .pipe(catchError(handleError));
   }
-
-  getCompanyCreationRequestByHash(hash: String): Observable<any> {
-    return this.httpClient
-      .get<any>(
-        this.baseUrl + '/company-creation-request/get-request-hash/' + hash
-      )
-      .pipe(catchError(handleError));
-  }
 }

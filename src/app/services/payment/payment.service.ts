@@ -19,7 +19,7 @@ export class PaymentService {
 
   constructor(private httpClient: HttpClient) {}
 
-  createSubscription(
+  createPayment(
     companyCreationRequestId: string,
     creditCardDetails: Object
   ): Observable<any> {
