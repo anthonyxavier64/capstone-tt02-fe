@@ -44,20 +44,11 @@ export class DepartmentPartOfComponent implements OnInit {
         console.log(error);
       }
     );
-    // var deptLocalStorage = localStorage.getItem('allDepts');
-    // if (deptLocalStorage != null) {
-    //   this.allDepartments = JSON.parse(deptLocalStorage);
-    //   for (let dept of this.allDepartments) {
-    //     dept.isSelected = false;
-    //   }
-    // }
   }
 
-  // Returns the department the user is part of to the parent component
   confirmDepartmentPartOf() {
     for (let dept of this.allDepartments) {
       if (dept.isSelected == true) {
-        delete dept.isSelected;
         this.data.partOfDepartments.push(dept);
       }
     }
@@ -69,17 +60,6 @@ export class DepartmentPartOfComponent implements OnInit {
       width: '50%',
       height: '50%',
     });
-
-    // Use this if the DB is down
-    // newDepartmentDialogRef.afterClosed().subscribe(() => {
-    //   var deptLocalStorage = localStorage.getItem('allDepts');
-    //   if (deptLocalStorage != null) {
-    //     this.allDepartments = JSON.parse(deptLocalStorage);
-    //     for (let dept of this.allDepartments) {
-    //       dept.isSelected = false;
-    //     }
-    //   }
-    // });
 
     // Below is the correct code if the DB works
     newDepartmentDialogRef.afterClosed().subscribe(() => {

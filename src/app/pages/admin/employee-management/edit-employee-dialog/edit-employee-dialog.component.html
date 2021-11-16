@@ -2,7 +2,7 @@
   <h1 style="text-align: center">Edit {{ this.data.fullName }}'s Details</h1>
   <form
     #editEmployeeDetailsForm="ngForm"
-    name="roomDetailsForm"
+    name="editEmployeeDetailsForm"
     (ngSubmit)="saveDetails(editEmployeeDetailsForm)"
   >
     <div fxLayout="column" fxLayoutAlign="space-around center">
@@ -68,7 +68,7 @@
           </td>
         </tr>
         <tr>
-          <th>
+          <th class="text">
             <label for="contactNumber">Contact Number:</label>
           </th>
           <td class="text">
@@ -129,7 +129,7 @@
             </div>
           </td>
         </tr>
-        <tr>
+        <!-- <tr>
           <th class="text">
             <label>In Charge Of Departments:</label>
           </th>
@@ -146,7 +146,7 @@
               {{ department.name }}
             </mat-checkbox>
           </div>
-        </tr>
+        </tr> -->
       </table>
 
       <div
