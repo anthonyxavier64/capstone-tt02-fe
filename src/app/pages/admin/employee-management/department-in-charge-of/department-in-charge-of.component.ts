@@ -49,7 +49,6 @@ export class DepartmentInChargeOfComponent implements OnInit {
   confirmDepartmentInChargeOf() {
     for (let dept of this.allDepartments) {
       if (dept.isSelected == true) {
-        delete dept.isSelected;
         this.data.inChargeOfDepartments.push(dept);
       }
     }
