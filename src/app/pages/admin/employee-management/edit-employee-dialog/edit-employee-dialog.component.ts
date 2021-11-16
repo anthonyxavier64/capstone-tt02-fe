@@ -26,10 +26,12 @@ export class EditEmployeeDialogComponent implements OnInit {
   companyId: any;
   email: any;
 
-  allDept: any[] = [];
   dept: any[] = [];
+  allDept: any[] = [];
   mdept: any[] = [];
   allMDept: any[] = [];
+  isInCharge: boolean = true;
+  isPartOf: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -61,6 +63,21 @@ export class EditEmployeeDialogComponent implements OnInit {
     this.userService.getDepartments(this.userId).subscribe(
       (response) => {
         this.dept = response.dept;
+
+        this.departmentService.getAllDepartments(this.user.companyId).subscribe(
+          (response) => {
+            this.allDept = response.departments;
+            for (let department of this.dept) {
+              const indexToSelect = this.allDept.findIndex(
+                (item) => item.departmentId === department.departmentId
+              );
+              this.allDept[indexToSelect].isSelected = true;
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
       },
       (error) => {
         this.messageService.add({
@@ -75,6 +92,21 @@ export class EditEmployeeDialogComponent implements OnInit {
     this.userService.getManagedDepartments(this.userId).subscribe(
       (response) => {
         this.mdept = response.mdept;
+
+        this.departmentService.getAllDepartments(this.user.companyId).subscribe(
+          (response) => {
+            this.allMDept = response.departments;
+            for (let department of this.mdept) {
+              const indexToSelect = this.allMDept.findIndex(
+                (item) => item.departmentId === department.departmentId
+              );
+              this.allMDept[indexToSelect].isSelected = true;
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
       },
       (error) => {
         this.messageService.add({
@@ -107,6 +139,24 @@ export class EditEmployeeDialogComponent implements OnInit {
       this.data.accessRight = 'GENERAL';
     }
 
+    if (this.isInCharge) {
+      for (let d of this.allDept) {
+        if (d.isSelected == true) {
+          delete d.isSelected;
+          this.mdept.push(d);
+        }
+      }
+    }
+
+    if (this.isPartOf) {
+      for (let d of this.allDept) {
+        if (d.isSelected == true) {
+          delete d.isSelected;
+          this.dept.push(d);
+        }
+      }
+    }
+
     this.userService.updateUserDetails(this.data).subscribe(
       (response) => {
         this.dialogRef.close({ action: 'SUCCESS' });
@@ -118,33 +168,6 @@ export class EditEmployeeDialogComponent implements OnInit {
         console.log(error);
       }
     );
-  }
-
-  openInChargeOfDialog() {
-    const deptInChargeOfDialogRef = this.dialog.open(
-      DepartmentInChargeOfComponent,
-      {
-        width: '50%',
-        height: '50%',
-        data: { inChargeOfDepartments: this.mdept },
-      }
-    );
-
-    deptInChargeOfDialogRef.afterClosed().subscribe((result) => {
-      this.mdept = result;
-    });
-  }
-
-  openPartOfDialog() {
-    const deptPartOfDialogRef = this.dialog.open(DepartmentPartOfComponent, {
-      width: '50%',
-      height: '50%',
-      data: { partOfDepartments: this.dept },
-    });
-
-    deptPartOfDialogRef.afterClosed().subscribe((result) => {
-      this.dept = result;
-    });
   }
 
   onCloseClick() {
