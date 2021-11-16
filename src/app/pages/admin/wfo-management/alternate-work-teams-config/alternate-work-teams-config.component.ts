@@ -1,9 +1,11 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { CompanyDetailsService } from 'src/app/services/company/company-details.service';
 import { UserService } from 'src/app/services/user/user.service';
+
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+
 import { AlternateWorkTeamsConfigurationService } from '../../../../services/wfoConfiguration/alternateWorkTeamsConfiguration/alternate-work-teams-configuration.service';
 
 @Component({
@@ -60,16 +62,25 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
 
             this.userService
               .getUsers(this.user.companyId)
-              .subscribe((response) => {
+              .subscribe(
+                (response) => {
                 this.teamAUsers = response.users;
                 this.teamBUsers = response.users;
-              });
+                }, 
+                (error) => {
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Cannot retrieve Team A and Team B users.',
+                  });
+                });
           } else {
             this.alternateWorkTeamsConfigurationService
               .getAlternateWorkTeamsConfiguration(
                 this.company.alternateWorkTeamsConfigurationId
               )
-              .subscribe((response) => {
+              .subscribe(
+                (response) => {
                 this.alternateWorkTeamsConfigurationId =
                   this.company.alternateWorkTeamsConfigurationId;
                 this.alternateWorkTeamsConfig =
@@ -91,7 +102,8 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
 
                 this.userService
                   .getUsers(this.user.companyId)
-                  .subscribe((response) => {
+                  .subscribe(
+                    (response) => {
                     const populateTeamAArr = [];
                     const populateTeamBArr = [];
                     for (let user of response.users) {
@@ -116,10 +128,26 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
 
                     this.teamAUsers = populateTeamAArr;
                     this.teamBUsers = populateTeamBArr;
-                  });
+                  },
+                    (error) => {
+                      this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Cannot retrieve users in the Alternate Work Teams configuration.',
+                      });
+                    }
+                  );
 
                 this.isLoading = false;
-              });
+              },
+                (error) => {
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Cannot retrieve Alternate Work Teams configuration.',
+                  });
+                }
+              );
           }
         },
         (error) => {
@@ -248,7 +276,13 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
         .updateUserDetailsByUserId(user.userId, wfoTeamAllocation)
         .subscribe(
           (response) => {},
-          (error) => {}
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Cannot update user team. Please try again.',
+            });
+          }
         );
     }
 
@@ -262,7 +296,13 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
         .updateUserDetailsByUserId(user.userId, wfoTeamAllocation)
         .subscribe(
           (response) => {},
-          (error) => {}
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Cannot update user team. Please try again.',
+            });
+          }
         );
     }
 
@@ -299,11 +339,19 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: 'Problem adding configuration. Please try again.',
+              detail: 'Problem updating company configuration. Please try again.',
             });
           }
         );
-      });
+      },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Problem adding configuration. Please try again.',
+          });
+        }
+      );
   }
 
   async updateAlternateWorkTeamsConfiguration() {
@@ -417,7 +465,13 @@ export class AlternateWorkTeamsConfigComponent implements OnInit {
           this.user = newUser;
         localStorage.setItem('currentUser', JSON.stringify(newUser));
       },
-      (error) => {}
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Cannot retrieve user. Please try again.',
+        });
+      }
     );
   }
 }

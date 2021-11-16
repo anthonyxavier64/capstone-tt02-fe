@@ -1,9 +1,11 @@
+import { MessageService } from 'primeng/api';
+
 import { BooleanInput } from '@angular/cdk/coercion';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+
 import { CompanyDetailsService } from '../../../services/company/company-details.service';
 
 @Component({
@@ -144,7 +146,13 @@ export class AdminWfoManagementComponent implements OnInit {
               });
             }
           },
-          (error) => {}
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Cannot update Work From Office Configuration. Please try again.',
+            });
+          }
         );
     }
   }
@@ -196,7 +204,13 @@ export class AdminWfoManagementComponent implements OnInit {
               });
             }
           },
-          (error) => {}
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Cannot update Work From Office Configuration. Please try again.',
+            });
+          }
         );
     }
   }
