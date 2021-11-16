@@ -1,6 +1,3 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { CalendarEvent, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
 import * as moment from 'moment';
 import { MessageService } from 'primeng/api';
@@ -10,6 +7,11 @@ import { CovidDocumentSubmissionService } from 'src/app/services/covidDocumentSu
 import { MeetingService } from 'src/app/services/meeting/meeting.service';
 import { UnavailableDateService } from 'src/app/services/unavailableDate/unavailable-date.service';
 import { UserService } from 'src/app/services/user/user.service';
+
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+
 import { AlternateWorkTeamsConfigurationService } from './../../services/wfoConfiguration/alternateWorkTeamsConfiguration/alternate-work-teams-configuration.service';
 import { DayComponent } from './day/day.component';
 import { ViewMeetingDetailsDialogComponent } from './view-meeting-details-dialog/view-meeting-details-dialog.component';
@@ -100,7 +102,13 @@ export class CalendarComponent implements OnInit {
           this.datesInOffice = this.user.datesInOffice;
         }
       },
-      (error) => {}
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error obtaining user.',
+        });
+      }
     );
 
     this.unavailableDateService
@@ -193,12 +201,24 @@ export class CalendarComponent implements OnInit {
 
     this.userService.getUsers(cachedUser.companyId).subscribe((response) => {
       this.employees = response.users;
+      }, (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error obtaining users.',
+        });
     });
 
     this.userService
       .getOfficeUsersByMonth(cachedUser.companyId, new Date().getMonth())
       .subscribe((response) => {
         this.officeUsersThisMonth = response.users;
+      }, (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error obtaining office users by month.',
+        });
       });
 
     this.covidDocumentSubmissionService.getUserMcs(cachedUser.userId).subscribe(
@@ -351,7 +371,14 @@ export class CalendarComponent implements OnInit {
       (response) => {
         localStorage.setItem('currentUser', JSON.stringify(response.user));
       },
-      (error) => console.log(error.message)
+      (error) => { 
+        console.log(error.message)
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error updating user details.',
+        });
+      }
     );
   }
 
