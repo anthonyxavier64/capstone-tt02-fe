@@ -190,7 +190,7 @@ export class TaskDetailDialogComponent implements OnInit {
       this.taskService.archiveTask(this.task.taskId).subscribe(
         (response) => {
           this.taskToPassBack = response.task;
-          this.ref.close(this.taskToPassBack);
+          this.ref.close({ task: this.taskToPassBack, action: 'ARCHIVE_SUCCESS' });
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -223,7 +223,7 @@ export class TaskDetailDialogComponent implements OnInit {
           summary: 'Success',
           detail: 'Task unarchived.',
         });
-        this.ref.close(this.taskToPassBack);
+        this.ref.close({ task: this.taskToPassBack, action: 'UNARCHIVE_SUCCESS' });
       },
       (error) => {
         this.messageService.add({

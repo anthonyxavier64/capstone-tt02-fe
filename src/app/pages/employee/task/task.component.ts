@@ -1,13 +1,15 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { GoalService } from 'src/app/services/goal/goal.service';
 import { TaskService } from 'src/app/services/task/task.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { TaskDetailDialogComponent } from './task-detail-dialog/task-detail-dialog.component';
+
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
 import { CreateNewTaskDialogComponent } from '../goals/create-new-task-dialog/create-new-task-dialog.component';
+import { TaskDetailDialogComponent } from './task-detail-dialog/task-detail-dialog.component';
 
 @Component({
   selector: 'app-task',
@@ -55,7 +57,13 @@ export class TaskComponent implements OnInit {
       (response) => {
         this.employees = response.users;
       },
-      (error) => {}
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Cannot retrieve users.',
+        });
+      }
     );
   }
 
@@ -91,7 +99,13 @@ export class TaskComponent implements OnInit {
                     console.log(this.filteredTasks);
                   }
                 },
-                (error) => {}
+                (error) => {
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Cannot retrieve tasks.',
+                  });
+                }
               );
           }
         } else {
@@ -104,6 +118,11 @@ export class TaskComponent implements OnInit {
       },
       (error) => {
         console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Cannot retrieve goals.',
+        });
       }
     );
   }
@@ -167,6 +186,11 @@ export class TaskComponent implements OnInit {
             },
             (error) => {
               this.isLoading = false;
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Cannot retrieve tasks of selected goal.',
+              });
             }
           );
       }
@@ -185,9 +209,19 @@ export class TaskComponent implements OnInit {
     this.taskService.updateTask(task).subscribe(
       (response) => {
         console.log(response);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Task status updated!',
+        });
       },
       (error) => {
         console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to update task. Please try again.',
+        });
       }
     );
 
@@ -218,6 +252,25 @@ export class TaskComponent implements OnInit {
 
     this.ref.onClose.subscribe((response) => {
       this.handleGoalSelection();
+      if (response.action === 'USER_SUCCESS TASK_SUCCESS') {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Task added and users added to task successfully.',
+        });
+      } else if (response.action === 'USER_ERROR TASK_SUCCESS') {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Unable to add users to added task. Please try again.',
+        });
+      } else if (response.action === 'TASK_ERROR') {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error adding task. Pease try again.',
+        });
+      }
     });
 
     this.handleGoalSelection();
@@ -268,8 +321,8 @@ export class TaskComponent implements OnInit {
       showHeader: false,
     });
 
-    this.ref.onClose.subscribe((task: any) => {
-      if (task) {
+    this.ref.onClose.subscribe((response) => {
+      if (response.task) {
         for (let i = 0; i < this.tasks.length; i++) {
           if (this.tasks[i].taskId === task.taskId) {
             this.tasks.splice(i, 1);
@@ -277,6 +330,19 @@ export class TaskComponent implements OnInit {
           }
         }
         this.handleGoalSelection();
+        if (response.action === 'ARCHIVE_SUCCESS') {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Task archived successfully!',
+          });
+        } else if (response.action === 'UNARCHIVE_SUCCESS') {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: `Task unarchived successfully! Task status is now marked as uncompleted.`,
+          });
+        }
       }
     });
   }

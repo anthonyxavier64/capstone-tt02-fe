@@ -120,14 +120,23 @@ export class CreateNewTaskDialogComponent implements OnInit {
       userId: this.dialogConfig.data.user.userId,
     };
 
-    this.taskService.createTask(newTaskDetails).subscribe((response) => {
+    this.taskService.createTask(newTaskDetails).subscribe(
+      (response) => {
       this.taskService
         .addUsersToTask(this.assignedEmployees, response.task.taskId)
-        .subscribe((response) => {
-          this.allGoals[0] = { name: 'All Tasks' };
-          this.ref.close();
+        .subscribe(
+          (response) => {
+            this.allGoals[0] = { name: 'All Tasks' };
+            this.ref.close({ action: 'USER_SUCCESS TASK_SUCCESS' });
+          },
+          (error) => {
+            this.ref.close({ action: 'USER_ERROR TASK_SUCCESS' });
         });
-    });
+      }, 
+      (error) => {
+        this.ref.close({ action: 'TASK_ERROR' });
+      }
+    );
   }
 
   onClose(): void {
