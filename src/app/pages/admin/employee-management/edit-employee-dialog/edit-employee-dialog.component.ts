@@ -162,9 +162,9 @@ export class EditEmployeeDialogComponent implements OnInit {
         this.dialogRef.close({ action: 'SUCCESS' });
       },
       (error) => {
-        this.config.data.confirmEdit = true;
-        this.config.data.hasBeenUpdated = false;
-        this.ref.close(this.config.data);
+        this.data.confirmEdit = true;
+        this.data.hasBeenUpdated = false;
+        this.dialogRef.close();
         console.log(error);
       }
     );
