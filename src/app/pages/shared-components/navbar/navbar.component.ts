@@ -87,21 +87,23 @@ export class NavbarComponent implements OnInit {
           .getUsers(this.company.companyId)
           .toPromise();
         let users = usersResolved.users;
-        if (
-          (this.company.officeQuotaConfigurationId === null &&
-            this.company.alternateWorkTeamsConfigurationId === null) ||
-          this.company.officeName === '' ||
-          this.company.officeName === null ||
-          this.company.officeAddress === '' ||
-          this.company.officeAddress === null ||
-          this.company.officeOpeningHour === '' ||
-          this.company.officeOpeningHour === null ||
-          this.company.officeClosingHour === '' ||
-          this.company.officeClosingHour === null ||
-          this.company.rooms.length === 0 ||
-          users.length === 1
-        ) {
-          this.navbarDisabled = true;
+        if (this.user.accessRight === 'ADMIN') {
+          if (
+            (this.company.officeQuotaConfigurationId === null &&
+              this.company.alternateWorkTeamsConfigurationId === null) ||
+            this.company.officeName === '' ||
+            this.company.officeName === null ||
+            this.company.officeAddress === '' ||
+            this.company.officeAddress === null ||
+            this.company.officeOpeningHour === '' ||
+            this.company.officeOpeningHour === null ||
+            this.company.officeClosingHour === '' ||
+            this.company.officeClosingHour === null ||
+            this.company.rooms.length === 0 ||
+            users.length === 1
+          ) {
+            this.navbarDisabled = true;
+          }
         }
       },
       (error) => {}
