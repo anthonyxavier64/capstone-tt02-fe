@@ -1,9 +1,11 @@
+import { MessageService } from 'primeng/api';
+import { GoalService } from 'src/app/services/goal/goal.service';
+
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { GoalService } from 'src/app/services/goal/goal.service';
+
 import { CreateNewGoalDialogComponent } from './create-new-goal-dialog/create-new-goal-dialog.component';
 import { EditGoalDialogComponent } from './edit-goal-dialog/edit-goal-dialog.component';
 
@@ -80,6 +82,11 @@ export class GoalsComponent implements OnInit {
             (response) => {},
             (error) => {
               console.log(error);
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Unable to retrieve updated goal.',
+              });
             }
           );
         }
