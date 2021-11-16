@@ -1,4 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -15,7 +16,7 @@ const httpOptions = {
 export class UserService {
   baseUrl: string = environment.API_REST_URL + '/user';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   getUsers(companyId: string): Observable<any> {
     let params = new HttpParams().set('companyId', companyId);
@@ -89,10 +90,10 @@ export class UserService {
     );
   }
 
-  deleteUser(userId: String) {
-    return this.httpClient.post<any>(this.baseUrl + '/delete-user', {
-      userId: userId,
-    });
+  deleteUser(userId: string) {
+    return this.httpClient
+      .delete<any>(this.baseUrl + '/delete-user/' + userId)
+      .pipe(catchError(handleError));
   }
 
   updateUserDetailsByUserId(userId: any, updateDetails: any) {
@@ -125,5 +126,4 @@ export class UserService {
       )
       .pipe(catchError(handleError));
   }
-
 }
