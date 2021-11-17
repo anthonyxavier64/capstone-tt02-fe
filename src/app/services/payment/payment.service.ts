@@ -44,7 +44,7 @@ export class PaymentService {
         this.baseUrl + '/update-subscription',
         {
           companyId,
-          subscriptionType,
+          subType: subscriptionType,
         },
         httpOptions
       )
